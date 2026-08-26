@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Entries;
+use TYPO3\DevCompanion\Upkeep\Entry;
 
 /**
  * What is written down about a piece of this code, read before it is changed.
@@ -36,6 +38,60 @@ final class EntriesTest extends TestCase
                 $id . ' is filed in the other corpus',
             );
         }
+    }
+
+    /**
+     * The generated list replaces whatever the key was written with, in every
+     * shape an entry has ever carried it.
+     *
+     * `not guarded` is the one that was missed. The writer matched the empty and
+     * the `[]` forms alone, so an entry saying in words that nothing holds it
+     * fell through to the branch that adds a key — and came out with two
+     * `coveredBy:`, which is one document with two answers to one question. It
+     * reached `main` on 2026-08-27 in `D-DOC-060`, written `not guarded` and
+     * covered in the same run.
+     */
+    #[Decision('D-DOC-048')]
+    #[DataProvider('keysAnEntryCarries')]
+    #[Test]
+    public function aGeneratedListReplacesTheValueTheKeyAlreadyCarried(string $already): void
+    {
+        $entry = "---\nid: D-XXX-001\n" . $already . "---\n\n# D-XXX-001 — A title\n";
+
+        $written = Entry::withNames($entry, 'coveredBy', ['SomeTest::aCaseThatHoldsIt']);
+
+        self::assertSame(1, substr_count($written, 'coveredBy:'), 'the entry answers the question twice');
+        self::assertStringContainsString("coveredBy:\n  - SomeTest::aCaseThatHoldsIt\n", $written);
+        self::assertStringContainsString('# D-XXX-001 — A title', $written, 'the entry itself was rewritten');
+    }
+
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public static function keysAnEntryCarries(): array
+    {
+        return [
+            'nothing holds it, said in words' => ["coveredBy: not guarded\n"],
+            'nothing holds it, said as a list' => ["coveredBy: []\n"],
+            'one test holds it' => ["coveredBy:\n  - OldTest::whatUsedToHoldIt\n"],
+            'nobody has been asked' => [''],
+        ];
+    }
+
+    /**
+     * What a person wrote to say nothing holds an entry stays in their words.
+     *
+     * `not guarded` and `[]` say the same thing to every reader here, and only
+     * one of them says somebody was asked and answered — so the generated half
+     * may not quietly replace it with the other.
+     */
+    #[Decision('D-DOC-048')]
+    #[Test]
+    public function anEntryNothingHoldsKeepsTheWordsItSaidSoIn(): void
+    {
+        $entry = "---\nid: D-XXX-001\ncoveredBy: not guarded\n---\n\n# D-XXX-001 — A title\n";
+
+        self::assertSame($entry, Entry::withNames($entry, 'coveredBy', []));
     }
 
     /** A path answers with what it declares, a file or a directory. */

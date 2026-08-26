@@ -6,6 +6,8 @@ status: open
 restsOn: [D-DOC-043, D-DOC-045]
 coveredBy:
   - DecisionsTest::everyEntrySaysWhatTheTestsHoldingItDeclare
+  - EntriesTest::aGeneratedListReplacesTheValueTheKeyAlreadyCarried
+  - EntriesTest::anEntryNothingHoldsKeepsTheWordsItSaidSoIn
 ---
 
 # D-DOC-048 — A test declares the decision it holds

@@ -126,9 +126,10 @@ final class Entry
      * returns and the checks compare against it, so one implementation decides
      * what the front matter says.
      *
-     * An entry no test names keeps an empty list it was written with — that
-     * says nothing holds the entry, where the absence of the key says nobody
-     * has asked.
+     * An entry no test names keeps what it was written with — an empty list, or
+     * the `not guarded` a person wrote to say nothing holds it. Either says
+     * nothing holds the entry, where the absence of the key says nobody has
+     * asked.
      *
      * @param list<string> $names
      */
@@ -138,10 +139,21 @@ final class Entry
             ? $key . ": []\n"
             : $key . ":\n" . implode('', array_map(static fn(string $name): string => '  - ' . $name . "\n", $names));
 
-        // A callback rather than a replacement string: a `$` in one would be
-        // read as a group reference, and what is written here is a name.
-        $carries = '/^' . $key . ':(?: \[])?\R(?:  - .*\R)*/m';
-        if (preg_match($carries, $contents) === 1) {
+        // Whatever value the key was written with, so that one written as a
+        // word is replaced rather than left for a second key to be appended
+        // under it. Matching only the empty and the `[]` forms put two
+        // `coveredBy:` into every entry somebody had written `not guarded` on.
+        $carries = '/^' . $key . ': *(.*)\R(?:  - .*\R)*/m';
+        if (preg_match($carries, $contents, $already) === 1) {
+            // What a person wrote to say nothing holds it stays in their words.
+            // Rewriting `not guarded` to `[]` would say the same thing and lose
+            // that somebody had been asked and answered.
+            if ($names === [] && !in_array(trim($already[1]), ['', '[]'], true)) {
+                return $contents;
+            }
+
+            // A callback rather than a replacement string: a `$` in one would be
+            // read as a group reference, and what is written here is a name.
             return (string) preg_replace_callback($carries, static fn(): string => $written, $contents, 1);
         }
         if ($names === []) {

@@ -82,10 +82,15 @@ final class SkillTest extends TestCase
             'typo3_configuration_lookup',
             'typo3_commit_message_guide',
         ],
+        // The review server comes first because the patch is established from
+        // it: the changed paths every later call takes as its argument, the
+        // target branch, the commit message and the issue it names all come
+        // back from that one call, and the review reached them by fetching the
+        // change into a checkout until `D-ANS-112`.
         'typo3-core-patch-review' => [
+            'typo3_gerrit_lookup',
             'typo3_hint_lookup',
             'typo3_forge_lookup',
-            'typo3_gerrit_lookup',
             'typo3_rule_lookup',
             'typo3_changelog_lookup',
             'typo3_documentation_lookup',
@@ -1485,7 +1490,10 @@ final class SkillTest extends TestCase
 
         self::assertStringContainsString('## What the project already says about this patch', $skill);
         self::assertStringContainsString('`typo3_forge_lookup` with the issue number', $skill);
-        self::assertStringContainsString('`typo3_gerrit_lookup` with the `Change-Id` the message carries', $skill);
+        // The call moved into the step that establishes the patch when the
+        // answer began carrying the paths and the message (`D-ANS-112`), so
+        // what is held is the handle rather than the sentence around it.
+        self::assertStringContainsString('`typo3_gerrit_lookup` with the `Change-Id`', $skill);
         // The issue is where a series announces itself, which is what makes the
         // set rule reachable at all.
         self::assertStringContainsString('an issue calling itself a part tells you the patch is not', $skill);
@@ -3961,7 +3969,10 @@ final class SkillTest extends TestCase
     {
         $crossings = [
             'typo3-core-issue-triage' => ['typo3-core-patch-development'],
-            'typo3-core-patch-review' => ['typo3-core-patch-development'],
+            // The second one is new with `D-ANS-112`: a review establishes the
+            // patch from the review server now, so needing it on disk is a
+            // moment rather than the premise the workflow opened on.
+            'typo3-core-patch-review' => ['typo3-core-patch-development', 'typo3-core-patch-checkout'],
             'typo3-core-patch-development' => ['typo3-core-patch-review'],
             'typo3-content-element-development' => [
                 'typo3-extension-testing',

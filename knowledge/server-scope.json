@@ -401,9 +401,9 @@
       "instead": "Call typo3_snapshot_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
     },
     {
-      "topic": "Gerrit beyond what an anonymous read answers: the diff of a patch set, a draft comment nobody published, what CI did beyond the line its bot posted, and anything a private change carries",
-      "why": "The review API is read without a credential, so a draft and a private change are outside it. The diff is not read over the API at all — the answer carries the ref that fetches the patch set, and the checkout is where a diff is read. Nothing here writes to Gerrit.",
-      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, which patch set is current with the commit it is, what every voter holds per label and what was commented on it — hold that commit against your own HEAD, and fetch the ref for the diff. It also answers the two relations a change stands in: the changes sharing its Change-Id, so a backport already pushed to a release branch is in the same answer, and the relation chain it sits in, so a change that is one part of a stacked feature is not read as the whole of it. Voting, commenting and uploading stay yours: the web UI and git, and typo3://guides/core/contribution/gerrit-workflow carries those."
+      "topic": "Gerrit beyond what an anonymous read answers: the hunks of a patch set, a draft comment nobody published, what CI did beyond the line its bot posted, and anything a private change carries",
+      "why": "The review API is read without a credential, so a draft and a private change are outside it. The diff itself is not read over the API — the answer carries the paths the patch set touches and the ref that fetches it, and the checkout is where the hunks are read. Nothing here writes to Gerrit.",
+      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, which patch set is current with the commit it is, what every voter holds per label and what was commented on it — hold that commit against your own HEAD, and fetch the ref for the hunks. A change read by name also carries every path its current patch set touches and its commit message whole, which is what a review establishes first, so a shortlist is triaged without fetching anything into a checkout. It also answers the two relations a change stands in: the changes sharing its Change-Id, so a backport already pushed to a release branch is in the same answer, and the relation chain it sits in, so a change that is one part of a stacked feature is not read as the whole of it. Voting, commenting and uploading stay yours: the web UI and git, and typo3://guides/core/contribution/gerrit-workflow carries those."
     },
     {
       "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",
@@ -487,7 +487,7 @@
     },
     {
       "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",
-      "call": "typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide with workflow=\"core\""
+      "call": "typo3_gerrit_lookup with the Change-Id or the change number for what the patch is — the paths it touches, the branch it targets, its commit message and the issue it names — then typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide with workflow=\"core\""
     },
     {
       "when": "Settling a finding on what a rendering contains rather than on what a diff says — TypoScript defaults, TypoScript declared in an ext_localconf.php or anything below lib.parseFunc, and equally a PHP change to the frontend request pipeline, an error handler or a page renderer caller whose effect is only visible in the response",

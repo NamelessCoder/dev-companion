@@ -20,16 +20,27 @@ cannot be corrected.
 2. Read [references/checklist.md](references/checklist.md) for the review
    surfaces, what a finding owes, what a dropped candidate owes, and the
    severity rubric.
-3. Establish the patch itself. The server does not read your working tree, and
-   what it needs from you is exactly what a patch is: **the changed paths**,
-   **the branch it targets**, **the commit message**, and **the issue it
-   names**. One reading of the diff produces all four, and every lookup below
-   takes one of them as its argument. A review that has not established the
-   target branch is reviewing against the wrong conventions and cannot tell.
+3. Establish the patch itself: **the changed paths**, **the branch it targets**,
+   **the commit message**, and **the issue it names**. Every lookup below takes
+   one of them as its argument, and a review that has not established the target
+   branch is reviewing against the wrong conventions and cannot tell.
+   `typo3_gerrit_lookup` with the `Change-Id` or the change number answers all
+   four for a patch set somebody has pushed, so this costs no checkout and a
+   shortlist is triaged without fetching anything. A patch that is not pushed is
+   the other case, and one reading of the diff produces the same four.
 
 The changed paths are the argument, not the subject. Pass them to
 `typo3_hint_lookup` for the conventions of the subsystem the patch is in, one
 call per subsystem, before forming a view of whether the code is right.
+
+**Where the review needs the patch on disk, invoke `typo3-core-patch-checkout`
+for that one change and say in the report which ref it fetched.** Reading the
+hunks needs it, because the answer above carries the paths and not the diff, and
+so does running a suite against the patch. Deciding which of several changes to
+read does not: that is what the paths, the size and the vote state settle. A ref
+fetched to triage a shortlist cannot be told apart afterwards from the branches
+the reader's own work sits on, and one session pulled in eight before its user
+stopped it.
 
 ## What the project already says about this patch
 
@@ -42,14 +53,14 @@ and the change it is — and both are read before the code is read a second time
   says it is one: an issue calling itself a part tells you the patch is not
   meant to stand alone, which decides every finding about what is missing from
   it.
-- `typo3_gerrit_lookup` with the `Change-Id` the message carries. It answers
-  whether the change is on the review server, at which patch set and with which
-  commit, against which branch and in what state — and what the review so far
-  is: the votes on it and the comments left on it. A comment somebody left on an
-  earlier patch set and nobody answered is a finding of its own, and it is the
-  one this review would otherwise make a second time. What "unanswered" means is
-  yours to read: the flag on a thread and the reply under it are two facts and
-  both come back.
+- The `typo3_gerrit_lookup` answer step 3 established the patch from also says
+  what the review so far is: the votes on it and the comments left on it. A
+  comment somebody left on an earlier patch set and nobody answered is a finding
+  of its own, and it is the one this review would otherwise make a second time.
+  What "unanswered" means is yours to read: the flag on a thread and the reply
+  under it are two facts and both come back. Where the patch reached you as a
+  commit rather than as a change number, the `Change-Id` its message carries is
+  the argument, and a commit hash out of the checkout reaches the same answer.
 
 **Both arguments come out of the commit message, and that is what makes them
 safe.** `Resolves:` is the Forge issue, `Change-Id:` is the change, and the

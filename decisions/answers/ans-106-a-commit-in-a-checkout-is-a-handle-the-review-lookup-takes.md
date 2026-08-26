@@ -149,5 +149,9 @@ the handle before a destructive delete. `typo3-core-patch-checkout` says of its
 forced branch deletion that git's refusal "is the last moment anything asks
 whether it is really disposable", which this handle makes untrue.
 
+That routing landed with the card, on the same day: the step now asks the lookup
+with the branch tip before it forces anything, and it asks the same question of
+any other ref the workflow is told to remove.
+
 The second **Assumed** above holds unchanged. Eleven characters answered again
 on 2026-08-26, and where the floor is is still unmeasured.

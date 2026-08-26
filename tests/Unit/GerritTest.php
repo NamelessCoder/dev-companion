@@ -99,6 +99,60 @@ final class GerritTest extends TestCase
         . '"4938c8ce9b57d41283adda8e54ea5f6c427b45de":{"commit":{"message":"[BUGFIX] Build a blank form from the blank start template\n\nThe \"create new form\" wizard lets editors pick \"Blank\" or \"Predefined\"\nin step 1.\n\nResolves: #110493\nRelated: #110331\nRelated: #107080\nReleases: main, 14.3\nChange-Id: I84e6ed9d47c9e8c734c00941c0a06aa5f7ea8414\n"}}}}]';
 
     /**
+     * Change 95385 as `change:95385` answered it on 2026-08-26 with
+     * `o=CURRENT_COMMIT` and `o=CURRENT_FILES`: the message trimmed to its
+     * first paragraph and its trailers, and four of its seven files, which is
+     * one of each shape a line count comes back in. Gerrit omits a count that
+     * is zero and both of them on a binary, and it sends the map in an order of
+     * its own — the fixture keeps that order.
+     */
+    private const TOUCHING = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[TASK] Add image information to system resources",'
+        . '"status":"NEW","_number":95385,"change_id":"I4a60d8265480854a8efcae7caaf0a56337feb1e7",'
+        . '"current_revision_number":3,"current_revision":"127c0f8fb38a9acebeed9c91641470015e9520d9","revisions":{'
+        . '"127c0f8fb38a9acebeed9c91641470015e9520d9":{"commit":{"message":"[TASK] Add image information to system resources\n\nAllow system resources to report whether they reference an image and\nprovide the detected image dimensions.\n\nResolves: #\nRelated: #110440\nReleases: main, 14.3\n\nChange-Id: I4a60d8265480854a8efcae7caaf0a56337feb1e7\n"},"files":{'
+        . '"typo3/sysext/core/Tests/Unit/SystemResource/Type/Fixtures/test.png":'
+        . '{"status":"A","new_mode":33188,"binary":true,"size_delta":3009,"size":3009},'
+        . '"typo3/sysext/core/Classes/SystemResource/Type/PackageResource.php":'
+        . '{"old_mode":33188,"new_mode":33188,"lines_inserted":61,"lines_deleted":2,"size_delta":2251,"size":6018},'
+        . '"typo3/sysext/core/Classes/SystemResource/Type/SystemResourceInterface.php":'
+        . '{"old_mode":33188,"new_mode":33188,"lines_inserted":12,"size_delta":436,"size":1659},'
+        . '"typo3/sysext/core/Classes/SystemResource/Exception/CanNotDetectImageDimensionOfSystemResourceException.php":'
+        . '{"status":"A","new_mode":33188,"lines_inserted":24,"size_delta":711,"size":711}'
+        . '}}}}]';
+
+    /** The change, a tracker with nothing to say about it, and no stack. */
+    private static function touching(string $url): string
+    {
+        if (str_contains($url, 'forge.typo3.org')) {
+            return '{"issues":[],"total_count":0}';
+        }
+
+        return str_contains($url, '/related') ? ")]}'\n" . '{"changes":[]}' : self::TOUCHING;
+    }
+
+    /**
+     * Two files of change 95211 as it answered on 2026-08-26: a move that
+     * carries edits and a move that carries none, both with the path they came
+     * from. That change moves 38 files out of one system extension into
+     * another, which is the shape a rename arrives in at all.
+     */
+    private const MOVED = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[!!!] Removal of EXT:fluid_styled_content",'
+        . '"status":"NEW","_number":95211,"change_id":"I8fad38737cbcef2727d4803837f10493166db72b",'
+        . '"current_revision_number":2,"current_revision":"d7ef2d93cbc11a03ae704a2bf2f3fa835e1792df","revisions":{'
+        . '"d7ef2d93cbc11a03ae704a2bf2f3fa835e1792df":{"files":{'
+        . '"typo3/sysext/fluid_styled_content/Classes/DataProcessing/GalleryProcessor.php":'
+        . '{"status":"R","old_mode":33188,"new_mode":33188,'
+        . '"old_path":"typo3/sysext/frontend/Classes/DataProcessing/GalleryProcessor.php",'
+        . '"lines_inserted":2,"lines_deleted":2,"size_delta":-33,"size":17856},'
+        . '"typo3/sysext/fluid_styled_content/Configuration/TCA/Overrides/250-tt_content-content_type-menu_abstract.php":'
+        . '{"status":"R","old_mode":33188,"new_mode":33188,'
+        . '"old_path":"typo3/sysext/frontend/Configuration/TCA/Overrides/250-tt_content-content_type-menu_abstract.php",'
+        . '"size_delta":0,"size":753}'
+        . '}}}}]';
+
+    /**
      * What `/issues.json?issue_id=110493,110331,107080&status_id=*` answered on
      * 2026-08-24, trimmed to the four fields that are read. One call for the
      * whole set, which is the read a relation is already filled by.
@@ -213,7 +267,7 @@ final class GerritTest extends TestCase
         // And the merged change is the answer to the issue it resolves rather
         // than to the one whose number it carries as its own.
         self::assertSame([88556], array_column($found[106318], 'number'));
-        self::assertArrayNotHasKey('message', $found[88556][0]);
+        self::assertNull($found[88556][0]['message']);
     }
 
     /**
@@ -240,13 +294,18 @@ final class GerritTest extends TestCase
      * message says (`D-ANS-055`), and a change lookup lifts the issues its
      * trailers name out of it (`D-ANS-098`).
      *
-     * Neither hands it back. The answer is which changes exist and what state
-     * they are in, and the message is prose the caller reads on the review page.
+     * Only the change hands it back. An issue search answers up to 25 changes
+     * and asks whether a patch exists at all, which the prose does not decide;
+     * a caller that named one change is establishing that patch, and the
+     * trailers it would check are unreachable from the subject (`D-ANS-112`).
+     * Null is the shape of both silences, so a client reads one model rather
+     * than branching on whether the key is there.
      */
     #[Decision('D-ANS-055')]
     #[Decision('D-ANS-098')]
+    #[Decision('D-ANS-112')]
     #[Test]
-    public function theCommitMessageIsReadByBothFormsAndHandedBackByNeither(): void
+    public function theCommitMessageIsReadByBothFormsAndHandedBackByAChangeReadByName(): void
     {
         $asked = [];
         $gerrit = new Gerrit(function (string $url) use (&$asked): string {
@@ -255,14 +314,177 @@ final class GerritTest extends TestCase
             return str_contains($url, 'forge.typo3.org') ? '{"issues":[],"total_count":0}' : self::BOTH;
         });
 
-        $gerrit->changesForIssue('88556');
-        $gerrit->change('95108');
+        $searched = $gerrit->changesForIssue('88556');
+        $named = $gerrit->change('95108');
 
         $queries = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '?q=')));
         self::assertStringContainsString('o=CURRENT_COMMIT', $queries[0]);
         self::assertStringContainsString('o=CURRENT_COMMIT', $queries[1]);
-        self::assertArrayNotHasKey('message', $gerrit->changesForIssue('88556')['changes'][0]);
-        self::assertArrayNotHasKey('message', $gerrit->change('95108')['changes'][0]);
+        self::assertNull($searched['changes'][0]['message']);
+        self::assertStringContainsString(
+            'RteHtmlParser divided the content at every line break.',
+            $named['changes'][0]['message'],
+        );
+    }
+
+    /**
+     * The paths the patch set touches, which is the first of the four things a
+     * review is told to establish and was reachable only by fetching the change
+     * (`D-ANS-112`). A session triaging a shortlist fetched eight open changes
+     * into the user's own working checkout for what one query answers, and the
+     * user stopped it over that.
+     *
+     * Sorted here rather than as it arrived: the map comes back in an order of
+     * Gerrit's own, and the two `Classes/` files sit apart in it.
+     */
+    #[Decision('D-ANS-112')]
+    #[Test]
+    public function aChangeReadByNameCarriesThePathsItsPatchSetTouches(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::touching($url);
+        });
+
+        $change = $gerrit->change('95385')['changes'][0];
+
+        self::assertStringContainsString('o=CURRENT_FILES', $asked[0]);
+        self::assertSame([
+            'typo3/sysext/core/Classes/SystemResource/Exception/CanNotDetectImageDimensionOfSystemResourceException.php',
+            'typo3/sysext/core/Classes/SystemResource/Type/PackageResource.php',
+            'typo3/sysext/core/Classes/SystemResource/Type/SystemResourceInterface.php',
+            'typo3/sysext/core/Tests/Unit/SystemResource/Type/Fixtures/test.png',
+        ], array_column($change['files'], 'path'));
+        self::assertSame(['added', 'modified', 'modified', 'added'], array_column($change['files'], 'action'));
+        self::assertSame([
+            'path' => 'typo3/sysext/core/Classes/SystemResource/Type/PackageResource.php',
+            'action' => 'modified',
+            'insertions' => 61,
+            'deletions' => 2,
+            'binary' => false,
+            'movedFrom' => null,
+        ], $change['files'][1]);
+    }
+
+    /**
+     * A count Gerrit omits is no lines, and a file it counts nothing for is a
+     * binary rather than a file the patch set left alone — which is the one
+     * misreading a list of paths and numbers invites (`D-ANS-112`).
+     */
+    #[Decision('D-ANS-112')]
+    #[Test]
+    public function aFileWithNoLinesToCountSaysWhyItHasNone(): void
+    {
+        $change = (new Gerrit(static fn(string $url): string => self::touching($url)))->change('95385')['changes'][0];
+
+        self::assertSame([
+            'path' => 'typo3/sysext/core/Tests/Unit/SystemResource/Type/Fixtures/test.png',
+            'action' => 'added',
+            'insertions' => 0,
+            'deletions' => 0,
+            'binary' => true,
+            'movedFrom' => null,
+        ], $change['files'][3]);
+        // The other omission, on a file that is not binary: nothing was
+        // removed, and the review server says that by leaving the count out.
+        self::assertSame(12, $change['files'][2]['insertions']);
+        self::assertSame(0, $change['files'][2]['deletions']);
+    }
+
+    /**
+     * A moved file names where it came from, because that is the whole of what
+     * separates a rename from a delete and an add — and a review reading the
+     * second reports a subsystem as gone (`D-ANS-112`).
+     */
+    #[Decision('D-ANS-112')]
+    #[Test]
+    public function aMovedFileNamesThePathItCameFrom(): void
+    {
+        $change = (new Gerrit(static fn(string $url): string => str_contains($url, '/related')
+            ? ")]}'\n" . '{"changes":[]}'
+            : self::MOVED))->change('95211')['changes'][0];
+
+        self::assertSame(['renamed', 'renamed'], array_column($change['files'], 'action'));
+        self::assertSame(
+            'typo3/sysext/frontend/Classes/DataProcessing/GalleryProcessor.php',
+            $change['files'][0]['movedFrom'],
+        );
+        // A move that changed nothing in the file still carries both counts at
+        // zero, and it is a move rather than an untouched file all the same.
+        self::assertSame(0, $change['files'][1]['insertions']);
+        self::assertSame(0, $change['files'][1]['deletions']);
+    }
+
+    /**
+     * One line per path, saying what the patch does to it and what that costs.
+     *
+     * The list is printed whole rather than paged: 200 open core changes read
+     * on 2026-08-26 touch 5 files at the median, and a cap would fall on the
+     * one thing the answer is here to carry (`D-ANS-112`).
+     */
+    #[Decision('D-ANS-112')]
+    #[Test]
+    public function theTextHalfNamesEveryPathAndWhatThePatchDoesToIt(): void
+    {
+        $change = (new Gerrit(static fn(string $url): string => self::touching($url)))->change('95385')['changes'][0];
+
+        $lines = GerritLookup::touches($change, true);
+
+        self::assertSame('### Files (4)', $lines[1]);
+        self::assertContains(
+            '- modified typo3/sysext/core/Classes/SystemResource/Type/PackageResource.php · +61 -2',
+            $lines,
+        );
+        self::assertContains(
+            '- added typo3/sysext/core/Tests/Unit/SystemResource/Type/Fixtures/test.png · binary',
+            $lines,
+        );
+        self::assertContains(
+            '- renamed typo3/sysext/fluid_styled_content/Classes/DataProcessing/GalleryProcessor.php · '
+                . 'from typo3/sysext/frontend/Classes/DataProcessing/GalleryProcessor.php · +2 -2',
+            GerritLookup::touches(
+                (new Gerrit(static fn(string $url): string => str_contains($url, '/related')
+                    ? ")]}'\n" . '{"changes":[]}'
+                    : self::MOVED))->change('95211')['changes'][0],
+                true,
+            ),
+        );
+    }
+
+    /**
+     * A search asks for no paths, so silence there is not a claim that they
+     * could not be read — which the same silence on a change read by name is.
+     */
+    #[Decision('D-ANS-112')]
+    #[Test]
+    public function pathsNobodyAskedForAreNotPathsThatCouldNotBeRead(): void
+    {
+        self::assertSame([], GerritLookup::touches(['files' => null], false));
+        self::assertStringContainsString(
+            'could not be read',
+            implode("\n", GerritLookup::touches(['files' => null], true)),
+        );
+    }
+
+    /**
+     * The commit message whole, which is what a trailer is checked against and
+     * what `typo3_commit_message_guide` takes — the subject alone is not either
+     * (`D-ANS-112`). Nothing is printed where it did not come back, because the
+     * issues section says that once already.
+     */
+    #[Decision('D-ANS-112')]
+    #[Test]
+    public function theTextHalfCarriesTheCommitMessageWhole(): void
+    {
+        $change = (new Gerrit(static fn(string $url): string => self::touching($url)))->change('95385')['changes'][0];
+
+        $lines = GerritLookup::commitMessage($change);
+
+        self::assertSame('### Commit message', $lines[1]);
+        self::assertStringContainsString('  Releases: main, 14.3', $lines[3]);
+        self::assertSame([], GerritLookup::commitMessage(['message' => null]));
     }
 
     /**
@@ -518,8 +740,8 @@ final class GerritTest extends TestCase
         // On every change the answer carries, because a backport states its own.
         self::assertSame(['main', '13.4', '12.4'], $answer['changes'][2]['releases']);
         // No call of its own: the message it is read from is the one the issues
-        // beside it are read from.
-        self::assertArrayNotHasKey('message', $answer['changes'][0]);
+        // beside it are read from, and the one the answer now carries whole.
+        self::assertStringContainsString('Releases: main, 13.4, 12.4', $answer['changes'][0]['message']);
 
         // The issue direction reads the same message, so it carries it too —
         // which is the direction a triage holding an issue number is in.
@@ -1024,13 +1246,11 @@ final class GerritTest extends TestCase
             'status' => 'Under Review',
             'url' => 'https://forge.typo3.org/issues/107080',
         ], $change['issues'][2]);
-        // One read of the tracker for the whole set, and the message itself is
-        // not what comes back.
+        // One read of the tracker for the whole set.
         self::assertSame(
             ['https://forge.typo3.org/issues.json?issue_id=110493%2C110331%2C107080&status_id=%2A&limit=3'],
             array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, 'forge'))),
         );
-        self::assertArrayNotHasKey('message', $change);
     }
 
     /**
@@ -1862,7 +2082,8 @@ final class GerritTest extends TestCase
         self::assertNull($change['comments']);
         self::assertNull($change['chain']);
         self::assertNull($change['issues']);
-        self::assertArrayNotHasKey('message', $change);
+        self::assertNull($change['message']);
+        self::assertNull($change['files']);
     }
 
     /**

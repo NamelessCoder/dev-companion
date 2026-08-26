@@ -17,6 +17,15 @@ and a session that quietly resolves its way to something that compiles has
 destroyed that finding and produced a patch nobody wrote. So every step below
 has an end, and reaching one is a result.
 
+**One change, because the work needs it on disk.** What a change touches, what
+its message says and what its review stands at all come back from the review
+server without a fetch, which is step 2 below — so a shortlist is triaged before
+this workflow is opened at all, and the checkout is reached for the one change
+that survived the triage. Refs pulled in to decide what to read cannot be told
+apart afterwards from the branches the reader's own work sits on: one session
+fetched eight open changes into somebody's working checkout and was stopped over
+them.
+
 ## Establish the change before touching the checkout
 
 1. Work through [references/base.md](references/base.md), which fixes the order
@@ -167,14 +176,19 @@ it is these six, in this order, because each part makes the next one possible.
    branch looks right. Where the patch was only fetched, it was on no branch, so
    leaving it loses nothing that is not still on the review server — but say the
    commit in the answer, because that is the only local name it had.
-3. **Delete the branch the patch was carried onto**, where there was one. That
-   commit is on no review server and in no other branch, so the branch is the
-   only thing holding it and git refuses the ordinary deletion: the forced one
-   is the step, and the refusal is the last moment anything asks whether it is
-   really disposable. Read what is about to go rather than reaching past it —
-   what was resolved in a conflict goes with it. Then say in the answer that the
-   branch is gone, because "the checkout is back on its branch" is true with the
-   review branch still sitting beside it.
+3. **Delete the branch the patch was carried onto**, where there was one. Git
+   refuses the ordinary deletion, and the forced one gets past that refusal
+   rather than answering it. `typo3_gerrit_lookup` with `commit` and the tip the
+   branch is on is what answers it: a commit somebody pushed comes back as the
+   change it is a patch set of, superseded patch sets included, and the ref
+   beside it is the undo — say it in the answer before the branch goes. An empty
+   answer is a commit nobody pushed, or one an anonymous reader may not see, and
+   nothing brings that one back. A carried commit is the second kind by
+   construction, so read what is about to go: what was resolved in a conflict is
+   in it and in nothing else. Ask the same of any other ref this workflow is
+   told to remove, where nothing says in advance which of the two it is. Then
+   say in the answer that the branch is gone, because "the checkout is back on
+   its branch" is true with the review branch still sitting beside it.
 4. **Establish that nothing of the patch is left.** An aborted carry can leave
    files the change added lying untracked, and they belong to no commit and to
    no branch: the next suite run picks them up and fails for a reason that has

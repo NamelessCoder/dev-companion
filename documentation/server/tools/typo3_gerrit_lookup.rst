@@ -46,7 +46,13 @@ different — a chain is changes built on one another, a shared Change-Id is one
 patch on several branches. A change read by name also carries the Forge issues
 its commit message names in its Resolves: and Related: trailers, each with its
 subject, tracker and status. That is the join between the patch and the tracker,
-and it is where a second issue named nowhere else in the review is seen. Each
+and it is where a second issue named nowhere else in the review is seen. It also
+carries every path its current patch set touches, with what the patch does to
+each, and its commit message whole — so what a review establishes first is
+established without putting the change on disk: the paths are the argument
+typo3_hint_lookup and typo3_test_run_guide take, and the message is what
+typo3_commit_message_guide reads. The diff stays out, so the hunks are what a
+fetch is still for, and a shortlist is triaged without fetching anything. Each
 change also carries the ref that patch set is fetchable by and the review server
 to fetch it over, so getting it into a checkout takes no second lookup. A change
 read by name carries the review it is in as well: the value every voter holds
@@ -248,6 +254,14 @@ Answers with
         changeId: string  # optional
         # The commit subject.
         subject: string  # optional
+        # The commit message of the current patch set, whole — the subject above,
+        # the body under it and every trailer. It is what a review reads the
+        # change's own account of itself from and what typo3_commit_message_guide
+        # takes as its argument, and holding the subject alone is what makes a
+        # trailer uncheckable. Null means it was not read, which is a search by
+        # words or by path; an issue search reads it to decide which hits name the
+        # issue and answers null all the same.
+        message: string or null  # optional
         # NEW while it is open, MERGED once it landed, ABANDONED when it was given
         # up.
         status: string  # optional
@@ -274,6 +288,15 @@ Answers with
         # Lines the current patch set removes. Null where the review server stated
         # none.
         deletions: integer or null  # optional
+        # Every path the current patch set touches, sorted by path, with what the
+        # patch does to each. This is the changed paths a review establishes first
+        # and the argument typo3_hint_lookup and typo3_test_run_guide take, so a
+        # change is triaged without being fetched into a checkout. What is not here
+        # is the diff: the hunks are what a fetch is for, and a path this list calls
+        # renamed can be a path a reading of the hunks would call rewritten. Null
+        # means the paths were not read, which is a search and an issue search; an
+        # empty list would be a patch set touching nothing.
+        files: array or null  # optional
         # Whether the current patch set still merges into its target branch. It is
         # the review server's own last computation and not a merge run now, so false
         # is grounds to expect a rebase rather than a finding. Null where it

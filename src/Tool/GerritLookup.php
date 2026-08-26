@@ -45,7 +45,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Or backlog to enumerate the core\'s open changes without holding a handle or a wording — oldest pushed or longest untouched, narrowed by size, by vote state, by whether it still merges, by branch, by date and by person. That is where a review session starts: "which open reviews have been sitting a long time", "which of them are small and almost voted through", "which are mine" and "which have I already voted on" are maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none of them is answerable by words in a commit message. "Which of them could I review" is reviewableBy, the one person filter that takes a person out — what they pushed and what they voted on both leave the answer. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Every change, whichever way it was reached, also carries how many lines it adds and removes, whether it still merges, when it was pushed, how many comment threads are unresolved, and what each label stands at — the size, the age and the vote state a reviewer picks a change by. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, the thread it is in and whether that thread is open. A thread is open where the last comment in it says so, which is what the review server counts and what a tally of the flag on each comment does not. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, commit, a search by query and path, or backlog, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Or backlog to enumerate the core\'s open changes without holding a handle or a wording — oldest pushed or longest untouched, narrowed by size, by vote state, by whether it still merges, by branch, by date and by person. That is where a review session starts: "which open reviews have been sitting a long time", "which of them are small and almost voted through", "which are mine" and "which have I already voted on" are maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none of them is answerable by words in a commit message. "Which of them could I review" is reviewableBy, the one person filter that takes a person out — what they pushed and what they voted on both leave the answer. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Every change, whichever way it was reached, also carries how many lines it adds and removes, whether it still merges, when it was pushed, how many comment threads are unresolved, and what each label stands at — the size, the age and the vote state a reviewer picks a change by. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. It also carries every path its current patch set touches, with what the patch does to each, and its commit message whole — so what a review establishes first is established without putting the change on disk: the paths are the argument typo3_hint_lookup and typo3_test_run_guide take, and the message is what typo3_commit_message_guide reads. The diff stays out, so the hunks are what a fetch is still for, and a shortlist is triaged without fetching anything. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, the thread it is in and whether that thread is open. A thread is open where the last comment in it says so, which is what the review server counts and what a tally of the flag on each comment does not. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, commit, a search by query and path, or backlog, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
 
@@ -173,6 +173,15 @@ final class GerritLookup extends ReadOnlyTool
                 'number' => Schema::integer('Change number, the digits its review URL ends with.'),
                 'changeId' => Schema::string('The Change-Id its commit message carries, empty where the server named none. It survives an amend and a rebase onto another branch, so it is what to hold the commit in front of you against — and changes sharing one are the same patch on more than one branch, which passing it back as change reads all of.'),
                 'subject' => Schema::string('The commit subject.'),
+                'message' => [
+                    'type' => ['string', 'null'],
+                    'description' => 'The commit message of the current patch set, whole — the subject above, the '
+                        . 'body under it and every trailer. It is what a review reads the change\'s own account of '
+                        . 'itself from and what typo3_commit_message_guide takes as its argument, and holding the '
+                        . 'subject alone is what makes a trailer uncheckable. Null means it was not read, which is a '
+                        . 'search by words or by path; an issue search reads it to decide which hits name the issue '
+                        . 'and answers null all the same.',
+                ],
                 'status' => Schema::string('NEW while it is open, MERGED once it landed, ABANDONED when it was given up.'),
                 'branch' => Schema::string('The branch the change targets.'),
                 'patchSet' => Schema::integer('The patch set that is current on the server, counting from 1. Zero where the server named none.'),
@@ -187,6 +196,30 @@ final class GerritLookup extends ReadOnlyTool
                         . 'whole change rather than of what is left to read.',
                 ],
                 'deletions' => ['type' => ['integer', 'null'], 'description' => 'Lines the current patch set removes. Null where the review server stated none.'],
+                'files' => [
+                    'type' => ['array', 'null'],
+                    'description' => 'Every path the current patch set touches, sorted by path, with what the patch '
+                        . 'does to each. This is the changed paths a review establishes first and the argument '
+                        . 'typo3_hint_lookup and typo3_test_run_guide take, so a change is triaged without being '
+                        . 'fetched into a checkout. What is not here is the diff: the hunks are what a fetch is for, '
+                        . 'and a path this list calls renamed can be a path a reading of the hunks would call '
+                        . 'rewritten. Null means the paths were not read, which is a search and an issue search; an '
+                        . 'empty list would be a patch set touching nothing.',
+                    'items' => Schema::object([
+                        'path' => Schema::string('The path as the review server spells it, from the repository root.'),
+                        'action' => [
+                            'type' => 'string',
+                            'enum' => ['modified', 'added', 'deleted', 'renamed', 'copied', 'rewritten'],
+                            'description' => 'What the patch set does to this file. renamed and copied name where '
+                                . 'the file came from in movedFrom; rewritten is a change large enough that the '
+                                . 'review server stopped relating the two versions.',
+                        ],
+                        'insertions' => Schema::integer('Lines added in this file. Zero on a binary, where there are no lines to count.'),
+                        'deletions' => Schema::integer('Lines removed in this file.'),
+                        'binary' => ['type' => 'boolean', 'description' => 'Whether the file is binary, which is what makes the two zero counts beside it mean nothing. An image or a fixture archive is not an untouched file.'],
+                        'movedFrom' => ['type' => ['string', 'null'], 'description' => 'The path this file was renamed or copied from, null on every other action.'],
+                    ], ['path', 'action', 'insertions', 'deletions', 'binary', 'movedFrom']),
+                ],
                 'mergeable' => [
                     'type' => ['boolean', 'null'],
                     'description' => 'Whether the current patch set still merges into its target branch. It is the '
@@ -553,7 +586,8 @@ final class GerritLookup extends ReadOnlyTool
             . 'fetches it into a checkout and backs out again. Open the one this task is before reading the '
             . "diff, and start it at `typo3_project_describe`. Where neither is open, this is the order:\n"
             . '- Establish the patch before judging it: the changed paths, the branch it targets, the commit '
-            . "message and the issue it names. The target branch decides which conventions apply.\n"
+            . 'message and the issue it names. All four are above, so this costs no fetch — the target branch '
+            . "decides which conventions apply.\n"
             . '- Three ways in, and a branch of your own naming is none of them: the branch the change '
             . 'targets, a worktree beside the checkout, or current code on `review/<change number>`. The '
             . "third makes a commit that exists nowhere else, so say which of the two each result is about.\n"
@@ -717,6 +751,7 @@ final class GerritLookup extends ReadOnlyTool
             $stacked = false;
             $moved = false;
             $tracked = false;
+            $touched = false;
             if ($direction === 'backlog') {
                 $lines = [...$lines, ...self::page($data['backlog'], count($answer['changes']), $reviewableBy)];
             }
@@ -756,6 +791,7 @@ final class GerritLookup extends ReadOnlyTool
                 $commented = $commented || ($entry['comments'] ?? []) !== [];
                 $stacked = $stacked || ($entry['chain'] ?? []) !== [];
                 $tracked = $tracked || ($entry['issues'] ?? []) !== [];
+                $touched = $touched || ($entry['files'] ?? []) !== [];
                 foreach ($entry['chain'] ?? [] as $related) {
                     $moved = $moved || self::behind($related);
                 }
@@ -764,11 +800,20 @@ final class GerritLookup extends ReadOnlyTool
                 // search would otherwise make about every hit it answers.
                 $lines = [
                     ...$lines,
+                    ...self::commitMessage($entry),
+                    ...self::touches($entry, $byName),
                     ...self::issues($entry, $byName),
                     ...self::chain($entry, $byName),
                     ...self::comments($entry, $byName),
                     ...self::log($entry, $messages),
                 ];
+            }
+            if ($touched) {
+                $lines[] = '';
+                $lines[] = 'The paths above are what the current patch set touches, and they are the argument the '
+                    . 'work after this takes: `typo3_hint_lookup` for the conventions of each subsystem in the list, '
+                    . '`typo3_test_run_guide` for the suites that can fail on them. What is not here is the diff — '
+                    . 'the hunks are what a fetch is for, and a shortlist is triaged without fetching anything.';
             }
             if ($tracked) {
                 $lines[] = '';
@@ -1125,6 +1170,75 @@ final class GerritLookup extends ReadOnlyTool
                 $named['issue'],
                 implode(' · ', array_filter([$named['tracker'], $named['status'], $named['subject'], $named['url']])),
             );
+        }
+
+        return $lines;
+    }
+
+    /**
+     * The commit message of the change, whole.
+     *
+     * One of the four things a review is told to establish, and until now
+     * reachable only by fetching the patch set: the answer carried the subject
+     * and the readings taken off the message, and a caller holding those cannot
+     * check a trailer (`D-ANS-112`). Nothing is printed where it was not read —
+     * the issues section below says that once, and a second sentence for one
+     * silence is two. Separated from `answer()` so it can be held without a
+     * review server.
+     *
+     * @param array<string, mixed> $entry
+     * @return list<string>
+     */
+    public static function commitMessage(array $entry): array
+    {
+        $message = $entry['message'] ?? null;
+        if (!is_string($message) || trim($message) === '') {
+            return [];
+        }
+
+        return ['', '### Commit message', '', self::quoted(rtrim($message))];
+    }
+
+    /**
+     * The paths this patch set touches, each with what it does to one.
+     *
+     * The first thing a review establishes and the one a session went to the
+     * checkout for: eight open changes were fetched into the user's own working
+     * tree to triage a shortlist none of them was reviewed from (`D-ANS-112`).
+     * The list is printed whole — the median open core change touched 5 files
+     * when this was measured, and a page of it would be a cap on the one thing
+     * the answer is here to carry. Separated from `answer()` so it can be held
+     * without a review server.
+     *
+     * @param array<string, mixed> $entry
+     * @param bool $read whether the paths were asked for, which only a change
+     *                   read by name does
+     * @return list<string>
+     */
+    public static function touches(array $entry, bool $read): array
+    {
+        if ($entry['files'] === null) {
+            return $read
+                ? ['', 'The paths this patch set touches could not be read: the review server answered the change '
+                    . 'and not its files, so nothing here says what the patch is about.']
+                : [];
+        }
+        if ($entry['files'] === []) {
+            return [];
+        }
+
+        $lines = ['', sprintf('### Files (%d)', count($entry['files']))];
+        foreach ($entry['files'] as $file) {
+            $said = [$file['action'] . ' ' . $file['path']];
+            if ($file['movedFrom'] !== null) {
+                $said[] = 'from ' . $file['movedFrom'];
+            }
+            // A binary carries no line counts, and printing its two zeros is
+            // the answer saying the file was left alone.
+            $said[] = $file['binary']
+                ? 'binary'
+                : sprintf('+%d -%d', $file['insertions'], $file['deletions']);
+            $lines[] = '- ' . implode(' · ', $said);
         }
 
         return $lines;

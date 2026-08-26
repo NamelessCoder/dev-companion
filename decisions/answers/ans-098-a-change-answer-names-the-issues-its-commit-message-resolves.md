@@ -7,7 +7,7 @@ coveredBy:
   - GerritTest::aChangeCarriesTheIssuesItsCommitMessageNames
   - GerritTest::aTrailerWithNoNumberBehindItNamesNoIssue
   - GerritTest::anIssueSearchAsksForNoneOfTheReview
-  - GerritTest::theCommitMessageIsReadByBothFormsAndHandedBackByNeither
+  - GerritTest::theCommitMessageIsReadByBothFormsAndHandedBackByAChangeReadByName
   - GerritTest::theTextHalfNamesTheIssuesAndWhatEachTrailerClaims
 ---
 

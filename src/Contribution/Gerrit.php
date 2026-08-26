@@ -87,10 +87,11 @@ final class Gerrit
                 if ($message !== '') {
                     $change['releases'] = self::releases($message);
                 }
-                // The message was read to decide this and is not part of the
-                // answer: what a caller asked for is which changes exist, and
-                // the commit is what it holds a checkout against.
-                unset($change['message']);
+                // Read to decide this and handed back by a change read by name
+                // alone: what a caller asked here is which changes exist, and
+                // the message is the 0.9 KB a hit grows by (`D-ANS-100`) on an
+                // answer that carries up to 25 of them — `D-ANS-112`.
+                $change['message'] = null;
                 $named[] = $change;
             }
         }
@@ -384,7 +385,7 @@ final class Gerrit
                 $named = array_filter($batch, static fn(string $number): bool => self::names($change, $number));
                 // After the message was read against every number in the batch,
                 // and not inside that loop: it is what the rule reads.
-                unset($change['message']);
+                $change['message'] = null;
                 foreach ($named as $number) {
                     $found[(int) $number][] = $change;
                 }
@@ -472,12 +473,17 @@ final class Gerrit
      * (`D-ANS-098`), and the branches its `Releases:` trailer claims
      * (`D-ANS-106`).
      *
+     * This is also where the patch itself is established: the paths the current
+     * patch set touches and the commit message whole, so a caller reaches both
+     * without putting the change on disk (`D-ANS-112`).
+     *
      * @param string $operator the Gerrit query prefix the handle belongs to
      * @return Answer
      */
     private function named(string $operator, string $change, int $limit, string $messages): array
     {
-        $options = self::REVIEW . self::CURRENT_COMMIT . ($messages === 'none' ? '' : self::MESSAGES);
+        $options = self::REVIEW . self::CURRENT_COMMIT . self::CURRENT_FILES
+            . ($messages === 'none' ? '' : self::MESSAGES);
         $handle = trim($change);
         $answer = $this->search($operator . $handle, $limit, $options);
 
@@ -552,10 +558,6 @@ final class Gerrit
         $numbers = [];
         foreach ($changes as $index => $change) {
             $message = is_string($change['message'] ?? null) ? $change['message'] : '';
-            // Read for the issues and not part of the answer: a commit message
-            // is prose the caller reads on the review page, and what the walk
-            // needs out of it is the handles.
-            unset($changes[$index]['message']);
             if ($message === '') {
                 continue;
             }
@@ -619,6 +621,66 @@ final class Gerrit
         }
 
         return array_values($named);
+    }
+
+    /**
+     * What Gerrit calls a file's status, in the words the answer says it in.
+     *
+     * A letter is unreadable where a path is not, and the change beside it
+     * already answers `NEW` and `MERGED` under the same word — so this is
+     * `action` and it is spelled out. A file the patch set only edits carries
+     * no status at all, which is why `modified` has no letter here.
+     */
+    private const ACTIONS = ['A' => 'added', 'D' => 'deleted', 'R' => 'renamed', 'C' => 'copied', 'W' => 'rewritten'];
+
+    /**
+     * The paths the current patch set touches, each with what it does to one.
+     *
+     * The first of the four things a review is told to establish, and the one a
+     * session went to the checkout for: eight changes were fetched into the
+     * user's own working tree to triage a shortlist that needed nothing but
+     * this (`D-ANS-112`). What stays outside is the diff — a file list decides
+     * a triage and the hunks are what a fetch is for.
+     *
+     * Sorted by path, because the order Gerrit sends is its own and a reader
+     * scanning for a subsystem reads the neighbours together.
+     *
+     * Gerrit omits a line count that is zero and both of them on a binary, so
+     * an absent count is no lines rather than an unstated number — which is
+     * where this differs from the change's own insertions and deletions.
+     *
+     * @return list<array<string, mixed>>|null null where the query did not ask
+     *                                         for them
+     */
+    private static function files(mixed $files): ?array
+    {
+        if (!is_array($files)) {
+            return null;
+        }
+        ksort($files);
+
+        $touched = [];
+        foreach ($files as $path => $entry) {
+            if (!is_array($entry)) {
+                continue;
+            }
+            $status = is_string($entry['status'] ?? null) ? $entry['status'] : '';
+            $touched[] = [
+                'path' => (string) $path,
+                'action' => self::ACTIONS[$status] ?? 'modified',
+                'insertions' => self::counted($entry['lines_inserted'] ?? null) ?? 0,
+                'deletions' => self::counted($entry['lines_deleted'] ?? null) ?? 0,
+                // What makes the two zeros above mean nothing: a binary has no
+                // lines to count, and reading it as an untouched file is the
+                // one misreading this list invites.
+                'binary' => ($entry['binary'] ?? null) === true,
+                // The path it was renamed or copied from, which is the whole of
+                // what makes those two different from a delete and an add.
+                'movedFrom' => is_string($entry['old_path'] ?? null) ? $entry['old_path'] : null,
+            ];
+        }
+
+        return $touched;
     }
 
     /**
@@ -868,6 +930,19 @@ final class Gerrit
     private const CURRENT_COMMIT = '&o=CURRENT_COMMIT';
 
     /**
+     * The option that adds the paths the current patch set touches.
+     *
+     * Asked only where a caller named a change, beside the votes and the
+     * comments. Measured against `review.typo3.org` on 2026-08-26 over the same
+     * anonymous path as everything else: change 95369 answers 19.8 KB without
+     * it and 23.8 KB with it, for the 25 files it touches. Of the 200 open core
+     * changes read that day the median touches 5 files and the largest 233, so
+     * what a change lookup grows by is regularly under a kilobyte —
+     * `D-ANS-112`.
+     */
+    private const CURRENT_FILES = '&o=CURRENT_FILES';
+
+    /**
      * The options that answer what state the review is in: the value every
      * voter holds per label, and the account each of them is.
      *
@@ -962,13 +1037,7 @@ final class Gerrit
         foreach ($decoded as $entry) {
             if (is_array($entry)) {
                 $more = ($entry['_more_changes'] ?? false) === true;
-                $change = self::change_($entry);
-                // What was not asked for cannot be in the answer, and the
-                // commit message is asked for by the queries that read it.
-                if (!str_contains($options, self::CURRENT_COMMIT)) {
-                    unset($change['message']);
-                }
-                $changes[] = $change;
+                $changes[] = self::change_($entry);
             }
         }
 
@@ -1012,17 +1081,21 @@ final class Gerrit
 
         $revision = is_string($entry['current_revision'] ?? null) ? $entry['current_revision'] : '';
         $revisions = is_array($entry['revisions'] ?? null) ? $entry['revisions'] : [];
-        $commit = is_array($revisions[$revision] ?? null) ? $revisions[$revision] : [];
-        $commit = is_array($commit['commit'] ?? null) ? $commit['commit'] : [];
+        $current = is_array($revisions[$revision] ?? null) ? $revisions[$revision] : [];
+        $commit = is_array($current['commit'] ?? null) ? $current['commit'] : [];
         $project = is_string($entry['project'] ?? null) ? $entry['project'] : '';
 
         return [
             'number' => $number,
-            // What `o=CURRENT_COMMIT` adds, where it was asked for. Read to
-            // decide whether the change is about the issue and to lift the
-            // issues it names out of it, and dropped before the answer is
-            // handed over.
-            'message' => is_string($commit['message'] ?? null) ? $commit['message'] : '',
+            // What `o=CURRENT_COMMIT` adds, where it was asked for. Null is a
+            // message that did not come back, which is every query that did not
+            // ask; a search that reads it for the issues it names nulls it
+            // again before answering.
+            'message' => is_string($commit['message'] ?? null) ? $commit['message'] : null,
+            // What `o=CURRENT_FILES` adds, on a change read by name. Null the
+            // same way, and an empty list would be a patch set touching
+            // nothing.
+            'files' => self::files($current['files'] ?? null),
             // The one handle that survives a rebase onto another branch, and
             // what a reviewer holds the commit in front of it against.
             'changeId' => is_string($entry['change_id'] ?? null) ? $entry['change_id'] : '',

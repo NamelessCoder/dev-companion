@@ -215,3 +215,19 @@ judge whether a comment was answered. What moves is that the thread is no longer
 left to be derived — the reply relation and the order are already in the answer,
 and which shape states it is the todo's. The card carries the work at `normal`,
 which one session's misreading and a self-contradicting count set together.
+
+## Since then
+
+The card was worked on 2026-08-26 and the derivation above is Gerrit's own rule
+rather than this side's reading. Its REST documentation states both halves:
+`unresolved_comment_count` is the "Number of unresolved inline comment threads
+across all patch sets", and `CommentInfo.unresolved` says "The state of
+resolution of a comment thread is stored in the last comment in that thread
+chronologically". Reading the threads that way reproduces the review server's
+count on the forty open core changes carrying one, measured the same day.
+
+What came of it is `D-ANS-111`: every comment says which thread it is in and
+what that thread stands at, the listing is a thread at a time, and the count in
+its heading is the threads rather than the flags. The refusal this entry decided
+is what that one carries forward — the state is handed over and the reading
+stays the caller's.

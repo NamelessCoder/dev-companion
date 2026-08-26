@@ -51,13 +51,15 @@ change also carries the ref that patch set is fetchable by and the review server
 to fetch it over, so getting it into a checkout takes no second lookup. A change
 read by name carries the review it is in as well: the value every voter holds
 per label and whether the submit rule is satisfied, and every comment left on it
-with its patch set, its file and line, whether the thread is unresolved and
-which comment it replies to. That is where a comment somebody left on an earlier
-patch set and nobody answered is read. Why a vote is gone is in the review log
-instead, which messages asks for. A call carries issue, change, commit, a search
-by query and path, or backlog, never two of those. Beside the branch each change
-targets it names the branches that take a patch today, each with the day its
-regular support ends — the list a Releases: trailer may name, which a core clone
+with its patch set, its file and line, the thread it is in and whether that
+thread is open. A thread is open where the last comment in it says so, which is
+what the review server counts and what a tally of the flag on each comment does
+not. That is where a comment somebody left on an earlier patch set and nobody
+answered is read. Why a vote is gone is in the review log instead, which
+messages asks for. A call carries issue, change, commit, a search by query and
+path, or backlog, never two of those. Beside the branch each change targets it
+names the branches that take a patch today, each with the day its regular
+support ends — the list a Releases: trailer may name, which a core clone
 supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing
 about which of them is still maintained. Which of those lines a change belongs
 on is not answered here: that is the author's claim, and
@@ -297,15 +299,18 @@ Answers with
         # How many comments the change carries, which the review server states
         # whether or not they were read.
         commentCount: integer  # optional
-        # How many of those sit on a thread nobody has marked resolved, which the
-        # review server states whether or not the comments were read. It is the flag
-        # as its last writer left it rather than a count of unanswered questions,
+        # How many of the threads those comments form are open, which the review
+        # server states whether or not the comments were read. Its name there counts
+        # threads and not comments, so it is smaller than the number of comments
+        # carrying the flag wherever somebody replied. It is the flag as each
+        # thread's last writer left it rather than a count of unanswered questions,
         # and on a change to pick up it is the work still owed to the last reviewer.
         unresolvedCommentCount: integer  # optional
-        # The comments left on the change, oldest first. Empty means it carries
-        # none. Null means they were not read: a search asks for none, and a change
-        # lookup whose comment call did not answer says so here rather than with an
-        # empty list — hold it against commentCount.
+        # The comments left on the change, oldest first, each saying which thread it
+        # is in and what that thread stands at. Empty means it carries none. Null
+        # means they were not read: a search asks for none, and a change lookup
+        # whose comment call did not answer says so here rather than with an empty
+        # list — hold it against commentCount.
         comments: array or null  # optional
         # The relation chain this change sits in, child first: above it the changes
         # stacked on it, then itself, then the changes it is built on. This is the
@@ -404,7 +409,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-25 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-26 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
@@ -562,9 +567,11 @@ Text:
     ### Issues named in the commit message (1)
     - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w · https://forge.typo3.org/issues/106535
 
-    ### Comments (1, 0 unresolved)
+    ### Comments (1 comment in 1 thread, none unresolved)
 
-    - Christian Kuhn · patch set 3 · resolved
+    #### Resolved · Christian Kuhn
+
+    - Christian Kuhn · patch set 3
       temp -1: backport pushed, will run nightly on both.
 
     ## [TASK] Raise --dev phpunit/phpunit:^11.5.17 (MERGED)
@@ -583,7 +590,7 @@ Text:
 
     The issues above are what the commit message names, and a status there is the issue's own rather than this change's. Pass one to `typo3_forge_lookup` as `issue` to read it whole, which is where a maintainer said why something was closed or reassigned.
 
-    `unresolved` is the flag on the thread as its last writer left it, not a judgement that nobody answered: a comment can carry a reply and stay unresolved, and one can be resolved with nothing written under it. Which of them this review would otherwise make a second time is yours to read.
+    A heading above is what its thread stands at: the `unresolved` flag on the last comment in it, which is where Gerrit keeps a thread's state and what it counts beside the change. The flag on one comment is its own writer's, and the data half carries both. Neither is a judgement that a question was answered: a resolved thread can still hold one, and an unresolved thread can carry the reply that settled it. Which of them this review would otherwise make a second time is yours to read.
 
     A vote a later patch set dropped is absent here rather than zero, and the copy condition that dropped it is written in the review log alone — ask again with `messages: "people"` where a label stands at nothing and you need to know whether it ever stood elsewhere.
 
@@ -700,6 +707,8 @@ Data:
                         "line": null,
                         "unresolved": false,
                         "inReplyTo": null,
+                        "thread": "c8ceabfc_3296c5f5",
+                        "threadUnresolved": false,
                         "message": "temp -1: backport pushed, will run nightly on both."
                     }
                 ],
@@ -1152,7 +1161,7 @@ Text:
     Patch set 2
     Fetch: git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/84/90384/2
     Last moved: 2026-06-18 23:04:54.000000000
-    +7 -1 · merges · 2 unresolved of 5 comments · pushed 2025-08-13
+    +7 -1 · merges · 2 unresolved threads of 5 comments · pushed 2025-08-13
     Verified: needs a vote
     Code-Review: needs a vote
 

@@ -663,10 +663,12 @@ final class Gerrit
      *
      * Its own endpoint, because no query option carries them. What comes back is
      * a file to a list of comments, and `/PATCHSET_LEVEL` is the file a comment
-     * on the change itself is filed under. Nothing here decides whether one was
-     * answered: `unresolved`, the reply it is under and the patch set it was
-     * left on are handed over and the reviewer reads them, because either field
-     * alone answers that question wrongly (`D-ANS-079`).
+     * on the change itself is filed under. Each one carries the thread it is in
+     * and what that thread stands at, read off the reply relation that is
+     * already here (`D-ANS-111`). Nothing here decides whether a question was
+     * answered: the state, the reply it is under and the patch set it was left
+     * on are handed over and the reviewer reads them, because a thread somebody
+     * resolved can still hold an open question (`D-ANS-079`).
      *
      * @param int $count what the change says it carries, so the call is made
      *                   only where there is something to fetch
@@ -714,6 +716,10 @@ final class Gerrit
                     'line' => isset($comment['line']) && is_numeric($comment['line']) ? (int) $comment['line'] : null,
                     'unresolved' => (bool) ($comment['unresolved'] ?? false),
                     'inReplyTo' => is_string($comment['in_reply_to'] ?? null) ? $comment['in_reply_to'] : null,
+                    // Filled by `threaded()`, once the whole list is in the
+                    // order a thread is read in.
+                    'thread' => '',
+                    'threadUnresolved' => false,
                     'message' => is_string($comment['message'] ?? null) ? trim($comment['message']) : '',
                 ];
             }
@@ -721,8 +727,49 @@ final class Gerrit
         // Chronological across the files, because a thread is read in the order
         // it was written and a reply sits under a comment on the same file.
         usort($comments, static fn(array $one, array $other): int => strcmp($one['on'], $other['on']));
+        $comments = self::threaded($comments);
 
         Recent::hold($url, $comments);
+
+        return $comments;
+    }
+
+    /**
+     * The same comments, each saying which thread it is in and what that thread
+     * stands at.
+     *
+     * Gerrit's REST documentation states both halves: `unresolved_comment_count`
+     * is the "number of unresolved inline comment threads", and the state of
+     * resolution of a thread "is stored in the last comment in that thread
+     * chronologically". So the flag on one comment is one writer's, and the
+     * thread is what the review server counts — which is why tallying the flags
+     * answered a different number from the one printed beside it
+     * (`D-ANS-111`).
+     *
+     * A reply whose parent is not in the list starts a thread of its own. That
+     * is what a comment answering a draft looks like from here, and putting it
+     * nowhere would drop it from the answer.
+     *
+     * @param list<array<string, mixed>> $comments oldest first, so a parent is
+     *                                             read before the reply under it
+     * @return list<array<string, mixed>>
+     */
+    private static function threaded(array $comments): array
+    {
+        $of = [];
+        $state = [];
+        foreach ($comments as $comment) {
+            $parent = $comment['inReplyTo'];
+            $thread = is_string($parent) && isset($of[$parent]) ? $of[$parent] : $comment['id'];
+            $of[$comment['id']] = $thread;
+            // Chronological, so the last write is the last comment's.
+            $state[$thread] = $comment['unresolved'];
+        }
+
+        foreach ($comments as $index => $comment) {
+            $comments[$index]['thread'] = $of[$comment['id']];
+            $comments[$index]['threadUnresolved'] = $state[$of[$comment['id']]];
+        }
 
         return $comments;
     }

@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-ANS-110`][D-ANS-110] — A changelog miss with no re-query names the manual and the rules · 2026-08-26
+- [`D-ANS-111`][D-ANS-111] — A change answer says which comment thread is open · 2026-08-26
 - [`D-ANS-105`][D-ANS-105] — The unsupported answer says what would make it answerable · 2026-08-25
 - [`D-ANS-106`][D-ANS-106] — A commit in a checkout is a handle the review lookup takes · 2026-08-25
 - [`D-ANS-107`][D-ANS-107] — The review backlog is enumerated the way the tracker is · 2026-08-25
@@ -114,6 +115,7 @@ one is added.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-110]: ans-110-a-changelog-miss-with-no-re-query-names-the-manual-and-the-rules.md
+[D-ANS-111]: ans-111-a-change-answer-says-which-comment-thread-is-open.md
 [D-ANS-105]: ans-105-the-unsupported-answer-says-what-would-make-it-answerable.md
 [D-ANS-106]: ans-106-a-commit-in-a-checkout-is-a-handle-the-review-lookup-takes.md
 [D-ANS-107]: ans-107-the-review-backlog-is-enumerated-the-way-the-tracker-is.md

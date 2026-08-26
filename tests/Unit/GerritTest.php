@@ -1229,12 +1229,19 @@ final class GerritTest extends TestCase
         . '"id":"399ce3e3_1d8a86be","in_reply_to":"9dc25800_aed74e93","updated":"2026-08-10 07:02:56.000000000",'
         . '"message":"sure! will check it later"}]}';
 
-    /** The same change, with comments on it and no messages asked for. */
+    /**
+     * The same change, with comments on it and no messages asked for.
+     *
+     * The unresolved count is the one those three comments come to under the
+     * rule the review server states — one thread of the two, Mathias Brodala's,
+     * whose last comment is Benjamin Kott's "sure! will check it later". A
+     * tally of the flag says two, which is what `D-ANS-111` took out.
+     */
     private const COMMENTED = ")]}'\n"
         . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Do not split paragraphs",'
         . '"status":"NEW","_number":95179,"change_id":"I17ba56a7a78a2282495fb422513d4859e2818d05",'
         . '"current_revision_number":1,"current_revision":"6929747e86b1d45993fb4ca950fc8e47ba5c1ca4",'
-        . '"total_comment_count":3,"unresolved_comment_count":2,"labels":{},"submit_records":[]}]';
+        . '"total_comment_count":3,"unresolved_comment_count":1,"labels":{},"submit_records":[]}]';
 
     /**
      * A comment somebody replied to without resolving is two facts, and this
@@ -1273,6 +1280,163 @@ final class GerritTest extends TestCase
         self::assertSame('/PATCHSET_LEVEL', $answered['file']);
         self::assertNull($answered['line']);
         self::assertSame(1, $answered['patchSet']);
+    }
+
+    /**
+     * What `/changes/91127/comments` answered on 2026-08-26, trimmed to the
+     * fields that are read and with the longest message cut.
+     *
+     * The change `feedback/2026-08-24-183447` reviewed: seven comments in five
+     * threads, one of which carries `unresolved: true` — Oliver Klee's question
+     * of 2025-12-09, which Torben Hansen answered and Klee closed with "Ack.".
+     * The rows come back per file and unordered within one, which is what the
+     * chronological sort is for.
+     */
+    private const THREADED = ")]}'\n"
+        . '{"/COMMIT_MSG":['
+        . '{"author":{"_account_id":21079,"name":"Benjamin Franzke"},"unresolved":false,"patch_set":10,"line":27,'
+        . '"id":"a3d7d001_dca4140c","updated":"2026-08-25 07:31:29.000000000",'
+        . '"message":"ack, voting this as a hack for the state we have"}],'
+        . '"/PATCHSET_LEVEL":['
+        . '{"author":{"_account_id":6382,"name":"Christian Weiske"},"unresolved":false,"patch_set":4,'
+        . '"id":"0d3d8f33_97d51c8c","updated":"2026-01-12 09:44:37.000000000",'
+        . '"message":"I can confirm that this patch works on 12.4.40 as long as `bodyContent` is reset."},'
+        . '{"author":{"_account_id":7064,"name":"Oliver Klee"},"unresolved":true,"patch_set":4,'
+        . '"id":"aff6212c_6070833d","updated":"2025-12-09 08:59:28.000000000",'
+        . '"message":"Is there any way this can be covered with a functional test?"},'
+        . '{"author":{"_account_id":7064,"name":"Oliver Klee"},"unresolved":false,"patch_set":4,'
+        . '"id":"15369d34_7841ae25","in_reply_to":"3d14ec42_498fd7ea","updated":"2025-12-09 18:45:28.000000000",'
+        . '"message":"Ack."},'
+        . '{"author":{"_account_id":26517,"name":"Torben Hansen"},"unresolved":false,"patch_set":4,'
+        . '"id":"3d14ec42_498fd7ea","in_reply_to":"aff6212c_6070833d","updated":"2025-12-09 18:38:03.000000000",'
+        . '"message":"For functional test I would say no. Acceptance test would be an option."},'
+        . '{"author":{"_account_id":7064,"name":"Oliver Klee"},"unresolved":false,"patch_set":6,'
+        . '"id":"008a0294_ad3c783f","updated":"2026-05-03 08:30:45.000000000",'
+        . '"message":"(Needs a rebase and conflict resolution, though.)"},'
+        . '{"author":{"_account_id":21249,"name":"Benjamin Kott"},"unresolved":false,"patch_set":9,'
+        . '"id":"e59fe452_b738cdf1","updated":"2026-08-24 18:21:05.000000000",'
+        . '"message":"i added the missing tests and also reenabled the site request tests"}]}';
+
+    /**
+     * That change, as review.typo3.org answered it on 2026-08-26.
+     *
+     * It states no unresolved comment at all, and one of the seven carries the
+     * flag: the pair `D-ANS-111` is about.
+     */
+    private const THREADS = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main",'
+        . '"subject":"[BUGFIX] Reset page renderer when performing subrequest",'
+        . '"status":"MERGED","_number":91127,"change_id":"Ibb426e12fe37d89471c4b7fa8cb11fade77ba5f3",'
+        . '"current_revision_number":11,"current_revision":"119866d287afb6a06134d0fbe181762e78192fc3",'
+        . '"total_comment_count":7,"unresolved_comment_count":0,"labels":{},"submit_records":[]}]';
+
+    /** The change with its comments, and nothing else answering. */
+    private static function threaded(string $url): string
+    {
+        return str_contains($url, '/comments') ? self::THREADED : self::THREADS;
+    }
+
+    /**
+     * A comment says which thread it is in and what that thread stands at,
+     * rather than leaving both to be worked out from the reply ids.
+     *
+     * Gerrit stores a thread's state in its last comment and counts the open
+     * threads as `unresolved_comment_count`, so the flag on one comment is one
+     * writer's and nothing more. On this change the two come apart: Oliver
+     * Klee's question carries `true` and the thread it opened is settled, which
+     * is why a tally of the flags said one where the review server says none —
+     * `D-ANS-111`.
+     */
+    #[Decision('D-ANS-111')]
+    #[Test]
+    public function everyCommentSaysWhichThreadItIsInAndWhatThatThreadStandsAt(): void
+    {
+        $gerrit = new Gerrit(static fn(string $url): string => self::threaded($url));
+
+        $change = $gerrit->change('91127')['changes'][0];
+        $comments = $change['comments'];
+
+        // The three that are one exchange, oldest first: the question, the
+        // answer under it, and the acknowledgement under that.
+        self::assertSame(
+            ['Oliver Klee', 'Torben Hansen', 'Oliver Klee'],
+            array_column(array_slice($comments, 0, 3), 'author'),
+        );
+        self::assertSame(
+            ['aff6212c_6070833d', 'aff6212c_6070833d', 'aff6212c_6070833d'],
+            array_column(array_slice($comments, 0, 3), 'thread'),
+        );
+        self::assertCount(5, array_unique(array_column($comments, 'thread')));
+        // The head is flagged and its thread is settled, which is the reading
+        // the answer no longer leaves to the caller.
+        self::assertTrue($comments[0]['unresolved']);
+        self::assertFalse($comments[0]['threadUnresolved']);
+        self::assertSame(
+            $change['unresolvedCommentCount'],
+            count(array_unique(array_column(
+                array_filter($comments, static fn(array $comment): bool => $comment['threadUnresolved']),
+                'thread',
+            ))),
+        );
+    }
+
+    /**
+     * A reply whose parent is not in the answer opens a thread of its own.
+     *
+     * That is what a comment answering a draft looks like from here — the draft
+     * is the writer's alone and this server reads Gerrit without credentials
+     * (`R-ANS-027`), so the reply arrives naming an id nothing here carries.
+     * Putting it in no thread would drop it from the listing.
+     */
+    #[Decision('D-ANS-111')]
+    #[Test]
+    public function aReplyToACommentNobodyCanSeeStandsAsAThreadOfItsOwn(): void
+    {
+        $orphaned = str_replace('"in_reply_to":"3d14ec42_498fd7ea"', '"in_reply_to":"9e14ec42_notvisible"', self::THREADED);
+        $gerrit = new Gerrit(static fn(string $url): string => str_contains($url, '/comments')
+            ? $orphaned
+            : self::THREADS);
+
+        $comments = $gerrit->change('91127')['changes'][0]['comments'];
+
+        $ack = $comments[2];
+        self::assertSame('Ack.', $ack['message']);
+        self::assertSame('15369d34_7841ae25', $ack['thread']);
+        self::assertCount(6, array_unique(array_column($comments, 'thread')));
+    }
+
+    /**
+     * The text half lists one thread at a time and says what each stands at,
+     * which is the ranking the reporting session made for itself out of the
+     * flags and the reply ids — `D-ANS-111`.
+     */
+    #[Decision('D-ANS-111')]
+    #[Test]
+    public function theTextHalfListsOneThreadAtATimeAndSaysWhatEachStandsAt(): void
+    {
+        $gerrit = new Gerrit(static fn(string $url): string => self::threaded($url));
+
+        $change = $gerrit->change('91127')['changes'][0];
+        $said = implode("\n", GerritLookup::comments($change, true));
+
+        self::assertStringContainsString('### Comments (7 comments in 5 threads, none unresolved)', $said);
+        self::assertStringContainsString("#### Resolved · Oliver Klee\n\n- Oliver Klee · patch set 4", $said);
+        self::assertStringContainsString('#### Resolved · Benjamin Franzke · /COMMIT_MSG:27', $said);
+        // The state is the thread's and stands over it once. A comment line
+        // carrying one is what said seven states where the change has five.
+        self::assertStringNotContainsString('· resolved', $said);
+        // The order inside a thread is who answered whom, so the reply is not
+        // announced as answering the line above it either.
+        self::assertStringNotContainsString('answering', $said);
+
+        $open = new Gerrit(static fn(string $url): string => str_contains($url, '/comments')
+            ? self::COMMENTS
+            : self::COMMENTED);
+        $standing = implode("\n", GerritLookup::comments($open->change('95179')['changes'][0], true));
+
+        self::assertStringContainsString('### Comments (3 comments in 2 threads, 1 unresolved)', $standing);
+        self::assertStringContainsString('#### Unresolved · Mathias Brodala', $standing);
+        self::assertStringContainsString('#### Resolved · Georg Ringer', $standing);
     }
 
     /**
@@ -2155,7 +2319,7 @@ final class GerritTest extends TestCase
         $changes = $gerrit->backlog(order: 'oldest')['changes'];
 
         self::assertSame(
-            '+7 -1 · no longer merges · 2 unresolved of 5 comments · pushed 2025-08-13',
+            '+7 -1 · no longer merges · 2 unresolved threads of 5 comments · pushed 2025-08-13',
             GerritLookup::standing($changes[0]),
         );
         self::assertSame('+39 -6 · merges · pushed 2026-08-25', GerritLookup::standing($changes[1]));

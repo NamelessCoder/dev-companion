@@ -45,7 +45,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Or backlog to enumerate the core\'s open changes without holding a handle or a wording — oldest pushed or longest untouched, narrowed by size, by vote state, by whether it still merges, by branch, by date and by person. That is where a review session starts: "which open reviews have been sitting a long time", "which of them are small and almost voted through", "which are mine" and "which have I already voted on" are maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none of them is answerable by words in a commit message. "Which of them could I review" is reviewableBy, the one person filter that takes a person out — what they pushed and what they voted on both leave the answer. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Every change, whichever way it was reached, also carries how many lines it adds and removes, whether it still merges, when it was pushed, how many comment threads are unresolved, and what each label stands at — the size, the age and the vote state a reviewer picks a change by. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, commit, a search by query and path, or backlog, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Or backlog to enumerate the core\'s open changes without holding a handle or a wording — oldest pushed or longest untouched, narrowed by size, by vote state, by whether it still merges, by branch, by date and by person. That is where a review session starts: "which open reviews have been sitting a long time", "which of them are small and almost voted through", "which are mine" and "which have I already voted on" are maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none of them is answerable by words in a commit message. "Which of them could I review" is reviewableBy, the one person filter that takes a person out — what they pushed and what they voted on both leave the answer. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Every change, whichever way it was reached, also carries how many lines it adds and removes, whether it still merges, when it was pushed, how many comment threads are unresolved, and what each label stands at — the size, the age and the vote state a reviewer picks a change by. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, the thread it is in and whether that thread is open. A thread is open where the last comment in it says so, which is what the review server counts and what a tally of the flag on each comment does not. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, commit, a search by query and path, or backlog, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
 
@@ -235,10 +235,11 @@ final class GerritLookup extends ReadOnlyTool
                     ], ['label', 'state', 'satisfied', 'votes']),
                 ],
                 'commentCount' => Schema::integer('How many comments the change carries, which the review server states whether or not they were read.'),
-                'unresolvedCommentCount' => Schema::integer('How many of those sit on a thread nobody has marked resolved, which the review server states whether or not the comments were read. It is the flag as its last writer left it rather than a count of unanswered questions, and on a change to pick up it is the work still owed to the last reviewer.'),
+                'unresolvedCommentCount' => Schema::integer('How many of the threads those comments form are open, which the review server states whether or not the comments were read. Its name there counts threads and not comments, so it is smaller than the number of comments carrying the flag wherever somebody replied. It is the flag as each thread\'s last writer left it rather than a count of unanswered questions, and on a change to pick up it is the work still owed to the last reviewer.'),
                 'comments' => [
                     'type' => ['array', 'null'],
-                    'description' => 'The comments left on the change, oldest first. Empty means it carries none. '
+                    'description' => 'The comments left on the change, oldest first, each saying which thread it is '
+                        . 'in and what that thread stands at. Empty means it carries none. '
                         . 'Null means they were not read: a search asks for none, and a change lookup whose '
                         . 'comment call did not answer says so here rather than with an empty list — hold it '
                         . 'against commentCount.',
@@ -249,10 +250,12 @@ final class GerritLookup extends ReadOnlyTool
                         'patchSet' => Schema::integer('The patch set it was left on. One older than the current patch set is a comment written about code that may since have changed, and it is still unanswered until somebody answers it.'),
                         'file' => Schema::string('The file it sits on. /PATCHSET_LEVEL is a comment on the change itself rather than on a place in it.'),
                         'line' => ['type' => ['integer', 'null'], 'description' => 'Null on a comment about the change rather than about a line.'],
-                        'unresolved' => ['type' => 'boolean', 'description' => 'The flag on the thread, as whoever wrote or answered it last left it. It is not "nobody answered": a comment can carry a reply and stay unresolved, and one can be resolved with nothing written under it. Both are handed over and the reading is yours.'],
+                        'unresolved' => ['type' => 'boolean', 'description' => 'The flag on this one comment, as its own writer left it. It is not what the thread stands at — that is threadUnresolved beside it — and the two differ on every comment somebody resolved by replying to it.'],
                         'inReplyTo' => ['type' => ['string', 'null'], 'description' => 'The id of the comment this answers, null where it starts a thread.'],
+                        'thread' => Schema::string('The id of the comment this thread starts with, which is this comment\'s own id where it starts one. Comments carrying the same one are one thread, and they stand in the order they were written.'),
+                        'threadUnresolved' => ['type' => 'boolean', 'description' => 'Whether the thread this comment sits in is open, which is the unresolved flag on that thread\'s last comment. Gerrit stores a thread\'s state there and counts the open ones as unresolvedCommentCount, so every comment in a thread carries the same value here. It is a flag somebody set rather than a judgement that the question in the thread was answered.'],
                         'message' => Schema::string('The comment as it was written.'),
-                    ], ['id', 'author', 'on', 'patchSet', 'file', 'line', 'unresolved', 'inReplyTo', 'message']),
+                    ], ['id', 'author', 'on', 'patchSet', 'file', 'line', 'unresolved', 'inReplyTo', 'thread', 'threadUnresolved', 'message']),
                 ],
                 'chain' => [
                     'type' => ['array', 'null'],
@@ -778,10 +781,12 @@ final class GerritLookup extends ReadOnlyTool
             }
             if ($commented) {
                 $lines[] = '';
-                $lines[] = '`unresolved` is the flag on the thread as its last writer left it, not a judgement '
-                    . 'that nobody answered: a comment can carry a reply and stay unresolved, and one can be '
-                    . 'resolved with nothing written under it. Which of them this review would otherwise make a '
-                    . 'second time is yours to read.';
+                $lines[] = 'A heading above is what its thread stands at: the `unresolved` flag on the last '
+                    . 'comment in it, which is where Gerrit keeps a thread\'s state and what it counts beside the '
+                    . 'change. The flag on one comment is its own writer\'s, and the data half carries both. '
+                    . 'Neither is a judgement that a question was answered: a resolved thread can still hold one, '
+                    . 'and an unresolved thread can carry the reply that settled it. Which of them this review '
+                    . 'would otherwise make a second time is yours to read.';
             }
             if ($voted && $messages === 'none') {
                 $lines[] = '';
@@ -983,7 +988,12 @@ final class GerritLookup extends ReadOnlyTool
                 default => '',
             },
             $entry['unresolvedCommentCount'] > 0
-                ? sprintf('%d unresolved of %d comments', $entry['unresolvedCommentCount'], $entry['commentCount'])
+                ? sprintf(
+                    '%d unresolved thread%s of %d comments',
+                    $entry['unresolvedCommentCount'],
+                    $entry['unresolvedCommentCount'] === 1 ? '' : 's',
+                    $entry['commentCount'],
+                )
                 : '',
             $entry['created'] !== '' ? 'pushed ' . substr($entry['created'], 0, 10) : '',
         ]));
@@ -1177,19 +1187,25 @@ final class GerritLookup extends ReadOnlyTool
     }
 
     /**
-     * The comments, and what an absent one means where the change said it has
-     * some.
+     * The comment threads, and what an absent one means where the change said
+     * it has comments.
      *
-     * A reply names the comment it answers by an id nobody reads, so the author
-     * it answers is looked up here — which is also the field a caller has to
-     * hold against `unresolved` to read the thread at all.
+     * One thread is one heading and the comments under it in the order they
+     * were written, because the thread is what carries the state and what the
+     * review server counts (`D-ANS-111`). The reading a session made for itself
+     * out of the flags and the reply ids is the listing itself.
+     *
+     * A reply is said to answer somebody only where that is not the comment
+     * above it, which is where the order stops saying it — a thread nobody
+     * branched says it on every line otherwise. Separated from `answer()` so it
+     * can be held without a review server.
      *
      * @param array<string, mixed> $entry
      * @param bool $read whether the review was read for this change, which an
      *                   read by name does
      * @return list<string>
      */
-    private static function comments(array $entry, bool $read): array
+    public static function comments(array $entry, bool $read): array
     {
         if ($entry['comments'] === null) {
             return $read && $entry['commentCount'] > 0
@@ -1206,26 +1222,39 @@ final class GerritLookup extends ReadOnlyTool
         }
 
         $by = [];
+        $threads = [];
         foreach ($entry['comments'] as $comment) {
             $by[$comment['id']] = $comment['author'];
+            $threads[$comment['thread']][] = $comment;
         }
+        $open = count(array_filter($threads, static fn(array $thread): bool => $thread[0]['threadUnresolved']));
 
-        $unresolved = count(array_filter($entry['comments'], static fn(array $comment): bool => $comment['unresolved']));
-        $lines = ['', sprintf('### Comments (%d, %d unresolved)', count($entry['comments']), $unresolved)];
-        foreach ($entry['comments'] as $comment) {
-            $said = [$comment['author'], 'patch set ' . $comment['patchSet']];
-            if ($comment['file'] !== '/PATCHSET_LEVEL') {
-                $said[] = $comment['line'] === null
-                    ? $comment['file']
-                    : $comment['file'] . ':' . $comment['line'];
-            }
-            $said[] = $comment['unresolved'] ? 'unresolved' : 'resolved';
-            if (isset($by[$comment['inReplyTo']])) {
-                $said[] = 'answering ' . $by[$comment['inReplyTo']];
+        $count = count($entry['comments']);
+        $lines = ['', sprintf(
+            '### Comments (%d comment%s in %d thread%s, %s)',
+            $count,
+            $count === 1 ? '' : 's',
+            count($threads),
+            count($threads) === 1 ? '' : 's',
+            $open === 0 ? 'none unresolved' : sprintf('%d unresolved', $open),
+        )];
+        foreach ($threads as $thread) {
+            $head = $thread[0];
+            $said = [$head['threadUnresolved'] ? 'Unresolved' : 'Resolved', $head['author']];
+            if ($head['file'] !== '/PATCHSET_LEVEL') {
+                $said[] = $head['line'] === null ? $head['file'] : $head['file'] . ':' . $head['line'];
             }
             $lines[] = '';
-            $lines[] = '- ' . implode(' · ', $said);
-            $lines[] = self::quoted($comment['message']);
+            $lines[] = '#### ' . implode(' · ', $said);
+            foreach ($thread as $at => $comment) {
+                $wrote = [$comment['author'], 'patch set ' . $comment['patchSet']];
+                if ($at > 0 && $comment['inReplyTo'] !== $thread[$at - 1]['id'] && isset($by[$comment['inReplyTo']])) {
+                    $wrote[] = 'answering ' . $by[$comment['inReplyTo']];
+                }
+                $lines[] = '';
+                $lines[] = '- ' . implode(' · ', $wrote);
+                $lines[] = self::quoted($comment['message']);
+            }
         }
 
         return $lines;

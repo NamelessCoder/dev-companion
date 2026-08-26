@@ -5638,6 +5638,26 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * What a caller does about `unknown`, which the mark itself only states.
+     *
+     * `feedback/2026-08-24-183711` ran `-s unit` over a checkout holding four
+     * untracked test files and found them gone afterwards. Which suite is not
+     * established and the note does not claim one: every `rm -rf` in
+     * Build/Scripts/runTests.sh sits in a `clean*` case on all four covered
+     * majors. What is left is the act — `D-ANS-099`.
+     */
+    #[Decision('D-ANS-099')]
+    #[Test]
+    public function theNoteOnATestSuiteSaysToSecureUntrackedWorkFirst(): void
+    {
+        $notes = implode("\n", TestSuiteHints::invocation()['notes']);
+
+        self::assertStringContainsString('`runs: unknown`', $notes);
+        self::assertStringContainsString('commit or copy out untracked work', $notes);
+        self::assertStringContainsString('-s cleanTests', $notes, 'the suites that do remove files');
+    }
+
+    /**
      * Both halves of what a checkout without vendor/ can run.
      *
      * The half that fails was already there; the half that works is what the

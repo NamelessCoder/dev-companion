@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Tests\Unit;
 
 use Mcp\Capability\Discovery\SchemaValidator;
+use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\ToolAnswers;
 use TYPO3\DevCompanion\Upkeep\ToolCalls;
 use TYPO3\DevCompanion\Upkeep\ToolSurface;
@@ -191,6 +194,66 @@ final class ToolAnswersTest extends TestCase
         // All of them, because one at a time says a page is stale and the list
         // says how far the recording as a whole has drifted from the classes.
         self::assertSame([], $broken, 'answers no schema allows');
+    }
+
+    /**
+     * A recording that does not say which day it is of cannot be told from a
+     * current one, and the day is what the report asking for a re-recording
+     * stands on — `D-DOC-006`, `D-DOC-058`.
+     */
+    #[Decision('D-DOC-006')]
+    #[Decision('D-DOC-058')]
+    #[Test]
+    public function everyRecordedPageSaysWhichDayItWasAnsweredOn(): void
+    {
+        // Every tool that is answered at all and not derived — the derived half
+        // carries the same heading and says `tools:check` holds it, so a day on
+        // one of those pages would be asking for a recording nothing records.
+        $recorded = array_diff(
+            array_column(Registry::definitions(), 'name'),
+            ToolCalls::derived(),
+            array_keys(ToolCalls::undriven()),
+        );
+        sort($recorded);
+
+        self::assertSame($recorded, array_keys(ToolAnswers::recordedOn()));
+        foreach (ToolAnswers::recordedOn() as $name => $day) {
+            self::assertSame($day, date('Y-m-d', (int) strtotime($day)), $name . ' carries no day');
+        }
+    }
+
+    /**
+     * The day the sources moved is git's answer, and a checkout that cannot be
+     * asked reports nothing rather than a recording that is current —
+     * `D-DOC-058`.
+     */
+    #[Decision('D-DOC-058')]
+    #[Test]
+    public function theDayTheSourcesMovedIsWhatGitSaysOrNothing(): void
+    {
+        self::answering(0, "2026-08-24\n");
+        self::assertSame('2026-08-24', ToolAnswers::sourcesMovedOn());
+
+        // No git, or a checkout without history. Either way nothing here can
+        // say a page is behind, and saying so anyway would ask for a recording
+        // on the strength of a question that was never answered.
+        self::answering(128, "fatal: not a git repository\n");
+        self::assertNull(ToolAnswers::sourcesMovedOn());
+    }
+
+    #[After]
+    protected function forgetTheRunner(): void
+    {
+        Checkouts::useRunner(null);
+    }
+
+    private static function answering(int $exitCode, string $output): void
+    {
+        $git = self::createStub(CommandRunner::class);
+        $git->method('run')->willReturn(
+            ['ok' => $exitCode === 0, 'exitCode' => $exitCode, 'output' => $output, 'error' => ''],
+        );
+        Checkouts::useRunner($git);
     }
 
     /**

@@ -29,8 +29,10 @@ below that heading is one of two things, and the sentence it opens with says
 which. Where a tool's answers read nothing an installation contains, they are
 derived and held by that same check. Where they do, an installation has to be
 called for them: ``bin/cli tools:record`` writes those and nothing checks them, so
-such a page may say what it answered on a day the code has since moved past. Two
-tools have no answered half at all, on purpose, and say so in its place.
+such a page may say what it answered on a day the code has since moved past. The
+check counts how many of them were answered before this repository last changed
+``knowledge/`` or ``src/``, and fails on none of them. Two tools have no answered
+half at all, on purpose, and say so in its place.
 
 A client may be offered fewer than these. ``TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`` names the
 tools a caller does not want offered, the two feedback tools exist only in a

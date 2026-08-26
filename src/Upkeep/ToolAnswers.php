@@ -54,6 +54,49 @@ final class ToolAnswers
     }
 
     /**
+     * The day each recorded page says it was answered on, by tool.
+     *
+     * Read off the page rather than out of git: the page is what a reader is
+     * given, and a re-recording that changed nothing is a day git never saw.
+     *
+     * @return array<string, string>
+     */
+    public static function recordedOn(): array
+    {
+        $days = [];
+        foreach (ToolSurface::written() as $file) {
+            $section = self::recordedIn($file->getPathname());
+            if (preg_match('/^Recorded on (\d{4}-\d{2}-\d{2})/m', $section, $matched) === 1) {
+                $days[$file->getBasename('.rst')] = $matched[1];
+            }
+        }
+        ksort($days);
+
+        return $days;
+    }
+
+    /**
+     * The day this repository last moved what a recorded answer comes out of.
+     *
+     * `knowledge/` is what those answers are composed from and `src/` is what
+     * composes them, so a commit to either can move an answer while every check
+     * stays green: `tools:check` reads a page down to its `## Answered` heading,
+     * and `ToolAnswersTest` holds what is below it to the schema and to nothing
+     * about the content. Null where git cannot say, which is a checkout without
+     * history rather than a recording that is current.
+     */
+    public static function sourcesMovedOn(): ?string
+    {
+        [$exitCode, $said] = Checkouts::run(
+            ['git', '-C', Paths::root(), 'log', '-1', '--format=%cs', '--', 'knowledge', 'src'],
+        );
+
+        return $exitCode === 0 && preg_match('/^\d{4}-\d{2}-\d{2}$/m', trim($said), $matched) === 1
+            ? $matched[0]
+            : null;
+    }
+
+    /**
      * What each tool's recorded answers cost a caller, worst first.
      *
      * The corpus is the one `tools:record` and `tools:index` already write, so

@@ -898,6 +898,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### documentation
 
+- [`D-DOC-058`][D-DOC-058] — A recording is reported against the day its sources moved · 2026-08-26
 - [`D-DOC-044`][D-DOC-044] — A failing test names the decisions it was holding · 2026-08-23
 - [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter · 2026-08-23
 - [`D-DOC-046`][D-DOC-046] — A title is the name an entry is read by · 2026-08-23
@@ -951,6 +952,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01 · confirmed
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
+[D-DOC-058]: documentation/doc-058-a-recording-is-reported-against-the-day-its-sources-moved.md
 [D-DOC-044]: documentation/doc-044-a-failing-test-names-the-decisions-it-was-holding.md
 [D-DOC-045]: documentation/doc-045-what-a-listing-reads-is-front-matter.md
 [D-DOC-046]: documentation/doc-046-a-title-is-the-name-an-entry-is-read-by.md

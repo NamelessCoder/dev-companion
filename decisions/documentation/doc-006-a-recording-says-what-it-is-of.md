@@ -6,6 +6,7 @@ status: open
 coveredBy:
   - ToolAnswersTest::everyAnswerOnAPageOfTwoRecordingsSaysWhichItCameFrom
   - ToolAnswersTest::everyRecordedAnswerIsJson
+  - ToolAnswersTest::everyRecordedPageSaysWhichDayItWasAnsweredOn
   - ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer
   - ToolAnswersTest::theRecordingCarriesNobodysDirectoryLayout
 ---
@@ -163,6 +164,12 @@ to keep, only a derivation nobody checked. They are derived and held by
 `tools:check` since `D-DOC-016`, which has the measurement; this entry's
 statement holds of what is left, and the second **Wrong if** above is what those
 eight pages were doing when they were re-derived.
+
+The second **Wrong if** has something that asks since `D-DOC-058`.
+`bin/cli tools:check` counts the pages answered before this repository last
+changed `knowledge/` or `src/`, names the oldest day among them and fails on
+none — which leaves "nothing checks it" standing and takes away the half of that
+sentence that meant nobody could tell.
 
 The recording is a section rather than a directory since `D-DOC-007`'s second
 entry, and two of the sentences above move with it. "`tools:check` reads

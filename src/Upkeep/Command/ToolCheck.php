@@ -9,10 +9,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\ToolAnswers;
 use TYPO3\DevCompanion\Upkeep\ToolSurface;
 
 /**
- * Whether the tool reference still says what the registry declares.
+ * Whether the tool reference still says what the registry declares, and how far
+ * behind the recorded half of it is.
  *
  * A generated page nothing reads back is a hand-written one that was generated
  * once: a tool added, a description rewritten or a schema field gained leaves
@@ -21,7 +23,7 @@ use TYPO3\DevCompanion\Upkeep\ToolSurface;
  */
 #[AsCommand(
     name: 'tools:check',
-    description: 'hold the tool reference to what the registry declares',
+    description: 'hold the tool reference to what the registry declares, and say how old its recorded half is',
 )]
 final class ToolCheck
 {
@@ -45,7 +47,49 @@ final class ToolCheck
             Cli::errors($output)->writeln($file . ' is not what the registry declares — run bin/cli tools:index');
         }
         $output->writeln(sprintf('%d tools, %d problems', count(Registry::definitions()), count($stale)));
+        self::howOldTheRecordingIs($output);
 
         return $stale === [] ? 0 : 1;
+    }
+
+    /**
+     * How far the recorded half of the surface is behind what it answers from.
+     *
+     * It reports and never fails, because a recording is evidence about a day
+     * and a command only a machine with `.checkouts/` can re-run may not turn
+     * anything red — `D-DOC-006`, whose second **Wrong if** is a recording
+     * nobody re-runs and nothing that asks. This is the asking, and it is here
+     * rather than in `unresolved:list` because the reader who can answer it is
+     * the one already looking at this surface — `D-DOC-058`.
+     */
+    private static function howOldTheRecordingIs(OutputInterface $output): void
+    {
+        $moved = ToolAnswers::sourcesMovedOn();
+        $recorded = ToolAnswers::recordedOn();
+        if ($moved === null || $recorded === []) {
+            return;
+        }
+
+        $behind = array_filter($recorded, static fn(string $day): bool => $day < $moved);
+        if ($behind === []) {
+            $output->writeln(sprintf(
+                '%d recorded pages, none of them older than knowledge/ and src/ on %s.',
+                count($recorded),
+                $moved,
+            ));
+
+            return;
+        }
+
+        $output->writeln(sprintf(
+            '%d of %d recorded pages are older than knowledge/ and src/, which last moved on %s.',
+            count($behind),
+            count($recorded),
+            $moved,
+        ));
+        $output->writeln(sprintf(
+            'The oldest is from %s, and bin/cli tools:record answers them again.',
+            min($behind),
+        ));
     }
 }

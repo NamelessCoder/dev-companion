@@ -299,6 +299,7 @@ Text:
     - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
     - page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
     - extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
+    - backport-syntax-floor — Which PHP a Backported Patch Has to Parse Under (PHP)
     - php-versions — Which PHP a TYPO3 Version Requires and Is Tested On (PHP)
     - datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
     - fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
@@ -890,6 +891,11 @@ Data:
             {
                 "id": "extension-test-extensions",
                 "title": "Which Extensions a Functional Test Loads",
+                "category": "PHP"
+            },
+            {
+                "id": "backport-syntax-floor",
+                "title": "Which PHP a Backported Patch Has to Parse Under",
                 "category": "PHP"
             },
             {
@@ -1598,6 +1604,7 @@ Text:
     - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
     - page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
     - extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
+    - backport-syntax-floor — Which PHP a Backported Patch Has to Parse Under (PHP)
     - php-versions — Which PHP a TYPO3 Version Requires and Is Tested On (PHP)
     - datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
     - fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
@@ -2102,6 +2109,11 @@ Data:
             {
                 "id": "extension-test-extensions",
                 "title": "Which Extensions a Functional Test Loads",
+                "category": "PHP"
+            },
+            {
+                "id": "backport-syntax-floor",
+                "title": "Which PHP a Backported Patch Has to Parse Under",
                 "category": "PHP"
             },
             {

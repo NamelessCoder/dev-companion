@@ -77,5 +77,40 @@
       },
       "A container's interpreter is chosen before there is an installation to ask about it, and nothing afterwards revisits the number. Choose it against the constraint and the tested range of the target line rather than against what the machine already has, and keep the declared floor and the interpreter every environment runs in a relation you can name: a floor below what is ever executed is a claim no run tests."
     ]
+  },
+  {
+    "id": "backport-syntax-floor",
+    "title": "Which PHP a Backported Patch Has to Parse Under",
+    "domains": [
+      "php"
+    ],
+    "scope": "core",
+    "appliesTo": [
+      "backport",
+      "backported",
+      "backporting a patch",
+      "cherry-pick onto a release branch",
+      "Releases: trailer",
+      "release branch",
+      "which PHP syntax may I write",
+      "new without parentheses",
+      "new_expression_parentheses",
+      "parse error on the release branch",
+      "PHP 8.4 syntax"
+    ],
+    "hints": [
+      "The interpreter a patch has to parse under is the floor of the oldest branch its Releases: trailer names, not the floor of the branch it is written on. Nothing on the branch you push from reads that trailer, so newer syntax passes every suite there and becomes a parse error when the backport lands.",
+      "A parse error takes the whole file with it, so the class stops existing rather than reporting, and it surfaces in front of whoever does the cherry-pick instead of in the pipeline the author watched.",
+      "Read the floor off each branch the trailer names rather than remembering it: the php key of that branch's own composer.json is the requirement, and the php-versions hint is the same question asked per line.",
+      "Running the file under that floor is what catches it, and reading the diff is not. The -p option of Build/Scripts/runTests.sh names the interpreter a suite runs on, and php -l on the changed files under the same interpreter is the cheap half of it.",
+      {
+        "text": "Instantiation without parentheses — new X()->method() — is the one such form the core writes today: the development line uses it throughout and no released line parses it. Asymmetric visibility and property hooks are the other candidates and occur nowhere in the core yet, so the rule above is what to apply rather than a list of features to remember.",
+        "since": 15
+      },
+      {
+        "text": "Parenthesising it is not the stable form. The development line's Build/php-cs-fixer/config.php enables new_expression_parentheses, whose default removes them, so -s cgl rewrites (new X())->method() straight back to the syntax the older branch cannot read. Binding the instance to a variable first is the form both lines keep.",
+        "since": 15
+      }
+    ]
   }
 ]

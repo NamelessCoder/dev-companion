@@ -7,6 +7,7 @@ rather than how it is found.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-KNW-126`][D-KNW-126] — The syntax floor a core patch is bound by is a subject this server owns · 2026-08-27
 - [`D-KNW-118`][D-KNW-118] — How a development installation renders a package that ships no page TypoScript is a subject this server owns · 2026-08-25
 - [`D-KNW-119`][D-KNW-119] — The corpus tells apart the failures one usage synopsis presents alike · 2026-08-25 · confirmed
 - [`D-KNW-120`][D-KNW-120] — A hint that states a merge names the lookup that reads the result · 2026-08-25
@@ -124,6 +125,7 @@ one is added.
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a subject this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
+[D-KNW-126]: knw-126-the-syntax-floor-a-core-patch-is-bound-by-is-a-subject-this-server-owns.md
 [D-KNW-118]: knw-118-how-a-development-installation-renders-a-package-that-ships-no-page-typoscript-is-a-subject-this-server-owns.md
 [D-KNW-119]: knw-119-the-corpus-tells-apart-the-failures-one-usage-synopsis-presents-alike.md
 [D-KNW-120]: knw-120-a-hint-that-states-a-merge-names-the-lookup-that-reads-the-result.md

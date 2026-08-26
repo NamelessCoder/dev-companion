@@ -40,7 +40,7 @@ final class ToolRecord
         OutputInterface $output,
         #[Argument('the installation to answer from, defaulting to the newest core checkout below .checkouts/')]
         ?string $root = null,
-        #[Argument('the date the recording carries, defaulting to today')]
+        #[Argument('the date the recording carries, defaulting to today in UTC')]
         ?string $today = null,
         #[Argument('the tools to answer for, defaulting to all of them')]
         array $tools = [],
@@ -79,7 +79,7 @@ final class ToolRecord
         $output->writeln(sprintf('Answering from %s (TYPO3 %s)', $found, Instance::typo3Version() ?? 'unknown'));
 
         $installation = $this->consoleAnswering($output, $found);
-        $pages = ToolAnswers::rendered($today ?? date('Y-m-d'), $found, $installation, $tools);
+        $pages = ToolAnswers::rendered($today ?? ToolAnswers::day(), $found, $installation, $tools);
         if (!is_dir(ToolSurface::directory())) {
             mkdir(ToolSurface::directory(), 0777, true);
         }

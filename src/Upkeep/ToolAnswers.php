@@ -54,6 +54,19 @@ final class ToolAnswers
     }
 
     /**
+     * The day an instant fell on in UTC, and today's where none is named.
+     *
+     * Both days the drift report compares come through here, because a
+     * comparison of days is one only where both sides are on one clock —
+     * `D-DOC-059`. UTC rather than the machine's, so the day a page carries
+     * does not depend on where its recorder was standing.
+     */
+    public static function day(?int $instant = null): string
+    {
+        return gmdate('Y-m-d', $instant ?? time());
+    }
+
+    /**
      * The day each recorded page says it was answered on, by tool.
      *
      * Read off the page rather than out of git: the page is what a reader is
@@ -84,15 +97,19 @@ final class ToolAnswers
      * and `ToolAnswersTest` holds what is below it to the schema and to nothing
      * about the content. Null where git cannot say, which is a checkout without
      * history rather than a recording that is current.
+     *
+     * The instant is asked for and the day is made here: `%cs` would answer in
+     * the committer's own zone, which is a third clock beside the recorder's
+     * and this one — `D-DOC-059`.
      */
     public static function sourcesMovedOn(): ?string
     {
         [$exitCode, $said] = Checkouts::run(
-            ['git', '-C', Paths::root(), 'log', '-1', '--format=%cs', '--', 'knowledge', 'src'],
+            ['git', '-C', Paths::root(), 'log', '-1', '--format=%ct', '--', 'knowledge', 'src'],
         );
 
-        return $exitCode === 0 && preg_match('/^\d{4}-\d{2}-\d{2}$/m', trim($said), $matched) === 1
-            ? $matched[0]
+        return $exitCode === 0 && preg_match('/^\d+$/m', trim($said), $matched) === 1
+            ? self::day((int) $matched[0])
             : null;
     }
 

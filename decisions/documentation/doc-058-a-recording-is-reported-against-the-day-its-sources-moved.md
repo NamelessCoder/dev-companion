@@ -80,3 +80,11 @@ one. This is the asking.
 - A recorded answer goes stale from something neither `knowledge/` nor `src/`
   holds — the manuals, the tracker, a package a checkout carries — and the
   report calls those pages current.
+
+## Since then
+
+The two days were read on different clocks, so a recording made in Europe after
+midnight local reported itself behind sources it was newer than. `D-DOC-059`
+settles both on the UTC day of an instant, and nothing this entry decided
+changed with it.
+

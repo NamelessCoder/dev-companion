@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 
 use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
@@ -231,7 +232,7 @@ final class ToolAnswersTest extends TestCase
     #[Test]
     public function theDayTheSourcesMovedIsWhatGitSaysOrNothing(): void
     {
-        self::answering(0, "2026-08-24\n");
+        self::answering(0, "1787572800\n");
         self::assertSame('2026-08-24', ToolAnswers::sourcesMovedOn());
 
         // No git, or a checkout without history. Either way nothing here can
@@ -241,10 +242,39 @@ final class ToolAnswersTest extends TestCase
         self::assertNull(ToolAnswers::sourcesMovedOn());
     }
 
+    /**
+     * One instant is one day on both sides of the comparison, wherever the
+     * machine doing it thinks it is standing — `D-DOC-059`.
+     */
+    #[Decision('D-DOC-059')]
+    #[Test]
+    public function bothDaysTheReportComparesAreTheUtcOne(): void
+    {
+        // 22:16 UTC, which is 00:16 the next day in Berlin: the hours a
+        // recording made in Europe was read as a day behind a commit made a
+        // minute before it.
+        $instant = 1787782560;
+        date_default_timezone_set('Europe/Berlin');
+        self::answering(0, $instant . "\n");
+
+        self::assertSame('2026-08-26', ToolAnswers::day($instant));
+        self::assertSame(ToolAnswers::day($instant), ToolAnswers::sourcesMovedOn());
+    }
+
+    /** What this process was set to before a test moved it. */
+    private static string $zone = '';
+
+    #[Before]
+    protected function rememberTheTimeZone(): void
+    {
+        self::$zone = date_default_timezone_get();
+    }
+
     #[After]
-    protected function forgetTheRunner(): void
+    protected function putBackWhatTheTestChanged(): void
     {
         Checkouts::useRunner(null);
+        date_default_timezone_set(self::$zone);
     }
 
     private static function answering(int $exitCode, string $output): void

@@ -31,8 +31,4 @@ Opening request, verbatim: "we want to work on almost ready small open reviews a
 
 ## Suggestion
 
-Two changes.
-
 In typo3-core-patch-review, promote the pointer from a closing note to a step at the point of use, in the same imperative form as the patch-development handover, and put it where the reading starts rather than where it ends: something like "Before fetching anything, invoke typo3-core-patch-checkout." The development handover fired for me and the checkout one did not; the difference between them is form and position, not content.
-
-In typo3-core-patch-checkout itself, if it does not already carry them, add the refspec derivation, the note that the revisions/<sha>/review endpoint needs a credential while the anonymous /changes/?q= search does not, and the recoverability test for cleanup — local tip SHA present in ALL_REVISIONS means the branch can be deleted and refetched, absent means the commit exists nowhere else. That last one is the difference between a safe cleanup and losing work, and nothing in the session would have told me it mattered if the user had not asked me to delete branches.

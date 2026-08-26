@@ -237,3 +237,35 @@ inside an active one fired, and the client's own listing reached the same
 session with four matching descriptions and opened none of them.
 [`D-SKL-033`](skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md)
 is where that half is read.
+
+## Since then
+
+On 2026-08-26 a session met the crossing *into* `typo3-core-patch-checkout`
+three times and crossed it never. `feedback/2026-08-24-205158` fetched patches
+out of review into the user's own core checkout on three separate occasions —
+eight changes at once, then change 95392, then change 93079 onto a branch named
+`review/93079`. The third is that skill's own third way in, down to the branch
+name `D-SKL-041` fixed.
+
+The session was holding a skill for two of them. `typo3-core-patch-review` ran
+for 95392 and `typo3-core-patch-development` for 93079, so the tool was
+reachable and in use, and what stayed shut was the third. Neither of the two
+tells a session to open it. `typo3-core-patch-development` names it in a
+sentence about who owns what, at the foot of its rebase section, and
+`typo3-core-patch-review` does not name it at all. The session quotes that
+sentence as read and attributes it to the review skill, which carries no such
+sentence.
+
+So the sweep of 2026-08-09 above missed an edge, and it missed it by direction.
+It read the crossings running *out of* the three core skills and counted
+`typo3-core-patch-checkout`'s closing paragraph among them, as a routing
+boundary somebody reads before starting rather than a step owed mid-work. The
+crossing running *into* that skill was never counted, and this is what the gap
+costs: the fetch arrived as a step inside two other workflows and never as the
+task, which is the only shape a description could have been chosen on.
+
+`SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor` holds a successor per
+skill and names `typo3-core-patch-checkout` in none of them, so nothing failed
+while the edge stood empty. What follows is `R-SKL-018` applied to it in both
+skills — the imperative and the moment it stands at — and the two entries in
+that map. The card serving the feedback carries them.

@@ -312,3 +312,25 @@ reconstruction of its own reasoning is what it believed afterwards, and the
 eighty-two empty rows of the benchmark were an arm nobody debriefed. Everything
 **Decided** stands.
 
+### 2026-08-26 — a report of this shape that is not a row of it
+
+`feedback/2026-08-24-205158` reads as the counted shape and is judged as
+something else. It opens "typo3-core-patch-checkout exists, its description
+names exactly what I did three times, and it stayed shut for the whole session",
+which is the third **Wrong if** in the session's own words.
+
+Two things take it out of the count, and both are the limit that row of
+2026-08-24 already drew on what "in the request's own words" reaches. The brief
+was "we want to work on almost ready small open reviews and finish them", and
+what it shares with the description is `review` — one content word, of a request
+that names no fetch and no patch set. And the acts the description does name
+arrived from turn two onward, inside two other skills the session had open, so
+by then the listing was not what was being chosen from.
+
+That places the lever on the crossing rather than on the wording, which is
+[`D-SKL-022`](skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md).
+What the row is worth here is the ledger staying true: a session invoking
+`Skill` twice and passing over a third matching description would be the
+strongest evidence yet against the second **Assumed**, and it is not that,
+because nothing put the third description in front of the choice.
+

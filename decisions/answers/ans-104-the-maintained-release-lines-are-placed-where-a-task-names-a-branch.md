@@ -132,7 +132,7 @@ rebuilt is a forward run's reading, not this one's.
 
 **2026-08-27.** The first session to run against the placement did not reach it,
 and it says why the carrier was passed over.
-[`feedback/2026-08-26-223348`](../../feedback/2026-08-26-223348-no-answer-for-which-branches-a-bugfix-s.md)
+[`feedback/2026-08-26-223348`](../../feedback/archive/2026-08-26-223348-no-answer-for-which-branches-a-bugfix-s.md)
 is a core bugfix whose `Releases:` trailer was built from `git branch -r` two
 days after the field shipped, and its sibling
 [`feedback/2026-08-26-223414`](../../feedback/archive/2026-08-26-223414-four-things-in-the-forge-tool-that-carried-the.md)

@@ -19,7 +19,7 @@ tool supplies the set stands one property down in the input schema.
 
 ## Evidence
 
-- [`feedback/2026-08-26-223348`](../../feedback/2026-08-26-223348-no-answer-for-which-branches-a-bugfix-s.md)
+- [`feedback/2026-08-26-223348`](../../feedback/archive/2026-08-26-223348-no-answer-for-which-branches-a-bugfix-s.md)
   wrote `Releases: main, 14.3, 13.4` for a core bugfix off `git branch -r`,
   flagged it to the user as unverified, and never called the tool. Its own
   reason: nothing in the description suggested this server would know the

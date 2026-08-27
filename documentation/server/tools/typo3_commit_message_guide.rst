@@ -14,8 +14,9 @@ subject and body conventions apply and no Forge issue, Releases: trailer or
 changelog is demanded. The issues you pass are still written as Resolves: and
 Related: trailers there — the same form a TYPO3 repository on GitHub links a
 commit to what it closes by. Pass workflow="core" for a patch against the TYPO3
-core, where the Forge issue and the Releases: trailer are required and the
-trailer is also held against the branches that take a patch today. Answers from:
+core, where the Forge issue and the Releases: trailer are required. The answer
+names the branches for that trailer where the call carries none: the lines
+taking a patch today, and the ones a change of this shape goes to. Answers from:
 knowledge.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``

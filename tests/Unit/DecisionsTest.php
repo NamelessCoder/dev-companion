@@ -268,14 +268,20 @@ final class DecisionsTest extends TestCase
     #[Test]
     public function everyEntryATestHoldsIsNamedFromTheFailingEnd(): void
     {
+        // Read once and asked 866 times. `Decisions::restingOn()` reads all of
+        // `decisions/` per call, which per named test is the corpus read
+        // hundreds of times and 23 of the suite's 130 seconds.
+        $all = Decisions::all();
+
         $missed = [];
-        foreach (Decisions::all() as $decision) {
+        foreach ($all as $decision) {
             foreach ($decision['tests'] as $test) {
                 // A name without a method is a class holding the entry
                 // throughout, which the attribute allows and the front matter
                 // writes as the bare class.
                 [$class, $method] = array_pad(explode('::', $test), 2, '');
-                if (!in_array($decision['id'], array_column(Decisions::restingOn($class, $method), 'id'), true)) {
+                $held = Entry::restingOn($all, 'decisions', $class, $method);
+                if (!in_array($decision['id'], array_column($held, 'id'), true)) {
                     $missed[] = $decision['id'] . ' names ' . $test . ' and is not held from it';
                 }
             }

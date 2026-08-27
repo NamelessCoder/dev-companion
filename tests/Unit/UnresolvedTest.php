@@ -175,10 +175,13 @@ final class UnresolvedTest extends TestCase
         sort($sorted);
         self::assertSame($sorted, $dates);
 
+        // Read once: the call reads all of `decisions/`, and per open decision
+        // that is the corpus read four hundred times.
+        $all = Decisions::all();
         foreach ($open as $decision) {
             self::assertSame(
                 DecisionStatus::Open->value,
-                Decisions::all()[$decision['id']]['status'],
+                $all[$decision['id']]['status'],
                 $decision['id'] . ' has been back-checked and is still reported as waiting',
             );
         }

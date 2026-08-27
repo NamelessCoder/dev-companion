@@ -32,7 +32,9 @@ Takes
     # Restrict the search to the exact XLF resource already used at the consuming
     # code, for example
     # "EXT:my_sitepackage/Resources/Private/Language/Backend/Import.xlf". A match
-    # from another resource is not a reuse candidate.
+    # from another resource is not a reuse candidate. Where no label in it reaches
+    # the query, the answer names the resources that do hold one, so a path that was
+    # guessed can be replaced by one that exists.
     resource: string  # optional
     # Maximum number of labels to return.
     limit: integer  # optional
@@ -49,12 +51,27 @@ Answers with
     # the console could not be asked — overrides applied at runtime are not
     # reflected.
     answeredBy: string  # optional
+    # How many labels each word of the query reaches on its own, inside the
+    # extension and the resource that were asked for — where to narrow when the
+    # query as a whole reaches none. A label answers the query only by carrying
+    # every word.
     terms:  # optional
-      - # One word of the query; a label has to carry every one of them.
+      - # The word, lowercased as it was searched for.
         term: string
-        # How many labels this word alone reaches — where to narrow when the query
-        # as a whole reaches none.
         matchCount: integer
+    # The same words counted outside the resource, inside the extension that was
+    # asked for or derived from it. Returned only where a word reaches there and
+    # nothing inside the resource, which makes the resource what emptied this answer
+    # rather than the words.
+    termCountsWithoutTheNarrowing:  # optional
+      - # The word, lowercased as it was searched for.
+        term: string
+        matchCount: integer
+    # The resources holding a label that carries every word of the query. Returned
+    # where a resource was asked for and no label at all in it reaches the query, so
+    # a path that was guessed can be replaced by one that exists. Empty means no
+    # resource holds such a label.
+    resources: [string]  # optional
     labels:  # optional
       - # Translation domain reference (package.resource:key) — the canonical
         # form.

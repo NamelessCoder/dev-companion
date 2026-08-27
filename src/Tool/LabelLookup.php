@@ -7,6 +7,7 @@ namespace TYPO3\DevCompanion\Tool;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Labels;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Result\Miss;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
 use TYPO3\DevCompanion\Result\Unsupported;
@@ -74,7 +75,7 @@ final class LabelLookup extends ReadOnlyTool
             'properties' => [
                 'query' => ['type' => 'string', 'minLength' => 1, 'description' => 'Words from the label text or its trans-unit id, for example "save document" or "labels.title". Several words are matched independently, ignoring case and order: a label has to carry every one of them, in its text or in its id. When none carries all of them, the answer says how far each word reaches on its own.'],
                 'extension' => ['type' => 'string', 'description' => 'Restrict the search to the extension that owns the consuming code.'],
-                'resource' => ['type' => 'string', 'description' => 'Restrict the search to the exact XLF resource already used at the consuming code, for example "EXT:my_sitepackage/Resources/Private/Language/Backend/Import.xlf". A match from another resource is not a reuse candidate.'],
+                'resource' => ['type' => 'string', 'description' => 'Restrict the search to the exact XLF resource already used at the consuming code, for example "EXT:my_sitepackage/Resources/Private/Language/Backend/Import.xlf". A match from another resource is not a reuse candidate. Where no label in it reaches the query, the answer names the resources that do hold one, so a path that was guessed can be replaced by one that exists.'],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 200, 'default' => 25, 'description' => 'Maximum number of labels to return.'],
             ],
             'required' => ['query'],
@@ -87,10 +88,9 @@ final class LabelLookup extends ReadOnlyTool
             'query' => Schema::string(),
             'matchCount' => Schema::integer(),
             'answeredBy' => Schema::answeredBy(self::answersFrom()),
-            'terms' => Schema::listOf(Schema::object([
-                'term' => Schema::string('One word of the query; a label has to carry every one of them.'),
-                'matchCount' => Schema::integer('How many labels this word alone reaches — where to narrow when the query as a whole reaches none.'),
-            ], ['term', 'matchCount'])),
+            'terms' => Schema::termCounts('How many labels each word of the query reaches on its own, inside the extension and the resource that were asked for — where to narrow when the query as a whole reaches none. A label answers the query only by carrying every word.'),
+            'termCountsWithoutTheNarrowing' => Schema::termCounts('The same words counted outside the resource, inside the extension that was asked for or derived from it. Returned only where a word reaches there and nothing inside the resource, which makes the resource what emptied this answer rather than the words.'),
+            'resources' => Schema::listOf(Schema::string(), 'The resources holding a label that carries every word of the query. Returned where a resource was asked for and no label at all in it reaches the query, so a path that was guessed can be replaced by one that exists. Empty means no resource holds such a label.'),
             'labels' => Schema::listOf(Schema::object([
                 'ref' => Schema::string('Translation domain reference (package.resource:key) — the canonical form.'),
                 'domain' => Schema::string(),
@@ -168,6 +168,9 @@ final class LabelLookup extends ReadOnlyTool
             }
         }
 
+        // Kept, because a miss cannot say whether the resource or the words
+        // emptied it once the resource has taken the labels away — `D-ANS-016`.
+        $beforeTheResource = $candidates;
         if ($resource !== '') {
             $candidates = array_values(array_filter(
                 $candidates,
@@ -204,23 +207,95 @@ final class LabelLookup extends ReadOnlyTool
                 count($terms) > 1 ? 'carries all of ' . LabelSearch::quoted($terms) : sprintf('matches "%s"', $query)
             )];
 
+            // Every count above was taken after the resource narrowed the
+            // labels, so a path that names nothing at all reports every word at
+            // 0 — which is what `perTermCounts()` reserves for a word that was
+            // misspelled. A session read that as "this resource holds no such
+            // label", concluded the label had to be written, and the file it
+            // had guessed the name of held it. So where a word reaches outside
+            // the resource and nothing inside it, the resource is what emptied
+            // this and that is the first sentence — `D-ANS-016`, one corpus
+            // over from the version filter of typo3_changelog_lookup.
+            $outside = [];
+            $elsewhere = [];
+            if ($resource !== '' && $terms !== []) {
+                $inside = array_column($termCounts, 'matchCount', 'term');
+                $reaching = array_values(array_filter(
+                    LabelSearch::perTermCounts($beforeTheResource, $terms),
+                    static fn(array $term): bool => $term['matchCount'] > 0,
+                ));
+                $emptied = array_filter(
+                    $reaching,
+                    static fn(array $term): bool => ($inside[$term['term']] ?? 0) === 0,
+                );
+                $outside = $emptied === [] ? [] : $reaching;
+                $elsewhere = array_values(array_unique(array_filter(array_column(
+                    LabelSearch::carryingEvery($beforeTheResource, $terms),
+                    'resource',
+                ))));
+                sort($elsewhere);
+            }
+            if ($outside !== []) {
+                $lines[] = '';
+                $lines[] = sprintf(
+                    'Narrowed to that resource — it is what emptied this, not the words: %s%s. %s',
+                    $extension === '' ? 'without it, ' : sprintf('in extension "%s" without it, ', $extension),
+                    Miss::reaching($outside, 'label', 'labels'),
+                    $extension === '' ? 'Ask again without it.' : sprintf(
+                        'Ask again with extension "%s" and no resource.',
+                        $extension,
+                    ),
+                );
+            }
+            // The resources that do hold what was asked for, where the one
+            // named holds nothing at all. A guessed path is a segment or a
+            // plural away from a file that is there, so what replaces it is a
+            // list of the ones that are — `D-ANS-016`.
+            if ($resource !== '' && $candidates === []) {
+                $lines[] = '';
+                $lines[] = $elsewhere === []
+                    ? 'No other resource holds one either.'
+                    : 'The resources that do hold one:';
+                foreach ($elsewhere as $held) {
+                    $lines[] = '- ' . $held;
+                }
+                $lines[] = 'A path that exists nowhere answers exactly like a resource holding no match, so check the '
+                    . 'one you named before adding a label to it.';
+            }
+
+            $narrowing = self::narrowing($extension, $resource);
             $reached = array_values(array_filter($termCounts, static fn(array $t): bool => $t['matchCount'] > 0));
             if (count($terms) > 1 && $reached !== []) {
                 $lines[] = '';
-                $lines[] = 'On its own, ' . implode(', ', array_map(
-                    static fn(array $t): string => sprintf('"%s" matches %d label(s)', $t['term'], $t['matchCount']),
-                    $reached
-                )) . ' — ask again with the one that narrows best.';
+                $lines[] = ($narrowing === [] ? 'On its own, ' : sprintf('Inside %s, on its own, ', implode(' and ', $narrowing)))
+                    . Miss::reaching($reached, 'label', 'labels')
+                    . ($outside === [] ? ' — ask again with the one that narrows best.' : '.');
             }
 
-            return ToolResult::create(implode("\n", $lines) . $reuseBoundary . self::SOURCE_LANGUAGE . $fromFiles, [
+            $data = [
                 'query' => $query,
                 'resource' => $resource === '' ? null : $resource,
                 'matchCount' => 0,
                 'labels' => [],
                 'terms' => $termCounts,
                 'answeredBy' => $answeredBy,
-            ]);
+            ];
+            // Each field is present where it was computed and absent where
+            // there was nothing to compute it against, so which of the two
+            // carries a count is what says which side of the resource it was
+            // taken on — `R-ANS-002`, for the client that renders the data and
+            // drops the text.
+            if ($outside !== []) {
+                $data['termCountsWithoutTheNarrowing'] = $outside;
+            }
+            if ($resource !== '' && $candidates === []) {
+                $data['resources'] = $elsewhere;
+            }
+
+            return ToolResult::create(
+                implode("\n", $lines) . $reuseBoundary . self::SOURCE_LANGUAGE . $fromFiles,
+                $data,
+            );
         }
 
         $lines = [sprintf(
@@ -247,6 +322,28 @@ final class LabelLookup extends ReadOnlyTool
             'terms' => $termCounts,
             'answeredBy' => $answeredBy,
         ]);
+    }
+
+    /**
+     * The axes a count was taken inside, as a miss names them back.
+     *
+     * Both of them, because the console is asked for one extension and the
+     * resource narrows what it answered: a number taken inside either reads as
+     * a fact about the installation otherwise.
+     *
+     * @return array<int, string>
+     */
+    private static function narrowing(string $extension, string $resource): array
+    {
+        $narrowing = [];
+        if ($extension !== '') {
+            $narrowing[] = sprintf('extension "%s"', $extension);
+        }
+        if ($resource !== '') {
+            $narrowing[] = sprintf('resource "%s"', $resource);
+        }
+
+        return $narrowing;
     }
 
     /**

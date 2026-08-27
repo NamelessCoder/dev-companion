@@ -260,7 +260,153 @@ final class LabelSearchTest extends TestCase
             [['term' => 'save', 'matchCount' => 1], ['term' => 'document', 'matchCount' => 1]],
             $result->data['terms']
         );
-        self::assertStringContainsString('"save" matches 1 label(s)', $result->text);
+        self::assertStringContainsString('"save" reaches 1 label', $result->text);
+    }
+
+    /**
+     * The guessed path of `feedback/2026-08-24-225129`: there is no Wizard.xlf,
+     * and the file the session was after is Wizards/general.xlf. Every word
+     * came back at 0, which is what a misspelled word comes back as, so the
+     * session read "this resource holds no such label" and wrote one —
+     * `D-ANS-016`.
+     */
+    #[Requirement('R-ANS-006')]
+    #[Decision('D-ANS-016')]
+    #[Test]
+    public function aResourceHoldingNothingNamesTheResourcesThatDo(): void
+    {
+        $this->consoleThatPrints($this->wizardLabels());
+
+        $result = Registry::call('typo3_label_lookup', [
+            'query' => 'error title',
+            'resource' => 'EXT:backend/Resources/Private/Language/Wizard.xlf',
+        ]);
+
+        self::assertSame(0, $result->data['matchCount']);
+        self::assertSame(
+            [['term' => 'error', 'matchCount' => 2], ['term' => 'title', 'matchCount' => 1]],
+            $result->data['termCountsWithoutTheNarrowing'],
+        );
+        self::assertSame(
+            ['EXT:backend/Resources/Private/Language/Wizards/general.xlf'],
+            $result->data['resources'],
+        );
+        self::assertStringContainsString(
+            'Narrowed to that resource — it is what emptied this, not the words: in extension "backend" without it, '
+            . '"error" reaches 2 labels, "title" reaches 1 label. Ask again with extension "backend" and no resource.',
+            $result->text,
+        );
+        self::assertStringContainsString(
+            "The resources that do hold one:\n- EXT:backend/Resources/Private/Language/Wizards/general.xlf",
+            $result->text,
+        );
+        self::assertStringContainsString('A path that exists nowhere answers exactly like', $result->text);
+        // The sentence the session acted on. Every word reaching 0 inside a
+        // resource that holds nothing is not a fact about the words.
+        self::assertStringNotContainsString('ask again with the one that narrows best', $result->text);
+    }
+
+    /**
+     * A resource that holds part of the query is a resource that exists, so the
+     * listing that replaces a guessed path would be noise — and the word it
+     * does not reach is still the filter's doing, which is the sentence that
+     * stays — `D-ANS-016`.
+     */
+    #[Decision('D-ANS-016')]
+    #[Test]
+    public function aResourceHoldingPartOfTheQueryIsNotReplacedByAListing(): void
+    {
+        $this->consoleThatPrints($this->wizardLabels());
+
+        $result = Registry::call('typo3_label_lookup', [
+            'query' => 'error title',
+            'resource' => 'EXT:backend/Resources/Private/Language/Wizards/localization.xlf',
+        ]);
+
+        self::assertArrayNotHasKey('resources', $result->data);
+        self::assertSame(
+            [['term' => 'error', 'matchCount' => 2], ['term' => 'title', 'matchCount' => 1]],
+            $result->data['termCountsWithoutTheNarrowing'],
+        );
+        self::assertStringContainsString('Narrowed to that resource', $result->text);
+        self::assertStringNotContainsString('The resources that do hold one', $result->text);
+        self::assertStringContainsString(
+            'Inside extension "backend" and resource "EXT:backend/Resources/Private/Language/Wizards/localization.xlf"'
+            . ', on its own, "error" reaches 1 label.',
+            $result->text,
+        );
+    }
+
+    /**
+     * A resource that narrowed nothing away is not what emptied the answer, and
+     * a miss that says it is sends the caller to drop a filter that costs it
+     * nothing — the same rule the changelog miss is held to by
+     * `PackageSourcesTest::aFilterThatChangedNothingIsNotBlamedForTheMiss`.
+     */
+    #[Decision('D-ANS-016')]
+    #[Test]
+    public function aResourceThatChangedNothingIsNotBlamedForTheMiss(): void
+    {
+        $this->consoleThatPrints($this->wizardLabels());
+
+        $result = Registry::call('typo3_label_lookup', [
+            'query' => 'error frobnicate',
+            'resource' => 'EXT:backend/Resources/Private/Language/Wizards/localization.xlf',
+        ]);
+
+        self::assertArrayNotHasKey('termCountsWithoutTheNarrowing', $result->data);
+        self::assertStringNotContainsString('Narrowed to', $result->text);
+        self::assertStringContainsString('ask again with the one that narrows best', $result->text);
+    }
+
+    /**
+     * Where no resource holds one, the empty list is the answer rather than a
+     * withheld field: the caller that reads it stops looking for a path and
+     * writes the label — which is the move the reported miss made on a query
+     * that did have one.
+     */
+    #[Requirement('R-ANS-006')]
+    #[Decision('D-ANS-016')]
+    #[Test]
+    public function aQueryNoResourceHoldsWholeIsToldSo(): void
+    {
+        $this->consoleThatPrints((string) json_encode(['items' => [[
+            'resource' => 'EXT:backend/Resources/Private/Language/Wizards/localization.xlf',
+            'labels' => [
+                ['domain' => 'backend.wizards.localization', 'reference' => 'wizard.error', 'label' => 'Configuration failed'],
+                ['domain' => 'backend.wizards.localization', 'reference' => 'wizard.headline', 'label' => 'Title'],
+            ],
+        ]]], JSON_THROW_ON_ERROR));
+
+        $result = Registry::call('typo3_label_lookup', [
+            'query' => 'error title',
+            'resource' => 'EXT:backend/Resources/Private/Language/Wizard.xlf',
+        ]);
+
+        self::assertSame([], $result->data['resources']);
+        self::assertStringContainsString('No other resource holds one either.', $result->text);
+    }
+
+    /**
+     * Two resources of one extension: one carries both words of the query, the
+     * other only the first.
+     */
+    private function wizardLabels(): string
+    {
+        return (string) json_encode(['items' => [
+            [
+                'resource' => 'EXT:backend/Resources/Private/Language/Wizards/general.xlf',
+                'labels' => [
+                    ['domain' => 'backend.wizards.general', 'reference' => 'wizard.step.error.title', 'label' => 'Error'],
+                ],
+            ],
+            [
+                'resource' => 'EXT:backend/Resources/Private/Language/Wizards/localization.xlf',
+                'labels' => [
+                    ['domain' => 'backend.wizards.localization', 'reference' => 'wizard.error', 'label' => 'Configuration failed'],
+                ],
+            ],
+        ]], JSON_THROW_ON_ERROR);
     }
 
     #[Requirement('R-KNW-036')]

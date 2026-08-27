@@ -12,6 +12,8 @@ heldBy:
   - KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt
   - KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn
   - KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections
+  - LabelSearchTest::aQueryNoResourceHoldsWholeIsToldSo
+  - LabelSearchTest::aResourceHoldingNothingNamesTheResourcesThatDo
   - LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach
   - PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit
   - PackageSourcesTest::aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt

@@ -523,6 +523,10 @@
       "call": "typo3_test_run_guide"
     },
     {
+      "when": "Getting Build/Scripts/runTests.sh to run in the checkout in front of you — a suite that fails before it reads a file, a fresh clone or a git worktree, or the pre-commit hook's message",
+      "call": "typo3_script_lookup with the task in your own words. Which suite a change needs, and what one does when it runs, is typo3_test_run_guide."
+    },
+    {
       "when": "Working in a concrete file and unsure about the subsystem's conventions",
       "call": "typo3_hint_lookup"
     },

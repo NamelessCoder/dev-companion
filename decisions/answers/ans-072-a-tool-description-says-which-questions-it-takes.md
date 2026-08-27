@@ -103,3 +103,37 @@ a convention at the code itself — and hands the procedures to
 `typo3_rule_lookup` by name; `typo3_rule_lookup` hands back what the code has to
 look like. `ScopeTest` holds both halves, so a description that drops the other
 name fails rather than misroutes.
+
+The **Wrong if** has its first candidate, and it is not taken as satisfied.
+`feedback/2026-08-25-114653` is a five-turn session in
+`/home/benji/projects/typo3-cms` whose every changed file was in
+`Build/Scripts/`, and it names the word in its own account: "script" read to it
+as CLI or console scripts rather than as the `runTests.sh` dispatcher. What
+disqualifies it is what it reports beside that. It made no call at all — no
+`typo3_project_describe`, no `typo3_task_guide`, no skill
+([`D-SKL-080`](../task-skills/skl-080-a-path-only-the-core-has-routes-to-the-cores-own-workflow.md),
+which is its sibling report from the same session sixty-nine seconds later) —
+and it lists the name third, after its harness prompt telling it to prefer Bash
+and the tool list reading to it as documentation lookups. This entry's **Wrong
+if** is about a session choosing between tools and passing this one over, which
+is the same ground `feedback/2026-08-19-090401` was disqualified on above.
+
+The answer was there when it was filed, which is the other half of why. Read on
+2026-08-27 at `071aefe1`, the commit before the report: the document already
+carried the mount contract, the fresh-clone and worktree case, and the sentence
+that `-s cglGit` reports SUCCESS having read no file from a worktree, and
+`test-suite-hints.json` carried it per suite. Called here with
+`task="run cglGit in a git worktree"`, the tool returns *The Pre-Commit Hook*
+and *Common Commands*, which is the whole of what the session spent five grep
+and sed round trips establishing.
+
+What was missing is the surface no test asks for. `typo3_script_lookup` had no
+`routing` entry: counted here on 2026-08-27, 25 of the 28 registered tools were
+named in one, and the other two that were not are `typo3_server_scope` and
+`typo3_feedback_list`.
+`ScopeTest::everyToolIsReachableThroughTheScope` reads `covers` alone, so the
+hole survived. The entry added on 2026-08-27 names the moment this session was
+in — getting the script to run in the checkout in front of you — and hands the
+run-shape half to `typo3_test_run_guide`, which is this entry's **Decided** on
+the surface that outlives a description. The next report that names the word
+after calling something is decisive, because nothing cheaper is left to pull.

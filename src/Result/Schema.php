@@ -323,6 +323,12 @@ final class Schema
      * to weigh. It is the document's own `whenToUse`, so the page and the
      * pointer to it cannot say different things.
      *
+     * The `tool` is the other half of the same failure. The field is called
+     * `guides`, the argument is a `documentId` and the call is
+     * `typo3_rule_lookup`: no name joins the three, and a session that read the
+     * array as data had the route only in the sentence above it — `D-GUI-012`.
+     * A record beside `nextTool` says which tool to call, so this one does too.
+     *
      * @return array<string, mixed>
      */
     public static function guideReference(): array
@@ -331,7 +337,8 @@ final class Schema
             'id' => self::string('What typo3_rule_lookup takes as documentId to return the whole document.'),
             'title' => self::string(),
             'when' => self::string('What the caller has to be doing for this page to be the one to read.'),
-        ], ['id', 'title', 'when']);
+            'tool' => self::string('The tool that takes the id above and returns the page whole.'),
+        ], ['id', 'title', 'when', 'tool']);
     }
 
     /**

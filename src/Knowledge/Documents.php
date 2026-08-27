@@ -96,6 +96,16 @@ final class Documents
      */
     private const DEPTH = 2;
 
+    /**
+     * The tool that hands a document over whole, named on every reference to
+     * one.
+     *
+     * The field is `guides`, the argument is a `documentId` and the call is
+     * this: no name joins the three, and a session that read the array as data
+     * had the route only in the sentence above it — `D-GUI-012`.
+     */
+    private const READ_BY = 'typo3_rule_lookup';
+
     /** @return array<int, array{id: string, title: string, path: string, description: string, whenToUse: string, hints: array<int, string>}> */
     public static function documents(): array
     {
@@ -226,11 +236,16 @@ final class Documents
      * in each of them — `D-GUI-012`.
      *
      * @param array{id: string, title: string, whenToUse: string, ...} $document
-     * @return array{id: string, title: string, when: string}
+     * @return array{id: string, title: string, when: string, tool: string}
      */
     public static function reference(array $document): array
     {
-        return ['id' => $document['id'], 'title' => $document['title'], 'when' => $document['whenToUse']];
+        return [
+            'id' => $document['id'],
+            'title' => $document['title'],
+            'when' => $document['whenToUse'],
+            'tool' => self::READ_BY,
+        ];
     }
 
     public static function read(string $id): string

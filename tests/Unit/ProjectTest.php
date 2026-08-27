@@ -293,6 +293,13 @@ final class ProjectTest extends TestCase
             array_column(Documents::documents(), 'whenToUse', 'id'),
             array_column($answer['guides'] ?? [], 'when', 'id'),
         );
+        // And which call takes the id, because nothing joins the three names:
+        // the field is `guides`, the argument is a `documentId`, and the tool
+        // is neither.
+        self::assertSame(
+            ['typo3_rule_lookup'],
+            array_values(array_unique(array_column($answer['guides'] ?? [], 'tool'))),
+        );
         $text = Registry::call('typo3_project_describe', [])->text;
         foreach ($answer['guides'] ?? [] as $guide) {
             self::assertStringContainsString($guide['when'], $text, $guide['id']);

@@ -419,3 +419,27 @@ joins the two. That is judged on its own card rather than here.
 
 The third **Wrong if** is what the build is held to, and it is the one this
 change runs at: a second pointer to one page in one answer.
+
+### 2026-08-27 — the second half of the sixth report: no name joins the three
+
+**A guide reference names the tool that takes its id.** The field is `guides`,
+the argument is a `documentId`, and the call is `typo3_rule_lookup`:
+`feedback/2026-08-27-145428` read the array as data, saw ids and titles, and
+says it would not have found the route from either name. It learned the call
+only because a checklist item about something else happened to spell it out in
+prose.
+
+The route was in the answer — the sentence above the list says it, and so does
+the schema's own description — and the session read the data. So this is the
+`when` line's failure repeated on the other axis: a record that says what to do
+beats a sentence that says it nearby. `Schema::nextTool` beside it already
+carries `tool`, so this one does too.
+
+Renaming `typo3_rule_lookup` was the session's other option and is refused where
+`D-AUD-011` refuses it: a tool name is the one surface clients installed months
+ago have written down.
+
+What is left of that report is its second ask, and it is about summaries rather
+than about names: where a checklist item summarizes a rule and names the page
+that holds it whole, say which cases the summary does not decide. Its own card
+carries it.

@@ -128,6 +128,8 @@ Answers with
         title: string
         # What the caller has to be doing for this page to be the one to read.
         when: string
+        # The tool that takes the id above and returns the page whole.
+        tool: string
     # What typo3_hint_lookup answers for these paths, quoted whole and carried here
     # — the strongest few per group of paths, not everything it holds on them. A
     # hint declaring a different kind of repository from the paths given ranks below

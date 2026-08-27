@@ -218,6 +218,7 @@
     "hints": [
       "The core's JavaScript unit tests live at Build/Sources/TypeScript/<package>/tests/, mirroring the module path below that package, one file per module named with a -test.ts suffix.",
       "Build/web-test-runner.config.mjs makes one group per package under Build/Sources/TypeScript that has a tests/ directory, over tests/**/*.ts. A package without that directory is discovered as nothing, so the first test in one is invisible until the directory exists.",
+      "Only backend, core and the rte-ckeditor package carry that directory; form, install, dashboard, filelist and the rest carry none. A suite named for a path in one of those runs over no file, and the first test there creates the group as well as the test. `ls Build/Sources/TypeScript/*/tests` is the check on the branch in hand.",
       "The runner is @web/test-runner, and runTests.sh -s unitJavascript runs it in a container as npm run test inside Build/. That target passes no arguments through, so a targeted or watching run means calling the runner in Build/ directly; npm run watch:test is the same runner with --watch.",
       "The import map in that config points @typo3/core/, @typo3/backend/ and every other package prefix at typo3/sysext/<ext>/Resources/Public/JavaScript/. A test therefore exercises the built output, not the TypeScript source, and a source change is invisible to it until the branch is built.",
       {
@@ -225,6 +226,8 @@
         "since": 14
       },
       "Assertions come from @open-wc/testing, the suite and case functions are mocha's, declared with import type { } from 'mocha'. sinon, axe-core and @web/test-runner-commands are in the same import map.",
+      "The modules this layer holds export a class, pure functions, or an object whose methods take their state as arguments, so a test constructs or calls them directly. A collaborator is replaced by stubbing a method on an imported object, as `stub(Icons, 'getIcon')` does. The config loads no module-mocking plugin, so a binding no export reaches cannot be replaced at all.",
+      "The older backend modules built on module-level state are the shape it does not hold. EXT:form's form-editor view-model keeps its app and its component references in module-level lets that only `bootstrap()` assigns, and that function runs the whole component setup against the DOM. So no exported function of it can be called on its own, and a missing test on such a module is a cost a review states rather than a change it demands.",
       "This layer sees a module's own state transitions and nothing around them. A defect that only exists inside the real backend — position, stacking, the ancestor chain a component is mounted in — cannot appear in it; browser-tests is the layer that has one."
     ]
   },

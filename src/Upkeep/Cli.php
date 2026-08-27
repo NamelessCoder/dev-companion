@@ -30,6 +30,7 @@ use TYPO3\DevCompanion\Upkeep\Command\HintCoverage;
 use TYPO3\DevCompanion\Upkeep\Command\HintProbe;
 use TYPO3\DevCompanion\Upkeep\Command\KnowledgeFormat;
 use TYPO3\DevCompanion\Upkeep\Command\LinkCheck;
+use TYPO3\DevCompanion\Upkeep\Command\LinkRepair;
 use TYPO3\DevCompanion\Upkeep\Command\ManualCheck;
 use TYPO3\DevCompanion\Upkeep\Command\ProseCheck;
 use TYPO3\DevCompanion\Upkeep\Command\ProseFormat;
@@ -135,6 +136,7 @@ final class Cli
         $application->addCommand(new ProseCheck());
         $application->addCommand(new ProseFormat());
         $application->addCommand(new LinkCheck());
+        $application->addCommand(new LinkRepair());
         $application->addCommand(new DocumentationPrepare());
         $application->addCommand(new DocumentationPreview());
         $application->addCommand(new FeedbackList());

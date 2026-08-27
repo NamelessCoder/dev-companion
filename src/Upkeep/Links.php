@@ -67,7 +67,7 @@ final class Links
      * arrived, so a path that never resolved here is a fact about that session
      * rather than a defect in this repository.
      *
-     * @return list<array{file: string, link: string, line: int}>
+     * @return list<array{file: string, link: string, line: int, repair: ?string}>
      */
     public static function dead(): array
     {
@@ -83,7 +83,7 @@ final class Links
      * The dead links in one file, resolved against the directory that file sits
      * in, which is what a reader following the link does.
      *
-     * @return list<array{file: string, link: string, line: int}>
+     * @return list<array{file: string, link: string, line: int, repair: ?string}>
      */
     public static function deadIn(string $file): array
     {
@@ -127,14 +127,94 @@ final class Links
                 continue;
             }
 
+            $repair = self::archived($against, $path);
             $dead[] = [
                 'file' => $relative,
                 'link' => $target,
                 'line' => substr_count(substr($contents, 0, $offset), "\n") + 1,
+                // The fragment stays on whatever the path becomes: the heading
+                // it names moved with the file.
+                'repair' => $repair === null ? null : $repair . substr($target, strlen($path)),
             ];
         }
 
         return $dead;
+    }
+
+    /**
+     * Where a link points once the feedback it names has been answered, and null
+     * where the archive does not explain it.
+     *
+     * `feedback:archive` moves a report and cannot see a link another branch is
+     * writing to it in the same window. Whichever of the two merges second
+     * carries a link to a file that moved, and the repair is the same every
+     * time: the path gains `archive/` — `D-DOC-064`.
+     */
+    private static function archived(string $against, string $path): ?string
+    {
+        $repaired = (string) preg_replace('#(^|/)feedback/(?!archive/)#', '$1feedback/archive/', $path, 1);
+        if ($repaired === $path) {
+            return null;
+        }
+
+        // The resolved path ends in the written one, whichever of the two forms
+        // it was resolved from, so the same rewrite lands on both.
+        return file_exists(substr($against, 0, strlen($against) - strlen($path)) . $repaired) ? $repaired : null;
+    }
+
+    /**
+     * Repoints every dead link the feedback archive explains, and says what it
+     * rewrote.
+     *
+     * Written into the file rather than reported, because there is one right
+     * answer and no reading tells it from another. What is reported instead is
+     * the link that stayed dead, which `links:check` fails on as before.
+     *
+     * @return list<array{file: string, link: string, repair: string}>
+     */
+    public static function repair(): array
+    {
+        $written = [];
+        foreach (Prose::documents() as $document) {
+            $written = array_merge($written, self::repairIn($document));
+        }
+
+        return $written;
+    }
+
+    /**
+     * The same for one file, rewritten in a single pass so a target that occurs
+     * twice is repointed twice.
+     *
+     * @return list<array{file: string, link: string, repair: string}>
+     */
+    public static function repairIn(string $file): array
+    {
+        $repairs = [];
+        foreach (self::deadIn($file) as $link) {
+            if ($link['repair'] !== null) {
+                $repairs[$link['link']] = $link['repair'];
+            }
+        }
+        if ($repairs === []) {
+            return [];
+        }
+
+        $absolute = str_starts_with($file, '/') ? $file : Paths::root() . '/' . $file;
+        $contents = (string) file_get_contents($absolute);
+
+        // Longest first, so a target that is the tail of another — the same
+        // feedback named at a heading and plain — is not rewritten inside it.
+        uksort($repairs, static fn(string $one, string $other): int => strlen($other) <=> strlen($one));
+
+        $written = [];
+        foreach ($repairs as $link => $repair) {
+            $contents = str_replace((string) $link, $repair, $contents);
+            $written[] = ['file' => $file, 'link' => (string) $link, 'repair' => $repair];
+        }
+        file_put_contents($absolute, $contents);
+
+        return $written;
     }
 
     /**

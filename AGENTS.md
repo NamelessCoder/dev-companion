@@ -451,7 +451,10 @@ bin/cli knowledge:format <path>   # only that part of it
 - Every path this repository writes between its own files resolves —
   `bin/cli links:check`, and `LinksTest` so a rename that misses a reference
   fails the suite rather than the next reader. The anchor is not held, because a
-  heading moves and the link still lands on the page.
+  heading moves and the link still lands on the page. One dead link has a repair
+  this repository knows — a feedback that was archived after somebody linked to
+  it — and `bin/cli links:repair` writes it, on the branch and in `todo:home`
+  after the rebase (`D-DOC-064`).
 - **A test that holds a decision or a requirement declares it**:
   `#[Decision('D-DOC-048')]` and `#[Requirement('R-COD-003')]` over the method
   it is held by, or over the class where the whole class is the answer.

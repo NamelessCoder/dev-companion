@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Command\TodoHome;
@@ -151,7 +152,7 @@ final class TodoHomeTest extends TestCase
     public function whatTheBranchOwesMainIsAmendedAfterTheRebase(): void
     {
         $this->gitThatAnswers([
-            'status --porcelain -- todo' => " M decisions/readme.md\n",
+            '--untracked-files=all' => " M decisions/readme.md\n",
             'composer' => [1, "FAILURES!\n"],
         ]);
 
@@ -168,6 +169,31 @@ final class TodoHomeTest extends TestCase
         self::assertStringContainsString('commit --amend', $order[2]);
         self::assertStringContainsString('composer', $order[3]);
         self::assertSame([], $this->matching('merge'), 'a red branch was merged');
+    }
+
+    /**
+     * The link another branch wrote to a feedback this one archives is dead the
+     * moment the two are on one tree, and the tree that carries both is the
+     * rebased one. So the repair runs there, and before the suite that would
+     * otherwise fail the branch on a link its session never saw — `D-DOC-064`.
+     */
+    #[Decision('D-DOC-064')]
+    #[Test]
+    public function theArchiveRepairRunsOnTheRebasedTreeAndBeforeTheSuite(): void
+    {
+        $this->gitThatAnswers(['composer' => [1, "FAILURES!\n"]]);
+
+        (new TodoHome())(new BufferedOutput(), Cli::application(), [self::NAME]);
+
+        $order = array_values(array_filter(
+            array_map(self::asked(...), $this->ran),
+            static fn(string $line): bool => (bool) preg_match('/rebase main|links:repair|composer/', $line),
+        ));
+
+        self::assertCount(3, $order, 'the rebase, the repair and the suite did not each run once');
+        self::assertStringContainsString('rebase main', $order[0]);
+        self::assertStringContainsString('links:repair', $order[1]);
+        self::assertStringContainsString('composer', $order[2]);
     }
 
     /**

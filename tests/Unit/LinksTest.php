@@ -70,6 +70,50 @@ final class LinksTest extends TestCase
     }
 
     /**
+     * The one move this repository makes to a file other files name, and the
+     * one repair it has. A link to a report that has since been answered is
+     * rewritten to where the answer put it; a link to a name the archive never
+     * held stays dead, because nothing here knows where it meant to go.
+     */
+    #[Decision('D-DOC-064')]
+    #[Test]
+    public function aLinkToAFeedbackThatWasAnsweredIsRewrittenToTheArchive(): void
+    {
+        $directory = sys_get_temp_dir() . '/links-' . bin2hex(random_bytes(6));
+        mkdir($directory . '/feedback/archive', 0775, true);
+        mkdir($directory . '/decisions');
+        file_put_contents($directory . '/feedback/still-open.md', '# open');
+        file_put_contents($directory . '/feedback/archive/answered.md', '# answered');
+        file_put_contents($directory . '/decisions/entry.md', implode("\n", [
+            '[the feedback it came from](../feedback/answered.md)',
+            '[at a heading in it](../feedback/answered.md#what-was-observed)',
+            '[one that is still open](../feedback/still-open.md)',
+            '[one nobody ever wrote](../feedback/never-there.md)',
+        ]));
+
+        $written = Links::repairIn($directory . '/decisions/entry.md');
+
+        self::assertSame(
+            ['../feedback/archive/answered.md#what-was-observed', '../feedback/archive/answered.md'],
+            array_column($written, 'repair'),
+        );
+        self::assertSame(implode("\n", [
+            '[the feedback it came from](../feedback/archive/answered.md)',
+            '[at a heading in it](../feedback/archive/answered.md#what-was-observed)',
+            '[one that is still open](../feedback/still-open.md)',
+            '[one nobody ever wrote](../feedback/never-there.md)',
+        ]), file_get_contents($directory . '/decisions/entry.md'));
+
+        unlink($directory . '/decisions/entry.md');
+        unlink($directory . '/feedback/archive/answered.md');
+        unlink($directory . '/feedback/still-open.md');
+        rmdir($directory . '/decisions');
+        rmdir($directory . '/feedback/archive');
+        rmdir($directory . '/feedback');
+        rmdir($directory);
+    }
+
+    /**
      * A link in the wrong markup resolves, so the check above passes on it and
      * the reader is what finds it. Two pages carried a group listing written
      * that way from the conversion until 2026-08-12.

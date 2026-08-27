@@ -31,8 +31,22 @@ final class LinkCheck
             return 0;
         }
 
+        $repairable = 0;
         foreach ($dead as $link) {
-            $output->writeln(sprintf('%s:%d links to %s, which is not there', $link['file'], $link['line'], $link['link']));
+            if ($link['repair'] === null) {
+                $output->writeln(sprintf('%s:%d links to %s, which is not there', $link['file'], $link['line'], $link['link']));
+
+                continue;
+            }
+
+            ++$repairable;
+            $output->writeln(sprintf(
+                '%s:%d links to %s, and that feedback was answered into %s',
+                $link['file'],
+                $link['line'],
+                $link['link'],
+                $link['repair'],
+            ));
         }
 
         foreach ($unrendered as $link) {
@@ -41,6 +55,9 @@ final class LinkCheck
 
         $output->writeln('');
         $output->writeln(sprintf('%d dead links, %d written in the wrong markup.', count($dead), count($unrendered)));
+        if ($repairable > 0) {
+            $output->writeln(sprintf('%d of them `bin/cli links:repair` repoints at the archive.', $repairable));
+        }
 
         return 1;
     }

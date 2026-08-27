@@ -208,13 +208,14 @@ final class TodoHome
     /**
      * What the branch owes `main`, written into the branch's own commit.
      *
-     * Two things a session cannot get right and a rebased worktree can: the
+     * Three things a session cannot get right and a rebased worktree can: the
      * generated listing at the foot of a group readme, which a session sees only
-     * its own entry of, and a todo left carrying the question the session
-     * stopped on, which belongs where nobody is offered it. Amended rather than
-     * committed beside the work, because a listing line and the entry it lists
-     * are one change — `D-FBK-011`. Before `composer ci`, so the suite runs on
-     * the tree that merges.
+     * its own entry of; a todo left carrying the question the session stopped
+     * on, which belongs where nobody is offered it; and a link to a feedback the
+     * branch archived that another branch wrote after this one was cut —
+     * `D-DOC-064`. Amended rather than committed beside the work, because a
+     * listing line and the entry it lists are one change — `D-FBK-011`. Before
+     * `composer ci`, so the suite runs on the tree that merges.
      *
      * Run in the worktree, which is where the session wrote the question. A todo
      * it finished is a deletion the branch already carries and a todo it left is
@@ -223,7 +224,7 @@ final class TodoHome
      */
     private static function owed(OutputInterface $output, string $path): void
     {
-        $commands = [['todo:park'], ['requirements:index'], ['decisions:index']];
+        $commands = [['todo:park'], ['requirements:index'], ['decisions:index'], ['links:repair']];
 
         foreach ($commands as $command) {
             [$ran, $said] = Checkouts::run(array_merge([PHP_BINARY, $path . '/bin/cli'], $command), $path);
@@ -232,9 +233,12 @@ final class TodoHome
             }
         }
 
-        // Only where those three write, because the branch's own tree was read
-        // clean above and everything dirty in them is what they just wrote.
-        [, $changed] = Checkouts::run(['git', '-C', $path, 'status', '--porcelain', '--', 'todo', 'requirements', 'decisions']);
+        // The whole tree, because it was read clean above and everything dirty
+        // in it now is what those commands just wrote. A repair reaches whatever
+        // file wrote the link, which is no directory anybody can name in
+        // advance. Each file rather than the directory it is new in, because
+        // what is read here is also what is printed back.
+        [, $changed] = Checkouts::run(['git', '-C', $path, 'status', '--porcelain', '--untracked-files=all']);
         $paths = [];
         foreach (preg_split('/\R/', trim($changed)) ?: [] as $line) {
             if (trim($line) !== '') {

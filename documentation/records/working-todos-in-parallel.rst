@@ -293,6 +293,7 @@ the worktree that todo is being worked in.
 
     git -C .worktrees/<name> rebase main
     (cd .worktrees/<name> && bin/cli requirements:index && bin/cli decisions:index)
+    (cd .worktrees/<name> && bin/cli links:repair)
     git -C .worktrees/<name> commit --amend --no-edit -- <what they rewrote>
     (cd .worktrees/<name> && composer ci)
     git merge --ff-only todo/<name>
@@ -334,6 +335,15 @@ onto the branch's own commit, because a listing line and the entry it lists are
 one change: written onto ``main`` afterwards instead, it was 37 of the 200
 commits before 2026-08-18, each saying nothing but that the one under it had
 been merged — ``D-FBK-011``.
+
+**A link to a feedback this branch archived is repointed on the same tree.**
+``feedback:archive`` runs before the link that breaks exists: a decision written
+on another branch in the same window names the report where it stood, and
+whichever of the two merges second carries a path to a file that moved. Three
+branches stopped there on 2026-08-27. The repair is the same every time — the
+path gains ``archive/`` — so ``bin/cli links:repair`` makes it, and
+``links:check`` names it for a checkout that met the same thing some other way —
+``D-DOC-064``.
 
 Then, on ``main``, which ``todo:home`` also carries out once the branch is in:
 

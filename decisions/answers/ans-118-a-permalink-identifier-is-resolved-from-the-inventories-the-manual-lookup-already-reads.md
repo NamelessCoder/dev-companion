@@ -1,12 +1,12 @@
 ---
-id: D-ANS-117
+id: D-ANS-118
 title: A permalink identifier is resolved from the inventories the manual lookup already reads
 date: 2026-08-27
 status: open
 coveredBy: []
 ---
 
-# D-ANS-117 — A permalink identifier is resolved from the inventories the manual lookup already reads
+# D-ANS-118 — A permalink identifier is resolved from the inventories the manual lookup already reads
 
 **A docs.typo3.org permalink identifier is validated, resolved to its page and
 recovered from an old URL out of the Sphinx inventory this server already

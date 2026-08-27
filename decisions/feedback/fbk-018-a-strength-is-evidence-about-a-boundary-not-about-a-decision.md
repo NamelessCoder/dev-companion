@@ -1138,3 +1138,106 @@ is every document there is and that it comes last.
 The feedback is closed by this commit and nothing is queued. The one statement
 about TYPO3 was read in `.checkouts/main`; the rest of the re-runs read this
 server's answers.
+
+## Confirmed on 2026-08-27
+
+**A negative that bounds an obligation is written once and holds; a negative
+about the case has to be read off the artifact.** `feedback/2026-08-25-110726`
+credits four answers with killing a candidate finding in a review of Gerrit
+95392, and both costs from the same debrief are the second kind.
+
+The quotations are checked before the boundary is. The reporting checkout is
+another session's work, so all four were re-run on 2026-08-27 through
+`bin/typo3-dev-companion` from this repository's own `.checkouts/main`:
+
+- `typo3_rule_lookup` with the compound query `changelog entry bugfix` answers
+  `Which Change Owes a Changelog File` first at 100%, with the refusal word for
+  word and the three conditions it turns on beside it.
+- `typo3_task_guide` with the two changed paths returns `backend-typescript`,
+  whose block names both switched-off rules, says neither is a finding, and
+  names `Build/eslint.config.mjs` as what decides the rest.
+- `typo3_test_run_guide` with the same paths answers `checkGruntClean` at
+  `runs: git`, and its `whenToUse` carries the `git add *` sentence, the
+  untracked files and the checkout to run it in, all verbatim.
+- `typo3_commit_message_guide` on that patch's subject answers
+  `summary-length-preferred` at `warning` with the arithmetic the report quotes:
+  57 characters, a 48-character summary plus 9 for the keyword prefix.
+
+The boundary is **what an obligation states against what deciding it in this
+case requires reading**. Everything credited here is a property of the core's
+process, true of every patch and written once: which change types owe a
+changelog file, which lint rules are enforced, what a suite does to a checkout,
+what a subject line budget is. Both costs from the same debrief are properties
+of the artifact in front of the session. `2026-08-25-110753` asks whether this
+module is reachable by the JavaScript unit layer at all and answers it in four
+reads of the checkout; `2026-08-25-110659` asks whether this patch set is
+intact, and what says it is not is a change message the default suppresses.
+
+The two sides meet on over-reporting, which is the failure mode the report
+names. Its saves stop it by saying where an obligation stops. `110753` is the
+same mechanism failing on the case side: *Frontend modules with state
+transitions should have focused JavaScript unit coverage* arrived with nothing
+bounding it against this module, and the session reports it as reading like an
+instruction to demand a test. One session filed both directions within 27
+seconds.
+
+**The first Wrong if fired, in the structural note the report appends to its
+four saves.** It says `typo3_project_describe` ends with a guides array, that it
+read `core/contribution/gerrit-workflow` whole off that list in the second half
+of the session, and that without the array it would not have known to ask for
+the page by id. That is
+[`D-ANS-061`](../answers/ans-061-an-answer-that-names-a-document-hands-it-over.md)'s
+second **Assumed** met for the first time since it was written, and
+[`D-ANS-091`](../answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md)'s
+second **Wrong if**. Both are judged there.
+
+**The proposal is checked against the data the reporting session derived it
+from, and it covers half of it.** The report reads its saves as one pattern —
+each states the negative case explicitly — and asks that the pattern be spread
+to the other rule and hint sections a review consults. Two of the four are that
+pattern. The `checkGruntClean` warning stops an action rather than a finding,
+and the commit arithmetic states no negative at all: what the session credits it
+with is ranking a preference against a violation, which the answer does by
+carrying `warning` and its own sum. Spreading the pattern would write negatives
+into sections whose saves were something else, against the rule in
+[AGENTS.md](../../AGENTS.md) that a list of what something is not belongs where
+the confusion actually happened.
+
+Where one did happen is the proposal's own second example, and it is on a card
+already. `bin/cli hints:probe "which changes owe no test"` reached
+`breaking-without-a-moved-member` on the word *owe*, which is about changelog
+obligations, and nothing here says which changes owe no test. `110753` from this
+debrief is the confusion itself. Naming its answer from here is the copy-down
+`judging.rst` warns about, so the card carries it. The proposal's first example
+has no report behind it: no session has reported a removal over-reported, and
+the nearest negative in the corpus runs the other way — `Changed Signatures`, a
+section of the very answer the first save came from, says a member promoted from
+protected to public is not a signature change and owes none of it.
+
+Item 3 needs nothing.
+[`D-ANS-113`](../answers/ans-113-a-suite-whose-mark-warns-the-caller-off-names-what-answers-its-question-instead.md)
+names this feedback among the three sessions that read the warning, did not run
+the suite and each invented the same replacement, and
+`core/contribution/committed-build-output` shipped the day before this
+judgement. It is the twentieth id of the guides array the report counted
+nineteen of.
+
+Two keep-requests rested on nobody rewriting the file and are held now.
+`HintsTest::theLintRulesThatAreSwitchedOffAreNamedAsNoFinding` holds the two
+rule names, the clause that makes neither a finding, and the config file beside
+them — the names alone read as a list of rules, and the clause after them is
+what dropped the finding. `HintsTest::theStagingSuiteSaysWhichFilesItStages`
+holds the `git add *` sentence, the untracked files and the checkout to run it
+in; `aTypeScriptChangeIsOfferedTheSuiteThatStagesTheWorkingTree` held the mark
+and its one-line gloss and
+`everySuiteThatRunsGitNamesTheDocumentAnsweringItsQuestion` the way out, so a
+trim keeping those two would have left a caller warned without knowing what of
+theirs was at stake. The other two were held already —
+`KnowledgeTest::aQueryForTheChangelogObligationReachesTheSectionThatStatesIt`
+for the refusal and its three conditions, and
+`CommitMessageTest::theLengthCheckSaysWhatMadeTheSubjectLong` for the code and
+the arithmetic under it.
+
+The feedback is closed by this commit and nothing is queued. No statement about
+TYPO3 was established here: the re-runs read this server's answers, and the
+absence behind the proposal was read with `bin/cli hints:probe`.

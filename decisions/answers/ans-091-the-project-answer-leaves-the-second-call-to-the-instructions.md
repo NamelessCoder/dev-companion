@@ -101,9 +101,10 @@ the sentence rather than the answer of the call that fired.
 - A second run counts the two calls with the imperative in place and the ratio
   has not moved. Then the instruction channel is spent, the project answer is
   the lever `D-AUD-012` named, and this entry held it back one run too long.
-- A session reports calling a tool because `typo3_project_describe` named it.
+- ~~A session reports calling a tool because `typo3_project_describe` named it.
   That is `D-ANS-061`'s second **Assumed** met at last, and it would say the
-  position carries a next step and fails only for a catalogue.
+  position carries a next step and fails only for a catalogue.~~ Fired on
+  2026-08-27 below, and the catalogue is what was acted on.
 - A session reports finishing this answer without knowing what to call next.
   Then the answer owes a next step whatever the ratio says, and the count was
   never the question.
@@ -166,3 +167,27 @@ work became a core patch, and it named nothing onward — which is
 The distinction is the one the 2026-08-24 row already drew: this entry declines
 a sentence at the *opening*, and that one places a sentence at the *phase*, on
 an answer a session under momentum still asks for.
+
+### 2026-08-27 — the guides listing was read back into, which is more than the Wrong if asked
+
+[`feedback/2026-08-25-110726`](../../feedback/archive/2026-08-25-110726-what-worked-four-review-findings-the-server.md)
+is the first session that reports acting on a name in this answer, and the
+second **Wrong if** fires on it. What it acted on is the guides listing itself:
+it read `core/contribution/gerrit-workflow` whole off the array in the second
+half of the session, for the backport half of a core patch review, and says it
+would not have known the page existed otherwise.
+
+That is one step past what the **Wrong if** predicted. It expected a next step
+to be followed and a catalogue to fail; the catalogue is what was followed, and
+the two open reports of this same array going unread both name a moment when the
+work was already under way by hand. `D-ANS-061` carries that reading, where its
+second **Assumed** is met.
+
+Nothing decided here moves, and the reason is the ratio rather than the
+position. The **Decided** above declines a sentence at the *opening* of this
+answer, and this session read the array at neither the opening nor as a next
+step — it reached back into a list it had been holding for half a session. The
+first **Wrong if** is still what settles the entry, and no run has counted the
+two calls since `D-AUD-012`. What the four passing sessions weigh has changed by
+one: the position is not one nobody acts on, only one nobody acts on at the
+moment it arrives.

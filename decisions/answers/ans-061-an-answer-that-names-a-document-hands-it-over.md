@@ -177,3 +177,40 @@ Built the same day: the core answer ends on the page as the `typo3_rule_lookup`
 call, naming what it holds beside the checks above it, and the project answer
 does not. `R-ANS-028` is what it is held by, widened there from a cut section to
 a tool's subject.
+
+### 2026-08-27 — the second Assumed met, and the moment that met it
+
+[`feedback/2026-08-25-110726`](../../feedback/archive/2026-08-25-110726-what-worked-four-review-findings-the-server.md)
+is the first session on record that acted on a document named in an answer. It
+reviewed Gerrit 95392 in `/home/benji/projects/typo3-cms` and read
+`core/contribution/gerrit-workflow` whole off the `guides` array of
+`typo3_project_describe`, in the second half of the session, for the backport
+half of its task — "without the array I would not have known to ask for the page
+by id". Re-run on 2026-08-27 from `.checkouts/main`: the array holds 20 ids with
+that one among them, and both sections the report names,
+`Pushing From a Git Worktree` and `Release Branches and Backports`, are headings
+of the page.
+
+Nothing decided here moves. The second **Assumed** stops standing on sessions
+that did not act, and what it gains instead is a condition the three accounts
+state themselves. Both open reports of this same list going unread name a moment
+when the work was already under way by hand: `feedback/2026-08-24-173211`, same
+checkout and same model one day earlier, was "already mid-Bash and the list had
+scrolled past" after six calls establishing the changelog format itself, and
+`feedback/2026-08-24-140239` had spent "the larger part of the session building
+that procedure myself". This one reached a sub-task it had not begun and went
+looking before the first hand-move.
+
+So a name is followed where the procedure has not started and read past where it
+has, which is what `feedback/2026-08-24-140239`'s own suggestion says of the one
+placement that worked for it: a skill names the page "before the declared steps
+are run, not after one of them has failed". That is a reading of three reports
+rather than a measurement, and both cost cards are open — where they land is
+what says whether the condition holds or only reads that way. What would show it
+wrong is a session that follows a named page after it has begun the procedure by
+hand, or one that reads past a name at a step it has not started.
+
+The judgement is `D-FBK-018`, and the guides array is where it was:
+[`D-ANS-091`](ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md)
+declines a sentence at the opening of that answer, and this is the first
+counter-instance its own **Wrong if** asks for.

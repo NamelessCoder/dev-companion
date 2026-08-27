@@ -1848,6 +1848,33 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The two lint rules a core review may not report, and the file that
+     * decides everything else. `feedback/2026-08-25-110726` had a cast to `any`
+     * written down as a violation and dropped it on this block, and asked that
+     * it survive a trim — `D-FBK-018`. The rule names alone are a list of
+     * rules; what stops the finding is the clause after them.
+     */
+    #[Test]
+    public function theLintRulesThatAreSwitchedOffAreNamedAsNoFinding(): void
+    {
+        $text = self::statementsOf('backend-typescript');
+
+        self::assertStringContainsString('@typescript-eslint/no-explicit-any', $text);
+        self::assertStringContainsString('@typescript-eslint/no-inferrable-types', $text);
+        self::assertStringContainsString('off on purpose, so neither is a finding', $text);
+        self::assertStringContainsString(
+            'imitating a neighbouring file turns a rule that is switched off into a diff nobody asked for',
+            $text,
+            'the move the review was about to make, which the rule names do not describe',
+        );
+
+        // The authority beside them, which is what lets a review call the rest
+        // untidiness instead of arguing style.
+        self::assertStringContainsString('Build/eslint.config.mjs', $text);
+        self::assertStringContainsString('untidiness rather than a lint failure', $text);
+    }
+
+    /**
      * `R-KNW-072`. The interpreter is picked before there is an installation to
      * ask, so the answer has to be readable without one — and the numbers a
      * project ends up holding are three different claims rather than three
@@ -5619,6 +5646,38 @@ final class HintsTest extends TestCase
         self::assertStringContainsString(
             "`CI=true ./Build/Scripts/runTests.sh -s build`\nRunning it: change",
             $answer->text,
+        );
+    }
+
+    /**
+     * What that suite stages, said out loud rather than left to the mark.
+     * `feedback/2026-08-25-110726` was about to run it in the user's own
+     * checkout, calls this the one concrete disaster the server prevented, and
+     * asked that the sentences stay — `D-FBK-018`. The mark and its one-line
+     * gloss are held above; a trim that keeps them and drops these leaves a
+     * caller warned without knowing what of theirs is at stake.
+     */
+    #[Test]
+    public function theStagingSuiteSaysWhichFilesItStages(): void
+    {
+        $answer = Registry::call('typo3_test_run_guide', [
+            'paths' => [
+                'Build/Sources/TypeScript/form/backend/form-editor/view-model.ts',
+                'typo3/sysext/form/Resources/Public/JavaScript/backend/form-editor/view-model.js',
+            ],
+            'targetVersion' => '15',
+        ]);
+
+        self::assertStringContainsString('runs `git add *` over the whole working tree', $answer->text);
+        self::assertStringContainsString(
+            'untracked ones included',
+            $answer->text,
+            'the half that reaches a file git is not tracking yet',
+        );
+        self::assertStringContainsString(
+            'Run it in a checkout whose index you can throw away, and not in one holding work of your own',
+            $answer->text,
+            'the instruction the mark alone leaves the caller to derive',
         );
     }
 

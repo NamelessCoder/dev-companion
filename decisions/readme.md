@@ -18,6 +18,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### audience
 
+- [`D-AUD-014`][D-AUD-014] — A description opens with what the caller's own route cannot do · 2026-08-27
 - [`D-AUD-013`][D-AUD-013] — A competing route is corrected where it is written · 2026-08-25
 - [`D-AUD-012`][D-AUD-012] — The second call of the entry point is an imperative · 2026-08-19
 - [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers · 2026-08-18
@@ -31,6 +32,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
+[D-AUD-014]: audience/aud-014-a-description-opens-with-what-the-callers-own-route-cannot-do.md
 [D-AUD-013]: audience/aud-013-a-competing-route-is-corrected-where-it-is-written.md
 [D-AUD-012]: audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative.md
 [D-AUD-011]: audience/aud-011-the-instructions-index-the-question-each-tool-answers.md

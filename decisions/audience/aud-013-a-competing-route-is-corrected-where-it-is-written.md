@@ -104,3 +104,12 @@ while `typo3_forge_lookup` was offered to it, and names the documented recipe as
 the reason it never considered the tool. It carries its own card and the
 judgement is that card's; what is recorded here is that the event this entry
 watches for has happened.
+
+**That card was judged on 2026-08-27** and the reading is
+[`D-AUD-014`](aud-014-a-description-opens-with-what-the-callers-own-route-cannot-do.md):
+the ladder's step 4, and the lever is the opening sentence of
+`typo3_forge_lookup`'s description. So the bullet above saying none of the three
+surfaces changes is bounded to the day it was written — one of them failed, and
+the statement this entry declined to make is made there. The core patch waits as
+before, on the question it always waited on: that corrects the route where it is
+written, and the description says what this server's own route is worth.

@@ -1,0 +1,81 @@
+---
+id: D-AUD-014
+title: A description opens with what the caller's own route cannot do
+date: 2026-08-27
+status: open
+coveredBy: []
+---
+
+# D-AUD-014 — A description opens with what the caller's own route cannot do
+
+**Where the caller's own repository hands out a route to the same source, the
+tool's description opens with what that route cannot do rather than with what
+the tool reads.**
+
+[`D-AUD-013`](aud-013-a-competing-route-is-corrected-where-it-is-written.md)
+changed no surface of this server, because the one session on record had held
+both routes and taken the tool. Its first **Wrong if** has since happened.
+
+## Evidence
+
+- [`feedback/2026-08-25-114714`](../../feedback/2026-08-25-114714-typo3-forge-lookup-lost-to-the-raw-curl-recipe.md)
+  queried Forge with three `curl` calls and two inline Python parsers while
+  `typo3_forge_lookup` sat in its tool list, and it names the recipe in the
+  core's `AGENTS.md` as the reason it never considered the tool. One of those
+  calls bought nothing but the knowledge that the endpoint answered at all.
+- The description that session saw is the one `f1e047d1` left, and it opens
+  "Read the TYPO3 issue tracker at forge.typo3.org before writing a patch" —
+  which is what the recipe already promises.
+- The clause the feedback asks for was in it. "An issue that does not exist is
+  answered as such, and so is a tracker that could not be reached" is the last
+  sentence of that description, past every parameter it takes. So this is
+  placement and not absence.
+- The bot protection appears nowhere in the description.
+  `ForgeLookup::UNREACHABLE` names it, which a caller reads once the tracker has
+  already refused them.
+- `.checkouts/main/AGENTS.md` lines 11 to 15, read on 2026-08-27, still carry
+  the recipe and its Anubis warning verbatim. Forge is the only entry of that
+  Context list handing out a working route; Gerrit is named as two URLs.
+
+## Decided
+
+- The judgement is
+  [`documentation/records/judging.rst`](../../documentation/records/judging.rst)
+  step 4, wording. The tool was delivered, and its description did not take
+  against a recipe promising the same thing.
+- The feedback is **queued** rather than closed on the spot, because the change
+  is in `src/` —
+  [`D-FBK-052`](../feedback/fbk-052-a-judgement-that-holds-the-evidence-makes-the-change.md)
+  keeps that half of the line whatever the judging run holds.
+- The surface is the description. The feedback's other option, declaring the
+  `curl` route the intended one under `doesNotCover`, was rejected: the tool
+  passes the bot protection and tells a miss from a refusal, so a boundary drawn
+  there would be a false one.
+- The statement goes at the opening. A caller decides whether to call from the
+  first sentence, and everything this tool does that `curl` cannot was already
+  written further down.
+- The priority is `normal`, which is what `D-AUD-013` set the other half at on
+  what the file is. This is the same file with a measured failure behind it
+  rather than a predicted one.
+- Nothing holds it, so no requirement is written. What would have to be asserted
+  is that one sentence of one description says what a file in another repository
+  leaves out, and a check reading for that is a keyword the next rewrite moves.
+
+## Assumed
+
+- That the opening is what a caller weighs a tool against a route it already
+  has. The session says the tool's name alone did not beat the recipe, and it
+  does not say how far into the description it read.
+
+## Wrong if
+
+- A session reports going around `typo3_forge_lookup` again once the opening
+  says what `curl` cannot do. Then what wins is the file arriving in the context
+  rather than anything the tool list carries, and the lever is the core patch
+  [`todo/waiting/T-260824-b4af.md`](../../todo/waiting/T-260824-b4af.md) waits
+  on.
+- A feedback reports the opening as noise: a caller with no competing recipe,
+  reading a caveat where the tool's subject belongs.
+- The core's `AGENTS.md` paragraph comes to name this tool. Then the opening
+  answers something no caller is told the opposite of any more, and it is a
+  sentence to withdraw.

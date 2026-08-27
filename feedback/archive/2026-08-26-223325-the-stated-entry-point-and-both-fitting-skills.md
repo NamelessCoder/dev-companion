@@ -38,4 +38,4 @@ Concrete moves:
 
 2. Give typo3_task_guide a description that names what it knows that a repository's own AGENTS.md cannot: the maintained branches, whether this change shape owes a changelog, which check the project declares for this file type. As written it promises a checklist, and a model with AGENTS.md in context already believes it has one.
 
-*Trimmed on 2026-08-27.* The third point — the `guides` list arriving as a data field, and the one-line "read this when" that would turn a documentId into a decision — is carried by `todo/waiting/T-260824-cecc.md`, where it is the fifth report of that placement and a third option for the question that card waits on. The reading is under the entry of 2026-08-27 in `D-GUI-012`.
+*Trimmed on 2026-08-27.* The third point — the `guides` list arriving as a data field, and the one-line "read this when" that would turn a documentId into a decision — is carried by `todo/open/T-260824-cecc.md`, where it is the fifth report of that placement and the third option that was chosen on 2026-08-27. The reading is under the entry of 2026-08-27 in `D-GUI-012`.

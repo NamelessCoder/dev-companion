@@ -395,5 +395,24 @@ every answer of two tools volunteers, which `documentation/records/judging.rst`
 says is not changed quietly.
 
 The half of that feedback which reports this is trimmed off it, because
-[`T-260824-cecc`](../../todo/waiting/T-260824-cecc.md) carries the question and
+[`T-260824-cecc`](../../todo/open/T-260824-cecc.md) carries the question and
 what comes back answers this report with the other four.
+
+### 2026-08-27 — the question is answered, and the guide reference gets a `when`
+
+**A guide reference carries the line that says when to read it, rather than the
+page it names being handed over whole.** Put to the maintainer on 2026-08-27
+with the three options this section had accumulated — the `when` line, the whole
+page, and waiting for a further report — and the first was taken. So
+`Schema::guideReference` gains what `Schema::nextTool` beside it already has,
+and `T-260824-cecc` and `T-260824-87b2` leave `todo/waiting/` for the queue.
+
+What the count stands at when it is built is six reports from four surfaces. The
+sixth arrived the same day: `feedback/2026-08-27-145428` read a twenty-entry
+`guides` array from `typo3_project_describe` and opened none of it, and it names
+a second half the line does not close — the field is `guides`, the tool that
+reads it is `typo3_rule_lookup`, and the argument is a `documentId`, so no name
+joins the two. That is judged on its own card rather than here.
+
+The third **Wrong if** is what the build is held to, and it is the one this
+change runs at: a second pointer to one page in one answer.

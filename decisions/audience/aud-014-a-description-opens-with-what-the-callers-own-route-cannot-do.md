@@ -73,8 +73,7 @@ both routes and taken the tool. Its first **Wrong if** has since happened.
 - A session reports going around `typo3_forge_lookup` again once the opening
   says what `curl` cannot do. Then what wins is the file arriving in the context
   rather than anything the tool list carries, and the lever is the core patch
-  [`todo/waiting/T-260824-b4af.md`](../../todo/waiting/T-260824-b4af.md) waits
-  on.
+  [`todo/open/T-260824-b4af.md`](../../todo/open/T-260824-b4af.md) carries.
 - A feedback reports the opening as noise: a caller with no competing recipe,
   reading a caveat where the tool's subject belongs.
 - The core's `AGENTS.md` paragraph comes to name this tool. Then the opening

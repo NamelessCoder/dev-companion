@@ -129,3 +129,24 @@ third **Wrong if** above, taken deliberately rather than observed.
 
 Nothing here settles any of the three. Whether the fact is now taken rather than
 rebuilt is a forward run's reading, not this one's.
+
+**2026-08-27.** The first session to run against the placement did not reach it,
+and it says why the carrier was passed over.
+[`feedback/2026-08-26-223348`](../../feedback/2026-08-26-223348-no-answer-for-which-branches-a-bugfix-s.md)
+is a core bugfix whose `Releases:` trailer was built from `git branch -r` two
+days after the field shipped, and its sibling
+[`feedback/2026-08-26-223414`](../../feedback/2026-08-26-223414-four-things-in-the-forge-tool-that-carried-the.md)
+files the reason as a strength: the inline `reviews` field of
+`typo3_forge_lookup` carried the change numbers and states, and "it is also why
+typo3_gerrit_lookup never had to be opened".
+
+So the carrier's reach is bounded by a sibling tool that subsumes it on purpose,
+which none of the three **Wrong if** describes. The first is untouched, because
+the session held no answer naming the lines. `R-ANS-035` is intact for the same
+reason a wider placement would not follow from it: `ForgeLookup`'s `reviews`
+rows carry a change number, a state and a URL, and no branch at all.
+
+What that leaves is the other carrier rather than a third.
+[`D-AUD-015`](../audience/aud-015-what-decides-whether-to-call-a-tool-stands-in-its-description.md)
+judges the same feedback at step 4 on `typo3_commit_message_guide`'s own
+description, which is the call this task shape was already routed to.

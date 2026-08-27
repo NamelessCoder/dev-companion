@@ -9,6 +9,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-AUD-014`][D-AUD-014] — A description opens with what the caller's own route cannot do · 2026-08-27
+- [`D-AUD-015`][D-AUD-015] — What decides whether to call a tool stands in its description · 2026-08-27
 - [`D-AUD-013`][D-AUD-013] — A competing route is corrected where it is written · 2026-08-25
 - [`D-AUD-012`][D-AUD-012] — The second call of the entry point is an imperative · 2026-08-19
 - [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers · 2026-08-18
@@ -23,6 +24,7 @@ one is added.
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
 [D-AUD-014]: aud-014-a-description-opens-with-what-the-callers-own-route-cannot-do.md
+[D-AUD-015]: aud-015-what-decides-whether-to-call-a-tool-stands-in-its-description.md
 [D-AUD-013]: aud-013-a-competing-route-is-corrected-where-it-is-written.md
 [D-AUD-012]: aud-012-the-second-call-of-the-entry-point-is-an-imperative.md
 [D-AUD-011]: aud-011-the-instructions-index-the-question-each-tool-answers.md

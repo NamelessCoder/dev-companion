@@ -130,7 +130,7 @@ rendered. The other report patched its fence to the byte on a rule nothing
 states.
 
 A third session is on record, and it was judged on 2026-08-25.
-[`feedback/2026-08-24-163321`](../../feedback/2026-08-24-163321-the-repository-s-own-agents-md-routes-agents.md)
+[`feedback/2026-08-24-163321`](../../feedback/archive/2026-08-24-163321-the-repository-s-own-agents-md-routes-agents.md)
 was filed at 16:33 and the split landed at 21:02, so it had no such page. It
 built its `Important` file from a neighbouring entry in `14.3/`, naming the
 `.. _important-<issue>-<timestamp>:` label as the part it would not have

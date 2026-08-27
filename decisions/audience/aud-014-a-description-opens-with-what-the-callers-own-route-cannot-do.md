@@ -72,8 +72,10 @@ both routes and taken the tool. Its first **Wrong if** has since happened.
 
 - A session reports going around `typo3_forge_lookup` again once the opening
   says what `curl` cannot do. Then what wins is the file arriving in the context
-  rather than anything the tool list carries, and the lever is the core patch
-  [`todo/waiting/T-260824-b4af.md`](../../todo/waiting/T-260824-b4af.md) carries.
+  rather than anything the tool list carries, and no lever is left on this side:
+  the core patch that would have corrected it where it is written was declined
+  on 2026-08-27 as out of scope, which is what revoked
+  [`D-AUD-013`](aud-013-a-competing-route-is-corrected-where-it-is-written.md).
 - A feedback reports the opening as noise: a caller with no competing recipe,
   reading a caveat where the tool's subject belongs.
 - The core's `AGENTS.md` paragraph comes to name this tool. Then the opening

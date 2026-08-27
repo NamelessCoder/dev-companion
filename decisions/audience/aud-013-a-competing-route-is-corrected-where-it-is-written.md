@@ -2,7 +2,8 @@
 id: D-AUD-013
 title: A competing route is corrected where it is written
 date: 2026-08-25
-status: open
+status: revoked
+revokedBy: D-AUD-014
 coveredBy: []
 ---
 
@@ -16,7 +17,7 @@ Forge, and this server has a tool that answers the same question better.
 
 ## Evidence
 
-- [`feedback/2026-08-24-163321`](../../feedback/2026-08-24-163321-the-repository-s-own-agents-md-routes-agents.md)
+- [`feedback/2026-08-24-163321`](../../feedback/archive/2026-08-24-163321-the-repository-s-own-agents-md-routes-agents.md)
   worked a core patch with that file in its context and called
   `typo3_forge_lookup` anyway, naming what it got that the recipe could not
   give: the `open` enumeration with its filters, and `notes=people` dropping 12
@@ -113,3 +114,28 @@ surfaces changes is bounded to the day it was written — one of them failed, an
 the statement this entry declined to make is made there. The core patch waits as
 before, on the question it always waited on: that corrects the route where it is
 written, and the description says what this server's own route is worth.
+
+## Revoked on 2026-08-27
+
+**The maintainer answered that no core patch naming this server is to be
+proposed: a change to another repository's instruction file is out of scope for
+this one.** That is the third **Wrong if** verbatim, and it is the one that
+retires the entry rather than qualifying it — this decision says a competing
+route is corrected where it is written, and correcting it where it is written is
+what will not happen.
+
+The patch existed by then. It was written on 2026-08-27 and checked: five lines
+replacing the first two of the Context list's issue-tracker bullet, naming
+`typo3_forge_lookup` where the server is connected and keeping the `curl` recipe
+as the fallback, with a message `typo3_commit_message_guide` had passed for
+`workflow="core"`. What stopped it was neither its text nor Gerrit: this
+repository does not change another repository, and the question of who carries
+an outward claim was settled the other way.
+
+What is left is what this entry declined to make and
+[`D-AUD-014`](aud-014-a-description-opens-with-what-the-callers-own-route-cannot-do.md)
+made two days later: the statement on this server's own surfaces. The tool
+description now opens with what the caller's own recipe cannot do, which is the
+whole of the correction this route gets. The core's `AGENTS.md` keeps its
+paragraph, and a session that reads it and never calls the tool is a cost this
+server carries rather than one it can fix.

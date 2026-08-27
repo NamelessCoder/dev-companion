@@ -20,7 +20,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-AUD-014`][D-AUD-014] — A description opens with what the caller's own route cannot do · 2026-08-27
 - [`D-AUD-015`][D-AUD-015] — What decides whether to call a tool stands in its description · 2026-08-27
-- [`D-AUD-013`][D-AUD-013] — A competing route is corrected where it is written · 2026-08-25
 - [`D-AUD-012`][D-AUD-012] — The second call of the entry point is an imperative · 2026-08-19
 - [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers · 2026-08-18
 - [`D-AUD-010`][D-AUD-010] — The content model is answered and the records stay with the installation · 2026-08-12
@@ -35,7 +34,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-AUD-014]: audience/aud-014-a-description-opens-with-what-the-callers-own-route-cannot-do.md
 [D-AUD-015]: audience/aud-015-what-decides-whether-to-call-a-tool-stands-in-its-description.md
-[D-AUD-013]: audience/aud-013-a-competing-route-is-corrected-where-it-is-written.md
 [D-AUD-012]: audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative.md
 [D-AUD-011]: audience/aud-011-the-instructions-index-the-question-each-tool-answers.md
 [D-AUD-010]: audience/aud-010-the-content-model-is-answered-and-the-records-stay-with-the-installation.md
@@ -1084,6 +1082,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### Revoked, and kept as the record
 
+- [`D-AUD-013`][D-AUD-013] — A competing route is corrected where it is written · 2026-08-25 → D-AUD-014
 - [`D-KNW-109`][D-KNW-109] — Whether a core commit owes a sign-off is a subject this server owns · 2026-08-24 → D-KNW-110
 - [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24 → D-KNW-125
 - [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
@@ -1125,6 +1124,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name · 2026-07-29
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
+[D-AUD-013]: audience/aud-013-a-competing-route-is-corrected-where-it-is-written.md
 [D-KNW-109]: knowledge/knw-109-whether-a-core-commit-owes-a-sign-off-is-a-subject-this-server-owns.md
 [D-KNW-110]: knowledge/knw-110-a-core-commit-message-carries-three-trailers-and-the-hooks-change-id.md
 [D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md

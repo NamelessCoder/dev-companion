@@ -677,6 +677,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### task-skills
 
 - [`D-SKL-079`][D-SKL-079] — A widened request re-establishes what the patch is and what it owes · 2026-08-27
+- [`D-SKL-080`][D-SKL-080] — A path only the core has routes to the core's own workflow · 2026-08-27
 - [`D-SKL-075`][D-SKL-075] — A patch narrows the work, not the list of points it closes on · 2026-08-25
 - [`D-SKL-076`][D-SKL-076] — A description names both jobs a skill's body owns · 2026-08-25
 - [`D-SKL-077`][D-SKL-077] — The crossing out of a review is recognised on the first edit meant to survive · 2026-08-25
@@ -753,6 +754,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
 [D-SKL-079]: task-skills/skl-079-a-widened-request-re-establishes-what-the-patch-is-and-what-it-owes.md
+[D-SKL-080]: task-skills/skl-080-a-path-only-the-core-has-routes-to-the-cores-own-workflow.md
 [D-SKL-075]: task-skills/skl-075-a-patch-narrows-the-work-not-the-list-of-points-it-closes-on.md
 [D-SKL-076]: task-skills/skl-076-a-description-names-both-jobs-a-skills-body-owns.md
 [D-SKL-077]: task-skills/skl-077-the-crossing-out-of-a-review-is-recognised-on-the-first-edit-meant-to-survive.md

@@ -12,6 +12,7 @@ earns one.
 - [`D-DOC-060`][D-DOC-060] — The worktree says a todo is in hand · 2026-08-27
 - [`D-DOC-061`][D-DOC-061] — A todo's id is derived rather than counted · 2026-08-27
 - [`D-DOC-062`][D-DOC-062] — A todo's head is front matter · 2026-08-27
+- [`D-DOC-063`][D-DOC-063] — A prose sweep reaches what nobody is holding · 2026-08-27
 - [`D-DOC-058`][D-DOC-058] — A recording is reported against the day its sources moved · 2026-08-26
 - [`D-DOC-044`][D-DOC-044] — A failing test names the decisions it was holding · 2026-08-23
 - [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter · 2026-08-23
@@ -70,6 +71,7 @@ earns one.
 [D-DOC-060]: doc-060-the-worktree-says-a-todo-is-in-hand.md
 [D-DOC-061]: doc-061-a-todos-id-is-derived-rather-than-counted.md
 [D-DOC-062]: doc-062-a-todos-head-is-front-matter.md
+[D-DOC-063]: doc-063-a-prose-sweep-reaches-what-nobody-is-holding.md
 [D-DOC-058]: doc-058-a-recording-is-reported-against-the-day-its-sources-moved.md
 [D-DOC-044]: doc-044-a-failing-test-names-the-decisions-it-was-holding.md
 [D-DOC-045]: doc-045-what-a-listing-reads-is-front-matter.md

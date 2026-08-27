@@ -313,8 +313,12 @@ it is already written at. What it is for is the paragraph a rename left ragged.
 It moves the line breaks and the padding of a table and nothing else, which
 `ProseTest` asserts over the whole corpus rather than trusts, and it leaves
 alone everything a break means something in — which those are is what the two
-markups disagree about, so the file is asked which it is. Named no path it
-rewraps the corpus, which is a diff to look at before it is a diff to make.
+markups disagree about, so the file is asked which it is.
+
+Named no path it sweeps, and a sweep reaches what nobody is holding: in a
+worktree the files that branch changed, and in the checkout `main` stands on the
+corpus minus what the standing claims changed — `D-DOC-063`. The second of those
+is a diff to look at before it is a diff to make.
 
 A table is padded to the width of each column's widest cell, so a column can be
 scanned in the state the file is written in rather than only where something

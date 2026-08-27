@@ -8,8 +8,10 @@ use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Prose;
+use TYPO3\DevCompanion\Upkeep\Todo;
 use TYPO3\DevCompanion\Upkeep\Wrap;
 
 /**
@@ -27,8 +29,9 @@ use TYPO3\DevCompanion\Upkeep\Wrap;
  * and no formatter can tell.
  *
  * A path narrows it to the files a change touched, which is what a commit
- * wants. Named nothing, it rewraps the whole corpus, and that is a diff to look
- * at before it is a diff to make.
+ * wants. Named nothing it sweeps, and a sweep reaches what nobody is holding:
+ * in a worktree the branch's own files, and in the checkout `main` stands on
+ * the corpus minus what the standing claims changed — `D-DOC-063`.
  */
 #[AsCommand(
     name: 'prose:format',
@@ -44,14 +47,19 @@ final class ProseFormat
         #[Argument('the files or directories to rewrap; the whole prose corpus when none is named')]
         array $paths = [],
     ): int {
-        $files = self::targets($paths);
-        if ($files === []) {
-            Cli::errors($output)->writeln(sprintf(
-                'No prose file this repository writes about itself matches %s.',
-                implode(', ', $paths),
-            ));
+        $corpus = array_values(array_filter(Prose::documents(), self::isWrittenByHand(...)));
+        if ($paths === []) {
+            $files = self::sweep($output, $corpus);
+        } else {
+            $files = self::named($paths, $corpus);
+            if ($files === []) {
+                Cli::errors($output)->writeln(sprintf(
+                    'No prose file this repository writes about itself matches %s.',
+                    implode(', ', $paths),
+                ));
 
-            return 1;
+                return 1;
+            }
         }
 
         $rewritten = [];
@@ -76,7 +84,7 @@ final class ProseFormat
     }
 
     /**
-     * The files a run works on: the corpus, or the part of it that was named.
+     * The part of the corpus a caller named.
      *
      * Matched against `Prose::documents()` rather than resolved into a file to
      * rewrite, so this touches the prose this repository writes about itself
@@ -85,16 +93,12 @@ final class ProseFormat
      * evidence.
      *
      * @param list<string> $paths
+     * @param list<string> $corpus
      *
      * @return list<string>
      */
-    private static function targets(array $paths): array
+    private static function named(array $paths, array $corpus): array
     {
-        $files = array_values(array_filter(Prose::documents(), self::isWrittenByHand(...)));
-        if ($paths === []) {
-            return $files;
-        }
-
         $named = [];
         foreach ($paths as $path) {
             $resolved = realpath($path) ?: realpath(Paths::root() . '/' . $path);
@@ -103,7 +107,7 @@ final class ProseFormat
             }
 
             $relative = substr($resolved, strlen(Paths::root()) + 1);
-            foreach ($files as $file) {
+            foreach ($corpus as $file) {
                 if ($file === $relative || str_starts_with($file, $relative . '/')) {
                     $named[$file] = $file;
                 }
@@ -111,6 +115,76 @@ final class ProseFormat
         }
 
         return array_values($named);
+    }
+
+    /**
+     * The corpus, minus every file somebody has in hand — `D-DOC-063`.
+     *
+     * A rewrap of a file another branch is holding is a conflict whichever side
+     * lands first: the branch that only rewrapped it meets the card `main`
+     * deleted, and the branch that deleted its card meets the sweep that
+     * rewrapped it. So a sweep reaches what nobody is holding, and a claim
+     * rewraps its own files and leaves the rest to the checkout `main` stands
+     * on.
+     *
+     * @param list<string> $corpus
+     *
+     * @return list<string>
+     */
+    private static function sweep(OutputInterface $output, array $corpus): array
+    {
+        $root = Paths::root();
+        if (Todo::linked($root)) {
+            $branch = Todo::standing($root);
+            $output->writeln(sprintf(
+                'A worktree rewraps what it changed, so this is %s and not the corpus.',
+                $branch === '' ? 'what is in hand here' : $branch . "'s own files",
+            ));
+
+            return array_values(array_intersect($corpus, self::changed($root)));
+        }
+
+        $held = [];
+        foreach (array_keys(Todo::worktrees($root)) as $name) {
+            $held = [...$held, ...self::changed($root . '/.worktrees/' . $name)];
+        }
+
+        $files = array_values(array_diff($corpus, $held));
+        if ($files !== $corpus) {
+            $output->writeln(sprintf(
+                '%d files are in hand and left to the claims holding them.',
+                count($corpus) - count($files),
+            ));
+        }
+
+        return $files;
+    }
+
+    /**
+     * What a checkout has changed against `main`, committed or not.
+     *
+     * The uncommitted half is what makes this the answer while a session is
+     * still working: a decision file it has written and not added is one nobody
+     * else may rewrap either, and it arrives with the porcelain.
+     *
+     * @return list<string>
+     */
+    private static function changed(string $path): array
+    {
+        $files = [];
+        [$read, $said] = Checkouts::run(['git', '-C', $path, 'diff', '--name-only', 'main...HEAD']);
+        if ($read === 0) {
+            $files = preg_split('/\R/', trim($said)) ?: [];
+        }
+
+        [$read, $said] = Checkouts::run(['git', '-C', $path, 'status', '--porcelain']);
+        foreach ($read === 0 ? preg_split('/\R/', trim($said)) ?: [] : [] as $line) {
+            $file = trim(substr($line, 2));
+            // A rename says `old -> new`, and the file that is there is the second.
+            $files[] = str_contains($file, ' -> ') ? substr($file, (int) strpos($file, ' -> ') + 4) : $file;
+        }
+
+        return array_values(array_unique(array_filter($files, static fn(string $file): bool => $file !== '')));
     }
 
     /**

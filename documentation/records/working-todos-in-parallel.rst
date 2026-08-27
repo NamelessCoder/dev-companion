@@ -184,7 +184,7 @@ Nothing about it is special. It reads what the todo serves, settles what the
 step turns on, and leaves the file true — all of :doc:`working-a-todo`, which
 the command names as usual.
 
-Four things are different, and all of them are consequences of ``main`` being
+Five things are different, and all of them are consequences of ``main`` being
 elsewhere. The claim is handed over with them attached; this is why they are
 there:
 
@@ -202,6 +202,12 @@ there:
   ``composer ci`` says it, deliberately: a suite that held the listing would
   fail every branch that adds an entry, on the one line the branch is told not
   to touch — ``D-FBK-011``.
+* **Rewrap what this branch changed, and leave the corpus to the checkout.** A
+  card another claim is deleting is a conflict whichever side rewrapped it, and
+  twice on 2026-08-27 that stopped ``todo:home`` with the rebase aborted behind
+  it. ``bin/cli prose:format`` named no path narrows itself here rather than
+  asking anybody to remember a path, so the line is the same one every session
+  runs — ``D-DOC-063``.
 * **Say nothing about what another branch has done.** A sibling's state is the
   one fact a worktree cannot check, and writing it down is how a run of ten
   leaves two feedback answering for nothing. Twice now the same sentence has

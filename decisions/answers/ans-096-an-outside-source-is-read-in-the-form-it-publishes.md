@@ -2,7 +2,7 @@
 id: D-ANS-096
 title: An outside source is read in the form it publishes
 date: 2026-08-23
-status: open
+status: confirmed
 coveredBy: []
 ---
 
@@ -63,3 +63,25 @@ it was written.
 - A second source without an API turns out to be worth a parser. Two make "the
   manual" an exception list rather than an exception, and the rule then has to
   say what makes a page readable instead of naming one host.
+
+## Confirmed on 2026-08-28
+
+Both **Wrong if**s were read and neither has happened.
+
+The manual still renders what the reader takes. `typo3_documentation_lookup`
+asked `queries: ["site set"]` at `targetVersion 14.3` on 2026-08-28 answers
+`answered` with six pages, each carrying an excerpt of the article's own prose —
+the PSR-14 event page opens on what the event is fired after — rather than a
+navigation tree or half a page. That is the first **Wrong if** watching for the
+theme moving under `Manual\Documentation`, and the reading is a live one, which
+`DocumentationTest` is not.
+
+No second source without an API has arrived. The groups that reach a host are
+the same four: `Contribution\Forge`, `Contribution\Gerrit`, `Publication\Ter`
+through `Fetch::decode()`, and `Manual\` out of the rendered pages. So "the
+manual" is still an exception rather than an exception list, and the rule has
+not had to say what makes a page readable.
+
+What this does not read is the corpus for a session reporting a thin answer.
+That is the first **Wrong if**'s own stated route — "the first report of that
+would be a session's" — and it stays the thing to watch.

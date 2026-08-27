@@ -36,7 +36,7 @@ one is added.
 - [`D-ANS-102`][D-ANS-102] — The project answer says whether the installed tree matches the lock · 2026-08-24
 - [`D-ANS-103`][D-ANS-103] — An id an answer names carries the URL that reaches it · 2026-08-24
 - [`D-ANS-104`][D-ANS-104] — The maintained release lines are placed where a task names a branch · 2026-08-24
-- [`D-ANS-096`][D-ANS-096] — An outside source is read in the form it publishes · 2026-08-23
+- [`D-ANS-096`][D-ANS-096] — An outside source is read in the form it publishes · 2026-08-23 · confirmed
 - [`D-ANS-091`][D-ANS-091] — The project answer leaves the second call to the instructions · 2026-08-21
 - [`D-ANS-092`][D-ANS-092] — The project answer says how its declared suites are run · 2026-08-21
 - [`D-ANS-093`][D-ANS-093] — A major's deprecations come back in one call · 2026-08-21

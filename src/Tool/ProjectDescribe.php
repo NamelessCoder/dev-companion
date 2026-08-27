@@ -44,6 +44,18 @@ final class ProjectDescribe extends ReadOnlyTool
      */
     private const LOCK_PACKAGES_LISTED = 10;
 
+    /**
+     * What the block of guides opens with, above one line per page.
+     *
+     * A const because it is also where the answer stops being about this
+     * repository: the corpus is the same in every answer and each entry says
+     * for itself which kind of checkout it holds for, so a test reading the
+     * part that is about the caller's own project splits the text here.
+     */
+    public const GUIDES_INTRO = 'Whole procedures this server carries, each one typo3_rule_lookup with that '
+        . 'documentId — no resource list needed, and none of them is answered by a search over sections. Read the '
+        . 'one whose sentence names the work you are about to do:';
+
     public static function name(): string
     {
         return 'typo3_project_describe';
@@ -324,16 +336,16 @@ final class ProjectDescribe extends ReadOnlyTool
      * answer rather than first, because what this tool is called for is the
      * installation.
      *
-     * @return array{lines: array<int, string>, records: array<int, array{id: string, title: string}>}
+     * @return array{lines: array<int, string>, records: array<int, array{id: string, title: string, when: string}>}
      */
     private static function guides(): array
     {
         $records = [];
-        $lines = ['', 'Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no '
-            . 'resource list needed, and none of them is answered by a search over sections:'];
+        $lines = ['', self::GUIDES_INTRO];
         foreach (Documents::documents() as $document) {
-            $records[] = ['id' => $document['id'], 'title' => $document['title']];
-            $lines[] = sprintf('- %s — %s', $document['id'], $document['title']);
+            $reference = Documents::reference($document);
+            $records[] = $reference;
+            $lines[] = sprintf('- %s — %s. %s', $reference['id'], $reference['title'], $reference['when']);
         }
 
         return ['lines' => $lines, 'records' => $records];

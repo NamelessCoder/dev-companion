@@ -144,8 +144,9 @@ final class TaskGuide extends ReadOnlyTool
      * the call rather than as the `typo3://guides` address, because a client
      * that lists no resources cannot act on an address (`D-ANS-061`).
      */
-    public const GUIDES_OWNING = 'Written up in: %s. Each is one typo3_rule_lookup call with that documentId, '
-        . 'no resource list needed — the procedure for this kind of work, which this brief does not repeat.';
+    public const GUIDES_OWNING = 'Written up in the pages below, each one typo3_rule_lookup call with that '
+        . 'documentId, no resource list needed — the procedure for this kind of work, which this brief does not '
+        . 'repeat. Read the one whose sentence names the work you are about to do:';
 
     /**
      * The change type of a task that changes nothing, and the id of the intent
@@ -564,10 +565,10 @@ final class TaskGuide extends ReadOnlyTool
         // project and the guide is a page here, so a session that has neither
         // installed nor listed still gets the one it can reach.
         if ($guides !== []) {
-            $lines[] = sprintf(self::GUIDES_OWNING, implode(', ', array_map(
-                static fn(array $guide): string => $guide['id'] . ' — ' . $guide['title'],
-                $guides,
-            )));
+            $lines[] = self::GUIDES_OWNING;
+            foreach ($guides as $guide) {
+                $lines[] = sprintf('- %s — %s. %s', $guide['id'], $guide['title'], $guide['when']);
+            }
         }
 
         $lines[] = '';
@@ -880,16 +881,16 @@ final class TaskGuide extends ReadOnlyTool
      * the same mapping so nobody finds out here.
      *
      * @param array<int, string> $ids
-     * @return array<int, array{id: string, title: string}>
+     * @return array<int, array{id: string, title: string, when: string}>
      */
     private static function guideRecords(array $ids): array
     {
-        $titles = array_column(Documents::documents(), 'title', 'id');
+        $documents = array_column(Documents::documents(), null, 'id');
 
         $records = [];
         foreach ($ids as $id) {
-            if (isset($titles[$id])) {
-                $records[] = ['id' => $id, 'title' => (string) $titles[$id]];
+            if (isset($documents[$id])) {
+                $records[] = Documents::reference($documents[$id]);
             }
         }
 

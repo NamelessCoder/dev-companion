@@ -126,6 +126,8 @@ Answers with
       - # What typo3_rule_lookup takes as documentId to return the whole document.
         id: string
         title: string
+        # What the caller has to be doing for this page to be the one to read.
+        when: string
     # What typo3_hint_lookup answers for these paths, quoted whole and carried here
     # — the strongest few per group of paths, not everything it holds on them. A
     # hint declaring a different kind of repository from the paths given ranks below

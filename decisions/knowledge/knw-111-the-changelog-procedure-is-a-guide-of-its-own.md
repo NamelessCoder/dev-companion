@@ -40,7 +40,7 @@ sat in a page named for a different subject.
   2026-08-24, works it through by example: a change backported to the stable LTS
   goes into that LTS's `.x` directory on `main` and into the same directory on
   the branch, and one reaching two LTS lines is duplicated into both.
-- [`feedback/2026-08-24-173211`](../../feedback/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md)
+- [`feedback/2026-08-24-173211`](../../feedback/archive/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md)
   is the second session, on another task shape — an old Forge issue worked off —
   and it spent six calls on the same conventions with the guides list in front
   of it. It asks for the same page.
@@ -151,7 +151,7 @@ in its list.
 
 **The second session's feedback was judged on 2026-08-25, and the content half
 this entry took on is answered.**
-[`feedback/2026-08-24-173211`](../../feedback/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md)
+[`feedback/2026-08-24-173211`](../../feedback/archive/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md)
 counted six calls to establish the conventions, and each of them now lands in
 one.
 

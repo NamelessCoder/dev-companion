@@ -87,3 +87,17 @@ size: an orientation has parts a caller can name, and a caller that knows it
 wants the boundary is not choosing blind. The project answer is one repository
 described, at a fourteenth of the weight, and its parts are not questions
 anybody asks apart.
+
+### 2026-08-27 — the listing this entry kept has doubled
+
+**The guides half now carries a sentence per page, and the answer went from
+22,075 characters over two recorded calls to 41,701.** `D-GUI-012` was answered
+that way on 2026-08-27: an id and a title were what six sessions read from four
+surfaces before opening none of the pages, so each entry says what the caller
+has to be doing for it to be the one to read.
+
+That is this entry's own reasoning applied again rather than against it — bytes
+nobody is billed for, against the second context a fetch costs. What it does
+sharpen is the second **Wrong if**: the listing is now three quarters of the
+answer, and if the pages still go unopened, the question stops being how they
+are named.

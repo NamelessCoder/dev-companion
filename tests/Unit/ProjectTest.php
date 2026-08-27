@@ -16,6 +16,7 @@ use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\ProjectDescribe;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Fixture;
 
@@ -259,6 +260,7 @@ final class ProjectTest extends TestCase
      * that argument one step earlier — the instructions open every task with
      * `typo3_project_describe`, which was the one call that session made.
      */
+    #[Decision('D-GUI-012')]
     #[Test]
     public function theCallEveryTaskOpensWithNamesTheGuidesThereAre(): void
     {
@@ -275,6 +277,19 @@ final class ProjectTest extends TestCase
         // and an inventory above those facts has traded one discovery problem
         // for another.
         self::assertSame('guides', array_key_last(array_diff_key($answer, ['answeredBy' => null])));
+
+        // And every entry says what the caller has to be doing for it to be the
+        // page to read, in the page's own words. An id and a title were what
+        // six sessions read from four surfaces before opening none of them, and
+        // three of those read this array — `D-GUI-012`.
+        self::assertSame(
+            array_column(Documents::documents(), 'whenToUse', 'id'),
+            array_column($answer['guides'] ?? [], 'when', 'id'),
+        );
+        $text = Registry::call('typo3_project_describe', [])->text;
+        foreach ($answer['guides'] ?? [] as $guide) {
+            self::assertStringContainsString($guide['when'], $text, $guide['id']);
+        }
     }
 
     #[Decision('D-ANS-013')]
@@ -1287,8 +1302,11 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('composer ci', $text);
         self::assertStringContainsString('testing suites do not', $text);
         // Nothing here runs a core suite, so there is nothing to point at:
-        // runTests.sh is not in this repository.
-        self::assertStringNotContainsString('typo3_test_run_guide', $text);
+        // runTests.sh is not in this repository. Read of the half that is about
+        // this repository, because the guides below it are the same corpus in
+        // every answer and `core/testing/scripts` names that tool in the
+        // sentence saying it holds inside a core checkout.
+        self::assertStringNotContainsString('typo3_test_run_guide', self::aboutThisRepository($text));
     }
 
     #[Decision('D-ANS-031')]
@@ -1346,7 +1364,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('id=project-extension-tests', $text);
         // Not the core's pointer: runTests.sh is in the core repository, and
         // handing it over here is the widening `D-ANS-086` rejected.
-        self::assertStringNotContainsString('typo3_test_run_guide', $text);
+        self::assertStringNotContainsString('typo3_test_run_guide', self::aboutThisRepository($text));
 
         // And a repository declaring no suite is told nothing, because the
         // pointer answers a command that is there rather than a kind of
@@ -2517,6 +2535,19 @@ final class ProjectTest extends TestCase
             mkdir(dirname($file), 0o777, true);
         }
         file_put_contents($file, $content);
+    }
+
+    /**
+     * The half of the answer that is about the caller's own repository.
+     *
+     * Everything from the guides block down is the same corpus in every
+     * answer, and each entry there says which kind of checkout it holds for.
+     */
+    private static function aboutThisRepository(string $text): string
+    {
+        $split = strstr($text, ProjectDescribe::GUIDES_INTRO, true);
+
+        return $split === false ? $text : $split;
     }
 
     /** @param array<string, mixed> $manifest */

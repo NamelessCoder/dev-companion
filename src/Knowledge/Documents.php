@@ -217,6 +217,22 @@ final class Documents
         };
     }
 
+    /**
+     * One document as an answer names it: the call that reads it, what it is,
+     * and what the caller has to be doing for it to be the page to read.
+     *
+     * The orientation answer and a brief both carry these, so the mapping from
+     * what a document declares to what an answer says lives here rather than
+     * in each of them — `D-GUI-012`.
+     *
+     * @param array{id: string, title: string, whenToUse: string, ...} $document
+     * @return array{id: string, title: string, when: string}
+     */
+    public static function reference(array $document): array
+    {
+        return ['id' => $document['id'], 'title' => $document['title'], 'when' => $document['whenToUse']];
+    }
+
     public static function read(string $id): string
     {
         foreach (self::documents() as $document) {

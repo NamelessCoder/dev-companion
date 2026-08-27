@@ -308,14 +308,20 @@ final class Schema
     }
 
     /**
-     * A whole procedure named rather than handed over, and the call that reads
-     * it.
+     * A whole procedure named rather than handed over, the call that reads it,
+     * and what the caller has to be doing for it to be worth reading.
      *
      * Two tools answer with one: the orientation call lists every page this
      * server carries, and a brief names the one the work it recognized belongs
      * to. A `typo3://guides` address reaches only a client that renders
      * resources, so what is named is the id `typo3_rule_lookup` takes —
      * `D-ANS-061`, `D-GUI-012`.
+     *
+     * The `when` is what makes a `documentId` a decision rather than a title:
+     * six sessions read a page's name from four different surfaces and opened
+     * none of them, and every account of why says the entry gave them nothing
+     * to weigh. It is the document's own `whenToUse`, so the page and the
+     * pointer to it cannot say different things.
      *
      * @return array<string, mixed>
      */
@@ -324,7 +330,8 @@ final class Schema
         return self::object([
             'id' => self::string('What typo3_rule_lookup takes as documentId to return the whole document.'),
             'title' => self::string(),
-        ], ['id', 'title']);
+            'when' => self::string('What the caller has to be doing for this page to be the one to read.'),
+        ], ['id', 'title', 'when']);
     }
 
     /**

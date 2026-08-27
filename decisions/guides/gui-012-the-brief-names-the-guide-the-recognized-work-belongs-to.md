@@ -6,6 +6,7 @@ status: open
 coveredBy:
   - HintsTest::aBriefNamesTheGuideTheWorkIsWrittenUpIn
   - KnowledgeTest::everyGuideAnIntentNamesIsADocument
+  - ProjectTest::theCallEveryTaskOpensWithNamesTheGuidesThereAre
 ---
 
 # D-GUI-012 — The brief names the guide the recognized work belongs to
@@ -331,7 +332,7 @@ stopped describing the corpus when
 split `core/contribution/changelog` out as a fourth.
 
 Measured in this worktree while judging
-[`feedback/2026-08-24-173211`](../../feedback/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md),
+[`feedback/2026-08-24-173211`](../../feedback/archive/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md),
 whose first suggestion is that the brief name the guide covering the task it was
 asked about. For a core changelog task the brief's `guides` is empty and its
 rule sections come from `core/contribution/rules` and
@@ -394,9 +395,9 @@ so a `documentId` becomes a decision instead of a title.
 every answer of two tools volunteers, which `documentation/records/judging.rst`
 says is not changed quietly.
 
-The half of that feedback which reports this is trimmed off it, because
-[`T-260824-cecc`](../../todo/open/T-260824-cecc.md) carries the question and
-what comes back answers this report with the other four.
+The half of that feedback which reports this is trimmed off it, because the
+question it belongs to is the one the entry below answers, and one answer
+answers this report with the other four.
 
 ### 2026-08-27 — the question is answered, and the guide reference gets a `when`
 
@@ -404,8 +405,10 @@ what comes back answers this report with the other four.
 page it names being handed over whole.** Put to the maintainer on 2026-08-27
 with the three options this section had accumulated — the `when` line, the whole
 page, and waiting for a further report — and the first was taken. So
-`Schema::guideReference` gains what `Schema::nextTool` beside it already has,
-and `T-260824-cecc` and `T-260824-87b2` leave `todo/waiting/` for the queue.
+`Schema::guideReference` gained what `Schema::nextTool` beside it already had,
+in the same run: the `when` is the document's own `whenToUse`, so the page and
+the pointer to it cannot drift apart, and both tools build the reference through
+`Documents::reference()`. The two feedback it answers are archived.
 
 What the count stands at when it is built is six reports from four surfaces. The
 sixth arrived the same day: `feedback/2026-08-27-145428` read a twenty-entry

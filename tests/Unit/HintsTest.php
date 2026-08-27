@@ -6276,8 +6276,17 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('typo3_rule_lookup call with that documentId', $tests->text);
         self::assertLessThan(
             (int) strpos($tests->text, 'Hints:'),
-            (int) strpos($tests->text, 'Written up in:'),
+            (int) strpos($tests->text, TaskGuide::GUIDES_OWNING),
         );
+
+        // And what the caller has to be doing for the page to be the one to
+        // read, in both halves — the page's own declaration rather than a
+        // second sentence about it, so the two cannot drift apart. Six sessions
+        // read an id and a title from four surfaces and opened none of them.
+        $declared = array_column(Documents::documents(), 'whenToUse', 'id');
+        self::assertNotSame('', $declared['extension/testing/phpunit']);
+        self::assertSame($declared['extension/testing/phpunit'], $tests->data['guides'][0]['when']);
+        self::assertStringContainsString($tests->data['guides'][0]['when'], $tests->text);
 
         // The core side of the same work names none: what a core patch owes is
         // the three contribution documents, which the rule sections in the same
@@ -6289,7 +6298,7 @@ final class HintsTest extends TestCase
         ]);
 
         self::assertSame([], $core->data['guides']);
-        self::assertStringNotContainsString('Written up in:', $core->text);
+        self::assertStringNotContainsString(TaskGuide::GUIDES_OWNING, $core->text);
 
         // A brief that changes nothing names only the pages of work that
         // changes nothing either, the rule `D-SKL-039` established for the

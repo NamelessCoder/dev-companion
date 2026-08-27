@@ -129,3 +129,10 @@ reads it as leave to route in a brief that already changes nothing, and what
 makes a brief one of those is the stated change type or an audit, triage,
 operations or diagnosis intent. Landing on `patch-checkout` withholds no route
 on its own.
+
+The review `writing-a-skill.rst` asks for before publication was made on
+2026-08-27, on the branch and before the merge. It returned one correction, the
+author line, which is `D-KNW-131`; the fourth way in, the ask before the upload,
+the file by file rule and the ending on the review branch were read and passed.
+That is the first skill here reviewed by the maintainer before it shipped rather
+than after.

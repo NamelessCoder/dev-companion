@@ -14,6 +14,7 @@ one is added.
 - [`D-ANS-118`][D-ANS-118] — A permalink identifier is resolved from the inventories the manual lookup already reads · 2026-08-27
 - [`D-ANS-119`][D-ANS-119] — A permalink identifier is every inventory name that is not a page · 2026-08-27
 - [`D-ANS-120`][D-ANS-120] — A manual is reached by a listed shortcode or by a core package name · 2026-08-27
+- [`D-ANS-121`][D-ANS-121] — A change answer says whether its patch set carries conflict markers · 2026-08-27
 - [`D-ANS-110`][D-ANS-110] — A changelog miss with no re-query names the manual and the rules · 2026-08-26
 - [`D-ANS-111`][D-ANS-111] — A change answer says which comment thread is open · 2026-08-26
 - [`D-ANS-112`][D-ANS-112] — A change answer establishes the patch without a fetch · 2026-08-26
@@ -130,6 +131,7 @@ one is added.
 [D-ANS-118]: ans-118-a-permalink-identifier-is-resolved-from-the-inventories-the-manual-lookup-already-reads.md
 [D-ANS-119]: ans-119-a-permalink-identifier-is-every-inventory-name-that-is-not-a-page.md
 [D-ANS-120]: ans-120-a-manual-is-reached-by-a-listed-shortcode-or-by-a-core-package-name.md
+[D-ANS-121]: ans-121-a-change-answer-says-whether-its-patch-set-carries-conflict-markers.md
 [D-ANS-110]: ans-110-a-changelog-miss-with-no-re-query-names-the-manual-and-the-rules.md
 [D-ANS-111]: ans-111-a-change-answer-says-which-comment-thread-is-open.md
 [D-ANS-112]: ans-112-a-change-answer-establishes-the-patch-without-a-fetch.md

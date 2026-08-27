@@ -482,7 +482,7 @@ final class Forge
     }
 
     /**
-     * The issues of the core project, oldest or stalest first.
+     * The issues of the core project, at whichever end of it was asked for.
      *
      * What this answers is the question a triage starts from and neither of the
      * two above reaches: an issue nobody has looked at since 2015 is found by
@@ -490,6 +490,11 @@ final class Forge
      * wording is the one nobody thought of. So the filter is the way in — the
      * tracker's own `status_id=open`, which is every status it has not marked
      * closed and therefore includes `Postponed`.
+     *
+     * `newest` is the other end, where the question is whether a defect
+     * somebody has just found is already filed. `createdSince` is what makes
+     * that end a set rather than a page of one, and it narrows where an area
+     * cannot — `D-ANS-116`.
      *
      * `total` comes back with the page, because a caller shown 30 of something
      * has to be able to see whether 30 was the set or the first screenful of
@@ -510,6 +515,7 @@ final class Forge
         string $tracker = '',
         string $category = '',
         string $createdBefore = '',
+        string $createdSince = '',
         string $updatedBefore = '',
         int $limit = 15,
         string $status = 'open',
@@ -547,7 +553,11 @@ final class Forge
                 'all' => '*',
                 default => 'open',
             },
-            'sort' => $order === 'stale' ? 'updated_on:asc' : 'created_on:asc',
+            'sort' => match ($order) {
+                'stale' => 'updated_on:asc',
+                'newest' => 'created_on:desc',
+                default => 'created_on:asc',
+            },
         ];
         if (isset(self::TRACKERS[$tracker])) {
             $filters['tracker_id'] = (string) self::TRACKERS[$tracker];
@@ -586,8 +596,9 @@ final class Forge
         // A date the tracker cannot read is answered with the unfiltered set,
         // which is the wrong answer wearing a right one's shape. Only a date
         // reaches the query.
-        if (self::isDate($createdBefore)) {
-            $filters['created_on'] = '<=' . $createdBefore;
+        $filed = self::within($createdSince, $createdBefore);
+        if ($filed !== '') {
+            $filters['created_on'] = $filed;
         }
         if (self::isDate($updatedBefore)) {
             $filters['updated_on'] = '<=' . $updatedBefore;
@@ -781,8 +792,12 @@ final class Forge
     private static function inOrder(array $rows, string $sort): array
     {
         $field = str_starts_with($sort, 'updated_on') ? 'updated_on' : 'created_on';
+        // Which way round, and not only which field: the recent end is the same
+        // sort read backwards, and a merge that ignores that keeps the oldest
+        // rows of a page the caller asked the newest of.
+        $direction = str_ends_with($sort, ':desc') ? -1 : 1;
         $sorted = array_values($rows);
-        usort($sorted, static fn(array $one, array $other): int => strcmp(
+        usort($sorted, static fn(array $one, array $other): int => $direction * strcmp(
             is_string($one[$field] ?? null) ? $one[$field] : '',
             is_string($other[$field] ?? null) ? $other[$field] : '',
         ));
@@ -845,6 +860,29 @@ final class Forge
     private static function isDate(string $date): bool
     {
         return preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) === 1;
+    }
+
+    /**
+     * The two ends of one date field as one filter, and empty where neither is
+     * a day.
+     *
+     * Both ends written as two filters would be one filter and the other
+     * silently gone: the tracker takes one value per field, and `><a|b` is its
+     * own way of saying a window, read from it in `D-ANS-116`.
+     */
+    private static function within(string $since, string $before): string
+    {
+        $from = self::isDate($since) ? $since : '';
+        $to = self::isDate($before) ? $before : '';
+        if ($from !== '' && $to !== '') {
+            return '><' . $from . '|' . $to;
+        }
+
+        return match (true) {
+            $from !== '' => '>=' . $from,
+            $to !== '' => '<=' . $to,
+            default => '',
+        };
     }
 
     /**

@@ -476,7 +476,7 @@
     },
     {
       "when": "Writing the title and the description of a core bug report, or filling in the new-issue form on forge.typo3.org — including the issue a patch's Resolves: trailer will point at, which is written before the patch is pushed",
-      "call": "typo3_rule_lookup with documentId=\"core/contribution/reporting-an-issue\" for the fields and the Textile the description renders as, then typo3_forge_lookup with category=\"*\" for the areas the Category field takes and with query in the words of the symptom for whether it is already reported"
+      "call": "typo3_rule_lookup with documentId=\"core/contribution/reporting-an-issue\" for the fields and the Textile the description renders as, then typo3_forge_lookup with category=\"*\" for the areas the Category field takes, and for whether it is already reported typo3_forge_lookup with query in the words of the symptom and again with open=\"newest\", createdSince from the day the defect could first have been reported and limit=50 — a wording reaches only the issues worded that way, and reading the subjects of everything filed since is what settles a negative"
     },
     {
       "when": "Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description",

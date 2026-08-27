@@ -585,6 +585,7 @@ final class ForgeTest extends TestCase
      */
     #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-038')]
+    #[Decision('D-ANS-116')]
     #[Test]
     public function aMissNamesTheEnumerationAsACallToCompose(): void
     {
@@ -598,7 +599,11 @@ final class ForgeTest extends TestCase
         $result = Registry::call('typo3_forge_lookup', ['query' => 'writePagesOrder importNewIdPids']);
 
         self::assertSame('empty', $result->data['status']);
-        self::assertStringContainsString('open "stale" with category', $result->text);
+        self::assertStringContainsString('open "newest" with createdSince', $result->text);
+        // What that call delivers and no more. The promise it replaces was
+        // written from an area holding 26 open issues and overstates what a
+        // page of 50 settles above the bound (`D-ANS-116`).
+        self::assertStringContainsString('where total and the rows agree', $result->text);
         // The rule that makes an identifier query empty whatever else is in it,
         // which is the other half of what the caller does next
         // (`feedback/2026-08-24-163235`).
@@ -849,7 +854,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $answer = $forge->open('stale', 'Bug', '', '2015-01-01', '2020-01-01', 2);
+        $answer = $forge->open('stale', 'Bug', createdBefore: '2015-01-01', updatedBefore: '2020-01-01', limit: 2);
 
         $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
         self::assertStringContainsString('status_id=open', $issues[0]);
@@ -885,7 +890,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $results = $forge->open('stale', '', '', '', '', 2)['results'];
+        $results = $forge->open('stale', limit: 2)['results'];
 
         self::assertStringContainsString('include=relations%2Cattachments', $asked[1]);
         self::assertSame([90676], array_column($results[0]['relations'], 'issue'));
@@ -909,7 +914,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $relation = $forge->open('stale', '', '', '', '', 2)['results'][0]['relations'][0];
+        $relation = $forge->open('stale', limit: 2)['results'][0]['relations'][0];
 
         $filling = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, 'issue_id=')));
         self::assertCount(1, $filling);
@@ -937,7 +942,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $results = $forge->open('stale', '', '', '', '', 2)['results'];
+        $results = $forge->open('stale', limit: 2)['results'];
 
         $review = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, 'review.typo3.org')));
         self::assertCount(1, $review);
@@ -969,7 +974,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $reviews = $forge->open('stale', '', '', '', '', 2)['results'][0]['reviews'];
+        $reviews = $forge->open('stale', limit: 2)['results'][0]['reviews'];
 
         self::assertSame(['NEW', 'ABANDONED'], array_column($reviews, 'status'));
         // One query for the page, and the state came out of it rather than out
@@ -991,7 +996,7 @@ final class ForgeTest extends TestCase
             ? null
             : $tracker($url));
 
-        $answer = $forge->open('stale', '', '', '', '', 2);
+        $answer = $forge->open('stale', limit: 2);
 
         self::assertSame('answered', $answer['status']);
         self::assertSame([14858, 23633], array_column($answer['results'], 'issue'));
@@ -1009,10 +1014,129 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $answer = $forge->open('oldest', '', '', '', '', 2);
+        $answer = $forge->open('oldest', limit: 2);
 
         self::assertSame(479, $answer['total']);
         self::assertCount(2, $answer['results']);
+    }
+
+    /**
+     * The other end of the same backlog, which is where a duplicate of a defect
+     * somebody has just found is. `oldest` and `stale` are both orderings of
+     * the neglected end, so neither of them reaches it — `D-ANS-116`.
+     */
+    #[Decision('D-ANS-116')]
+    #[Test]
+    public function theRecentEndIsOrderedByWhatWasFiledLast(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $forge->open('newest', limit: 2);
+
+        self::assertStringContainsString('sort=created_on%3Adesc', self::pageRead($asked)[0]);
+    }
+
+    /**
+     * A day to count from is what turns that end into a set, and it is the
+     * narrowing left where an area cannot be one: an issue filed under no
+     * Category is in no area at all — `D-ANS-116`.
+     *
+     * Both ends of the field are one range and never two filters. The tracker
+     * takes one value per field, so a second `created_on` would replace the
+     * first and answer a window nobody asked for.
+     */
+    #[Decision('D-ANS-116')]
+    #[Test]
+    public function theWindowIsOneFilterHoweverManyEndsItHas(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $forge->open('newest', createdSince: '2026-08-01', limit: 2);
+        $forge->open('newest', createdBefore: '2026-08-20', createdSince: '2026-08-01', limit: 2);
+
+        $reads = self::pageRead($asked);
+        self::assertStringContainsString('created_on=%3E%3D2026-08-01', $reads[0]);
+        self::assertStringContainsString('created_on=%3E%3C2026-08-01%7C2026-08-20', $reads[1]);
+    }
+
+    /**
+     * Which way the rest of the set lies, said at the end that was asked about.
+     * What this page leaves out is older than its last row, so what closes the
+     * gap is a later day — and the sentence every other ordering carries points
+     * at an earlier one — `D-ANS-116`.
+     */
+    #[Decision('D-ANS-116')]
+    #[Test]
+    public function theRecentEndSaysWhichWayTheRestOfTheSetLies(): void
+    {
+        $asked = [];
+        Forge::useReader(self::tracker($asked));
+
+        $page = Registry::call('typo3_forge_lookup', ['open' => 'newest', 'limit' => 2]);
+
+        self::assertStringContainsString('2 of 479', $page->text);
+        self::assertStringContainsString('newest filed first', $page->text);
+        self::assertStringContainsString('older than its last row', $page->text);
+        self::assertStringContainsString('pass createdSince', $page->text);
+        self::assertStringNotContainsString('an earlier date', $page->text);
+        // Which the caller decides, and this does not: a subject that reads
+        // like the report in hand is a candidate for one call more.
+        self::assertStringContainsString('never a duplicate', $page->text);
+    }
+
+    /**
+     * An issue filed under no Category is in no area, so a duplicate check
+     * narrowed by one answers about the filed-under-an-area part of the backlog
+     * while looking like an answer about the whole of it. #110533 — the issue
+     * the session that asked for this could not find — carries none, read from
+     * the tracker on 2026-08-27 — `D-ANS-116`.
+     */
+    #[Decision('D-ANS-116')]
+    #[Test]
+    public function anAreaSaysThatTheIssuesUnderNoneAreOutsideIt(): void
+    {
+        $asked = [];
+        Forge::useReader(self::tracker($asked));
+
+        $narrowed = Registry::call('typo3_forge_lookup', ['open' => 'newest', 'category' => 'rte', 'limit' => 2]);
+
+        self::assertStringContainsString('no Category at all is in no area', $narrowed->text);
+        self::assertStringContainsString('ask again without category', $narrowed->text);
+    }
+
+    /**
+     * The workflow that owns a page of the backlog opens by saying that
+     * choosing from it is not the caller's, which is the one thing a duplicate
+     * check cannot hand over — so the recent end carries none of it
+     * (`D-ANS-116`), and the two orderings a triage reads carry it as they did
+     * (`D-SKL-038`).
+     */
+    #[Decision('D-ANS-116')]
+    #[Decision('D-SKL-038')]
+    #[Test]
+    public function theRecentEndCarriesNoTriageWorkflow(): void
+    {
+        self::assertNull(ForgeLookup::workflow('answered', 'newest'));
+        self::assertNotNull(ForgeLookup::workflow('answered', 'oldest'));
+        self::assertNotNull(ForgeLookup::workflow('answered', 'stale'));
+    }
+
+    /**
+     * The page reads of an enumeration, which is what a filter was asserted
+     * against — the fill of a page's relations is `/issues.json` too, and it
+     * carries none of them.
+     *
+     * @param list<string> $asked
+     * @return list<string>
+     */
+    private static function pageRead(array $asked): array
+    {
+        return array_values(array_filter(
+            $asked,
+            static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json'),
+        ));
     }
 
     /**
@@ -1090,7 +1214,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $forge->open('oldest', '', '', 'last year', '', 2);
+        $forge->open('oldest', createdBefore: 'last year', limit: 2);
 
         $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
         self::assertStringNotContainsString('created_on=', $issues[0]);
@@ -1133,7 +1257,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $answer = $forge->open('oldest', '', 'backend', '', '', 2);
+        $answer = $forge->open('oldest', category: 'backend', limit: 2);
 
         $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json')));
         self::assertCount(1, $issues);
@@ -1156,7 +1280,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $answer = $forge->open('oldest', '', '*', '', '', 2);
+        $answer = $forge->open('oldest', category: '*', limit: 2);
 
         self::assertSame([], array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
         self::assertSame('answered', $answer['status']);
@@ -1175,7 +1299,7 @@ final class ForgeTest extends TestCase
     {
         $forge = new Forge(static fn(): ?string => null);
 
-        $answer = $forge->open('oldest', '', '*', '', '', 2);
+        $answer = $forge->open('oldest', category: '*', limit: 2);
 
         self::assertSame('unavailable', $answer['status']);
         self::assertSame('source-not-answering', $answer['cause']);
@@ -1194,7 +1318,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $answer = $forge->open('oldest', '', 'quantumflux', '', '', 2);
+        $answer = $forge->open('oldest', category: 'quantumflux', limit: 2);
 
         self::assertSame([], array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
         self::assertSame('empty', $answer['status']);
@@ -1393,7 +1517,7 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        $results = $forge->open('oldest', '', '', '', '', 2)['results'];
+        $results = $forge->open('oldest', limit: 2)['results'];
 
         self::assertSame('Frank Nägler', $results[0]['reportedBy']);
         // A row the tracker named nobody on carries none, which is the answer
@@ -1476,6 +1600,33 @@ final class ForgeTest extends TestCase
         self::assertSame([14858, 23633, 89326], array_column($answer['results'], 'issue'));
         self::assertSame(9, $answer['total'], '6 and 6 less the 3 both carry');
         self::assertSame('involving', $answer['people'][0]['filter']);
+    }
+
+    /**
+     * A merge keeps the end it was asked for. Both reads come back newest
+     * first, and a merge that ordered them the other way would answer the two
+     * oldest rows of a page the caller asked the newest of — `D-ANS-116`.
+     */
+    #[Decision('D-ANS-116')]
+    #[Test]
+    public function aMergedUnionKeepsTheEndItWasAskedFor(): void
+    {
+        $forge = new Forge(static function (string $url): string {
+            if (str_contains($url, '/memberships.json')) {
+                return (string) json_encode(self::MEMBERS);
+            }
+            if (str_contains($url, 'review.typo3.org') || str_contains($url, 'issue_id=')) {
+                return (string) json_encode(['issues' => [], 'total_count' => 0]);
+            }
+
+            return (string) json_encode(str_contains($url, 'author_id=') ? self::FILED : self::HELD);
+        });
+
+        $newest = $forge->open('newest', involving: 'Frank Nägler', limit: 2);
+        $oldest = $forge->open('oldest', involving: 'Frank Nägler', limit: 2);
+
+        self::assertSame([89326, 23633], array_column($newest['results'], 'issue'));
+        self::assertSame([14858, 23633], array_column($oldest['results'], 'issue'));
     }
 
     /** What the author read answers, one row of it shared with the other. */
@@ -1666,11 +1817,11 @@ final class ForgeTest extends TestCase
         $asked = [];
         $forge = new Forge(self::tracker($asked));
 
-        self::assertSame([], $forge->open('oldest', '', '', '', '', 2)['categories']);
-        self::assertSame([], $forge->open('oldest', '', 'rte', '', '', 2)['categories'], 'a word that resolved to one area');
+        self::assertSame([], $forge->open('oldest', limit: 2)['categories']);
+        self::assertSame([], $forge->open('oldest', category: 'rte', limit: 2)['categories'], 'a word that resolved to one area');
         // The two it does the work on: a word naming none, and a word naming
         // several, where what to ask instead is what the list answers.
-        self::assertContains('Frontend', $forge->open('oldest', '', 'quantumflux', '', '', 2)['categories']);
-        self::assertContains('Frontend', $forge->open('oldest', '', 'backend', '', '', 2)['categories']);
+        self::assertContains('Frontend', $forge->open('oldest', category: 'quantumflux', limit: 2)['categories']);
+        self::assertContains('Frontend', $forge->open('oldest', category: 'backend', limit: 2)['categories']);
     }
 }

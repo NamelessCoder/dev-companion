@@ -237,7 +237,7 @@ because one hit is not a miss.
 **The miss delivers what the empty answer owed and promises more than the call
 it names can carry.**
 
-[`feedback/2026-08-24-225214`](../../feedback/2026-08-24-225214-no-way-to-establish-that-an-issue-has-not-been.md)
+[`feedback/2026-08-24-225214`](../../feedback/archive/2026-08-24-225214-no-way-to-establish-that-an-issue-has-not-been.md)
 is the same shape as `110926` one step earlier: a session establishing whether a
 defect was already on the tracker before filing it, three wordings, all empty,
 and a negative it could not rely on. It asked for two things — the enumeration

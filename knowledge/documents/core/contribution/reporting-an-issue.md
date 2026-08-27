@@ -1,6 +1,6 @@
 ---
 description: >-
-  What a new issue on the TYPO3 Core project carries: the trackers it is filed under, the fields of a Bug and the one it does not go without, where the area comes from, who sets the target version, and the Textile the description renders as.
+  What a new issue on the TYPO3 Core project carries: how to establish that nobody has filed it yet, the trackers it is filed under, the fields of a Bug and the one it does not go without, where the area comes from, who sets the target version, and the Textile the description renders as.
 whenToUse: >-
   When writing the title and the description of a core bug report, or filling in the new-issue form on forge.typo3.org — the report a patch's Resolves: trailer will point at included.
 hints: []
@@ -16,6 +16,30 @@ report carries is read off the issues that were filed rather than off the form:
 `https://forge.typo3.org/issues/<number>.json` answers one whole, and
 `https://forge.typo3.org/projects/typo3cms-core.json?include=trackers,issue_categories`
 answers the project's own lists.
+
+## Whether It Is Already Reported
+
+Two calls, and the first of them does not settle it on its own.
+
+```
+typo3_forge_lookup with query="<two or three words of the symptom>"
+typo3_forge_lookup with open="newest", createdSince="<YYYY-MM-DD>", limit=50
+```
+
+A hit on the search is conclusive and an empty answer is not: it matches text,
+unranked, and every word has to be in the same issue, so a report worded
+differently is invisible to it. What an empty answer is read against is the
+second call — everything filed since that day, newest first, read as subjects.
+The day is the earliest the defect could have been reported: when the code that
+carries it shipped, or when you first saw it.
+
+`total` is what says whether that was the whole set or a page of it. Where it is
+larger than the rows, move `createdSince` later until the two agree, because
+what a page of that end left out is older than its last row.
+
+`category` narrows it further where the area is certain. An issue filed under no
+Category is in no area at all, and thousands of the open bugs carry none, so the
+narrowing that reaches those is the day rather than the area.
 
 ## What a Report Carries
 

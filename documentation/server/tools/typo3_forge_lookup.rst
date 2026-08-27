@@ -12,10 +12,13 @@ comments, where a maintainer who closed or reassigned it said why, which the
 description never says. Or pass query with words to find out which other issues
 describe the same thing, which the relations of one issue only answer for what
 somebody linked by hand. Or pass open to enumerate the core project's unresolved
-issues without holding a number or a wording — oldest filed or longest
-untouched, narrowed by tracker, by date and by person, which is where a triage
-of the backlog starts; the count of everything that matched comes back with the
-page, so a limited answer says whether it is the whole set. reportedBy and
+issues without holding a number or a wording — oldest filed, longest untouched
+or newest filed, narrowed by tracker, by date and by person, which is where a
+triage of the backlog starts; the count of everything that matched comes back
+with the page, so a limited answer says whether it is the whole set. The newest
+end is what answers "has somebody filed this already" before you file it, which
+no wording of the report settles: narrow it with createdSince to the day the
+defect could first have been reported and read the subjects. reportedBy and
 assignedTo take a person's name and answer what they filed and what they are on
 the hook for, which is the one question query cannot be made to answer: it
 matches text, so a name reaches the issues that mention the person and not the
@@ -69,16 +72,22 @@ Takes
     # worded differently is invisible to this. A call carries issue, query or open,
     # never two of them.
     query: string  # optional
-    # One of: oldest, stale. Enumerate the core project's unresolved issues instead
-    # of reading one or matching words: "oldest" orders them by when they were
-    # filed, "stale" by how long nobody has touched them. The two answer different
-    # questions about one backlog — filed long ago is about the report, untouched
-    # for years is about the attention it got — and an issue that is both is the
-    # candidate a triage is looking for. Unresolved is the tracker's own set of open
-    # statuses, so New, Accepted, Under Review, Needs Feedback, On Hold and
-    # Postponed are all in it. Narrow with tracker, category, createdBefore,
-    # updatedBefore, reportedBy and assignedTo, and reach past the unresolved ones
-    # with status. A call carries issue, query or open, never two of them.
+    # One of: oldest, stale, newest. Enumerate the core project's unresolved issues
+    # instead of reading one or matching words: "oldest" orders them by when they
+    # were filed, "stale" by how long nobody has touched them, "newest" by what came
+    # in last. The first two answer different questions about the neglected end of
+    # one backlog — filed long ago is about the report, untouched for years is
+    # about the attention it got — and an issue that is both is the candidate a
+    # triage is looking for. "newest" is the other end, and it is what a duplicate
+    # of a defect somebody has just found is at: a wording reaches only the issues
+    # worded that way, so what settles whether something has been reported already
+    # is reading the subjects filed since it could have been. Pair it with
+    # createdSince, which is what turns that end into a set the count says you have
+    # seen the whole of. Unresolved is the tracker's own set of open statuses, so
+    # New, Accepted, Under Review, Needs Feedback, On Hold and Postponed are all in
+    # it. Narrow with tracker, category, createdBefore, createdSince, updatedBefore,
+    # reportedBy and assignedTo, and reach past the unresolved ones with status. A
+    # call carries issue, query or open, never two of them.
     open: string  # optional
     # One of: all, people. Which comments come back with an issue. "all" is every
     # one of them and is what you want when reading a single issue — the comments
@@ -114,9 +123,18 @@ Takes
     # enumerated without a subject to narrow by. Narrows open and is ignored by
     # issue and query.
     category: string  # optional
-    # Only issues filed before this day, as YYYY-MM-DD. Narrows open and is ignored
-    # by issue and query.
+    # Only issues filed before this day, as YYYY-MM-DD. Passed with createdSince it
+    # is the far end of one window rather than a second filter. Narrows open and is
+    # ignored by issue and query.
     createdBefore: string  # optional
+    # Only issues filed on or after this day, as YYYY-MM-DD. This is what makes the
+    # recent end a set instead of a page: the core project holds thousands of open
+    # issues and limit stops at 50, so a day to count from is what brings a page and
+    # the set together, and total is what says it did. It is also the narrowing to
+    # reach for where category cannot: an issue filed under no Category is in no
+    # area at all, and the report you are looking for is regularly one of those.
+    # Narrows open and is ignored by issue and query.
+    createdSince: string  # optional
     # Only issues nobody has touched since this day, as YYYY-MM-DD. This is the one
     # that finds a report everybody has walked past, which age alone does not: an
     # issue filed in 2009 and commented on last month is being worked. Narrows open

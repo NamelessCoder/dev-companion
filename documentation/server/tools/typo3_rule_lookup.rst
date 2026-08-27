@@ -405,7 +405,7 @@ Text:
     - TYPO3 Core Commit Message Rules: Who Reads It, Summary Line, Work in Progress, Body, The Longest Line The Hook Accepts, Relationships, Release Targets, The Trailers A Core Commit Carries, What The Commit Hook Writes, Breaking Changes, Changed Signatures, Deprecations, The Changelog Entry a Message Announces
     - The Build Output the Core Commits: Where the Committed Build Output Comes From, Reading a Minified Diff Without Building, Rebuilding It Where Nothing of Yours Is at Risk, Output No Source Produces Any More, A Backport That Conflicts in a Generated File, The Same Module Built on Two Branches
     - TYPO3 Gerrit Workflow: One-Time Setup, Where This Checkout Pushes, Fetch a Change Into This Checkout, Carry a Change Onto Current Code, Push a Patch for Review, Push a Private or Work in Progress Change, Pushing From a Git Worktree, Update an Existing Patch, The Forge Issue a Change Hangs Off, Release Branches and Backports
-    - Filing a TYPO3 Core Bug Report: What a Report Carries, The Area, The Target Version, The Markup, What the Description Says
+    - Filing a TYPO3 Core Bug Report: Whether It Is Already Reported, What a Report Carries, The Area, The Target Version, The Markup, What the Description Says
     - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Documentation, Review Readiness
     - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
     - Proving What a Rendering Change Renders: The Probe, Putting the Snippet Into TypoScript, Reading What It Rendered, Saying Which Part of the Response Changed, Printing What a Service Holds Mid-Request, Why the userFunc Carries an Attribute, Where lib.parseFunc_RTE Comes From, Running It, Removing the Probe
@@ -552,6 +552,7 @@ Data:
                 "id": "core/contribution/reporting-an-issue",
                 "title": "Filing a TYPO3 Core Bug Report",
                 "topics": [
+                    "Whether It Is Already Reported",
                     "What a Report Carries",
                     "The Area",
                     "The Target Version",

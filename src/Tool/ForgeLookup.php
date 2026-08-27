@@ -18,7 +18,8 @@ use TYPO3\DevCompanion\Result\Unreachable;
  * number answers it, so `query` searches the tracker by words (`D-ANS-038`). Nor
  * is a wording — a triage starts before there is an issue in hand at all, and
  * the issue nobody has touched since 2015 is worded the way nobody thinks of, so
- * `open` is that way in.
+ * `open` is that way in. Both ends of it: the neglected one a triage reads, and
+ * the recent one a duplicate of a fresh defect is at (`D-ANS-116`).
  */
 final class ForgeLookup extends ReadOnlyTool
 {
@@ -50,7 +51,7 @@ final class ForgeLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs, and involving answers both sides of a person at once — the tracker ANDs its filters, so what somebody filed or holds cannot be asked of it directly. The areas the core files issues under are the project\'s own list, read from it live. Pass category as "*" for that list on its own — the spelling the Category field of a new report takes. Or pass breakdown with any of those to be answered how the matched set is distributed — per status, per tracker, per area, per year — instead of a page of it, which is what a set of hundreds is answered by: limit stops at 50 and nothing pages past it. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed, longest untouched or newest filed, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. The newest end is what answers "has somebody filed this already" before you file it, which no wording of the report settles: narrow it with createdSince to the day the defect could first have been reported and read the subjects. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs, and involving answers both sides of a person at once — the tracker ANDs its filters, so what somebody filed or holds cannot be asked of it directly. The areas the core files issues under are the project\'s own list, read from it live. Pass category as "*" for that list on its own — the spelling the Category field of a new report takes. Or pass breakdown with any of those to be answered how the matched set is distributed — per status, per tracker, per area, per year — instead of a page of it, which is what a set of hundreds is answered by: limit stops at 50 and nothing pages past it. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
 
@@ -71,8 +72,8 @@ final class ForgeLookup extends ReadOnlyTool
                 ],
                 'open' => [
                     'type' => 'string',
-                    'enum' => ['oldest', 'stale'],
-                    'description' => 'Enumerate the core project\'s unresolved issues instead of reading one or matching words: "oldest" orders them by when they were filed, "stale" by how long nobody has touched them. The two answer different questions about one backlog — filed long ago is about the report, untouched for years is about the attention it got — and an issue that is both is the candidate a triage is looking for. Unresolved is the tracker\'s own set of open statuses, so New, Accepted, Under Review, Needs Feedback, On Hold and Postponed are all in it. Narrow with tracker, category, createdBefore, updatedBefore, reportedBy and assignedTo, and reach past the unresolved ones with status. A call carries issue, query or open, never two of them.',
+                    'enum' => ['oldest', 'stale', 'newest'],
+                    'description' => 'Enumerate the core project\'s unresolved issues instead of reading one or matching words: "oldest" orders them by when they were filed, "stale" by how long nobody has touched them, "newest" by what came in last. The first two answer different questions about the neglected end of one backlog — filed long ago is about the report, untouched for years is about the attention it got — and an issue that is both is the candidate a triage is looking for. "newest" is the other end, and it is what a duplicate of a defect somebody has just found is at: a wording reaches only the issues worded that way, so what settles whether something has been reported already is reading the subjects filed since it could have been. Pair it with createdSince, which is what turns that end into a set the count says you have seen the whole of. Unresolved is the tracker\'s own set of open statuses, so New, Accepted, Under Review, Needs Feedback, On Hold and Postponed are all in it. Narrow with tracker, category, createdBefore, createdSince, updatedBefore, reportedBy and assignedTo, and reach past the unresolved ones with status. A call carries issue, query or open, never two of them.',
                 ],
                 'notes' => [
                     'type' => 'string',
@@ -93,7 +94,12 @@ final class ForgeLookup extends ReadOnlyTool
                 'createdBefore' => [
                     'type' => 'string',
                     'pattern' => '^\d{4}-\d{2}-\d{2}$',
-                    'description' => 'Only issues filed before this day, as YYYY-MM-DD. Narrows open and is ignored by issue and query.',
+                    'description' => 'Only issues filed before this day, as YYYY-MM-DD. Passed with createdSince it is the far end of one window rather than a second filter. Narrows open and is ignored by issue and query.',
+                ],
+                'createdSince' => [
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}-\d{2}$',
+                    'description' => 'Only issues filed on or after this day, as YYYY-MM-DD. This is what makes the recent end a set instead of a page: the core project holds thousands of open issues and limit stops at 50, so a day to count from is what brings a page and the set together, and total is what says it did. It is also the narrowing to reach for where category cannot: an issue filed under no Category is in no area at all, and the report you are looking for is regularly one of those. Narrows open and is ignored by issue and query.',
                 ],
                 'updatedBefore' => [
                     'type' => 'string',
@@ -304,6 +310,7 @@ final class ForgeLookup extends ReadOnlyTool
                 is_string($args['tracker'] ?? null) ? trim($args['tracker']) : '',
                 is_string($args['category'] ?? null) ? trim($args['category']) : '',
                 is_string($args['createdBefore'] ?? null) ? trim($args['createdBefore']) : '',
+                is_string($args['createdSince'] ?? null) ? trim($args['createdSince']) : '',
                 is_string($args['updatedBefore'] ?? null) ? trim($args['updatedBefore']) : '',
                 $limit,
                 is_string($args['status'] ?? null) ? trim($args['status']) : 'open',
@@ -454,8 +461,11 @@ final class ForgeLookup extends ReadOnlyTool
      *
      * What it offers is the other way in and not another wording. A session
      * that read a rewording went round eight times and was settled by the
-     * enumeration on its ninth call, so `open` with `category` is named here as
-     * a call to compose (`R-ANS-006`).
+     * enumeration on its ninth call, so `open` is named here as a call to
+     * compose (`R-ANS-006`). Which end of it is `D-ANS-116`: a duplicate of a
+     * defect somebody has just found is among the newest issues, and what
+     * bounds that end to a set is a day to count from rather than an area,
+     * which an issue filed under no Category is in none of.
      *
      * Which of the caller's own words emptied it is the one thing no advice
      * here can supply, so it is read from the tracker rather than guessed at.
@@ -497,9 +507,12 @@ final class ForgeLookup extends ReadOnlyTool
                 ],
                 self::reached($answer['terms']),
                 [
-                    'What no wording of the report reaches is enumerated instead: open "stale" with category in your own '
-                        . 'words for the area — "import export", "rte" — and limit 50.',
-                    'Reading those subjects is what settles whether somebody already reported this.',
+                    'What no wording of the report reaches is enumerated instead: open "newest" with createdSince from '
+                        . 'the day the defect could first have been reported, and limit 50. Add category in your own '
+                        . 'words — "import export", "rte" — only where the area is certain: thousands of the open bugs '
+                        . 'carry no Category at all, and an area filter reaches none of them.',
+                    'Those subjects settle whether somebody already reported this where total and the rows agree, and '
+                        . 'are the recent end of a larger set where they do not — narrow the window until they do.',
                     'Where the words are a person, pass them as reportedBy or assignedTo with open.',
                 ],
             )), $data);
@@ -597,10 +610,15 @@ final class ForgeLookup extends ReadOnlyTool
      * ten candidates itself and found four of them already fixed. The `issue`
      * form takes none of this, and a breakdown returns above it holding no
      * candidates. Separated from `answer()` so it can be held without a tracker.
+     *
+     * The recent end takes none of it either. A caller who ordered by `newest`
+     * is asking whether a defect is filed already, and the first thing this
+     * says is that choosing from the page is somebody else's — which is the one
+     * step that question cannot hand over (`D-ANS-116`).
      */
     public static function workflow(string $status, string $order): ?string
     {
-        if ($status !== 'answered' || trim($order) === '') {
+        if ($status !== 'answered' || !in_array(trim($order), ['oldest', 'stale'], true)) {
             return null;
         }
 
@@ -709,6 +727,7 @@ final class ForgeLookup extends ReadOnlyTool
         string $tracker,
         string $category,
         string $createdBefore,
+        string $createdSince,
         string $updatedBefore,
         int $limit,
         string $status,
@@ -722,6 +741,7 @@ final class ForgeLookup extends ReadOnlyTool
             tracker: $tracker,
             category: $category,
             createdBefore: $createdBefore,
+            createdSince: $createdSince,
             updatedBefore: $updatedBefore,
             limit: $limit,
             status: $status,
@@ -753,6 +773,7 @@ final class ForgeLookup extends ReadOnlyTool
             self::filedBy($answer['people'], 'reportedBy'),
             self::filedBy($answer['people'], 'assignedTo'),
             self::filedBy($answer['people'], 'involving'),
+            $createdSince !== '' ? 'filed since ' . $createdSince : '',
             $createdBefore !== '' ? 'filed before ' . $createdBefore : '',
             $updatedBefore !== '' ? 'untouched since ' . $updatedBefore : '',
         ]));
@@ -762,7 +783,11 @@ final class ForgeLookup extends ReadOnlyTool
             default => 'open issues of the TYPO3 Core project',
         }
         . ($narrowed !== '' ? ', ' . $narrowed : '')
-        . ', ' . ($order === 'stale' ? 'longest untouched first' : 'oldest filed first');
+        . ', ' . match ($order) {
+            'stale' => 'longest untouched first',
+            'newest' => 'newest filed first',
+            default => 'oldest filed first',
+        };
 
         if ($answer['status'] === 'unavailable') {
             return ToolResult::create(
@@ -842,13 +867,25 @@ final class ForgeLookup extends ReadOnlyTool
             $lines[] = 'This is a page and not the set, and limit stops at 50. What reaches the rest is breakdown, which'
                 . ' answers how the whole set is distributed — there are no other words to narrow a person by, and a'
                 . ' tracker or a date answers a smaller question than the one asked.';
+        } elseif ($order === 'newest') {
+            // The narrowing that reaches the rest of this end is a later day
+            // and never an earlier one, which is what the sentence below would
+            // have said (`D-ANS-116`).
+            $lines[] = 'This is a page and not the set, and what it leaves out is older than its last row. A question'
+                . ' about whether something has been reported is settled by a whole window rather than by more of this'
+                . ' page: pass createdSince from the day the defect could first have been reported — a later day where'
+                . ' you passed one already — until total and the rows agree, and then the subjects here are every issue'
+                . ' filed since that day.';
         } else {
             $lines[] = 'This is a page and not the set. What comes after it is reached by a narrower filter — an earlier'
                 . ' date, one tracker — rather than by a larger limit, because the order is the tracker\'s own and more of'
                 . ' it is more of the same end. breakdown answers how the whole of it is distributed.';
         }
-        $lines[] = 'Age is a candidate and never a finding: read one whole by passing its number as issue, and what it'
-            . ' still claims is established in the checkout rather than off this list.';
+        $lines[] = $order === 'newest'
+            ? 'A subject that reads like yours is a candidate and never a duplicate: read it whole by passing its'
+                . ' number as issue, and what it actually reports is decided there. Nothing here decides that for you.'
+            : 'Age is a candidate and never a finding: read one whole by passing its number as issue, and what it'
+                . ' still claims is established in the checkout rather than off this list.';
         $lines[] = 'A row carries what the page came back with: the issues it is filed against, the files hanging off'
             . ' it, and the changes on review.typo3.org whose commit message names it, each with the state it is in.'
             . ' That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read'
@@ -862,7 +899,9 @@ final class ForgeLookup extends ReadOnlyTool
             // Link Handling.
             $lines[] = 'An area is where an issue was filed and not everything it is about. A report about this one'
                 . ' regularly sits under another area, so what came back is a floor rather than the set — query the'
-                . ' words as well where the question is about a subject.';
+                . ' words as well where the question is about a subject. An issue carrying no Category at all is in no'
+                . ' area, and thousands of the open bugs carry none, so no wording of this reaches one: ask again'
+                . ' without category, narrowed by createdSince instead, where the question is whether it was reported.';
         }
         foreach ($answer['results'] as $entry) {
             $lines[] = '';

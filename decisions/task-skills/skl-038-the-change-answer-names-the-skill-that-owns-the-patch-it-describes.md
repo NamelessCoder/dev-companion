@@ -5,6 +5,7 @@ date: 2026-08-14
 status: open
 coveredBy:
   - ForgeTest::aPageOfTheBacklogIsHandedTheWorkflowThatOwnsIt
+  - ForgeTest::theRecentEndCarriesNoTriageWorkflow
   - ForgeTest::theWorkflowStandsUnderThePageOfCandidates
   - GerritTest::aNamedChangeIsHandedTheWorkflowsThatOwnIt
 ---
@@ -273,3 +274,20 @@ the one it was last read against. A session that already holds the triage skill
 open and asks a narrow question of the backlog is the case to watch, and the
 answer to it is the same one named there: a condition, the way the fetch
 sentence on the Gerrit answer is.
+
+### 2026-08-27 — the tail is the neglected end's, and the enumeration gained another
+
+The section above reads "the `open` form takes the tail" because the form had
+two orderings and both were a triage of the backlog.
+[`D-ANS-116`](../answers/ans-116-a-duplicate-check-reads-the-recent-end-of-the-backlog.md)
+added a third, `newest`, for the other question about the same set: whether a
+defect somebody has just found is already filed.
+
+That one takes no tail, and the reason is the tail's own first instruction.
+"Hand the page over rather than choosing from it" is what a triage owes a
+backlog, and it is the opposite of what a caller checking for a duplicate is
+doing — they are reading the subjects to decide, which is the one step that
+question cannot be handed to a workflow. So the condition this section named as
+what the second **Wrong if** would eventually want is taken here, on the
+ordering rather than on the session:
+`ForgeTest::theRecentEndCarriesNoTriageWorkflow` holds which orderings carry it.

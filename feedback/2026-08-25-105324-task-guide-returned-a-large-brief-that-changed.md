@@ -9,6 +9,11 @@ directory: /home/benji/projects/typo3-cms
 
 # task_guide returned a large brief that changed no decision next to test_run_guide, which did
 
+Trimmed on 2026-08-27. The podman half is answered: `runTests.sh` probes for
+podman and takes docker where there is none, on every covered branch, and the
+three sentences in `knowledge/test-suite-hints.json` that called it a default now
+say so. `D-GUI-022` is the judgement of the rest.
+
 ## Observation
 
 Task: reviewing and extending a core patch that replaces documentation URLs — files touched were two git hooks, `tsref.xml`, a unit test, two PHP docblocks and five Fluid templates.
@@ -19,9 +24,7 @@ I called `typo3_task_guide(changeType="audit", targetVersion="15.0")` with four 
 
 If one call had to settle "what do I run and what do I watch out for" for this change, `typo3_test_run_guide` with the paths was it. `typo3_task_guide` is the one I would not make again in this shape.
 
-Two smaller things from the same pair:
-- `typo3_test_run_guide` narrowed to domains `php` and `fluid` and withheld `xliff`, `docs`, `typoscript`, `typescript`, `css`. But the change also touches `typo3/sysext/backend/Resources/Private/tsref.xml`, and no suite in the answer covers it. I had to conclude by myself that nothing checks that file. Saying so explicitly — "these paths are covered by no suite" — would be a better answer than silence, because silence reads as coverage.
-- The notes say the runner uses podman by default with `-b docker` to switch. Every run in this checkout reported `Container runtime: docker` without me passing `-b`. Not wrong, but the phrasing suggests a default that did not apply here.
+One smaller thing from the same pair: `typo3_test_run_guide` narrowed to domains `php` and `fluid` and withheld `xliff`, `docs`, `typoscript`, `typescript`, `css`. But the change also touches `typo3/sysext/backend/Resources/Private/tsref.xml`, and no suite in the answer covers it. I had to conclude by myself that nothing checks that file. Saying so explicitly — "these paths are covered by no suite" — would be a better answer than silence, because silence reads as coverage.
 
 ## Query
 

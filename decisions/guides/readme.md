@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-GUI-021`][D-GUI-021] — The subject a draft carries is the summary the caller wrote · 2026-08-27
+- [`D-GUI-022`][D-GUI-022] — The paths a brief is composed from name a subsystem rather than a diff · 2026-08-27
 - [`D-GUI-019`][D-GUI-019] — The audit brief names the lookup that reads a configuration default · 2026-08-26
 - [`D-GUI-020`][D-GUI-020] — The commit guide states the longest line the hook accepts · 2026-08-26
 - [`D-GUI-017`][D-GUI-017] — An issue the caller passed is written in either workflow · 2026-08-21
@@ -29,6 +30,7 @@ one is added.
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
 [D-GUI-021]: gui-021-the-subject-a-draft-carries-is-the-summary-the-caller-wrote.md
+[D-GUI-022]: gui-022-the-paths-a-brief-is-composed-from-name-a-subsystem-rather-than-a-diff.md
 [D-GUI-019]: gui-019-the-audit-brief-names-the-lookup-that-reads-a-configuration-default.md
 [D-GUI-020]: gui-020-the-commit-guide-states-the-longest-line-the-hook-accepts.md
 [D-GUI-017]: gui-017-an-issue-the-caller-passed-is-written-in-either-workflow.md

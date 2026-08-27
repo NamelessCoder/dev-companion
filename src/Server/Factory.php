@@ -148,7 +148,7 @@ final class Factory
      * leaves all three audiences of `R-AUD-001` something to pick. Two fields of
      * the spec stay absent: `annotations.audience` means the client's user
      * rather than those three, and `lastModified` is in no
-     * `Mcp\Schema\Annotations` of mcp/sdk v0.7.0.
+     * `Mcp\Schema\Annotations` of mcp/sdk v0.8.0.
      *
      * @return array<int, ResourceDefinition>
      */

@@ -50,11 +50,15 @@ in the specification twelve months before it may be removed at all.
 
 ## Since then
 
-Nothing settled it, and what was looked at is the half this checkout holds. The
-bundled `mcp/sdk` is v0.7.1 at protocol revision `2025-11-25`, and
-`ClientGateway::request()` is still private with `sample()` and `elicit()` as
-the only server-to-client calls it exposes — so the third **Assumed** stands and
-the request this entry declined to make is still one the SDK cannot send.
+The revision the foot of this section was waiting on has arrived. `mcp/sdk`
+v0.8.0 was released on 2026-08-24 and bundled here on 2026-08-27; it speaks
+`2026-07-28`, and with it the roots this entry declined: `ClientGateway` now
+exposes `listRoots()` and `supportsRoots()`, and `request()` is public. The
+third **Assumed** has fallen — the SDK can send that request now — and the
+decision stands on the first two, because the mechanism arrived carrying the
+deprecation it was written about. That revision goes further than deprecating
+it: `listRoots()` raises a `LogicException` there, so the call this would have
+rested on is missing from the newest thing the protocol offers.
 
 The other half of the **Wrong if** is the corpus, and it is silent. No feedback
 of the archive reports the server started anywhere but the session's directory,
@@ -62,7 +66,7 @@ and none reports the root being worked out wrongly; `typo3_server_scope` reports
 the root and the walk either way, which is what would make such a session say
 so.
 
-What is not read here is the deprecation registry. A revision that adds a
-mechanism not deprecated on arrival is an outside event, and `bin/cli todo:list`
-carries the recurring reading of what `mcp/sdk` has released, which is where a
-new revision arrives first.
+What would settle the **Wrong if** is still an outside event: a revision that
+adds a mechanism not deprecated on arrival. `bin/cli todo:list` carries the
+recurring reading of what `mcp/sdk` has released, which is where such a revision
+arrives first.

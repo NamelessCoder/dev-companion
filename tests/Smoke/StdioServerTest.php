@@ -21,7 +21,10 @@ use TYPO3\DevCompanion\Tests\Support\Requirement;
  */
 final class StdioServerTest extends TestCase
 {
-    /** The newest revision the bundled SDK speaks. */
+    /**
+     * The newest revision reachable through the `initialize` handshake, which
+     * is the only era a stdio transport serves.
+     */
     private const PROTOCOL_VERSION = '2025-11-25';
 
     /**
@@ -93,6 +96,29 @@ final class StdioServerTest extends TestCase
             Coverage::INSTRUCTIONS_BUDGET,
             mb_strlen($result['result']['instructions']),
         );
+    }
+
+    /**
+     * A client that has moved on to the revision this transport cannot speak
+     * is answered with the newest one it can, rather than turned away.
+     *
+     * `2026-07-28` replaced `initialize` with per-request metadata and
+     * `server/discover`, which mcp/sdk serves from `StreamableHttpTransport`
+     * alone. The negotiation it gained with that revision is therefore the
+     * whole of what keeps such a client talking to this server, and it is the
+     * one thing every answer here travels over.
+     */
+    #[Test]
+    public function aClientOfferingARevisionThisTransportCannotSpeakIsAnsweredWithOneItCan(): void
+    {
+        $result = $this->call([$this->request(1, 'initialize', [
+            'protocolVersion' => '2026-07-28',
+            'capabilities' => new \stdClass(),
+            'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
+        ])])[1];
+
+        self::assertSame(self::PROTOCOL_VERSION, $result['result']['protocolVersion']);
+        self::assertArrayNotHasKey('error', $result);
     }
 
     /**

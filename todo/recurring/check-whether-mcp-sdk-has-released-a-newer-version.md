@@ -1,20 +1,25 @@
 ---
 serves: [requirements/]
 every: 7 days
-checked: 2026-08-18
+checked: 2026-08-27
 run: [composer outdated mcp/sdk]
 ---
 
 # Check whether `mcp/sdk` has released a newer version
 
-Take a patch or minor release on its own merit. The stdio hardening that stood
-unreleased on `main` shipped as `v0.7.1` on 2026-08-10 and is what
-`composer.lock` holds: three memory-exhaustion advisories in the transports, one
-of them stdio's own `fgets()` reading without a length, now bounded at a
-configurable 4 MiB. A release that speaks `2026-07-28` is the one to watch for
-(PR #403, protocol version negotiation, still unreleased on 2026-08-18): when it
-lands, the bump is the constraint in `composer.json` and `PROTOCOL_VERSION` in
-`tests/Smoke/StdioServerTest.php`. It serves no single requirement because it
-serves the precondition of all of them: every answer this server gives travels
-over the protocol version the SDK speaks, and on the day a client stops offering
-that version, every requirement fails at once and not one of them says so.
+Take a patch or minor release on its own merit. `v0.8.0` shipped on 2026-08-24
+and is what `composer.lock` holds: the `2026-07-28` specification, the protocol
+version negotiation this todo was watching for (PR #403), and the extensions
+framework MCP Apps sits on. What it left where it was is the revision this
+server speaks. `2026-07-28` replaced `initialize` with per-request metadata and
+`server/discover`, which the SDK serves from `StreamableHttpTransport` alone, so
+a stdio transport keeps the newest handshake revision — `2025-11-25`, and
+`PROTOCOL_VERSION` in `tests/Smoke/StdioServerTest.php` with it. The release to
+watch for now is one that adds a handshake revision above that, or one that
+serves the modern era over stdio; either moves the constant. `D-DIS-006` rests
+on the same release notes carrying no undeprecated way for a client to state
+where the session is, so read them for that too. It serves no single requirement
+because it serves the precondition of all of them: every answer this server
+gives travels over the protocol version the SDK speaks, and on the day a client
+stops offering that version, every requirement fails at once and not one of them
+says so.

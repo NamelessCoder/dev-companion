@@ -9,8 +9,10 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Http\Recent;
+use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\ForgeLookup;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -23,11 +25,14 @@ use TYPO3\DevCompanion\Tool\Registry;
  */
 final class ForgeTest extends TestCase
 {
+    use TemporaryInstallation;
+
     #[After]
     public function forgetWhatWasHeld(): void
     {
         Recent::forget();
         Forge::useReader(null);
+        Instance::discoverFrom(null);
     }
 
     /**
@@ -2022,5 +2027,79 @@ final class ForgeTest extends TestCase
         // several, where what to ask instead is what the list answers.
         self::assertContains('Frontend', $forge->open('oldest', category: 'quantumflux', limit: 2)['categories']);
         self::assertContains('Frontend', $forge->open('oldest', category: 'backend', limit: 2)['categories']);
+    }
+
+    /**
+     * A row says where the code its own report names stands, which is the one
+     * thing an untouched status cannot say — `D-ANS-122`.
+     *
+     * The index answer carries the description and no journal, so this is read
+     * from the subject and the report and says nothing about the comments.
+     */
+    #[Decision('D-ANS-122')]
+    #[Test]
+    public function aRowSaysWhereTheCodeItsReportNamesStandsInTheInstalledPackages(): void
+    {
+        Instance::discoverFrom($this->coreCheckoutShipping());
+        $page = [
+            'issues' => [[
+                'id' => 71566,
+                'subject' => 'ObjectAccess->getPropertyInternal fails on bool properties',
+                'description' => 'The is_callable() in \TYPO3\CMS\Core\Utility\GeneralUtility is the cause, and'
+                    . ' \TYPO3\CMS\Core\Database\DatabaseConnection is used below it.',
+            ]],
+            'total_count' => 1,
+        ];
+        $forge = new Forge(static fn(string $url): string => (string) json_encode(
+            str_contains($url, '/issues.json') ? $page : self::PROJECT,
+        ));
+
+        $cites = $forge->open('stale', limit: 1)['results'][0]['cites'];
+
+        // The subject is read with the description, and its bare name is the
+        // only handle five of the 25 stale Bugs of `D-ANS-122` give at all.
+        self::assertSame(
+            ['TYPO3\CMS\Core\Utility\GeneralUtility', 'TYPO3\CMS\Core\Database\DatabaseConnection', 'ObjectAccess'],
+            array_column($cites, 'name'),
+        );
+        self::assertSame(['shipped', 'notShipped', 'notShipped'], array_column($cites, 'state'));
+    }
+
+    /**
+     * And an issue read whole is read for its comments too, where a
+     * reproduction regularly names the class the description never did.
+     */
+    #[Decision('D-ANS-122')]
+    #[Test]
+    public function anIssueIsReadForTheCodeItsCommentsNameAsWell(): void
+    {
+        Instance::discoverFrom($this->coreCheckoutShipping());
+        $forge = new Forge(fn(): string => (string) json_encode(['issue' => [
+            'id' => 78607,
+            'subject' => 'ValidationResults for-attribute',
+            'description' => 'The rendered for-attribute is wrong.',
+            'journals' => [[
+                'user' => ['name' => 'Somebody'],
+                'created_on' => '2016-06-01T10:00:00Z',
+                'notes' => 'It comes out of \TYPO3\CMS\Core\Utility\GeneralUtility.',
+            ]],
+        ]]));
+
+        $cites = $forge->issue('78607')['issue']['cites'];
+
+        // The description names nothing and the subject's capitalised word is
+        // not code, so what is left is what the comment named.
+        self::assertSame(['TYPO3\CMS\Core\Utility\GeneralUtility'], array_column($cites, 'name'));
+        self::assertSame('typo3/sysext/core/Classes/Utility/GeneralUtility.php', $cites[0]['in'][0]['path']);
+    }
+
+    /** A core checkout whose core package ships one of the two classes above. */
+    private function coreCheckoutShipping(): string
+    {
+        $root = $this->coreCheckout();
+        mkdir($root . '/typo3/sysext/core/Classes/Utility', 0o777, true);
+        file_put_contents($root . '/typo3/sysext/core/Classes/Utility/GeneralUtility.php', "<?php\n");
+
+        return $root;
     }
 }

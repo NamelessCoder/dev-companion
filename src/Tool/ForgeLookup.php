@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tool;
 
+use TYPO3\DevCompanion\Contribution\CitedCode;
 use TYPO3\DevCompanion\Contribution\Forge;
+use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
 use TYPO3\DevCompanion\Result\Unreachable;
@@ -30,6 +32,14 @@ final class ForgeLookup extends ReadOnlyTool
     protected const OPEN_WORLD = true;
 
     /**
+     * How many cited names a row prints, the rest being in the data.
+     *
+     * A page is read to choose one row out of thirty, and a stack trace naming
+     * a file per frame would take that page's whole screen.
+     */
+    private const CITED_PER_ROW = 6;
+
+    /**
      * Why nothing was answered, in the caller's terms rather than the
      * transport's — one shape for all three ways in, because what a caller does
      * about it is the same whichever question it asked.
@@ -49,12 +59,14 @@ final class ForgeLookup extends ReadOnlyTool
     /** @return array<int, Source> */
     public static function answersFrom(): array
     {
-        return [Source::Network];
+        // The tracker answers the issue, and the files the installed packages
+        // ship answer whether the code it names is still there — `D-ANS-122`.
+        return [Source::Network, Source::Packages];
     }
 
     public static function description(): string
     {
-        return 'Reads the TYPO3 issue tracker at forge.typo3.org through the bot protection the core\'s own AGENTS.md warns a hand-written request about. It also tells a tracker that did not answer from a search that matched nothing, which a request by hand spends a second call finding out. Read it before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its report and its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. The issues that text cites and no relation carries come with it: on an old report the reporter\'s claim about prior art is what a patch gets framed against. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed, longest untouched or newest filed, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. The newest end is what answers "has somebody filed this already" before you file it, which no wording of the report settles: narrow it with createdSince to the day the defect could first have been reported and read the subjects. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs, and involving answers both sides of a person at once — the tracker ANDs its filters, so what somebody filed or holds cannot be asked of it directly. The areas the core files issues under are the project\'s own list, read from it live. Pass category as "*" for that list on its own — the spelling the Category field of a new report takes. Or pass breakdown with any of those to be answered how the matched set is distributed — per status, per tracker, per area, per year — instead of a page of it, which is what a set of hundreds is answered by: limit stops at 50 and nothing pages past it. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Reads the TYPO3 issue tracker at forge.typo3.org through the bot protection the core\'s own AGENTS.md warns a hand-written request about. It also tells a tracker that did not answer from a search that matched nothing, which a request by hand spends a second call finding out. Read it before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its report and its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. The issues that text cites and no relation carries come with it: on an old report the reporter\'s claim about prior art is what a patch gets framed against. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed, longest untouched or newest filed, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. The newest end is what answers "has somebody filed this already" before you file it, which no wording of the report settles: narrow it with createdSince to the day the defect could first have been reported and read the subjects. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs, and involving answers both sides of a person at once — the tracker ANDs its filters, so what somebody filed or holds cannot be asked of it directly. The areas the core files issues under are the project\'s own list, read from it live. Pass category as "*" for that list on its own — the spelling the Category field of a new report takes. Or pass breakdown with any of those to be answered how the matched set is distributed — per status, per tracker, per area, per year — instead of a page of it, which is what a set of hundreds is answered by: limit stops at 50 and nothing pages past it. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in — the three that say a row was answered elsewhere or already attempted, without reading it whole. An issue read whole and an enumerated row both name the classes, methods and core files the report\'s own text cites, each with whether the packages this installation ships still carry it. That is what an untouched status cannot say: a 2015 report about code that has since been rewritten reads exactly like one that still holds, and cites is what tells the two apart before the checkout is opened. It says where a name stands and not whether the defect reproduces, and a name it cannot place is answered as unplaced rather than as gone. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
 
@@ -158,6 +170,7 @@ final class ForgeLookup extends ReadOnlyTool
             'source' => Schema::string('The tracker the answer came from.'),
             'url' => Schema::string('What was read, so the same question can be asked again by hand. A union is two reads and both are named, separated by a space.'),
             'query' => Schema::string('The words the tracker was searched for, so a set that looks too narrow can be asked again in other words. Empty where an issue was read by number and where the open issues were enumerated.'),
+            'placedAgainst' => Schema::string('The TYPO3 version of the installation the names in cites were placed against, so a verdict about a symbol is read at a version rather than in general. Empty where no installation was found, and then every cited name is unplaced — which is a statement about this machine and not about the code.'),
             'total' => Schema::integer('How many issues matched in total, of which results carries at most limit. Where the two differ the answer is a page and not the set, and asking for more of it is a narrower filter rather than a bigger limit. Zero where an issue was read by number.'),
             'terms' => Schema::listOf(Schema::object([
                 'word' => Schema::string('One word of the query, as it was passed.'),
@@ -224,6 +237,7 @@ final class ForgeLookup extends ReadOnlyTool
                         'url' => Schema::string('Where a person reads the change.'),
                     ], ['change', 'changeId', 'patchSet', 'on', 'url']), 'The review changes the description and the journal name, lifted out of the prose that carries them. Nothing here says what state a change is in: a text says what was true the day it was written, and typo3_gerrit_lookup answers what is true now. Empty where neither named one.'),
                     'attachments' => Schema::listOf(self::attachment(), 'The files hanging off the issue. On a report about rendering these are usually screenshots, and they are regularly where the evidence is: a comment that consists of !image.jpg! references reads as an empty comment otherwise. Empty where the issue carries none.'),
+                    'cites' => self::cites('Read from the subject, the description and every comment, which is where a reproduction regularly names the class the description never did.'),
                     'noteCount' => Schema::integer('How many comments the issue carries in total.'),
                     'botNoteCount' => Schema::integer('How many of those a review bot wrote, which notes: "people" is what drops. Answered whichever way notes was asked, so a journal full of patch-set pings answering zero here is the list of bot names gone stale rather than an issue nobody pushed a patch for.'),
                     'notes' => Schema::listOf(Schema::object([
@@ -232,7 +246,7 @@ final class ForgeLookup extends ReadOnlyTool
                         'note' => Schema::string(),
                     ], ['author', 'on', 'note']), 'The most recent comments, oldest first. A closure, a reassignment and a "we will not do this" are here rather than in the description.'),
                 ],
-                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'mentioned', 'attachments', 'reviews', 'noteCount', 'botNoteCount', 'notes'],
+                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'mentioned', 'attachments', 'reviews', 'cites', 'noteCount', 'botNoteCount', 'notes'],
             ],
             'results' => Schema::listOf(Schema::object([
                 'issue' => Schema::integer('The issue number, which is what this tool reads whole.'),
@@ -247,18 +261,19 @@ final class ForgeLookup extends ReadOnlyTool
                 'url' => Schema::string('Where a person reads it.'),
                 'relations' => Schema::listOf(self::relation(), 'The issues this one is filed against, each with its subject, so a row that duplicates something already decided is seen without being read. Answered on an enumeration and empty on a search hit, where nothing asked for them.'),
                 'attachments' => Schema::listOf(self::attachment(), 'The files hanging off the issue, which on a report about rendering are usually where the evidence is — and a report whose evidence is a screenshot is a different candidate to one whose evidence is prose. Answered on an enumeration and empty on a search hit, where nothing asked for them.'),
+                'cites' => self::cites('Read from the subject and the description, which is what the page carries: an enumerated row holds no comment, so a report that names its code only in one is answered here as citing nothing. Empty on a search hit, where it is not asked.'),
                 'reviews' => Schema::listOf(Schema::object([
                     'change' => Schema::integer('The change number on review.typo3.org, which is what typo3_gerrit_lookup takes as change.'),
                     'status' => Schema::string('NEW while the change is open, MERGED once it landed, ABANDONED when it was given up — where it stood when the page was read. Empty where the review server named no state.'),
                     'url' => Schema::string('Where a person reads the change.'),
                 ], ['change', 'status', 'url']), 'The changes whose commit message names this issue, asked of the review server in one query for the whole page, each with the state it is in. A state and not a verdict: what a reviewer objected to is the argument on the change, which is a typo3_gerrit_lookup call, and an ABANDONED is grounds to read that argument rather than to pass the issue over — the approach can be the rejected part while the defect is real. Empty where nothing on the review server names the issue and where the review server did not answer, which this does not separate — and empty on a search hit, where it is not asked.'),
-            ], ['issue', 'subject', 'tracker', 'status', 'category', 'reportedBy', 'assignedTo', 'createdOn', 'updatedOn', 'url', 'relations', 'attachments', 'reviews']), 'The issues the query matched or the enumeration selected, in the tracker\'s own order — nothing here ranks them, and what an entry is worth is the caller\'s to judge. Empty where an issue was read by number.'),
+            ], ['issue', 'subject', 'tracker', 'status', 'category', 'reportedBy', 'assignedTo', 'createdOn', 'updatedOn', 'url', 'relations', 'attachments', 'cites', 'reviews']), 'The issues the query matched or the enumeration selected, in the tracker\'s own order — nothing here ranks them, and what an entry is worth is the caller\'s to judge. Empty where an issue was read by number.'),
             'unavailable' => Schema::unavailable([
                 'source-not-answering' => 'the tracker did not answer this time.',
                 'source-not-parseable' => 'something answered with a page rather than with the API, which is what '
                     . 'the bot protection in front of it looks like from here.',
             ]),
-        ], ['status', 'source', 'url', 'query', 'total', 'terms', 'categories', 'categoriesUsed', 'people', 'breakdown', 'issue', 'results', 'unavailable']);
+        ], ['status', 'source', 'url', 'query', 'placedAgainst', 'total', 'terms', 'categories', 'categoriesUsed', 'people', 'breakdown', 'issue', 'results', 'unavailable']);
     }
 
     /**
@@ -279,6 +294,128 @@ final class ForgeLookup extends ReadOnlyTool
             'status' => Schema::string('Where the other issue stands.'),
             'url' => Schema::string('Where a person reads it.'),
         ], ['issue', 'relation', 'subject', 'tracker', 'status', 'url']);
+    }
+
+    /**
+     * The code a report names, as the section an issue read whole carries it
+     * in: one line per name, with where it was found.
+     *
+     * @param list<array<string, mixed>> $cites
+     * @return list<string>
+     */
+    private static function citedSection(array $cites, string $version): array
+    {
+        if ($cites === []) {
+            return [];
+        }
+
+        $lines = [
+            '',
+            sprintf('## Code this report names (%d)', count($cites)),
+            'Where each of them stands in the packages this installation ships'
+                . ($version !== '' ? ', at TYPO3 ' . $version : '')
+                . '. That is where a symbol is and not whether the defect still reproduces: a report whose names are'
+                . ' all gone is a candidate to drop, and one whose names all stand is a candidate to read. A name'
+                . ' nothing here could place is unplaced rather than gone.' . self::placedNowhere(),
+        ];
+        foreach ($cites as $entry) {
+            $lines[] = '- ' . implode(' · ', array_filter([
+                self::citedName($entry),
+                self::stands($entry),
+                implode(', ', array_column($entry['in'], 'path')),
+            ]));
+        }
+
+        return $lines;
+    }
+
+    /**
+     * The same names on one line, which is what a row of an enumeration has
+     * room for. The paths are in the data either way.
+     *
+     * @param list<array<string, mixed>> $cites
+     */
+    private static function citedLine(array $cites): string
+    {
+        $shown = array_slice($cites, 0, self::CITED_PER_ROW);
+
+        return 'Cites: ' . implode(' · ', [
+            ...array_map(
+                static fn(array $entry): string => self::citedName($entry) . ' — ' . self::stands($entry),
+                $shown,
+            ),
+            ...(count($cites) > count($shown) ? [sprintf('and %d more in the data', count($cites) - count($shown))] : []),
+        ]);
+    }
+
+    /**
+     * Why every name came back unplaced, where that is what happened.
+     *
+     * The states alone read as a statement about the code, and this one is
+     * about the machine: a client started outside an installation has nothing
+     * to place a name in and nothing about the list says so.
+     */
+    private static function placedNowhere(): string
+    {
+        return Instance::isAvailable()
+            ? ''
+            : ' No installation was found from here, so every name is unplaced: this is what the reports name and'
+                . ' not what is still there.';
+    }
+
+    /** @param array<string, mixed> $entry */
+    private static function citedName(array $entry): string
+    {
+        return $entry['name'] . ($entry['method'] !== '' ? '::' . $entry['method'] : '');
+    }
+
+    /**
+     * What one cited name's state says, in the words a triage decides on.
+     *
+     * @param array<string, mixed> $entry
+     */
+    private static function stands(array $entry): string
+    {
+        $extensions = implode(' and ', array_unique(array_column($entry['in'], 'extension')));
+
+        return match (true) {
+            $entry['state'] === CitedCode::SHIPPED => 'shipped by ' . $extensions,
+            $entry['state'] === CitedCode::UNPLACED => 'no installed package owns it',
+            $entry['in'] !== [] => $extensions . ' ships the class and not the method',
+            default => 'no installed package ships it',
+        };
+    }
+
+    /**
+     * The code a report names, in the one shape both answers carry it in.
+     *
+     * What a caller does with it is rank candidates, so the field says where a
+     * symbol stands and stops there — `D-ANS-122`. The two ways it may not be
+     * read are stated on the states themselves, because that is where a client
+     * reads them.
+     *
+     * @return array<string, mixed>
+     */
+    private static function cites(string $read): array
+    {
+        return Schema::listOf(Schema::object([
+            'name' => Schema::string('The class, or the path of the file, as the report names it: a namespace without its leading backslash, and a path from typo3/sysext/.'),
+            'kind' => [
+                'type' => 'string',
+                'enum' => [CitedCode::QUALIFIED, CitedCode::UNQUALIFIED, CitedCode::FILE],
+                'description' => 'How the report named it. "qualified" is a class with its namespace, which places it without guessing. "unqualified" is a bare class name, placed by the name of its file — so it can land on a package the report was never about, and one matching two packages names both; it is taken only where the report marks it as code or an installed package ships one under it, because a capitalised word is as often the label of a button. "file" is a path in the core tree, as a pasted stack trace writes it.',
+            ],
+            'method' => Schema::string('The method the report names on that class, empty where it names none. A ::class and a ::CONSTANT are not one and are answered as the class alone.'),
+            'state' => [
+                'type' => 'string',
+                'enum' => [CitedCode::SHIPPED, CitedCode::NOT_SHIPPED, CitedCode::UNPLACED],
+                'description' => '"shipped" is a name an installed package carries, the method included where one was named. "notShipped" is a name nothing installed carries — which core having removed it and an extension you never installed both look like, and the report does not tell the two apart; where in is filled it means the class stands and the method named on it does not. "unplaced" is a name this could not place at all: no installed package owns the namespace, or there is no installation to read here. Never read unplaced as gone.',
+            ],
+            'in' => Schema::listOf(Schema::object([
+                'extension' => Schema::string('The extension key of the package that carries it.'),
+                'path' => Schema::string('Where the file sits, from the installation root, so it is opened without being searched for.'),
+            ], ['extension', 'path']), 'Where it was found, one entry per package carrying it — several where a bare name matches more than one, and picking one of those is the caller\'s. Empty where it was not found and where nothing could place it.'),
+        ], ['name', 'kind', 'method', 'state', 'in']), 'The classes, methods and core files this report names, each with where it stands in the packages this installation ships. A stale issue\'s status is untouched by definition, so this is what says a 2015 report is about code that has been rewritten since — read it before opening the checkout, and read it as where a symbol is rather than as whether the defect reproduces. ' . $read . ' Empty where the text names none, which is the ordinary case for a report written about a TCA key, a TypoScript path or a table column.');
     }
 
     /**
@@ -345,6 +482,7 @@ final class ForgeLookup extends ReadOnlyTool
             'source' => Forge::HOST,
             'url' => $answer['url'],
             'query' => '',
+            'placedAgainst' => Instance::typo3Version() ?? '',
             'total' => 0,
             'terms' => [],
             'categories' => [],
@@ -402,6 +540,7 @@ final class ForgeLookup extends ReadOnlyTool
         $lines[] = '';
         $lines[] = '## Reported';
         $lines[] = $found['description'];
+        array_push($lines, ...self::citedSection($found['cites'], $data['placedAgainst']));
         if ($found['reviews'] !== []) {
             $lines[] = '';
             $lines[] = sprintf('## Changes on review.typo3.org (%d)', count($found['reviews']));
@@ -507,6 +646,7 @@ final class ForgeLookup extends ReadOnlyTool
             'source' => Forge::HOST,
             'url' => $answer['url'],
             'query' => $answer['query'],
+            'placedAgainst' => '',
             'total' => $answer['total'],
             'terms' => $answer['terms'],
             'categories' => [],
@@ -658,6 +798,9 @@ final class ForgeLookup extends ReadOnlyTool
             . '- What has already happened to it. The row carries the change and the state it stands in; the '
             . 'reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before '
             . "the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.\n"
+            . '- Whether the code it names is still there. The row carries every class, method and core file its text '
+            . 'cites with where each stands in the packages installed here, so a report whose names are all gone is '
+            . "settled without opening the checkout. A name it could not place decides nothing.\n"
             . '- The category, against the branch you are standing on. One naming a subsystem the branch no longer '
             . "ships settles the issue unread.\n"
             . '- Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no '
@@ -785,6 +928,7 @@ final class ForgeLookup extends ReadOnlyTool
             'source' => Forge::HOST,
             'url' => $answer['url'],
             'query' => '',
+            'placedAgainst' => Instance::typo3Version() ?? '',
             'total' => $answer['total'],
             'terms' => [],
             'categories' => $answer['categories'],
@@ -921,6 +1065,17 @@ final class ForgeLookup extends ReadOnlyTool
             . ' the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to'
             . ' the approach rather than to the defect. A row with no such line is one nothing there names — or one the'
             . ' review server did not answer for, which this list does not separate.';
+        // Only where a row names something. A page whose reports are all about
+        // a TCA key or a TypoScript path has no such line to read.
+        if (array_filter(array_column($answer['results'], 'cites')) !== []) {
+            $lines[] = 'A row that names code carries it: the classes, methods and core files its own text cites,'
+                . ' each with whether the packages installed here still carry it'
+                . ($data['placedAgainst'] !== '' ? ', at TYPO3 ' . $data['placedAgainst'] : '')
+                . '. A report whose names are all gone is a candidate to drop without opening the checkout, and one'
+                . ' whose names all stand is a candidate to read. It is read from the subject and the description,'
+                . ' because the page carries no comment, and a name it could not place is unplaced rather than gone.'
+                . self::placedNowhere();
+        }
         if ($answer['categoriesUsed'] !== []) {
             // Where the reporter filed it, which is not everything about the
             // subject: three of the RTE reports a session went looking for on
@@ -956,6 +1111,9 @@ final class ForgeLookup extends ReadOnlyTool
                     count($entry['attachments']),
                     implode(', ', array_column($entry['attachments'], 'filename')),
                 );
+            }
+            if ($entry['cites'] !== []) {
+                $lines[] = self::citedLine($entry['cites']);
             }
             foreach ($entry['reviews'] as $review) {
                 $lines[] = 'Review: ' . implode(' · ', array_filter([

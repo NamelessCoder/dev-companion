@@ -51,6 +51,7 @@ not in it.
 :doc:`typo3_component_lookup <tools/typo3_component_lookup>`,
 :doc:`typo3_extension_describe <tools/typo3_extension_describe>`,
 :doc:`typo3_fluid_namespace_list <tools/typo3_fluid_namespace_list>`,
+:doc:`typo3_forge_lookup <tools/typo3_forge_lookup>`,
 :doc:`typo3_icon_lookup <tools/typo3_icon_lookup>`,
 :doc:`typo3_label_lookup <tools/typo3_label_lookup>`,
 :doc:`typo3_project_describe <tools/typo3_project_describe>`,

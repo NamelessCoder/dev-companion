@@ -40,14 +40,22 @@ Each entry carries its number, subject, tracker, status and URL, and an
 enumerated one also carries the issues it is filed against with their subjects,
 the files hanging off it, and the changes on review.typo3.org whose commit
 message names it, each with the state it is in — the three that say a row was
-answered elsewhere or already attempted, without reading it whole. A call
-carries issue, query or open, never two of them. An issue that does not exist is
-answered as such. Reading only, and no credential: commenting, assigning and
-closing stay yours. Answers from: network.
+answered elsewhere or already attempted, without reading it whole. An issue read
+whole and an enumerated row both name the classes, methods and core files the
+report's own text cites, each with whether the packages this installation ships
+still carry it. That is what an untouched status cannot say: a 2015 report about
+code that has since been rewritten reads exactly like one that still holds, and
+cites is what tells the two apart before the checkout is opened. It says where a
+name stands and not whether the defect reproduces, and a name it cannot place is
+answered as unplaced rather than as gone. A call carries issue, query or open,
+never two of them. An issue that does not exist is answered as such. Reading
+only, and no credential: commenting, assigning and closing stay yours. Answers
+from: network, packages.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
-Answers from :ref:`network <answer-sources-network>`.
+Answers from :ref:`network <answer-sources-network>`,
+:ref:`packages <answer-sources-packages>`.
 
 Takes
 -----
@@ -217,6 +225,11 @@ Answers with
     # asked again in other words. Empty where an issue was read by number and where
     # the open issues were enumerated.
     query: string
+    # The TYPO3 version of the installation the names in cites were placed against,
+    # so a verdict about a symbol is read at a version rather than in general. Empty
+    # where no installation was found, and then every cited name is unplaced —
+    # which is a statement about this machine and not about the code.
+    placedAgainst: string
     # How many issues matched in total, of which results carries at most limit.
     # Where the two differ the answer is a page and not the set, and asking for more
     # of it is a narrower filter rather than a bigger limit. Zero where an issue was
@@ -409,6 +422,50 @@ Answers with
           # Where the file itself is. It answers without a credential, and reading
           # it is the caller's: nothing here fetches or transcribes one.
           url: string
+      # The classes, methods and core files this report names, each with where it
+      # stands in the packages this installation ships. A stale issue's status is
+      # untouched by definition, so this is what says a 2015 report is about code
+      # that has been rewritten since — read it before opening the checkout, and
+      # read it as where a symbol is rather than as whether the defect reproduces.
+      # Read from the subject, the description and every comment, which is where a
+      # reproduction regularly names the class the description never did. Empty
+      # where the text names none, which is the ordinary case for a report written
+      # about a TCA key, a TypoScript path or a table column.
+      cites:
+        - # The class, or the path of the file, as the report names it: a namespace
+          # without its leading backslash, and a path from typo3/sysext/.
+          name: string
+          # One of: qualified, unqualified, file. How the report named it.
+          # "qualified" is a class with its namespace, which places it without
+          # guessing. "unqualified" is a bare class name, placed by the name of its
+          # file — so it can land on a package the report was never about, and one
+          # matching two packages names both; it is taken only where the report
+          # marks it as code or an installed package ships one under it, because a
+          # capitalised word is as often the label of a button. "file" is a path in
+          # the core tree, as a pasted stack trace writes it.
+          kind: string
+          # The method the report names on that class, empty where it names none. A
+          # ::class and a ::CONSTANT are not one and are answered as the class
+          # alone.
+          method: string
+          # One of: shipped, notShipped, unplaced. "shipped" is a name an installed
+          # package carries, the method included where one was named. "notShipped"
+          # is a name nothing installed carries — which core having removed it and
+          # an extension you never installed both look like, and the report does not
+          # tell the two apart; where in is filled it means the class stands and the
+          # method named on it does not. "unplaced" is a name this could not place
+          # at all: no installed package owns the namespace, or there is no
+          # installation to read here. Never read unplaced as gone.
+          state: string
+          # Where it was found, one entry per package carrying it — several where
+          # a bare name matches more than one, and picking one of those is the
+          # caller's. Empty where it was not found and where nothing could place it.
+          in:
+            - # The extension key of the package that carries it.
+              extension: string
+              # Where the file sits, from the installation root, so it is opened
+              # without being searched for.
+              path: string
       # How many comments the issue carries in total.
       noteCount: integer
       # How many of those a review bot wrote, which notes: "people" is what drops.
@@ -490,6 +547,54 @@ Answers with
             # Where the file itself is. It answers without a credential, and reading
             # it is the caller's: nothing here fetches or transcribes one.
             url: string
+        # The classes, methods and core files this report names, each with where it
+        # stands in the packages this installation ships. A stale issue's status is
+        # untouched by definition, so this is what says a 2015 report is about code
+        # that has been rewritten since — read it before opening the checkout, and
+        # read it as where a symbol is rather than as whether the defect reproduces.
+        # Read from the subject and the description, which is what the page carries:
+        # an enumerated row holds no comment, so a report that names its code only
+        # in one is answered here as citing nothing. Empty on a search hit, where it
+        # is not asked. Empty where the text names none, which is the ordinary case
+        # for a report written about a TCA key, a TypoScript path or a table column.
+        cites:
+          - # The class, or the path of the file, as the report names it: a
+            # namespace without its leading backslash, and a path from
+            # typo3/sysext/.
+            name: string
+            # One of: qualified, unqualified, file. How the report named it.
+            # "qualified" is a class with its namespace, which places it without
+            # guessing. "unqualified" is a bare class name, placed by the name of
+            # its file — so it can land on a package the report was never about,
+            # and one matching two packages names both; it is taken only where the
+            # report marks it as code or an installed package ships one under it,
+            # because a capitalised word is as often the label of a button. "file"
+            # is a path in the core tree, as a pasted stack trace writes it.
+            kind: string
+            # The method the report names on that class, empty where it names none.
+            # A ::class and a ::CONSTANT are not one and are answered as the class
+            # alone.
+            method: string
+            # One of: shipped, notShipped, unplaced. "shipped" is a name an
+            # installed package carries, the method included where one was named.
+            # "notShipped" is a name nothing installed carries — which core having
+            # removed it and an extension you never installed both look like, and
+            # the report does not tell the two apart; where in is filled it means
+            # the class stands and the method named on it does not. "unplaced" is a
+            # name this could not place at all: no installed package owns the
+            # namespace, or there is no installation to read here. Never read
+            # unplaced as gone.
+            state: string
+            # Where it was found, one entry per package carrying it — several
+            # where a bare name matches more than one, and picking one of those is
+            # the caller's. Empty where it was not found and where nothing could
+            # place it.
+            in:
+              - # The extension key of the package that carries it.
+                extension: string
+                # Where the file sits, from the installation root, so it is opened
+                # without being searched for.
+                path: string
         # The changes whose commit message names this issue, asked of the review
         # server in one query for the whole page, each with the state it is in. A
         # state and not a verdict: what a reviewer objected to is the argument on
@@ -580,6 +685,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/issues/110348.json?include=journals,relations,attachments",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 0,
         "terms": [],
         "categories": [],
@@ -612,6 +718,7 @@ Data:
                     "url": "https://review.typo3.org/c/95040"
                 }
             ],
+            "cites": [],
             "noteCount": 3,
             "botNoteCount": 2,
             "notes": [
@@ -951,6 +1058,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/issues/88556.json?include=journals,relations,attachments",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 0,
         "terms": [],
         "categories": [],
@@ -1065,6 +1173,7 @@ Data:
                     "url": "https://review.typo3.org/c/95132"
                 }
             ],
+            "cites": [],
             "noteCount": 15,
             "botNoteCount": 3,
             "notes": [
@@ -1243,6 +1352,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/issues/14858.json?include=journals,relations,attachments",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 0,
         "terms": [],
         "categories": [],
@@ -1299,6 +1409,7 @@ Data:
                     "url": "https://review.typo3.org/c/70962"
                 }
             ],
+            "cites": [],
             "noteCount": 16,
             "botNoteCount": 8,
             "notes": [
@@ -1374,6 +1485,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/issues/99999999.json?include=journals,relations,attachments",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 0,
         "terms": [],
         "categories": [],
@@ -1423,6 +1535,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/search.json?q=cache%20busting&issues=1&limit=3",
         "query": "cache busting",
+        "placedAgainst": "",
         "total": 15,
         "terms": [],
         "categories": [],
@@ -1444,7 +1557,8 @@ Data:
                 "url": "https://forge.typo3.org/issues/107904",
                 "relations": [],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             },
             {
                 "issue": 107869,
@@ -1459,7 +1573,8 @@ Data:
                 "url": "https://forge.typo3.org/issues/107869",
                 "relations": [],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             },
             {
                 "issue": 105953,
@@ -1474,7 +1589,8 @@ Data:
                 "url": "https://forge.typo3.org/issues/105953",
                 "relations": [],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             }
         ],
         "unavailable": null
@@ -1513,6 +1629,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/search.json?q=quantumflux%20transponder&issues=1&limit=15",
         "query": "quantumflux transponder",
+        "placedAgainst": "",
         "total": 0,
         "terms": [
             {
@@ -1567,6 +1684,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/search.json?q=file%20renderer%20RendererRegistry%20FileRendererInterface&issues=1&limit=15",
         "query": "file renderer RendererRegistry FileRendererInterface",
+        "placedAgainst": "",
         "total": 0,
         "terms": [
             {
@@ -1643,6 +1761,7 @@ Text:
     ## What a page of the backlog opens
     `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
     - What has already happened to it. The row carries the change and the state it stands in; the reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.
+    - Whether the code it names is still there. The row carries every class, method and core file its text cites with where each stands in the packages installed here, so a report whose names are all gone is settled without opening the checkout. A name it could not place decides nothing.
     - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
     - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
     - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
@@ -1658,6 +1777,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 2482,
         "terms": [],
         "categories": [],
@@ -1702,7 +1822,8 @@ Data:
                         "status": "ABANDONED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/61395"
                     }
-                ]
+                ],
+                "cites": []
             },
             {
                 "issue": 14858,
@@ -1745,7 +1866,8 @@ Data:
                         "status": "ABANDONED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419"
                     }
-                ]
+                ],
+                "cites": []
             },
             {
                 "issue": 15984,
@@ -1817,7 +1939,8 @@ Data:
                         "status": "MERGED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/1186"
                     }
-                ]
+                ],
+                "cites": []
             }
         ],
         "unavailable": null
@@ -1845,6 +1968,7 @@ Text:
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
+    A row that names code carries it: the classes, methods and core files its own text cites, each with whether the packages installed here still carry it, at TYPO3 15.0.0-dev. A report whose names are all gone is a candidate to drop without opening the checkout, and one whose names all stand is a candidate to read. It is read from the subject and the description, because the page carries no comment, and a name it could not place is unplaced rather than gone.
     An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject. An issue carrying no Category at all is in no area, and thousands of the open bugs carry none, so no wording of this reaches one: ask again without category, narrowed by createdSince instead, where the question is whether it was reported.
 
     ## #87400 CKEditor: assign correct CSS class to tags with entryHTMLparser_db
@@ -1855,6 +1979,7 @@ Text:
 
     ## #97817 RTE removes line with empty, allowed tags when saving
     Bug · New · RTE (rtehtmlarea + ckeditor) · filed by Jigal van Hemert · unassigned · filed 2022-06-28 · last touched 2022-06-28 · https://forge.typo3.org/issues/97817
+    Cites: typo3/sysext/core/Classes/Html/RteHtmlParser.php — shipped by core · TYPO3\CMS\Core\Html\RteHtmlParser::divideIntoLines — shipped by core
 
     ## #88690 Translated content elements are not available in linkbrowser of the ckeditor in free mode
     Bug · New · RTE (rtehtmlarea + ckeditor) · filed by Ronny Hauptvogel · unassigned · filed 2019-07-05 · last touched 2023-03-05 · https://forge.typo3.org/issues/88690
@@ -1867,6 +1992,7 @@ Text:
     ## What a page of the backlog opens
     `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
     - What has already happened to it. The row carries the change and the state it stands in; the reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.
+    - Whether the code it names is still there. The row carries every class, method and core file its text cites with where each stands in the packages installed here, so a report whose names are all gone is settled without opening the checkout. A name it could not place decides nothing.
     - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
     - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
     - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
@@ -1882,6 +2008,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=updated_on%3Aasc&tracker_id=1&category_id=1001",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 22,
         "terms": [],
         "categories": [],
@@ -1930,7 +2057,8 @@ Data:
                         "url": "https://forge.typo3.org/attachments/download/34053/RTE%20Bug.mov"
                     }
                 ],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             },
             {
                 "issue": 97817,
@@ -1945,7 +2073,33 @@ Data:
                 "url": "https://forge.typo3.org/issues/97817",
                 "relations": [],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": [
+                    {
+                        "name": "typo3/sysext/core/Classes/Html/RteHtmlParser.php",
+                        "kind": "file",
+                        "method": "",
+                        "state": "shipped",
+                        "in": [
+                            {
+                                "extension": "core",
+                                "path": "typo3/sysext/core/Classes/Html/RteHtmlParser.php"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "TYPO3\\CMS\\Core\\Html\\RteHtmlParser",
+                        "kind": "qualified",
+                        "method": "divideIntoLines",
+                        "state": "shipped",
+                        "in": [
+                            {
+                                "extension": "core",
+                                "path": "typo3/sysext/core/Classes/Html/RteHtmlParser.php"
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "issue": 88690,
@@ -2001,7 +2155,8 @@ Data:
                     }
                 ],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             }
         ],
         "unavailable": null
@@ -2035,6 +2190,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=15&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 0,
         "terms": [],
         "categories": [
@@ -2124,12 +2280,14 @@ Text:
     This is a page and not the set, and limit stops at 50. What reaches the rest is breakdown, which answers how the whole set is distributed — there are no other words to narrow a person by, and a tracker or a date answers a smaller question than the one asked.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
+    A row that names code carries it: the classes, methods and core files its own text cites, each with whether the packages installed here still carry it, at TYPO3 15.0.0-dev. A report whose names are all gone is a candidate to drop without opening the checkout, and one whose names all stand is a candidate to read. It is read from the subject and the description, because the page carries no comment, and a name it could not place is unplaced rather than gone.
 
     ## #15488 miscellaneous extensions dont work
     Bug · Closed · filed by Frank Nägler · unassigned · filed 2006-01-23 · last touched 2006-01-24 · https://forge.typo3.org/issues/15488
 
     ## #15890 PHP erros after search
     Bug · Closed · Indexed Search · filed by Frank Nägler · assigned to Dmitry Dulepov · filed 2006-03-23 · last touched 2018-10-02 · https://forge.typo3.org/issues/15890
+    Cites: typo3/sysext/indexed_search/pi/class.tx_indexedsearch.php — no installed package ships it
 
     ## #18374 XCLASSing USER_INT objects does not work
     Bug · Closed · Communication · filed by Frank Nägler · assigned to Oliver Hader · filed 2008-03-05 · last touched 2010-08-06 · https://forge.typo3.org/issues/18374
@@ -2140,6 +2298,7 @@ Text:
     ## What a page of the backlog opens
     `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
     - What has already happened to it. The row carries the change and the state it stands in; the reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.
+    - Whether the code it names is still there. The row carries every class, method and core file its text cites with where each stands in the packages installed here, so a report whose names are all gone is settled without opening the checkout. A name it could not place decides nothing.
     - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
     - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
     - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
@@ -2155,6 +2314,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=%2A&sort=created_on%3Aasc&author_id=52",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 621,
         "terms": [],
         "categories": [],
@@ -2184,7 +2344,8 @@ Data:
                 "url": "https://forge.typo3.org/issues/15488",
                 "relations": [],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             },
             {
                 "issue": 15890,
@@ -2199,7 +2360,16 @@ Data:
                 "url": "https://forge.typo3.org/issues/15890",
                 "relations": [],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": [
+                    {
+                        "name": "typo3/sysext/indexed_search/pi/class.tx_indexedsearch.php",
+                        "kind": "file",
+                        "method": "",
+                        "state": "notShipped",
+                        "in": []
+                    }
+                ]
             },
             {
                 "issue": 18374,
@@ -2246,7 +2416,8 @@ Data:
                         "url": "https://forge.typo3.org/attachments/download/9068/0007759_42.patch"
                     }
                 ],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             }
         ],
         "unavailable": null
@@ -2280,6 +2451,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=15&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 0,
         "terms": [],
         "categories": [],
@@ -2349,6 +2521,7 @@ Text:
     ## What a page of the backlog opens
     `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
     - What has already happened to it. The row carries the change and the state it stands in; the reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.
+    - Whether the code it names is still there. The row carries every class, method and core file its text cites with where each stands in the packages installed here, so a report whose names are all gone is settled without opening the checkout. A name it could not place decides nothing.
     - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
     - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
     - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
@@ -2364,6 +2537,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&author_id=52&status_id=open&sort=updated_on%3Aasc https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&assigned_to_id=52&status_id=open&sort=updated_on%3Aasc",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 5,
         "terms": [],
         "categories": [],
@@ -2418,7 +2592,8 @@ Data:
                         "url": "https://forge.typo3.org/attachments/download/34579/image.png"
                     }
                 ],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             },
             {
                 "issue": 89326,
@@ -2458,7 +2633,8 @@ Data:
                     }
                 ],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             },
             {
                 "issue": 104918,
@@ -2490,7 +2666,8 @@ Data:
                     }
                 ],
                 "attachments": [],
-                "reviews": []
+                "reviews": [],
+                "cites": []
             }
         ],
         "unavailable": null
@@ -2531,6 +2708,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=100&author_id=52&status_id=%2A&sort=created_on%3Aasc https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=100&assigned_to_id=52&status_id=%2A&sort=created_on%3Aasc",
         "query": "",
+        "placedAgainst": "15.0.0-dev",
         "total": 764,
         "terms": [],
         "categories": [],

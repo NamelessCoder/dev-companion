@@ -44,11 +44,11 @@ longer exists. What separates them is the rest of this order.
 Triaging a backlog and triaging an issue are two different jobs, and the step
 below is the second one: it takes a number. Hand the backlog over first, one row
 per candidate carrying what it has to be chosen on — the number, the area, the
-subject, how long it has been untouched — and let whoever asked pick. A session
-that picks for itself reports on four issues out of thirty-nine and has silently
-answered a question it was never asked; where the request really was "just find
-me something", say which rows you would take and why, and let that be the
-choice.
+subject, how long it has been untouched, and whether the code its text names is
+still installed here — and let whoever asked pick. A session that picks for
+itself reports on four issues out of thirty-nine and has silently answered a
+question it was never asked; where the request really was "just find me
+something", say which rows you would take and why, and let that be the choice.
 
 **Where you do pick, pick on where the symptom is visible and on how much the
 checkout already models it.** Age is not it, and neither is the subject matter.
@@ -59,6 +59,12 @@ Read in this order and stop at the first that decides:
   verdict somebody wrote down. A relation to an epic, or to a parent somebody
   accepted, says the report is one strand of a larger piece whose decision is
   not a session's to take.
+- **Whether the code it names is still there.** Every row carries the classes,
+  methods and core files its own text cites, each with where it stands in the
+  packages installed here, so a report whose names are all gone is settled
+  without a file being opened. A name the answer could not place decides
+  nothing, and neither does one that stands: a class that is still there is a
+  candidate to read rather than a defect that still reproduces.
 - **The category, against the branch you are standing on.** One naming a
   subsystem the branch no longer ships settles the issue before the report is
   read. The tracker keeps a category long after the code goes, and most of an

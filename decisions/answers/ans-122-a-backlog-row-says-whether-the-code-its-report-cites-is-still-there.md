@@ -3,6 +3,10 @@ id: D-ANS-122
 title: 'A backlog row says whether the code its report cites is still there'
 date: 2026-08-27
 status: open
+coveredBy:
+  - CitedCodeTest
+  - ForgeTest::aRowSaysWhereTheCodeItsReportNamesStandsInTheInstalledPackages
+  - ForgeTest::anIssueIsReadForTheCodeItsCommentsNameAsWell
 ---
 
 # D-ANS-122 — A backlog row says whether the code its report cites is still there
@@ -96,6 +100,26 @@ the checkout.
   enumerated row therefore costs no second read, and it sees what 9 of the 25
   cite in their subject or description — one more, #63810, cites only in a
   comment.
+- A capitalised word is a class as often as it is a label. The first build of
+  the field answered #88556 with eleven names — `PasteFromWord`,
+  `HorizontalRule`, `ShowBlocks` and eight more — which are the buttons a
+  comment's CKEditor configuration removes, each of them reported as shipped by
+  nothing. Neither the shape of the word nor a stop list of product names tells
+  those from `DatabaseConnection`.
+- What does tell them apart is in the reports. #72962 writes "the
+  DatabaseConnection class", #82033 "Extbase RequestBuilder class", and the
+  tracker's own `@…@` is the other mark; the button list carries none of the
+  three. Restricted to a bare name the text marks or an installed package ships,
+  the same page answers nothing for #88556 and keeps every name the reading
+  counted.
+- Re-measured on 2026-08-27 through the built field, against `.checkouts/main`
+  at 15.0.0-dev and over the same page: 14 of the 25 issues read whole cite
+  something, which is the count the reading above made by hand, and 12 of the 25
+  rows do — three above the 9 a row's subject and description carry. The
+  verdicts hold too: #61923's `makeCategorizable` and #72962's
+  `DatabaseConnection` answer not shipped, #63810's
+  `TypoScriptFrontendController::setSysLastChanged` answers not shipped on
+  `main`, and #78546's `\Vendor\Ext\…` answers unplaced.
 
 ## Decided
 
@@ -122,6 +146,10 @@ the checkout.
 - A bare name is looked up by file basename below each package's `Classes/`, and
   one matching two packages names both. Three of the ten read match two, and
   picking one of them is where a right-looking verdict lands on the wrong class.
+- A bare name is taken where the report marks it as code or an installed package
+  ships one under it, and nowhere else. Its shape alone admits every capitalised
+  word in the prose, and a page of those answered "shipped by nothing" is a wall
+  of verdicts about English standing where the evidence should be.
 - A bare name no installed package ships is reported as not shipped rather than
   as gone. That is true of `DatabaseConnection` (#72962), which core removed,
   and of a name belonging to an extension the caller never installed, and

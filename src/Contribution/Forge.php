@@ -688,7 +688,18 @@ final class Forge
             ];
         }
 
-        $results = array_map(self::entry(...), $answer['rows']);
+        $results = [];
+        foreach ($answer['rows'] as $raw) {
+            $row = self::entry($raw);
+            // The index answer carries the description and no journal, so a row
+            // is read for what its subject and its report name and says nothing
+            // about the comments — `D-ANS-122`.
+            $row['cites'] = CitedCode::in(
+                is_string($raw['subject'] ?? null) ? $raw['subject'] : '',
+                is_string($raw['description'] ?? null) ? $raw['description'] : '',
+            );
+            $results[] = $row;
+        }
 
         return [
             'status' => $results === [] ? 'empty' : 'answered',
@@ -1220,6 +1231,7 @@ final class Forge
             'relations' => [],
             'attachments' => [],
             'reviews' => [],
+            'cites' => [],
         ];
     }
 
@@ -1255,6 +1267,9 @@ final class Forge
             // Filled by `reviewed()`, which is one call for the page rather
             // than a field of the row.
             'reviews' => [],
+            // Filled by `open()` from the row the tracker sent, because only an
+            // enumerated row carries the description this is read out of.
+            'cites' => [],
         ];
     }
 
@@ -1331,6 +1346,14 @@ final class Forge
             // Read from every note rather than from the ones that come back, so
             // a patch-set ping older than the bound is still a handle.
             'reviews' => self::reviews($texts),
+            // From every note rather than from the ones that come back, the way
+            // the changes are: what a report names its code in is as often the
+            // comment that reproduced it as the description — `D-ANS-122`.
+            'cites' => CitedCode::in(
+                is_string($raw['subject'] ?? null) ? $raw['subject'] : '',
+                is_string($raw['description'] ?? null) ? $raw['description'] : '',
+                ...array_column($notes, 'note'),
+            ),
             'noteCount' => count($notes),
             'botNoteCount' => count($notes) - count($written),
             'notes' => array_slice($shown, -self::NOTES),

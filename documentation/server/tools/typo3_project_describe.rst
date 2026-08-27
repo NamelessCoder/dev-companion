@@ -338,6 +338,30 @@ Answers with
         # shipped by the repository's test setup, below a Tests/ directory, so it
         # exists to be loaded by a suite rather than developed.
         origin: string
+        # The files this extension ships that core has stopped reading, or is
+        # stopping, each with what shipping it costs. Read for an extension of
+        # origin project alone and empty for the others, whose files are their own
+        # maintainer's. Four predicates are checked, each off the extension's own
+        # tree: ext_tables.php, ext_emconf.php, ext_icon.svg/.png/.gif and the two
+        # ext_typoscript_*.txt. An empty list says none of the four holds, not that
+        # the extension is ready for the next major — nothing else it ships was
+        # read for a deprecation, and typo3_changelog_lookup is what answers that.
+        # typo3_extension_describe is the same verdict beside everything else that
+        # extension registers.
+        deprecatedFiles:
+          - # The file, relative to the extension. Not always a registration file:
+            # ext_icon.* and ext_typoscript_*.txt are read by nothing now, so they
+            # are a registration point nowhere and are checked here alone.
+            file: string
+            # The changelog entry, for typo3_changelog_lookup, which has the
+            # description and the migration whole.
+            changelog: string
+            # What the entry turns on, which is what holds here — shipping the
+            # file, and what stands beside it: what composer.json declares, or the
+            # file core reads before this one.
+            predicate: string
+            # What it raises, from which version, and what the removal does instead.
+            cost: string
     sites:  # optional
       - identifier: string
         base: string
@@ -797,6 +821,10 @@ Text:
     Extensions that are not TYPO3's own:
     - acme_events (project) — packages/acme_events
 
+    Files core has stopped reading, or is stopping, in the extensions this repository owns:
+    - acme_events/ext_tables.php (#109438) — The file is there and this package is not a system extension. Deprecated in v14.3. Loading it raises an E_USER_DEPRECATED, on an uncached request and while the compiled ext_tables cache entry is written; a request served from that cache raises nothing, so a functional suite with failOnDeprecation is usually what surfaces it. From v15.0 nothing reads the file, and a backend module, a route or a user setting registered there is lost without a report.
+    Four predicates are checked, each off the extension's own tree: ext_tables.php, ext_emconf.php, ext_icon.svg/.png/.gif, and ext_typoscript_setup.txt beside ext_typoscript_constants.txt. One of them missing above was looked at rather than skipped — the extension ships no such file, or what core reads first stands beside it. It is not an upgrade check: nothing else these extensions ship was read for a deprecation, and typo3_changelog_lookup is what answers that. typo3_extension_describe carries the same verdict beside everything one extension registers.
+
     Sites, with the sets each one depends on:
     - fixture at https://fixture.example.org/, root page 1, sets: typo3/fluid-styled-content, acme/acme-events
 
@@ -859,7 +887,15 @@ Data:
             {
                 "key": "acme_events",
                 "path": "packages/acme_events",
-                "origin": "project"
+                "origin": "project",
+                "deprecatedFiles": [
+                    {
+                        "file": "ext_tables.php",
+                        "changelog": "#109438",
+                        "predicate": "The file is there and this package is not a system extension.",
+                        "cost": "Deprecated in v14.3. Loading it raises an E_USER_DEPRECATED, on an uncached request and while the compiled ext_tables cache entry is written; a request served from that cache raises nothing, so a functional suite with failOnDeprecation is usually what surfaces it. From v15.0 nothing reads the file, and a backend module, a route or a user setting registered there is lost without a report."
+                    }
+                ]
             }
         ],
         "sites": [

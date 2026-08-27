@@ -10,6 +10,7 @@ coveredBy:
   - ExtensionTest::theRenamedFileBesideItIsWhatSilencesTheOldOne
   - HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch
   - ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt
+  - ProjectTest::theOrientationAnswerCarriesTheVerdictForTheRepositorysOwnExtensions
 ---
 
 # D-ANS-009 — A shipped-file deprecation is found by the tool that lists the file
@@ -270,3 +271,24 @@ line here rather than a section of its own. Judged on 2026-08-22.
   and `ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt` is the
   first assertion on the rendered block at all, which is how a sentence saying
   two survived beside an answer rendering one.
+
+### 2026-08-27 — the orientation answer carries it too
+
+**The verdict is volunteered by `typo3_project_describe` for the extensions
+inside the repository, and stays `typo3_extension_describe`'s for the one a
+caller names.** `feedback/2026-08-24-140421` held the second tool's description
+complete and in context under a deferring client — the four files and the
+predicate each turns on, named in full — and made no call. Naming the call more
+loudly was the alternative, and it is the one that had already failed, so the
+answer moves to the call the instructions open every task with.
+
+Read for an extension of origin `project` alone: a dependency's files are its
+maintainer's, and this block is what somebody here can fix. Both tools build the
+record from `Schema::deprecatedFile()` and both read it through
+`Extension::deprecatedFilesOf()`, so one predicate cannot answer differently in
+the two answers.
+
+The second **Wrong if** is what the block was built against and it is now said
+out loud: the closing sentence is printed whether or not anything fired, and
+where nothing did the answer says so in a line of its own rather than falling
+silent. Silence was the shape that would be read as a clean bill.

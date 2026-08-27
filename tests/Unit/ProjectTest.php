@@ -68,7 +68,14 @@ final class ProjectTest extends TestCase
         // The system extension is TYPO3's; the sitepackage is what this
         // repository is working on.
         self::assertSame(
-            [['key' => 'my_sitepackage', 'path' => 'packages/my_sitepackage', 'origin' => Project::ORIGIN_PROJECT]],
+            [[
+                'key' => 'my_sitepackage',
+                'path' => 'packages/my_sitepackage',
+                'origin' => Project::ORIGIN_PROJECT,
+                // Read for this one because it is the repository's own; a
+                // dependency's files are its maintainer's.
+                'deprecatedFiles' => [],
+            ]],
             $project['extensions'],
         );
 
@@ -2480,6 +2487,55 @@ final class ProjectTest extends TestCase
         );
         self::assertStringNotContainsString('typo3-extension-documentation', $shipped->text);
         self::assertStringNotContainsString('typo3-extension-testing', $shipped->text);
+    }
+
+    /**
+     * The orientation answer carries the same verdict, unasked.
+     *
+     * `feedback/2026-08-24-140421` held `ExtensionDescribe::description()`
+     * complete and in context under a deferring client — the deprecated-files
+     * verdict named in full, the four files and the predicate each turns on —
+     * and made no call. Naming the call again was the alternative and it is the
+     * one that had already failed, so the verdict moves to the call the
+     * instructions open every task with.
+     */
+    #[Decision('D-ANS-009')]
+    #[Test]
+    public function theOrientationAnswerCarriesTheVerdictForTheRepositorysOwnExtensions(): void
+    {
+        $root = $this->composerProject();
+        $this->declare($root . '/packages/my_sitepackage/ext_tables.php', "<?php\n");
+        // A dependency shipping the same file is its maintainer's to fix, so it
+        // is not read: what this block is for is what somebody here can change.
+        $this->declare($root . '/vendor/acme/other/ext_tables.php', "<?php\n");
+        $installed = (array) json_decode((string) file_get_contents($root . '/vendor/composer/installed.json'), true);
+        $installed['packages'][] = [
+            'name' => 'acme/other',
+            'type' => 'typo3-cms-extension',
+            'install-path' => '../acme/other',
+            'extra' => ['typo3/cms' => ['extension-key' => 'other']],
+        ];
+        $this->declare($root . '/vendor/composer/installed.json', json_encode($installed, JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_project_describe', []);
+        $own = array_column($result->data['extensions'], 'deprecatedFiles', 'key');
+
+        self::assertSame(['ext_tables.php'], array_column($own['my_sitepackage'], 'file'));
+        self::assertSame([], $own['other']);
+        self::assertStringContainsString('my_sitepackage/ext_tables.php (#109438)', $result->text);
+        self::assertStringNotContainsString('other/ext_tables.php', $result->text);
+        self::assertStringContainsString('From v15.0 nothing reads the file', $result->text);
+
+        // And where nothing fired, the block says so rather than being absent —
+        // an answer that volunteers deprecations read as a compatibility
+        // verdict is this entry's second **Wrong if**.
+        $clean = $this->composerProject();
+        Instance::discoverFrom($clean);
+
+        $quiet = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('None: not one of the four predicates holds in any of them.', $quiet);
+        self::assertStringContainsString('It is not an upgrade check', $quiet);
     }
 
     #[Decision('D-ANS-009')]

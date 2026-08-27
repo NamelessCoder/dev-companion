@@ -197,7 +197,7 @@ Answers with
     # that the extension is ready for the next major: nothing else here is checked
     # for a deprecation, and typo3_changelog_lookup is what answers that question.
     deprecatedFiles:  # optional
-      - # The file, relative to the extension. Not always one of the files above:
+      - # The file, relative to the extension. Not always a registration file:
         # ext_icon.* and ext_typoscript_*.txt are read by nothing now, so they are a
         # registration point nowhere and are checked here alone.
         file: string
@@ -292,7 +292,7 @@ The answer carries exactly one of these sets of fields: ``key``, ``path``,
 Answered
 --------
 
-Recorded on 2026-08-26 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-27 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 15.0.0-dev, the main core checkout below .checkouts/, whose console could not

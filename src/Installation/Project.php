@@ -108,7 +108,7 @@ final class Project
      *     phpRelation: array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string, bound: ?string, environmentAgainstBound: ?string}|null,
      *     node: array{engines: ?string, enginesIn: ?string, nvmrc: ?string, nvmrcIn: ?string, environment: ?string, ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>, relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null}|null,
      *     environment: array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
-     *     extensions: array<int, array{key: string, path: string, origin: string}>,
+     *     extensions: array<int, array{key: string, path: string, origin: string, deprecatedFiles: array<int, array{file: string, changelog: string, predicate: string, cost: string}>}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
      *     commands: array<int, array{command: string, source: string, declares: string, runs: string}>,
      *     patches: array<int, array{package: string, description: string, file: string}>
@@ -524,7 +524,12 @@ final class Project
      * with it, and the ones inside the repository are the ones it is actually
      * working on.
      *
-     * @return array<int, array{key: string, path: string, origin: string}>
+     * The deprecated files are read for the ones inside the repository alone.
+     * They are what the project is working on, so a file core has stopped
+     * reading is a defect somebody here can fix; in a dependency it is the
+     * dependency's — `D-ANS-009`.
+     *
+     * @return array<int, array{key: string, path: string, origin: string, deprecatedFiles: array<int, array{file: string, changelog: string, predicate: string, cost: string}>}>
      */
     private static function extensions(string $root): array
     {
@@ -533,10 +538,12 @@ final class Project
             if (Instance::isSystemExtension($key) === true) {
                 continue;
             }
+            $origin = self::origin($path);
             $extensions[] = [
                 'key' => $key,
                 'path' => self::relative($root, $path),
-                'origin' => self::origin($path),
+                'origin' => $origin,
+                'deprecatedFiles' => $origin === self::ORIGIN_PROJECT ? Extension::deprecatedFilesOf($path) : [],
             ];
         }
 

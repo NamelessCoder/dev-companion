@@ -150,6 +150,22 @@ final class Extension
     }
 
     /**
+     * The same verdict for an extension nobody asked about by key.
+     *
+     * `typo3_project_describe` volunteers it for the extensions inside the
+     * repository, so a session that never calls `typo3_extension_describe` is
+     * still told which of the files it ships core has stopped reading —
+     * `D-ANS-009`. Reading the manifest and the file listing again is what a
+     * path alone buys; everything else `describe()` computes stays uncomputed.
+     *
+     * @return array<int, array{file: string, changelog: string, predicate: string, cost: string}>
+     */
+    public static function deprecatedFilesOf(string $path): array
+    {
+        return self::deprecatedFiles($path, Data::json($path . '/composer.json'), self::files($path));
+    }
+
+    /**
      * What the extension ships beside its registrations — and what it does not.
      *
      * Everything above this answers what the extension registers, which a

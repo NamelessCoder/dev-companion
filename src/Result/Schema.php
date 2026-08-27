@@ -351,6 +351,26 @@ final class Schema
         ], ['tool', 'when']);
     }
 
+    /**
+     * A file the extension ships that core has stopped reading, or is stopping.
+     *
+     * Two tools answer with it: the extension answer for the extension the
+     * caller named, and the orientation answer for the ones inside the
+     * repository, which is what reaches a session that never makes the second
+     * call — `D-ANS-009`.
+     *
+     * @return array<string, mixed>
+     */
+    public static function deprecatedFile(): array
+    {
+        return self::object([
+            'file' => self::string('The file, relative to the extension. Not always a registration file: ext_icon.* and ext_typoscript_*.txt are read by nothing now, so they are a registration point nowhere and are checked here alone.'),
+            'changelog' => self::string('The changelog entry, for typo3_changelog_lookup, which has the description and the migration whole.'),
+            'predicate' => self::string('What the entry turns on, which is what holds here — shipping the file, and what stands beside it: what composer.json declares, or the file core reads before this one.'),
+            'cost' => self::string('What it raises, from which version, and what the removal does instead.'),
+        ], ['file', 'changelog', 'predicate', 'cost']);
+    }
+
     /** @return array<string, mixed> */
     public static function testSuiteRecord(): array
     {

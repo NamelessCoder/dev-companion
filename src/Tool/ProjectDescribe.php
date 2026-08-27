@@ -172,7 +172,8 @@ final class ProjectDescribe extends ReadOnlyTool
                 'key' => Schema::string(),
                 'path' => Schema::string('Relative to the project root.'),
                 'origin' => ['type' => 'string', 'enum' => ['project', 'third-party', 'fixture'], 'description' => 'project: inside the repository, so what it is working on. third-party: installed as a dependency. fixture: shipped by the repository\'s test setup, below a Tests/ directory, so it exists to be loaded by a suite rather than developed.'],
-            ], ['key', 'path', 'origin']), 'Extensions that are not TYPO3 system extensions. Read from Composer\'s installed metadata, so where installed is false this is empty because nothing has been installed rather than because the repository has none.'),
+                'deprecatedFiles' => Schema::listOf(Schema::deprecatedFile(), 'The files this extension ships that core has stopped reading, or is stopping, each with what shipping it costs. Read for an extension of origin project alone and empty for the others, whose files are their own maintainer\'s. Four predicates are checked, each off the extension\'s own tree: ext_tables.php, ext_emconf.php, ext_icon.svg/.png/.gif and the two ext_typoscript_*.txt. An empty list says none of the four holds, not that the extension is ready for the next major — nothing else it ships was read for a deprecation, and typo3_changelog_lookup is what answers that. typo3_extension_describe is the same verdict beside everything else that extension registers.'),
+            ], ['key', 'path', 'origin', 'deprecatedFiles']), 'Extensions that are not TYPO3 system extensions. Read from Composer\'s installed metadata, so where installed is false this is empty because nothing has been installed rather than because the repository has none.'),
             'sites' => Schema::listOf(Schema::object([
                 'identifier' => Schema::string(),
                 'base' => Schema::string(),
@@ -247,6 +248,7 @@ final class ProjectDescribe extends ReadOnlyTool
         foreach ($project['extensions'] as $extension) {
             $lines[] = sprintf('- %s (%s) — %s', $extension['key'], $extension['origin'], $extension['path']);
         }
+        $lines = array_merge($lines, self::deprecations($project['extensions']));
 
         $lines[] = '';
         $lines[] = $project['sites'] === []
@@ -349,6 +351,64 @@ final class ProjectDescribe extends ReadOnlyTool
         }
 
         return ['lines' => $lines, 'records' => $records];
+    }
+
+    /**
+     * Which files the repository's own extensions ship that core has stopped
+     * reading, volunteered rather than left to a second call.
+     *
+     * `typo3_extension_describe` carries the same verdict for the extension a
+     * caller names, and a session that never makes that call never sees it: the
+     * reporting one held the tool's description, complete and in context, and
+     * called nothing — `D-ANS-009`, `D-GUI-012`. So it arrives with the
+     * orientation, for the extensions inside the repository, which are the ones
+     * somebody here can fix.
+     *
+     * The closing sentence is said whether or not anything fired, which is what
+     * `D-ANS-009`'s second **Wrong if** is about: an answer volunteering
+     * deprecations is read as a compatibility verdict, and the absence of a
+     * signal as a clean bill for the next major.
+     *
+     * @param array<int, array{key: string, origin: string, deprecatedFiles: array<int, array{file: string, changelog: string, predicate: string, cost: string}>}> $extensions
+     * @return array<int, string>
+     */
+    private static function deprecations(array $extensions): array
+    {
+        $own = array_values(array_filter(
+            $extensions,
+            static fn(array $extension): bool => $extension['origin'] === Project::ORIGIN_PROJECT,
+        ));
+        if ($own === []) {
+            return [];
+        }
+
+        $lines = ['', 'Files core has stopped reading, or is stopping, in the extensions this repository owns:'];
+        $found = false;
+        foreach ($own as $extension) {
+            foreach ($extension['deprecatedFiles'] as $deprecated) {
+                $found = true;
+                $lines[] = sprintf(
+                    '- %s/%s (%s) — %s %s',
+                    $extension['key'],
+                    $deprecated['file'],
+                    $deprecated['changelog'],
+                    $deprecated['predicate'],
+                    $deprecated['cost'],
+                );
+            }
+        }
+        if (!$found) {
+            $lines[] = '- None: not one of the four predicates holds in any of them.';
+        }
+        $lines[] = 'Four predicates are checked, each off the extension\'s own tree: ext_tables.php, '
+            . 'ext_emconf.php, ext_icon.svg/.png/.gif, and ext_typoscript_setup.txt beside '
+            . 'ext_typoscript_constants.txt. One of them missing above was looked at rather than skipped — the '
+            . 'extension ships no such file, or what core reads first stands beside it. It is not an upgrade '
+            . 'check: nothing else these extensions ship was read for a deprecation, and typo3_changelog_lookup '
+            . 'is what answers that. typo3_extension_describe carries the same verdict beside everything one '
+            . 'extension registers.';
+
+        return $lines;
     }
 
     /**

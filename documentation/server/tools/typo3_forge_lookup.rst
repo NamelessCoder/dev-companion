@@ -18,39 +18,41 @@ patch gets framed against. Or pass query with words to find out which other
 issues describe the same thing, which the relations of one issue only answer for
 what somebody linked by hand. Or pass open to enumerate the core project's
 unresolved issues without holding a number or a wording — oldest filed, longest
-untouched or newest filed, narrowed by tracker, by date and by person, which is
-where a triage of the backlog starts; the count of everything that matched comes
-back with the page, so a limited answer says whether it is the whole set. The
-newest end is what answers "has somebody filed this already" before you file it,
-which no wording of the report settles: narrow it with createdSince to the day
-the defect could first have been reported and read the subjects. reportedBy and
-assignedTo take a person's name and answer what they filed and what they are on
-the hook for, which is the one question query cannot be made to answer: it
-matches text, so a name reaches the issues that mention the person and not the
-issues that are theirs. status widens that enumeration past the unresolved ones,
-which is what a person's history needs, and involving answers both sides of a
-person at once — the tracker ANDs its filters, so what somebody filed or holds
-cannot be asked of it directly. The areas the core files issues under are the
-project's own list, read from it live. Pass category as "*" for that list on its
-own — the spelling the Category field of a new report takes. Or pass breakdown
-with any of those to be answered how the matched set is distributed — per
-status, per tracker, per area, per year — instead of a page of it, which is what
-a set of hundreds is answered by: limit stops at 50 and nothing pages past it.
-Each entry carries its number, subject, tracker, status and URL, and an
-enumerated one also carries the issues it is filed against with their subjects,
-the files hanging off it, and the changes on review.typo3.org whose commit
-message names it, each with the state it is in — the three that say a row was
-answered elsewhere or already attempted, without reading it whole. An issue read
-whole and an enumerated row both name the classes, methods and core files the
-report's own text cites, each with whether the packages this installation ships
-still carry it. That is what an untouched status cannot say: a 2015 report about
-code that has since been rewritten reads exactly like one that still holds, and
-cites is what tells the two apart before the checkout is opened. It says where a
-name stands and not whether the defect reproduces, and a name it cannot place is
-answered as unplaced rather than as gone. A call carries issue, query or open,
-never two of them. An issue that does not exist is answered as such. Reading
-only, and no credential: commenting, assigning and closing stay yours. Answers
-from: network, packages.
+untouched or newest filed, narrowed by tracker, by date and by person.
+open="stale" with a tracker and a category is the one call that turns "find me
+something to work on" into a shortlist, and is where a triage of the backlog
+starts. The count of everything that matched comes back with the page, so a
+limited answer says whether it is the whole set. The newest end is what answers
+"has somebody filed this already" before you file it, which no wording of the
+report settles: narrow it with createdSince to the day the defect could first
+have been reported and read the subjects. reportedBy and assignedTo take a
+person's name and answer what they filed and what they are on the hook for,
+which is the one question query cannot be made to answer: it matches text, so a
+name reaches the issues that mention the person and not the issues that are
+theirs. status widens that enumeration past the unresolved ones, which is what a
+person's history needs, and involving answers both sides of a person at once —
+the tracker ANDs its filters, so what somebody filed or holds cannot be asked of
+it directly. The areas the core files issues under are the project's own list,
+read from it live. Pass category as "*" for that list on its own — the spelling
+the Category field of a new report takes. Or pass breakdown with any of those to
+be answered how the matched set is distributed — per status, per tracker, per
+area, per year — instead of a page of it, which is what a set of hundreds is
+answered by: limit stops at 50 and nothing pages past it. Each entry carries its
+number, subject, tracker, status and URL, and an enumerated one also carries the
+issues it is filed against with their subjects, the files hanging off it, and
+the changes on review.typo3.org whose commit message names it, each with the
+state it is in — the three that say a row was answered elsewhere or already
+attempted, without reading it whole. An issue read whole and an enumerated row
+both name the classes, methods and core files the report's own text cites, each
+with whether the packages this installation ships still carry it. That is what
+an untouched status cannot say: a 2015 report about code that has since been
+rewritten reads exactly like one that still holds, and cites is what tells the
+two apart before the checkout is opened. It says where a name stands and not
+whether the defect reproduces, and a name it cannot place is answered as
+unplaced rather than as gone. A call carries issue, query or open, never two of
+them. An issue that does not exist is answered as such. Reading only, and no
+credential: commenting, assigning and closing stay yours. Answers from: network,
+packages.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 

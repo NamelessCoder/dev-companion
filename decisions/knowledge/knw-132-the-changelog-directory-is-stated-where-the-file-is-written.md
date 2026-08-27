@@ -10,8 +10,8 @@ coveredBy:
 
 # D-KNW-132 — The changelog directory is stated where the file is written
 
-**The directory a changelog file goes into is stated at the step that writes
-the file, rather than left behind the call that reads the page.**
+**The directory a changelog file goes into is stated at the step that writes the
+file, rather than left behind the call that reads the page.**
 
 The rule was written down, verified and reachable — from a question about the
 directory, which is a question a session asks after it has picked one.
@@ -51,8 +51,8 @@ directory, which is a question a session asks after it has picked one.
   surfaces still route to it.
 - The section is worded in the words that write a file rather than in the words
   that ask about one: "write the entry", "add the entry". That is what the two
-  queries reach, and it is
-  [`AGENTS.md`](../../AGENTS.md)'s affirmative rule at the same time.
+  queries reach, and it is [`AGENTS.md`](../../AGENTS.md)'s affirmative rule at
+  the same time.
 - Rejected: raising the section in the ranking by leaving the surfaces alone. A
   session that never searches for the directory is not ranked into finding it,
   and both measured queries are searches for something else.
@@ -73,7 +73,7 @@ directory, which is a question a session asks after it has picked one.
   into the release under development. Then the step is read past, and the lever
   is where it stands rather than what it says.
 - A feedback reports the directory as noise in a brief for a change that reaches
-  `main` alone, which is the common case and the one the rule is silent about
-  by naming `main`'s own directory second.
+  `main` alone, which is the common case and the one the rule is silent about by
+  naming `main`'s own directory second.
 - The core moves the rule. It is one sentence of `Howto.rst`, and three copies
   of it here go stale at once.

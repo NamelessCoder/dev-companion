@@ -383,6 +383,13 @@ final class CommitMessageTest extends TestCase
         // classification to be named and for no paragraph beside it.
         self::assertStringNotContainsString('extension scanner matcher', $message);
         self::assertStringContainsString('typo3_rule_lookup(query "breaking change")', $message);
+        // And the branch that decides the type rather than the classification.
+        // Two sessions were stopped by this one paragraph: one read a widened
+        // visibility as unsubmittable, and the next widened a signature on an
+        // `@internal` class, settled it from the docblock with `sed`, and filed
+        // no entry at all where an Important is owed — `D-KNW-123`.
+        self::assertStringContainsString('a member marked @internal owes an Important entry', $message);
+        self::assertStringContainsString('an entry is still owed', $message);
     }
 
     /** @return array<string, array{0: array<string, mixed>}> */

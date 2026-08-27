@@ -769,7 +769,10 @@ final class CommitMessage
                     . 'tool never sees. Enumerate the public and protected members the diff removes, and the '
                     . 'ones whose signature it narrows or widens: a parameter added to a method widens that '
                     . 'signature whether or not the parameter is optional. A widened visibility is not one of '
-                    . 'them. isDeprecation is assumed the same way. Confirm both against the diff and call '
+                    . 'them. Read the class and member docblocks while you are at it: a member marked '
+                    . '@internal owes an Important entry rather than a Breaking one, and an entry is still owed '
+                    . '— only its type changes, which is what lets such a change reach a maintained release '
+                    . 'line. isDeprecation is assumed the same way. Confirm all of it against the diff and call '
                     . 'again with what you found; typo3_rule_lookup(query "breaking change") has what each move '
                     . 'owes.',
             ];

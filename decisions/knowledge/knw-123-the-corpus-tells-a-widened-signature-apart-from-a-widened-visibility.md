@@ -122,3 +122,39 @@ reviewer holding a visibility change reads a legitimate patch as unsubmittable.
 - The same sentence is misread from writing a patch rather than from reviewing
   one. The wording is then reaching both routes and the placement is what is
   wrong, as it was in `D-KNW-065`.
+
+### 2026-08-27 — the fourth Wrong if fires from the writing route
+
+**The same paragraph stopped a second session, and this one was writing the
+patch rather than reviewing one.** `feedback/2026-08-27-145413` added an
+optional `?int $language` to a protected method and read the corrected sentence
+correctly: a widened signature is in scope. What it had no branch for is that
+`TYPO3\CMS\Workspaces\Service\WorkspaceService` carries `@internal` on the
+class. The session settled that with `sed` over the docblock, calls it "the
+highest-leverage fact in the session", and concluded no `[!!!]`, no Breaking
+entry and no changelog entry at all.
+
+The last of those three is wrong by this repository's own corpus, which is what
+makes it a delivery failure rather than a preference. `## Changed Signatures` of
+the commit-message document says a member marked `@internal` takes an
+`Important` instead, names `Important-107342` as the precedent that reached
+`13.4.x` on that ground, and says an entry is still owed with only its type
+changing. `typo3_rule_lookup(query "breaking change")` returns that section
+second, re-run on 2026-08-27, and the check already named that call.
+
+So the answer is the branch in the check rather than the placement this entry's
+fourth **Wrong if** predicted. What the paragraph gains is one clause naming a
+classification, which is what `R-GUI-011` asks the check to do; the obligations
+stay behind the call, which is what that requirement keeps out. A caller with no
+reason to suspect an unstated branch does not make a call to look for one, and
+that is what both sessions demonstrate from opposite routes.
+
+**The lookup the feedback asks for is not built.** Its first suggestion is a
+tool answering a core class's API classification — `@internal`, `@deprecated`,
+the scanner configuration, `final`. The session got the fact from one `sed` in
+the checkout it was already standing in, which is the case `D-FBK-027` and
+`AGENTS.md` name as not earning a tool: what earns one is round trips, and this
+is a local read of a docblock. Its third point needs nothing either —
+`typo3_component_lookup` answers backend components and not PHP API
+classification, checked on 2026-08-27, so the description that steered the
+session away from it was right.

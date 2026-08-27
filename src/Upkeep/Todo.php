@@ -16,16 +16,26 @@ use TYPO3\DevCompanion\Paths;
  * a todo meant loading 30 kB to delete a paragraph, and every session that
  * added, moved or dropped work wrote the same file.
  *
- * Where a file sits is what it is and the head it opens with says the rest.
- * `todo/readme.md` is that form — the stages, the labelled lines, the one
- * paragraph under them — and this reads it rather than restating it.
+ * Where a file sits is what it is and the front matter it opens with says the
+ * rest. `todo/readme.md` is that form — the stages, the six keys, the one
+ * paragraph under the title — and this reads it rather than restating it.
  *
- * @phpstan-type Section array{title: string, kind: string, priority: string, path: non-empty-string, every: string, checked: string, waitingOn: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+ * @phpstan-type Section array{title: string, kind: string, priority: string, path: non-empty-string, every: string, checked: string, waitingOn: string, serves: array<int, string>, run: array<int, string>, strays: array<int, string>, body: string}
  */
 final class Todo
 {
     /** What a cadence can say, for the check that has to name it. */
     public const CADENCE = 'session, or a number of days';
+
+    /**
+     * What a todo's front matter carries, and the whole of it.
+     *
+     * The head is data, so it is written where a requirement and a decision
+     * already write theirs and read by the same `Entry` — `D-DOC-062`. A key
+     * that is none of these is reported rather than ignored: a misspelled
+     * `waiting_on` is a question nothing asks again.
+     */
+    public const FIELDS = ['serves', 'priority', 'every', 'checked', 'run', 'waitingOn'];
 
     /**
      * What a priority can say, highest first, and the whole of it.
@@ -129,8 +139,8 @@ final class Todo
         the session: report it rather than looking for something to do.
 
         If you hit a question this repository cannot answer and that would change what
-        you build, do not ask and do not wait. Write it into a `**Waiting on:**` line
-        on your claim, commit what you have, and end.
+        you build, do not ask and do not wait. Write it into the `waitingOn:` of your
+        claim's front matter, commit what you have, and end.
 
         You are charged one context per call and not one per token, so read the same
         in fewer of them: send the calls that do not depend on each other together,
@@ -243,31 +253,16 @@ final class Todo
      */
     public static function park(array $todo): string
     {
-        return self::move($todo, 'todo/waiting/' . basename($todo['path']), $todo['head']);
-    }
-
-    /**
-     * One todo, rewritten where it now belongs and removed from where it was.
-     *
-     * Written from what was read rather than patched in place: the head is the
-     * one part a move changes, and rebuilding the file from its title, its head
-     * and its step is what keeps the result readable by the same parse that
-     * produced it.
-     *
-     * @param Section $todo
-     */
-    private static function move(array $todo, string $to, string $head): string
-    {
+        $to = 'todo/waiting/' . basename($todo['path']);
         $directory = dirname(self::root() . '/' . $to);
         if (!is_dir($directory) && !mkdir($directory) && !is_dir($directory)) {
             throw new \RuntimeException($directory . ' is not there and cannot be made');
         }
 
-        file_put_contents(
-            self::root() . '/' . $to,
-            '# ' . $todo['title'] . "\n\n" . trim($head) . "\n\n" . $todo['body'] . "\n",
-        );
-        unlink(self::root() . '/' . $todo['path']);
+        // Moved rather than rewritten from what was read. A move changes where
+        // the file is and nothing in it, and rewriting one would re-emit
+        // somebody's question as whatever a dumper makes of it.
+        rename(self::root() . '/' . $todo['path'], self::root() . '/' . $to);
 
         return $to;
     }
@@ -292,9 +287,9 @@ final class Todo
      * on — by priority, and within one by age.
      *
      * Both halves are read off the file rather than kept anywhere: the word in
-     * the head, and the stamp in the name that `read()` has already sorted by.
-     * PHP's sort holds equal elements in the order they came in, which is what
-     * makes the second half free.
+     * the front matter, and the stamp in the name that `read()` has already
+     * sorted by. PHP's sort holds equal elements in the order they came in,
+     * which is what makes the second half free.
      *
      * @return array<int, Section>
      */
@@ -730,93 +725,27 @@ final class Todo
     }
 
     /**
-     * The labelled lines of a head, as label and value.
-     *
-     * An indented line belongs to the field above it, the way it does under a
-     * bold label in `requirements/`: a question asked in somebody's own words
-     * does not fit in what is left of one line, and wrapping it is what every
-     * other file here does.
-     *
-     * @param array<int, string> $strays what no label was found on, appended to
-     *
-     * @return array<int, array{0: string, 1: string}>
-     */
-    private static function fields(string $head, array &$strays): array
-    {
-        $fields = [];
-        foreach (preg_split('/\R/', trim($head)) ?: [] as $line) {
-            if (trim($line) === '') {
-                continue;
-            }
-            if (preg_match('/^\s/', $line) === 1 && $fields !== []) {
-                // Put back rather than appended to, so the pair stays a pair:
-                // an append through an offset is what loses the shape.
-                [$label, $value] = array_pop($fields);
-                $fields[] = [$label, $value . ' ' . trim($line)];
-                continue;
-            }
-            if (preg_match('/^\*\*([A-Z][a-z]+(?: [a-z]+)?):\*\*\s*(.*)$/', trim($line), $matches) !== 1) {
-                $strays[] = trim($line);
-                continue;
-            }
-
-            $fields[] = [$matches[1], trim($matches[2])];
-        }
-
-        return $fields;
-    }
-
-    /**
      * One file: what it is called, what it declares, and the step itself.
      *
      * @return Section
      */
     private static function parse(string $path, string $kind): array
     {
-        $contents = (string) file_get_contents($path);
-
-        preg_match('/^# (.*)$/m', $contents, $heading);
-        $rest = ltrim(array_pad(preg_split('/\R\R/', $contents, 2) ?: [], 2, '')[1]);
-
-        // A head is a head where it opens with one of its own labels. What is
-        // kept in reference/ has none, and reading its first paragraph as a
-        // broken one would report every line of it as a field nobody knows.
-        [$head, $body] = preg_match('/^\*\*[A-Z]/', $rest) === 1
-            ? array_pad(preg_split('/\R\R/', $rest, 2) ?: [], 2, '')
-            : ['', $rest];
-
-        $every = '';
-        $checked = '';
-        $waitingOn = '';
-        $priority = '';
-        $serves = [];
-        $run = [];
-        $strays = [];
-        foreach (self::fields((string) $head, $strays) as [$label, $value]) {
-            match ($label) {
-                'Serves' => $serves = array_values(array_filter(array_map(trim(...), explode(',', $value)))),
-                'Priority' => $priority = $value,
-                'Every' => $every = $value,
-                'Checked' => $checked = $value,
-                'Waiting on' => $waitingOn = $value,
-                'Run' => $run[] = $value,
-                default => $strays[] = '**' . $label . ':** ' . $value,
-            };
-        }
+        $opening = Entry::opening((string) file_get_contents($path));
+        $matter = $opening['matter'];
 
         return [
-            'title' => trim($heading[1] ?? ''),
+            'title' => $opening['heading'],
             'kind' => $kind,
-            'priority' => $priority,
+            'priority' => Entry::value($matter, 'priority'),
             'path' => 'todo/' . basename(dirname($path)) . '/' . basename($path),
-            'every' => $every,
-            'checked' => $checked,
-            'waitingOn' => $waitingOn,
-            'serves' => $serves,
-            'run' => $run,
-            'head' => trim((string) $head),
-            'strays' => $strays,
-            'body' => trim((string) $body),
+            'every' => Entry::value($matter, 'every'),
+            'checked' => Entry::value($matter, 'checked'),
+            'waitingOn' => Entry::value($matter, 'waitingOn'),
+            'serves' => Entry::names($matter, 'serves'),
+            'run' => Entry::names($matter, 'run'),
+            'strays' => array_values(array_diff(array_keys($matter), self::FIELDS)),
+            'body' => trim($opening['body']),
         ];
     }
 }

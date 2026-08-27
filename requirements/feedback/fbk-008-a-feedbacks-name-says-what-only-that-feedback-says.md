@@ -18,7 +18,7 @@ the same name to the character and differ by their timestamp — the one thing
 about a feedback nobody looks for — while being about seventeen different
 things.
 
-The name is what a listing shows, what a `**Serves:**` line in
+The name is what a listing shows, what a `serves:` key in
 [todo/](../../todo/readme.md) names, and what a commit that closes one says it
 closed. It has to identify the feedback in all three, and the first feedback of
 a series is the only one that cannot: nothing yet says it is a series.

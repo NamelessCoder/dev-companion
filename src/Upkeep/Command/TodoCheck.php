@@ -15,14 +15,13 @@ use TYPO3\DevCompanion\Upkeep\Todo;
  *
  * A todo is prose and stays prose — the next concrete step is a paragraph
  * somebody wrote for somebody else to start from, and nothing here shortens it.
- * What is checked is the head of labelled lines each file opens with, where the
- * file sits, and that what a todo claims to serve exists. A todo naming a
- * feedback that was closed two commits ago is the failure worth catching: the
- * feedback is the reason it is in the queue, and when it goes the todo is either
- * done or needs trimming to the part that is left. A todo in `waiting/` is held
- * to the one thing it exists to carry — the question it is blocked on, in the
- * words it was asked in,
- * because no session is offered it to ask again.
+ * What is checked is the front matter each file opens with, where the file sits,
+ * and that what a todo claims to serve exists. A todo naming a feedback that was
+ * closed two commits ago is the failure worth catching: the feedback is the
+ * reason it is in the queue, and when it goes the todo is either done or needs
+ * trimming to the part that is left. A todo in `waiting/` is held to the one
+ * thing it exists to carry — the question it is blocked on, in the words it was
+ * asked in, because no session is offered it to ask again.
  *
  * The last two things it says are about the other direction, where the fault is
  * in the relation between a feedback and the todos rather than in one file: an
@@ -55,7 +54,8 @@ final class TodoCheck
                 $problems[] = $where . ' opens with no heading, so nothing says what it is about';
             }
             foreach ($todo['strays'] as $stray) {
-                $problems[] = $where . ' opens with ' . $stray . ', which is no field of a todo';
+                $problems[] = $where . ' carries `' . $stray . ':`, which is no field of a todo — '
+                    . implode(', ', Todo::FIELDS);
             }
 
             if ($todo['kind'] === 'reference') {
@@ -66,7 +66,7 @@ final class TodoCheck
             }
 
             if ($todo['serves'] === []) {
-                $problems[] = $where . ' opens with no `Serves:`, so it is an idea rather than a todo';
+                $problems[] = $where . ' opens with no `serves:`, so it is an idea rather than a todo';
             }
             if ($todo['body'] === '') {
                 $problems[] = $where . ' does not say what the next concrete step is';
@@ -83,7 +83,7 @@ final class TodoCheck
             // something.
             if (in_array($todo['kind'], ['queue', 'waiting'], true)) {
                 if ($todo['priority'] === '') {
-                    $problems[] = $where . ' carries no `**Priority:**`, so nothing says where it stands';
+                    $problems[] = $where . ' carries no `priority:`, so nothing says where it stands';
                 }
                 // The id is the second half of the order and the only way to
                 // cite one, so a todo in a stage named anything else sorts
@@ -111,7 +111,7 @@ final class TodoCheck
                 // The question is the whole of what a waiting todo adds: it is
                 // offered to no session, so nothing else will ask it again.
                 if ($todo['waitingOn'] === '') {
-                    $problems[] = $where . ' waits and does not say on what — `**Waiting on:**` is the question';
+                    $problems[] = $where . ' waits and does not say on what — `waitingOn:` is the question';
                 }
                 continue;
             }
@@ -133,7 +133,7 @@ final class TodoCheck
                 $problems[] = $where . ' recurs every ' . $todo['every'] . ', and a cadence is ' . Todo::CADENCE;
             } elseif ($todo['every'] !== 'session' && strtotime($todo['checked']) === false) {
                 $problems[] = $where . ' recurs on a clock and was last checked '
-                    . ($todo['checked'] === '' ? 'never — `**Checked:**` is what dates it' : $todo['checked']);
+                    . ($todo['checked'] === '' ? 'never — `checked:` is what dates it' : $todo['checked']);
             }
         }
 

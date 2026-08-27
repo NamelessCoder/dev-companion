@@ -204,6 +204,7 @@ final class FeedbackTest extends TestCase
      * somebody committed in this checkout (`D-FBK-045`).
      */
     #[Decision('D-FBK-045')]
+    #[Decision('D-DOC-062')]
     #[Test]
     public function aRecordedFeedbackArrivesWithTheCardThatAsksForItsJudgement(): void
     {
@@ -228,8 +229,8 @@ final class FeedbackTest extends TestCase
         self::assertStringContainsString('# ' . self::MARKER . ' the lookup found nothing', $contents);
         // It points at the feedback rather than repeating it, and asks for the
         // one thing a fresh card asks for.
-        self::assertStringContainsString('**Serves:** ' . $file, $contents);
-        self::assertStringContainsString('**Priority:** ' . Card::UNJUDGED, $contents);
+        self::assertStringContainsString('serves: [' . $file . ']', $contents);
+        self::assertStringContainsString('priority: ' . Card::UNJUDGED, $contents);
         self::assertStringContainsString(Card::STEP, $contents);
     }
 

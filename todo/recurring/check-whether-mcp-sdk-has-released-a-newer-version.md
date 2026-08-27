@@ -1,9 +1,11 @@
-# Check whether `mcp/sdk` has released a newer version
+---
+serves: [requirements/]
+every: 7 days
+checked: 2026-08-18
+run: [composer outdated mcp/sdk]
+---
 
-**Serves:** requirements/
-**Every:** 7 days
-**Checked:** 2026-08-18
-**Run:** composer outdated mcp/sdk
+# Check whether `mcp/sdk` has released a newer version
 
 Take a patch or minor release on its own merit. The stdio hardening that stood
 unreleased on `main` shipped as `v0.7.1` on 2026-08-10 and is what

@@ -35,10 +35,10 @@ One todo, not the queue and not everything nothing has answered for. Context is
 not free: a session handed all of it reads for ten minutes and then starts by
 summarising what it read.
 
-Due is two questions. Has the clock come round, which the todo's ``**Every:**``
+Due is two questions. Has the clock come round, which the todo's ``every:``
 answers — ``session``, or a number of days, so five sessions in an afternoon do
 not ask the same question five times. And is there anything to do, which the
-todo's ``**Run:**`` command answers by exiting nonzero when it found work: the
+todo's ``run:`` command answers by exiting nonzero when it found work: the
 sighting stops being the next thing the moment the last entry is named, without
 anybody editing a todo to say so. What is owed a feedback or an unresolved entry
 is that judgement — a todo that takes it on, or the sentence saying why it stays

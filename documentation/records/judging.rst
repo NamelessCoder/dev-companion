@@ -326,11 +326,11 @@ that records nothing, and a queue where every card says ``low`` has no order at
 all. What more than one session reported does not stay at ``low``.
 
 Where several cards turn out to be the same gap, one of them carries the work
-and names the others in its ``**Serves:**`` line, rather than each carrying a
-quarter of it. **The cards it took over are deleted by the same commit.** A
-feedback is given one card and never a second, so one left standing is a card
-asking the next session for the judgement this one has just made.
-``bin/cli todo:check`` reports the pair, and ``R-FBK-014`` is why.
+and names the others in its ``serves:``, rather than each carrying a quarter of
+it. **The cards it took over are deleted by the same commit.** A feedback is
+given one card and never a second, so one left standing is a card asking the
+next session for the judgement this one has just made. ``bin/cli todo:check``
+reports the pair, and ``R-FBK-014`` is why.
 
 Trimmed
 ~~~~~~~
@@ -463,9 +463,9 @@ changing a file. It stays the second **Wrong if** of
 watched rather than held.
 
 A feedback that **cannot** be judged is not closed either. The card moves to
-``todo/waiting/`` with the question in a ``**Waiting on:**`` line, where it
-still serves the feedback — so it is judged rather than unjudged, and no session
-is handed a question nobody can answer.
+``todo/waiting/`` with the question in its ``waitingOn:``, where it still serves
+the feedback — so it is judged rather than unjudged, and no session is handed a
+question nobody can answer.
 
 What the todo adds
 ------------------

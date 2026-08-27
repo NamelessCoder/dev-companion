@@ -167,8 +167,8 @@ final class Wrap
             }
 
             // A field is one line, or one line and what hangs under it. Joined
-            // to the field below it, `**Serves:**` and `**Priority:**` become
-            // one line that `Todo` reads as neither.
+            // to the field below it, a scenario's `**Environment:**` and
+            // `**Contract:**` become one line that reads as neither.
             $field = preg_match('/^\*\*[^*]+:\*\*/', trim($line)) === 1;
             $under = $paragraph !== []
                 && preg_match('/^\*\*[^*]+:\*\*/', trim($paragraph[0])) === 1
@@ -512,10 +512,10 @@ final class Wrap
             return [];
         }
 
-        // A field on one line stays on one line, however wide. `**Serves:**`
-        // and the path after it are one field, and split over two lines the
-        // label is all `Todo` finds — a long path is a long line, and that is
-        // the cheaper of the two.
+        // A field on one line stays on one line, however wide. A label and the
+        // name after it are one field, and split over two lines the label is all
+        // a reader of it finds — a long name is a long line, and that is the
+        // cheaper of the two.
         if (!isset($paragraph[1]) && preg_match('/^\*\*[^*]+:\*\*/', trim($paragraph[0])) === 1) {
             return [$paragraph[0]];
         }
@@ -530,8 +530,8 @@ final class Wrap
         $continuation = str_repeat(' ', mb_strlen($first));
 
         // A hanging indent is the block's own, not an accident of wrapping: it
-        // is what makes `**Waiting on:**` in a todo one field over several
-        // lines rather than a field and a paragraph. Where the second line sits
+        // is what makes a scenario's `**Held by:**` one field over several lines
+        // rather than a field and a paragraph. Where the second line sits
         // further in than the first, that is where the rest of them go.
         if (isset($paragraph[1]) && self::indent($paragraph[1]) > mb_strlen($continuation)) {
             $continuation = str_repeat(' ', self::indent($paragraph[1]));

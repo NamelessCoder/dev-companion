@@ -36,7 +36,7 @@ final class TodoPark
             }
 
             $output->writeln(Todo::park($todo));
-            $output->writeln('    It waits on ' . $todo['waitingOn']);
+            $output->writeln('    It waits on ' . str_replace("\n", "\n    ", $todo['waitingOn']));
             ++$parked;
         }
 

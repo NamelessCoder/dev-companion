@@ -12,9 +12,9 @@ use TYPO3\DevCompanion\Upkeep\Todo;
  *
  * It is written by the recording rather than by a step afterwards, and it lives
  * here rather than in `Upkeep/` — `D-FBK-045`. The card points and does not
- * copy: `**Serves:**` names the file, the heading is the feedback's own so that
- * a listing says which one it is, and the step is the same on every card
- * because it is the same step.
+ * copy: `serves:` names the file, the heading is the feedback's own so that a
+ * listing says which one it is, and the step is the same on every card because
+ * it is the same step.
  */
 final class Card
 {
@@ -92,13 +92,16 @@ final class Card
             throw new \RuntimeException(sprintf('Cannot create the queue directory: %s', $directory));
         }
 
+        // Written as a template rather than through a dumper: both values are a
+        // file name and a word from a closed list, and neither can need the
+        // quoting a title needed in `D-DOC-045`.
         $written = file_put_contents(
             $file,
             sprintf(
-                "# %s\n\n**Serves:** %s\n**Priority:** %s\n\n%s\n",
-                $title,
+                "---\nserves: [%s]\npriority: %s\n---\n\n# %s\n\n%s\n",
                 $feedback,
                 self::UNJUDGED,
+                $title,
                 self::STEP,
             ),
         );

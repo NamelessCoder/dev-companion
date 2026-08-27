@@ -18,7 +18,7 @@ after the change is written.
 Before the first change
 -----------------------
 
-* **What it serves.** The ``Serves:`` line names a requirement, a decision, a
+* **What it serves.** The ``serves:`` key names a requirement, a decision, a
   scenario, a feedback, a directory, and that is where the todo's reason lives —
   the paragraph is only its next step. Read them whole. A todo serving a
   decision is usually that entry's **Wrong if** compressed into a sentence, and
@@ -133,13 +133,13 @@ not, the fix is a word somebody wrote and can be disagreed with rather than a
 place a command moved it to.
 
 Where nothing can be done until somebody answers, it moves to ``todo/waiting/``
-instead and carries the question in a ``**Waiting on:**`` line. That is the
-difference the state exists for: parked among the workable ones such a todo
-reads as ordinary work while it is actually waiting on a person, and every
-session that reaches it re-derives the same question. No session is offered it,
-and the way back is a todo of its own — every seven days,
-``bin/cli todo:waiting`` prints what is blocked and the questions get asked
-again. The answer is what moves one back into the queue.
+instead and carries the question in its ``waitingOn:``. That is the difference
+the state exists for: parked among the workable ones such a todo reads as
+ordinary work while it is actually waiting on a person, and every session that
+reaches it re-derives the same question. No session is offered it, and the way
+back is a todo of its own — every seven days, ``bin/cli todo:waiting`` prints
+what is blocked and the questions get asked again. The answer is what moves one
+back into the queue.
 
 Either way it keeps its file, and the session's job is to leave it startable
 cold: the open question written into its paragraph in the words it was asked in,
@@ -179,9 +179,9 @@ and ``bin/cli todo:next`` prints the one that applies:
   ``waiting/``**, with the question in its head. It is offered to no session, so
   the question has to be readable there by whoever can answer it.
 * A **recurring** one is never deleted: what it settles goes where that is kept,
-  and one measured in days gets today's date in its ``**Checked:**`` line — that
-  date is the whole of what keeps five sessions in an afternoon from asking the
-  same question five times.
+  and one measured in days gets today's date in its ``checked:`` — that date is
+  the whole of what keeps five sessions in an afternoon from asking the same
+  question five times.
 
 From then on the commit is the only thing that remembers why the step was the
 one taken.

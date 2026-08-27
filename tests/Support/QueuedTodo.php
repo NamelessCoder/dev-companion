@@ -145,8 +145,8 @@ trait QueuedTodo
         $this->written[] = $name;
         file_put_contents(
             $this->ownQueue() . '/todo/open/' . $name,
-            '# ' . self::MARKER . "\n\n**Serves:** " . $serves . "\n**Priority:** " . $priority
-            . "\n\n" . $step . "\n",
+            "---\nserves: [" . $serves . "]\npriority: " . $priority
+            . "\n---\n\n# " . self::MARKER . "\n\n" . $step . "\n",
         );
 
         return $this->ownTodos(Todo::items(), $name)[0];
@@ -185,10 +185,10 @@ trait QueuedTodo
     ): void {
         file_put_contents(
             $this->ownQueue() . '/todo/recurring/' . $title . '.md',
-            '# ' . $title . "\n\n**Serves:** todo/\n**Every:** " . $every
-            . ($checked === '' ? '' : "\n**Checked:** " . $checked)
-            . ($run === '' ? '' : "\n**Run:** " . $run)
-            . "\n\nThe reading this fixture stands for.\n",
+            "---\nserves: [todo/]\nevery: " . $every
+            . ($checked === '' ? '' : "\nchecked: " . $checked)
+            . ($run === '' ? '' : "\nrun: [" . $run . ']')
+            . "\n---\n\n# " . $title . "\n\nThe reading this fixture stands for.\n",
         );
     }
 
@@ -242,8 +242,8 @@ trait QueuedTodo
         $this->written[] = $name;
         file_put_contents(
             $this->ownQueue() . '/todo/waiting/' . $name,
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Waiting on:** " . $waitingOn
-            . "\n\nThe step this question blocks.\n",
+            "---\nserves: [todo/]\nwaitingOn: >\n  " . $waitingOn
+            . "\n---\n\n# " . self::MARKER . "\n\nThe step this question blocks.\n",
         );
     }
 

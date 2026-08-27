@@ -27,7 +27,7 @@ use TYPO3\DevCompanion\Upkeep\Todo;
  *
  * Whether a todo is due is two questions. Has the clock come round — cheap, and
  * answered by the cadence. And is there anything to do — expensive, and
- * answered by running the todo's own `Run:` command: a command this repository
+ * answered by running the todo's own `run:` command: a command this repository
  * owns exits nonzero when it found work, so the feedback stop being the next
  * thing the moment the last one is judged, without anybody editing a todo to
  * say so. A command it does not own is named rather than run; `next` starts no
@@ -273,13 +273,13 @@ final class TodoNext
                 . "alone, by hand and by command; whoever merges generates it once, across every\n"
                 . "branch at once. Merge nothing yourself, and do not remove this worktree.\n"
                 . "Done means the file says so, on this branch: deleted, or left here with the\n"
-                . 'question in `**Waiting on:**` and the work behind it. %s is the rest.',
+                . 'question in `waitingOn:` and the work behind it. %s is the rest.',
                 $branch,
                 Todo::PARALLEL,
             ),
             $todo['every'] === '' => 'Done means the file says so: deleted, or trimmed to the part that is left.',
             $todo['every'] === 'session' => 'It stands, so nothing is deleted. What it settles belongs where that is kept.',
-            default => "It stands, so nothing is deleted — write today's date into `**Checked:**`.",
+            default => "It stands, so nothing is deleted — write today's date into `checked:`.",
         });
 
         return 0;

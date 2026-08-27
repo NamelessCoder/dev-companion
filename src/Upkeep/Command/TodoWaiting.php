@@ -28,7 +28,15 @@ final class TodoWaiting
     {
         $waiting = Todo::waiting();
         foreach ($waiting as $todo) {
-            $output->writeln(sprintf("%s\n  waiting on %s\n  %s\n", $todo['title'], $todo['waitingOn'], $todo['path']));
+            // A question of several paragraphs keeps the indent on all of
+            // them: folded front matter answers with the breaks it was
+            // written with.
+            $output->writeln(sprintf(
+                "%s\n  waiting on %s\n  %s\n",
+                $todo['title'],
+                str_replace("\n", "\n  ", $todo['waitingOn']),
+                $todo['path'],
+            ));
         }
         if ($waiting === []) {
             $output->writeln('Nothing is waiting on an answer.');

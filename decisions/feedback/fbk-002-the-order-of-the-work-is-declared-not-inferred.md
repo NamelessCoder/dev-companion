@@ -67,10 +67,12 @@ whether to declare it or derive it.
 ## Since then
 
 The one line became a head of several, and the three kinds became two: a todo
-that recurs carries `**Every:**` and a todo that does not is the queue. The file
+that recurs carries a cadence and a todo that does not is the queue. The file
 then became a directory, where the kind is what the todo sits in and the head
-carries the rest. What this entry settled survived both, which is the point of
-declaring it: each was an edit rather than a rewrite. See
+carries the rest. The head is front matter since 2026-08-27: what **Decided**
+chose was the shape `requirements/` and `decisions/` were read in, and the head
+moved when they did — `D-DOC-062`. What this entry settled survived both, which
+is the point of declaring it: each was an edit rather than a rewrite. See
 [`D-FBK-003`](fbk-003-a-session-is-handed-one-todo-not-the-file.md) and
 [`D-FBK-008`](fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md).
 

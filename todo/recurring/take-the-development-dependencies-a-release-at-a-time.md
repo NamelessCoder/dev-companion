@@ -1,9 +1,11 @@
-# Take the development dependencies a release at a time
+---
+serves: [tests/]
+every: 30 days
+checked: 2026-07-31
+run: [composer outdated --direct]
+---
 
-**Serves:** tests/
-**Every:** 30 days
-**Checked:** 2026-07-31
-**Run:** composer outdated --direct
+# Take the development dependencies a release at a time
 
 Read what the command lists and take each on its own merit rather than bumping
 the file: a patch release of a tool that only runs in `composer ci` is worth

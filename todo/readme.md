@@ -52,28 +52,42 @@ writers in one second cannot both produce; a card's is derived from the feedback
 it serves, so the pair is found from either end — `D-DOC-061`. What the todo is
 about is the title inside it, which every listing prints.
 
-Each file opens with its title, then a head of labelled lines:
+Each file opens with front matter, then its title. It is the front matter a
+requirement and a decision are written with, read by the same
+`TYPO3\DevCompanion\Upkeep\Entry` — `D-DOC-062`:
 
-- `**Serves:** <ids>` — what this answers for: a requirement, a decision, a
+```markdown
+---
+serves: [todo/]
+priority: normal
+---
+
+# What the step is about
+```
+
+Six keys, and a key that is none of them is what `bin/cli todo:check` reports:
+
+- `serves: [<ids>]` — what this answers for: a requirement, a decision, a
   feedback, a scenario, a directory. Without it, it is an idea rather than a
   todo, and ideas go in the feedback that had them. A decision is named by its
   id where the step is that entry's **Wrong if** gone back to, and by
   `decisions/` where it is the pile that is being sorted.
-- `**Priority:** high`, `normal` or `low` — where it stands among the rest, and
-  the whole list. Every todo in a stage carries one and a recurring todo carries
+- `priority: high`, `normal` or `low` — where it stands among the rest, and the
+  whole list. Every todo in a stage carries one and a recurring todo carries
   none, because a cadence is what orders an appointment. A todo written for a
   feedback starts at `low`: raising it is the judgement the card asks for, and a
   judged card that is still `low` says so because somebody decided it, not
   because nobody has looked. What several sessions reported is not `low`.
-- `**Every:** session` or `**Every:** 7 days` — the cadence of a recurring todo.
-  A cadence in days is an appointment and comes before the queue; `session` is a
+- `every: session` or `every: 7 days` — the cadence of a recurring todo. A
+  cadence in days is an appointment and comes before the queue; `session` is a
   sighting and comes after it, when the queue is empty.
-- `**Checked:** <date>` — when a todo measured in days last ran. The session
-  that runs it writes the date.
-- `**Run:** <command>` — where the step starts. `bin/cli todo:next` runs the
-  ones this repository owns and names the rest.
-- `**Waiting on:** <the question>` — what a todo is blocked on, in the words it
-  was asked in, wrapped onto indented lines where it is longer than one.
+- `checked: <date>` — when a todo measured in days last ran. The session that
+  runs it writes the date.
+- `run: [<command>]` — where the step starts. `bin/cli todo:next` runs the ones
+  this repository owns and names the rest.
+- `waitingOn: >` — what a todo is blocked on, in the words it was asked in, on
+  the indented lines under it. The folded form takes a question of any length
+  and needs no quoting, which a question carrying a colon does.
   `bin/cli todo:waiting` is what asks it again, and `bin/cli todo:park` is what
   moves a todo carrying one out of the queue. Written mid-work it stays in
   `open/` until the branch comes home, where the branch still holds the half

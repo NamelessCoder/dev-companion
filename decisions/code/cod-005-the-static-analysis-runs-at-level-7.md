@@ -34,8 +34,8 @@ number rather than another.
   which shape that is.
 - Two are behaviour rather than annotation. `Fetch::read()` answers a URL nobody
   composed as a read that did not happen, at the one door this server reads a
-  host through; `Todo::fields()` puts a pair back rather than appending through
-  an offset, which is what lost the pair.
+  host through; the reader of a todo's labelled head puts a pair back rather
+  than appending through an offset, which is what lost the pair.
 
 ## Decided
 

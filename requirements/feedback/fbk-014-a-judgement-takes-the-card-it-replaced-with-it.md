@@ -15,9 +15,9 @@ judgement, and `bin/cli todo:check` reports the one that is.**
 
 A feedback is given one card, by the call that records it, and never a second.
 That bounds the relation one way only. A judgement that folds a feedback onto
-another todo's `**Serves:**` line arrives after the card was written, and
-nothing looks back at it: the card stays in the queue carrying the step every
-card carries — judge this feedback — for a judgement that has already been made.
+another todo's `serves:` arrives after the card was written, and nothing looks
+back at it: the card stays in the queue carrying the step every card carries —
+judge this feedback — for a judgement that has already been made.
 
 Nothing about the two says they are a pair. A card is titled after the feedback
 and a judged todo after its work, so a listing prints them ten lines apart with

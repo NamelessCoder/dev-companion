@@ -12,7 +12,9 @@ use Symfony\Component\Yaml\Yaml;
  *
  * One format read in one place. `Requirements` and `Decisions` had the same six
  * lines and the same `frontMatterValue()` each, which is how the two could have
- * drifted on what a heading looks like while every check went on passing.
+ * drifted on what a heading looks like while every check went on passing. A
+ * todo opens the same way and reads its front matter through `opening()`, where
+ * its heading is the title alone — `D-DOC-062`.
  *
  * An entry rather than a record, because in TYPO3 a record is a row in the
  * database and the corpus names `Record::get()` as that — a class called
@@ -25,20 +27,41 @@ final class Entry
      */
     public static function head(string $contents): array
     {
-        preg_match('/^---\R(.*?)\R---\R/s', $contents, $matter);
-        preg_match('/^# (\S+) — (.*)$/m', $contents, $heading);
+        $opening = self::opening($contents);
+        preg_match('/^(\S+) — (.*)$/', $opening['heading'], $named);
 
-        // Everything under the first paragraph is what the entry was written
-        // from, so the statement ends where that paragraph does.
-        $body = (string) preg_replace('/^---\n.*?\n---\n\n# [^\n]*\n\n/s', '', $contents);
+        return [
+            'matter' => $opening['matter'],
+            'heading' => $named[1] ?? '',
+            // What the heading says the title is. The front matter is the
+            // title; this is what a check holds it to, so the two cannot drift.
+            'written' => $named[2] ?? '',
+            // Everything under the first paragraph is what the entry was
+            // written from, so the statement ends where that paragraph does.
+            'statement' => trim(str_replace('**', '', self::firstParagraph($opening['body']))),
+        ];
+    }
+
+    /**
+     * A markdown file in the three parts every file here opens with: the front
+     * matter as data, the heading, and what stands under it.
+     *
+     * The one place those are told apart. A requirement, a decision and a todo
+     * are the same shape and differ in what the heading says, so a second reader
+     * would be the same two patterns written again — `D-DOC-062`.
+     *
+     * @return array{matter: array<string, mixed>, heading: string, body: string}
+     */
+    public static function opening(string $contents): array
+    {
+        preg_match('/^---\R(.*?)\R---\R/s', $contents, $matter);
+        $below = ltrim(substr($contents, strlen($matter[0] ?? '')));
+        preg_match('/^# ([^\n]*)\R?/', $below, $heading);
 
         return [
             'matter' => self::matter($matter[1] ?? ''),
-            'heading' => $heading[1] ?? '',
-            // What the heading says the title is. The front matter is the
-            // title; this is what a check holds it to, so the two cannot drift.
-            'written' => $heading[2] ?? '',
-            'statement' => trim(str_replace('**', '', self::firstParagraph($body))),
+            'heading' => trim($heading[1] ?? ''),
+            'body' => ltrim(substr($below, strlen($heading[0] ?? ''))),
         ];
     }
 

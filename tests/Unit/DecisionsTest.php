@@ -420,7 +420,7 @@ final class DecisionsTest extends TestCase
     /**
      * A decision nobody has been back to names no command the console lost.
      *
-     * `Cli::knows()` answered this for a todo's `**Run:**` line and for nothing
+     * `Cli::knows()` answered this for a todo's `run:` key and for nothing
      * else, so a deleted command stayed written down as the way to do the thing.
      * `D-FBK-012` still had `bin/cli feedback:next` at the head of it 16 days
      * after `D-FBK-016` deleted the command and the sighting that ran it, and

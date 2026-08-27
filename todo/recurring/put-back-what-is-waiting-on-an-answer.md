@@ -1,9 +1,11 @@
-# Put back what is waiting on an answer
+---
+serves: [todo/]
+every: 7 days
+checked: 2026-08-19
+run: [bin/cli todo:waiting]
+---
 
-**Serves:** todo/
-**Every:** 7 days
-**Checked:** 2026-08-19
-**Run:** bin/cli todo:waiting
+# Put back what is waiting on an answer
 
 Take each question the listing prints and ask it — of the person who maintains
 this repository, where that is who can answer it, and of the world where the

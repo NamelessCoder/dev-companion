@@ -398,8 +398,8 @@ final class TodoClaim
     /**
      * What two of the claimed todos both stand on, in the three ways they can.
      *
-     * `Serves:` alone missed the collision that cost the most: two todos with
-     * different `Serves:` lines each added a handler for one token to one
+     * `serves:` alone missed the collision that cost the most: two todos with
+     * different `serves:` keys each added a handler for one token to one
      * function, and both had named `R-ANS-012` and the class they were about to
      * edit — a session saying where it is about to work, in the file the claim
      * reads anyway. So three readings, reported apart because they are worth

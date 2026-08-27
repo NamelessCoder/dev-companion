@@ -76,8 +76,8 @@ three to the file. Two **standing on** one requirement or decision without
 serving it are working from a single judgement, which is where a pair of steps
 that have to agree comes from.
 
-The last two are here because ``Serves:`` alone missed the collision that cost
-the most. On 2026-08-02 two todos with different ``Serves:`` lines each added a
+The last two are here because ``serves:`` alone missed the collision that cost
+the most. On 2026-08-02 two todos with different ``serves:`` keys each added a
 handler for one token to one function; the rebase put them in sequence, each
 ending in ``continue``, and the second was never reached. Both had named
 ``R-ANS-012`` and both had named the class — one as ``Extension::describe()``,
@@ -228,10 +228,10 @@ A todo that turns out to need an answer nobody here can give is the normal case,
 not the exception, and a session working alone asks and waits. One of several
 cannot: waiting blocks a worktree on a person who is answering three others.
 
-So it does not ask, it records. The question goes into a ``**Waiting on:**``
-line on the todo itself, in the words it would have been asked in, together with
-what the reading already established. Then the session commits what it has and
-ends. The branch keeps the half that is done.
+So it does not ask, it records. The question goes into the ``waitingOn:`` line
+on the todo itself, in the words it would have been asked in, together with what
+the reading already established. Then the session commits what it has and ends.
+The branch keeps the half that is done.
 
 What happens next depends on whether the work behind the question stands on its
 own. Most of the time it does — the session settled one half of its todo and the

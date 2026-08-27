@@ -1,8 +1,10 @@
-# Judge what nothing has answered for
+---
+serves: [requirements/, decisions/]
+every: session
+run: [bin/cli unresolved:list]
+---
 
-**Serves:** requirements/, decisions/
-**Every:** session
-**Run:** bin/cli unresolved:list
+# Judge what nothing has answered for
 
 Give every entry the listing marks as unnamed one of two answers: a todo below
 that takes it on, or a `judged:` date in its front matter, which says a session

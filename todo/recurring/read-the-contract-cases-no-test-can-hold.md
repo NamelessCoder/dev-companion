@@ -1,9 +1,11 @@
-# Read the contract cases no test can hold
+---
+serves: [scenarios/, decisions/]
+every: 14 days
+checked: 2026-08-19
+run: [bin/cli scenarios:contract]
+---
 
-**Serves:** scenarios/, decisions/
-**Every:** 14 days
-**Checked:** 2026-08-19
-**Run:** bin/cli scenarios:contract
+# Read the contract cases no test can hold
 
 Read the cases the command above prints, which are the ones whose `Held by` says
 `not guarded`, and what they are all waiting for is the same thing: whether a

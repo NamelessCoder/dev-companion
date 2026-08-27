@@ -28,8 +28,9 @@ final class TodoTest extends TestCase
      * A todo is read by a session that has read nothing else, and the files
      * look identical from the outside. Where one sits is what keeps "not
      * queued, and deliberately so" from reading as the next piece of work, and
-     * the head it opens with is the rest of what a reader is owed.
+     * the front matter it opens with is the rest of what a reader is owed.
      */
+    #[Decision('D-DOC-062')]
     #[Test]
     public function everyTodoSaysWhatItIsBeforeItSaysAnythingElse(): void
     {
@@ -38,7 +39,7 @@ final class TodoTest extends TestCase
         self::assertNotSame([], $todos);
         foreach ($todos as $todo) {
             self::assertNotSame('', $todo['title'], $todo['path'] . ' opens with no heading');
-            self::assertSame([], $todo['strays'], $todo['path'] . ' opens with lines that are no field');
+            self::assertSame([], $todo['strays'], $todo['path'] . ' carries keys that are no field of a todo');
             self::assertContains($todo['kind'], ['queue', 'recurring', 'progress', 'waiting', 'reference'], $todo['path']);
         }
     }
@@ -210,7 +211,7 @@ final class TodoTest extends TestCase
     }
 
     /**
-     * The five kinds a `Serves:` line may name, each checked against the place
+     * The five kinds a `serves:` key may name, each checked against the place
      * that owns it rather than against a list kept in `Todo`. The pair that
      * matters is the id whose shape is right and whose entry is not there: a
      * session is sent to read what the todo serves, and an id nothing answers
@@ -345,8 +346,8 @@ final class TodoTest extends TestCase
         $queued = $this->queueATodo();
         file_put_contents(
             $this->ownQueue() . '/' . $queued['path'],
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Priority:** low\n"
-            . "**Waiting on:** which of the two shapes is wanted.\n\n" . $queued['body'] . "\n",
+            "---\nserves: [todo/]\npriority: low\nwaitingOn: >\n  which of the two shapes is wanted.\n---\n\n"
+            . '# ' . self::MARKER . "\n\n" . $queued['body'] . "\n",
         );
         $carrying = $this->ownTodos(Todo::items())[0];
 

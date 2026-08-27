@@ -211,3 +211,37 @@ line here rather than a section of its own. Judged on 2026-08-22.
   reaches it. Unlike the subsets it is offered where a `tag` was asked for: a
   count is what a word reaches, and only a subset promises entries the same call
   would not return.
+
+## Since then
+
+A third corpus asks for the filter half, and it is the label search. Judged on
+2026-08-27. `feedback/2026-08-24-225129` called `typo3_label_lookup` with
+`resource: "EXT:backend/Resources/Private/Language/Wizard.xlf"`, a path the
+session had guessed. Back came `matchCount: 0` with `error` at 0 and `title` at
+0, which the session read as "this resource holds no such label" before going to
+grep. There is no `Wizard.xlf`: `.checkouts/main` has
+`Resources/Private/Language/Wizards/general.xlf`, whose
+`wizard.step.error.title` is the "Error" that was being looked for.
+
+`resource` narrows the labels the way `version` narrows the changelog, and
+`LabelLookup::answer()` counts the terms after it has filtered by it. A path
+naming nothing at all therefore reports every word at 0 — which is what
+`LabelSearch::perTermCounts()` reserves for a word that was misspelled or that
+nothing here is named after. The counts read as a fact about the labels and are
+a fact about the filter, which is this entry's second **Since then** one corpus
+over, and the label miss was given neither half of what the changelog miss got.
+
+Both halves already have a shape next door. `termCountsWithoutTheNarrowing` is
+the counts taken outside the filter, returned only where a word reaches there
+and nothing inside it. `tags` is the list of values that do exist, so that a tag
+matching nothing can be replaced by one that does — and that is the report's
+nearest-directory listing, on the axis that needs it most. A version matching
+nothing is still a version, while a guessed resource is one segment or one
+plural away from a file that is there.
+
+Step 4, wording, and queued rather than closed on the spot: it is `src/` and a
+declared output schema, which `D-FBK-052` left on the far side of the autonomous
+line. `T-260824-ea52` carries it at `normal`, because the rule is decided, held
+by `R-ANS-006` and built in the sibling — one session has reported the gap, and
+what raises the card is the distance between the two tools rather than the
+count.

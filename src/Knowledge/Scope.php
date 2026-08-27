@@ -192,10 +192,7 @@ enum Scope: string
      */
     public static function of(string $path, string $text = ''): self
     {
-        // The "./" a caller writes for "here", and nothing else: trimming the
-        // two characters as a class ate the dot of a dotfile, so no path could
-        // ever reach the `.ddev/` entry below (`D-SCO-012`).
-        $lowered = (string) preg_replace('#^(\./|/)+#', '', mb_strtolower(str_replace('\\', '/', $path)));
+        $lowered = self::normalise($path);
         $prose = mb_strtolower($text);
 
         // What this path says about itself. Nothing said about the call as a
@@ -261,10 +258,8 @@ enum Scope: string
                     return self::Extension;
                 }
             }
-            foreach (self::CORE_LAYOUT as $prefix) {
-                if (str_starts_with($lowered, $prefix) && self::couldBeTheCore()) {
-                    return self::Core;
-                }
+            if (self::isCoreLayout($lowered)) {
+                return self::Core;
             }
         }
 
@@ -288,6 +283,30 @@ enum Scope: string
             Instance::KIND_EXTENSION_REPOSITORY => self::Extension,
             default => self::Uncertain,
         };
+    }
+
+    /**
+     * A path in the one form the markers are written in.
+     *
+     * The "./" a caller writes for "here" goes, and nothing else: trimming the
+     * two characters as a class ate the dot of a dotfile, so no path could ever
+     * reach the `.ddev/` entry (`D-SCO-012`).
+     */
+    private static function normalise(string $path): string
+    {
+        return (string) preg_replace('#^(\./|/)+#', '', mb_strtolower(str_replace('\\', '/', $path)));
+    }
+
+    /** Whether a path's own shape puts it in the core's layout. */
+    private static function isCoreLayout(string $lowered): bool
+    {
+        foreach (self::CORE_LAYOUT as $prefix) {
+            if (str_starts_with($lowered, $prefix) && self::couldBeTheCore()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -440,10 +459,22 @@ enum Scope: string
      * its own boundary — `forge ` with the space that keeps "forget" out — and
      * a brief writing "from Forge," cleared neither gate (`D-SKL-078`).
      *
+     * A path the layout puts in the core is that evidence too, and it is read
+     * per path rather than as a marker of its own: `Build/Scripts/` is the
+     * core's only from a root that could be the core, and the joined haystack
+     * below carries no such guard and would read the task text as well
+     * (`D-SKL-080`).
+     *
      * @param array<int, string> $paths
      */
     public static function isCoreWork(array $paths, string $text = ''): bool
     {
+        foreach ($paths as $path) {
+            if (self::isCoreLayout(self::normalise($path))) {
+                return true;
+            }
+        }
+
         $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
         foreach (self::CORE_WORK as $marker) {
             if (Text::containsWord($haystack, $marker)) {

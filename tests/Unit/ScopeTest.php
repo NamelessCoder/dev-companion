@@ -135,6 +135,40 @@ final class ScopeTest extends TestCase
         self::assertTrue(Scope::of('Build/Sources/Sass/theme.scss')->isOutsideTheCore());
     }
 
+    /**
+     * A path in the core's own build setup routes the core's own workflow.
+     *
+     * `feedback/2026-08-25-114802` ended in a core patch to three files below
+     * `Build/Scripts/` with no skill invoked at any point. The brief answered
+     * `scope: "core"`, marked its checklist core-only and named the workflow for
+     * extensions: the route reads `Scope::isCoreWork()`, whose only core path
+     * was `typo3/sysext/` — `D-SKL-080`.
+     */
+    #[Decision('D-SKL-080')]
+    #[Test]
+    public function aPathInTheCoresOwnBuildSetupRoutesTheCoresOwnWorkflow(): void
+    {
+        Instance::discoverFrom($this->coreCheckout());
+
+        $task = 'Add a test for the suite dispatcher';
+        $scripts = Registry::call('typo3_task_guide', ['task' => $task, 'paths' => ['Build/Scripts/runTests.sh']]);
+        $sysext = Registry::call('typo3_task_guide', [
+            'task' => $task,
+            'paths' => ['typo3/sysext/core/Classes/Utility/GeneralUtility.php'],
+        ]);
+
+        self::assertSame($sysext->data['skills'], $scripts->data['skills']);
+        self::assertContains('typo3-core-patch-development', $scripts->data['skills']);
+
+        // What the layout keeps that a marker of its own would not: from a root
+        // that declares an extension, `Build/Scripts/` is that extension's own
+        // build setup and the core's workflow is not the one to load.
+        Instance::discoverFrom($this->extensionRepository());
+        $extension = Registry::call('typo3_task_guide', ['task' => $task, 'paths' => ['Build/Scripts/runTests.sh']]);
+
+        self::assertNotContains('typo3-core-patch-development', $extension->data['skills']);
+    }
+
     #[Requirement('R-SCO-001')]
     #[Decision('D-SCO-005')]
     #[Test]

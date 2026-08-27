@@ -3,7 +3,8 @@ id: D-SKL-080
 title: 'A path only the core has routes to the core''s own workflow'
 date: 2026-08-27
 status: open
-coveredBy: []
+coveredBy:
+  - ScopeTest::aPathInTheCoresOwnBuildSetupRoutesTheCoresOwnWorkflow
 ---
 
 # D-SKL-080 — A path only the core has routes to the core's own workflow
@@ -19,7 +20,7 @@ checklist marked core-only, and is routed to the workflow for extensions.
 
 - **The session.** `/home/benji/projects/typo3-cms` on 2026-08-25,
   `claude-opus-5[1m]`,
-  [`feedback/2026-08-25-114802`](../../feedback/2026-08-25-114802-no-skill-activated-typo3-core-patch-development.md).
+  [`feedback/2026-08-25-114802`](../../feedback/archive/2026-08-25-114802-no-skill-activated-typo3-core-patch-development.md).
   It opened as a diagnostic question about `runTests.sh -s cglGit` in a git
   worktree and ended in a core patch with a Forge issue and a `Releases:`
   trailer. No skill was invoked at any point. All three files it changed are in
@@ -121,3 +122,24 @@ checklist marked core-only, and is routed to the workflow for extensions.
 - A session reports the re-ask made at the commit act and answered with no
   skill. Then the route is repaired and the moment still lands on nothing, and
   the tail declined above is what is left.
+
+## Since then
+
+The repair is the second of the two shapes, and the first is what settled it.
+`Scope::isCoreWork()` reads each path through the layout the same class already
+applies in `Scope::of()`, guard included, rather than taking `build/scripts/`
+and `build/sources/` into `CORE_WORK`. Those markers are matched against the
+paths and the task text folded into one string, where two things the layout
+holds would go: the manifest at the root, which is what makes `Build/Scripts/`
+the core's rather than an extension's own build setup, and the path itself, so a
+sitepackage brief writing the directory in prose would clear the gate too. Both
+are asserted from the far side in
+`ScopeTest::aPathInTheCoresOwnBuildSetupRoutesTheCoresOwnWorkflow`.
+
+`Scope::CORE_ONLY_ARTIFACTS` is left as it is. It answers the other question —
+whether a line of advice can be followed outside the core — and its population
+is the checklist, the checkout discovery steps and the `nextTools` reasons, none
+of which names `Build/Sources/`: read on 2026-08-27, the one file in
+`knowledge/` that writes the directory is `test-suite-hints.json`, whose lines
+carry `runTests.sh` and the core checkout anyway. Adding the marker there would
+be one nothing matches.

@@ -81,7 +81,7 @@ holding it reports noticing its own next act instead.
   [`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md).
 - **The corpus.** `bin/cli feedback:list` on 2026-08-25 reports 49 open, 45 of
   them from `/home/benji/projects/typo3-cms`.
-  [`feedback/2026-08-25-114802`](../../feedback/2026-08-25-114802-no-skill-activated-typo3-core-patch-development.md)
+  [`feedback/2026-08-25-114802`](../../feedback/archive/2026-08-25-114802-no-skill-activated-typo3-core-patch-development.md)
   is the same skill not firing from the client's own listing, on a session where
   the patch emerged from a diagnosis and no sentence announced it.
 

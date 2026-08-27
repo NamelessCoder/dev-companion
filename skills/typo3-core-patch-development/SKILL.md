@@ -158,6 +158,14 @@ already have issues of their own. A point dropped here is dropped invisibly,
 because `Resolves:` closes the issue on every point it names and nobody reopens
 a closed one.
 
+Where the request widens after the patch is under way, re-establish three
+things: what kind of change this is now, which branches it reaches, and what it
+owes. Do it before writing the widened part, and say which of the three moved.
+Step 2 settled the first, the blast radius the second and the changelog section
+the third, each against the narrower request. Carrying on re-derives none of
+them. A change that gains a second subsystem gains that subsystem's build, its
+checks and its backport constraint with it.
+
 Find out whether the area is moving before you build on it, and fetch and rebase
 onto the branch you target before you finalise. A patch written against code
 that changed underneath it is not a patch that needs adjusting — the method it

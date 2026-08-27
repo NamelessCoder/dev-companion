@@ -201,6 +201,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SKL-025`][R-SKL-025] — An audit's list says what the repository already carries unmerged · held
 - [`R-SKL-026`][R-SKL-026] — A runtime lookup a step names says what it adds after the extension answer · held
 - [`R-SKL-027`][R-SKL-027] — A core patch covers every point its issue lists · held
+- [`R-SKL-028`][R-SKL-028] — A widened request re-establishes what the patch is and what it owes · held
 
 [R-SKL-001]: task-skills/skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: task-skills/skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -229,6 +230,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-SKL-025]: task-skills/skl-025-an-audits-list-says-what-the-repository-already-carries-unmerged.md
 [R-SKL-026]: task-skills/skl-026-a-runtime-lookup-a-step-names-says-what-it-adds-after-the-extension-answer.md
 [R-SKL-027]: task-skills/skl-027-a-core-patch-covers-every-point-its-issue-lists.md
+[R-SKL-028]: task-skills/skl-028-a-widened-request-re-establishes-what-the-patch-is-and-what-it-owes.md
 
 ### project
 

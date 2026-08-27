@@ -39,7 +39,7 @@ holding it reports noticing its own next act instead.
   about three tests the review had just reported as skipped for a stale reason.
   The section enumerates "finish it", "fix it", "amend it", "write the test".
 - **The one sighting where it fired names one of them.**
-  [`feedback/2026-08-24-225243`](../../feedback/2026-08-24-225243-both-patch-skills-handle-a-linear-task-this-one.md),
+  [`feedback/2026-08-24-225243`](../../feedback/archive/2026-08-24-225243-both-patch-skills-handle-a-linear-task-this-one.md),
   same directory and same pair of skills: "kannst du ihn fertigstellen das er
   backgeportet werden kann?", and the session reports invoking the patch skill
   rather than carrying on. That is "finish it", in the reader's own words.

@@ -1922,6 +1922,62 @@ final class SkillTest extends TestCase
         );
     }
 
+    /**
+     * The same section read for the other direction. `R-SKL-027` holds the
+     * patch to the list its issue already carries; this one is for the list the
+     * request grows once the patch is under way (`D-SKL-079`).
+     */
+    #[Requirement('R-SKL-028')]
+    #[Decision('D-SKL-079')]
+    #[Test]
+    public function aWidenedRequestReEstablishesWhatThePatchIsAndWhatItOwes(): void
+    {
+        // Forge #93177 with this skill active: a task that grew eight times,
+        // four re-derivations of its own scope, and two rounds of client-side
+        // work plus a changelog entry thrown away. Both rules that would have
+        // carried it are here and both are written for the assessment
+        // (`feedback/2026-08-24-225243`).
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-development/SKILL.md',
+        ));
+
+        // The three, in the skill's own vocabulary rather than restated.
+        self::assertStringContainsString(
+            're-establish three things: what kind of change this is now, which branches it reaches, '
+            . 'and what it owes',
+            $skill,
+        );
+        // Before the widened part, because the cost is work already written.
+        self::assertStringContainsString(
+            'Do it before writing the widened part, and say which of the three moved',
+            $skill,
+        );
+        // Pointers to where each was settled the first time: step 2, the
+        // blast-radius paragraph, the changelog section.
+        self::assertStringContainsString(
+            'Step 2 settled the first, the blast radius the second and the changelog section the third',
+            $skill,
+        );
+        self::assertStringContainsString('Carrying on re-derives none of them', $skill);
+        // What a widening costs where it gains a subsystem, which is the two
+        // discarded rounds in one sentence.
+        self::assertStringContainsString(
+            "gains that subsystem's build, its checks and its backport constraint with it",
+            $skill,
+        );
+
+        // Beside "Keep the patch one change" rather than at the foot of the
+        // section: a widening is a session deciding again what this patch is,
+        // and the reporting session names that sentence as the one that fired.
+        $widening = strpos($skill, 'Where the request widens after the patch is under way');
+        self::assertNotFalse($widening, 'the skill does not say what a widened request re-establishes');
+        self::assertGreaterThan(
+            (int) strpos($skill, 'That narrows the work and never the points the issue lists'),
+            $widening,
+        );
+        self::assertLessThan((int) strpos($skill, 'Find out whether the area is moving'), $widening);
+    }
+
     #[Requirement('R-SKL-013')]
     #[Decision('D-SKL-007')]
     #[Test]

@@ -82,7 +82,7 @@ final class ForgeLookup extends ReadOnlyTool
                     'type' => 'string',
                     'enum' => ['all', 'people'],
                     'default' => 'all',
-                    'description' => 'Which comments come back with an issue. "all" is every one of them and is what you want when reading a single issue — the comments are where the decision is, and on a report worth reading the one that settles it is regularly the last of sixteen. "people" drops the patch-set pings a review bot wrote, which on some issues is half the volume and carries nothing a reader was going to use; the change numbers in them are lifted into reviews either way, so nothing is lost by it. Ask for it when sweeping candidates, where the cost of reading ten issues is what decides whether the comments get read at all. How many were dropped is answered whichever you ask for. Narrows issue and is ignored by query and open.',
+                    'description' => 'Which comments come back with an issue. "all" is every one of them and is what you want when reading a single issue — the comments are where the decision is, and on a report worth reading the one that settles it is regularly the last of sixteen. "people" drops the patch-set pings a review bot wrote, which on some issues is half the volume and carries nothing a reader was going to use; the change numbers in them are lifted into reviews either way, so nothing is lost by it. Ask for it when reading candidates one issue at a time, where the cost of ten such reads is what decides whether the comments get read at all — an enumeration carries no comment to filter. How many were dropped is answered whichever you ask for. Narrows issue and is ignored by query and open.',
                 ],
                 'tracker' => [
                     'type' => 'string',
@@ -630,8 +630,9 @@ final class ForgeLookup extends ReadOnlyTool
             . 'before deciding anything about a row. Hand the page over rather than choosing from it: triaging a '
             . 'backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is '
             . "yours, read these in order and stop at the first that decides:\n"
-            . '- What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the '
-            . "checkout is opened. An abandoned change is a verdict somebody wrote down.\n"
+            . '- What has already happened to it. The row carries the change and the state it stands in; the '
+            . 'reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before '
+            . "the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.\n"
             . '- The category, against the branch you are standing on. One naming a subsystem the branch no longer '
             . "ships settles the issue unread.\n"
             . '- Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no '

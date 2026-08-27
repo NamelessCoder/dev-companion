@@ -97,10 +97,11 @@ Takes
     # it is regularly the last of sixteen. "people" drops the patch-set pings a
     # review bot wrote, which on some issues is half the volume and carries nothing
     # a reader was going to use; the change numbers in them are lifted into reviews
-    # either way, so nothing is lost by it. Ask for it when sweeping candidates,
-    # where the cost of reading ten issues is what decides whether the comments get
-    # read at all. How many were dropped is answered whichever you ask for. Narrows
-    # issue and is ignored by query and open.
+    # either way, so nothing is lost by it. Ask for it when reading candidates one
+    # issue at a time, where the cost of ten such reads is what decides whether the
+    # comments get read at all — an enumeration carries no comment to filter. How
+    # many were dropped is answered whichever you ask for. Narrows issue and is
+    # ignored by query and open.
     notes: string  # optional
     # One of: Bug, Feature, Major Feature, Support, Task, Story, Suggestion,
     # Impediment, Epic, Work Package, Topic. Only issues filed under this tracker,

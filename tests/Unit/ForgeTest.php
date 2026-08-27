@@ -1230,6 +1230,42 @@ final class ForgeTest extends TestCase
     }
 
     /**
+     * The first reading names the call the row does not spare, which is
+     * `D-ANS-069`'s first **Wrong if** and what it fired on:
+     * `feedback/2026-08-26-223414` read four `ABANDONED` rows off one page,
+     * called them attempts that died and opened none of the changes. The state
+     * is on the row; what the reading turns on is the argument under it.
+     */
+    #[Decision('D-ANS-069')]
+    #[Test]
+    public function theFirstReadingNamesWhatTheRowLeavesToACall(): void
+    {
+        $said = ForgeLookup::workflow('answered', 'stale');
+
+        self::assertNotNull($said);
+        self::assertStringContainsString('the reading is the argument under that state', $said);
+        self::assertStringContainsString('typo3_gerrit_lookup', $said);
+        self::assertStringContainsString('grounds to read it rather than to pass the row over', $said);
+    }
+
+    /**
+     * The comment filter names the reading it narrows, because the words that
+     * invited it are what a caller matches its own call against — the session
+     * of `feedback/2026-08-26-223414` called its enumeration a sweep of
+     * candidates, passed `notes` with it, and credited a filter that never ran
+     * (`D-FBK-018`).
+     */
+    #[Decision('D-FBK-018')]
+    #[Test]
+    public function theCommentFilterInvitesTheReadingItNarrows(): void
+    {
+        $notes = ForgeLookup::inputSchema()['properties']['notes']['description'];
+
+        self::assertStringContainsString('one issue at a time', $notes);
+        self::assertStringContainsString('Narrows issue and is ignored by query and open.', $notes);
+    }
+
+    /**
      * A date the tracker cannot read is dropped rather than sent. Redmine
      * answers an unparseable filter with the unfiltered set, which is a set
      * about everything wearing the shape of a set about one thing.

@@ -7,6 +7,7 @@ coveredBy:
   - ForgeTest::aRowCarriesWhatTheOneCallAlreadyAnsweredAboutIt
   - ForgeTest::aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt
   - ForgeTest::aRowSaysWhichStateEachOfItsChangesIsIn
+  - ForgeTest::theFirstReadingNamesWhatTheRowLeavesToACall
   - GerritTest::aPageOfIssuesIsOneQueryAndEachHitLandsOnTheIssueItNames
 ---
 
@@ -195,3 +196,17 @@ step 7 with the diff behind it; the block is the compressed copy, and what the
 compression dropped is the half that costs a call.
 
 Queued rather than made here: it is `src/`, and `D-SKL-038` owns the block.
+
+**Built on 2026-08-27**, in the block and not in a new claim. The first reading
+now says what the row carries — the change and the state it stands in — and
+names the argument under that state as the reading, which `typo3_gerrit_lookup`
+answers by the number. The half the compression dropped is back with it: an
+`ABANDONED` is grounds to read that argument rather than to pass the row over,
+which is the sentence the paragraph above the rows and step 7 of
+`typo3-core-issue-triage` already carried.
+
+The verdict sentence is gone rather than qualified. It stood for a state that
+cost a call, and beside a row that carries the state it read as the reading
+itself, which is what the session did with it.
+`ForgeTest::theFirstReadingNamesWhatTheRowLeavesToACall` holds the three halves,
+so a later compression of the block fails rather than drops one again.

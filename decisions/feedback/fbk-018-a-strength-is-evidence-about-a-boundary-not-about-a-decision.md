@@ -3,6 +3,8 @@ id: D-FBK-018
 title: A strength is evidence about a boundary, not about a decision
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - ForgeTest::theCommentFilterInvitesTheReadingItNarrows
 ---
 
 # D-FBK-018 — A strength is evidence about a boundary, not about a decision
@@ -1494,3 +1496,10 @@ The feedback is trimmed to the two wording halves and stays open behind its
 card. No statement about TYPO3 was established here: the re-runs read this
 server's answers, and the two paths were read in `Forge::reviewed()` and
 `Forge::reviews()`.
+
+**Both halves were written the same day and the feedback archived.** The `notes`
+invitation names the reading it narrows — one issue at a time, with an
+enumeration carrying no comment to filter — rather than the sweep the session
+matched its own call against, and
+`ForgeTest::theCommentFilterInvitesTheReadingItNarrows` holds the wording. The
+other half is the first reading of the backlog block, at `D-ANS-069`.

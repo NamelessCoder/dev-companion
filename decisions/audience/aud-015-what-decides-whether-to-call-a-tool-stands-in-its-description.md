@@ -51,7 +51,7 @@ tool supplies the set stands one property down in the input schema.
   [`D-ANS-104`](../answers/ans-104-the-maintained-release-lines-are-placed-where-a-task-names-a-branch.md)
   made that same day did not reach it either. Its carrier is
   `typo3_gerrit_lookup`, and the same session's strength report
-  [`feedback/2026-08-26-223414`](../../feedback/2026-08-26-223414-four-things-in-the-forge-tool-that-carried-the.md)
+  [`feedback/2026-08-26-223414`](../../feedback/archive/2026-08-26-223414-four-things-in-the-forge-tool-that-carried-the.md)
   says why: the inline `reviews` field of `typo3_forge_lookup` gave it the
   change numbers and states, and "it is also why typo3_gerrit_lookup never had
   to be opened".

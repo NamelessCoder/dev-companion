@@ -651,6 +651,36 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    #[Decision('D-KNW-132')]
+    #[Test]
+    public function theChangelogDirectoryArrivesWhereTheFileIsWritten(): void
+    {
+        // D-KNW-132. The rule was reachable from a question about the
+        // directory and from nothing a session writing the file asks, so it
+        // arrived after the file had been written into the release under
+        // development. Both queries and both surfaces are held, because the
+        // section is reached on the wording of its own body.
+        foreach (['write a changelog entry for a bugfix', 'add a changelog file'] as $query) {
+            self::assertContains(
+                'Where a Changelog File Goes',
+                array_column(Documents::search($query), 'heading'),
+                $query . ' reaches the sections around the directory and not the directory',
+            );
+        }
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => 'Fix a wrong label in the backend and backport it',
+            'paths' => ['typo3/sysext/backend/Classes/Controller/EditDocumentController.php'],
+            'changeType' => 'bugfix',
+        ]);
+        self::assertStringContainsString('<lts>.x', $brief->text);
+
+        self::assertStringContainsString(
+            '`<lts>.x` directory',
+            (string) file_get_contents(Paths::root() . '/skills/typo3-core-patch-development/SKILL.md'),
+        );
+    }
+
     #[Decision('D-KNW-113')]
     #[Test]
     public function aReportBeingWrittenIsToldWhichMarkupTheDescriptionRenders(): void
@@ -1691,10 +1721,16 @@ final class KnowledgeTest extends TestCase
      * worth. The cut is still a cut and still spans two pages, so what it holds
      * is the other half: the page the second call is answered with is already
      * excerpted and already offered here.
+     *
+     * A fourth time with `D-KNW-132`, which put "entry" into a section that
+     * carried "entries", and `Release Branches and Backports` came back up
+     * through the same floor. The cut now spans three pages, which is the same
+     * half this holds.
      */
     #[Decision('D-ANS-076')]
     #[Decision('D-KNW-111')]
     #[Decision('D-KNW-129')]
+    #[Decision('D-KNW-132')]
     #[Test]
     public function aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage(): void
     {
@@ -1707,6 +1743,7 @@ final class KnowledgeTest extends TestCase
             [
                 'core/contribution/changelog',
                 'core/contribution/commit-messages',
+                'core/contribution/gerrit-workflow',
             ],
             array_values(array_unique(array_column($first->data['matches'], 'documentId'))),
         );

@@ -13,6 +13,7 @@ one is added.
 - [`D-KNW-129`][D-KNW-129] — Opening a patch set on somebody else's change is a subject this server owns · 2026-08-27
 - [`D-KNW-130`][D-KNW-130] — What the JavaScript unit layer can reach is stated in the corpus · 2026-08-27
 - [`D-KNW-131`][D-KNW-131] — The author of a change survives every amend somebody else makes · 2026-08-27 · confirmed
+- [`D-KNW-132`][D-KNW-132] — The changelog directory is stated where the file is written · 2026-08-27
 - [`D-KNW-118`][D-KNW-118] — How a development installation renders a package that ships no page TypoScript is a subject this server owns · 2026-08-25
 - [`D-KNW-119`][D-KNW-119] — The corpus tells apart the failures one usage synopsis presents alike · 2026-08-25 · confirmed
 - [`D-KNW-120`][D-KNW-120] — A hint that states a merge names the lookup that reads the result · 2026-08-25
@@ -136,6 +137,7 @@ one is added.
 [D-KNW-129]: knw-129-opening-a-patch-set-on-somebody-elses-change-is-a-subject-this-server-owns.md
 [D-KNW-130]: knw-130-what-the-javascript-unit-layer-can-reach-is-stated-in-the-corpus.md
 [D-KNW-131]: knw-131-the-author-of-a-change-survives-every-amend-somebody-else-makes.md
+[D-KNW-132]: knw-132-the-changelog-directory-is-stated-where-the-file-is-written.md
 [D-KNW-118]: knw-118-how-a-development-installation-renders-a-package-that-ships-no-page-typoscript-is-a-subject-this-server-owns.md
 [D-KNW-119]: knw-119-the-corpus-tells-apart-the-failures-one-usage-synopsis-presents-alike.md
 [D-KNW-120]: knw-120-a-hint-that-states-a-merge-names-the-lookup-that-reads-the-result.md

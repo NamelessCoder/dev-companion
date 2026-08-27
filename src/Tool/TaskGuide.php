@@ -208,13 +208,14 @@ final class TaskGuide extends ReadOnlyTool
             'Check whether the bug also affects maintained older release branches.',
             // The obligation the core's own conventions file leaves at "user-facing
             // changes need an entry", which a session working a bugfix answered by
-            // guessing and said so (`D-AUD-014`). Stated as the rule and the page,
-            // because the four types and the boundary against Breaking are that
-            // page's and retelling them here is a second copy.
+            // guessing and said so (`D-AUD-014`). The directory is here for the
+            // same reason and is the second half of `D-KNW-132`; the four types and
+            // the boundary against Breaking stay the page's.
             'A bugfix owes a changelog entry only where it changes what an installation renders, is configured '
                 . 'by, or has documented, and then it is an Important below typo3/sysext/core/Documentation/'
-                . 'Changelog/. The whole rule is one typo3_rule_lookup call with documentId '
-                . '"core/contribution/changelog".',
+                . 'Changelog/. Write it into the <lts>.x directory of the oldest branch the Releases: trailer '
+                . 'names, and into both .x directories where two maintained lines take the change. The whole '
+                . 'rule is one typo3_rule_lookup call with documentId "core/contribution/changelog".',
         ],
         'feature' => [
             'Add a changelog feature file under typo3/sysext/core/Documentation/Changelog/ for public API additions.',

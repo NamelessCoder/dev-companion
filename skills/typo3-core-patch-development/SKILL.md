@@ -196,9 +196,10 @@ The procedure is one page: `typo3_rule_lookup` with
 the change owes, which release directory the file goes into, what it is named
 and what checks it. Decide the type from what the change does rather than from
 habit: writing an entry for a change that owes none is as much a review finding
-as omitting one that does. The directory follows the branches the patch reaches
-rather than the branch it is written on, so a backport does not go where the
-release under development goes.
+as omitting one that does. Write the file into the `<lts>.x` directory of the
+oldest branch the `Releases:` trailer names, and into both `.x` directories
+where two maintained lines take the change. That is the branches the patch
+reaches deciding it, and the branch it is written on deciding nothing.
 
 ## Commit and push
 

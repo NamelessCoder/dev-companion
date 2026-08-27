@@ -41,18 +41,17 @@ list.
 
 ## Where a Changelog File Goes
 
-- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in
-  the directory of the minor version the change is released in.
-- The `Releases:` trailer decides that directory, and the branch the patch is
-  written on does not. Reading the directory off the release under development
-  is right for a change that reaches `main` alone.
-- A backport goes into the `<lts>.x` directory of the oldest branch it reaches,
-  and the file stands in that same directory on every branch that carries the
-  change.
-- A change backported to two maintained lines is duplicated into both `.x`
-  directories on the branches that have both, and each release branch carries
-  the directories it has. It happens for the fixes an old LTS still takes, so it
-  is `Important` in practice.
+- Write the entry below `typo3/sysext/core/Documentation/Changelog/`, into the
+  `<lts>.x` directory of the oldest branch the `Releases:` trailer names. A
+  change that names `main` alone goes into the directory of the minor version
+  `main` is developing.
+- That trailer decides the directory and the branch the patch is written on
+  decides nothing, so a backport's file stands in the same directory on every
+  branch that carries the change.
+- Add the entry to both `.x` directories where two maintained lines take the
+  change, on each branch that has both, and each release branch carries the
+  directories it has. It happens for the fixes an old LTS still takes, so it is
+  `Important` in practice.
 - Entries are never deleted from a younger branch, which is why `main` carries a
   directory per maintained line.
 - The third example in `Howto.rst` names a directory and then says the branch

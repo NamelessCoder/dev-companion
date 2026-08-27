@@ -11,6 +11,13 @@ directory: /home/benji/projects/typo3-cms
 
 ## Observation
 
+Trimmed on 2026-08-27 to the half that is still open. The second ask is
+answered: what a backend Lit step's declared `error:` branch renders on, and why
+a task that catches its own failure makes that branch unreachable, is the
+`backend-lit-task` hint — `D-KNW-127` carries the reading of the wizard's five
+steps and of the two elements that get it right. Cost 1 below is left standing
+because it is evidence for this half too.
+
 Task as given: "bitte review mir 93177". What it became, in order, each turn driven by a new user message that arrived while tool calls were in flight: review the patch -> amend it -> write the Gerrit comment -> write replies for four unresolved threads -> build a follow-up hardening patch -> extend it to the client side -> produce browser screenshots -> redo the screenshots properly -> rewrite the client fix twice -> write a changelog entry -> delete the changelog entry.
 
 Both skills fitted the part they own and I would activate both again.
@@ -38,5 +45,3 @@ Skill(typo3-core-patch-review, args="93177"); later Skill(typo3-core-patch-devel
 One paragraph in typo3-core-patch-development, next to "Keep the patch one change", for the case where scope grows after the crossing rather than before it:
 
 "Where the request widens after the patch is under way, re-establish three things before writing code, and say which changed: what the change is (bugfix, task, hardening), which branches it reaches, and what it therefore owes. Each of those can flip on a widening and none of them is re-derived by carrying on. A change that gains a second subsystem — PHP plus the built frontend, say — has gained a build step, a lint suite and a backport constraint with it."
-
-And, specifically for what cost me the most: before writing a new error path in the backend's TypeScript, check whether the component already declares one. Four of five localization wizard steps had an `error:` render branch with its own XLF label, all unreachable because the step's own task caught and returned an empty list. I wrote a parallel error surface next to a correct one that was switched off. A line in a hint — "a backend Lit step that renders a Task usually declares error:; make the task reject rather than adding a second error path" — would have found it in one reading.

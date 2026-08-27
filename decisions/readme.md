@@ -305,6 +305,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### knowledge
 
 - [`D-KNW-126`][D-KNW-126] — The syntax floor a core patch is bound by is a subject this server owns · 2026-08-27
+- [`D-KNW-127`][D-KNW-127] — How a backend web component surfaces a failed load is a subject this server owns · 2026-08-27
 - [`D-KNW-118`][D-KNW-118] — How a development installation renders a package that ships no page TypoScript is a subject this server owns · 2026-08-25
 - [`D-KNW-119`][D-KNW-119] — The corpus tells apart the failures one usage synopsis presents alike · 2026-08-25 · confirmed
 - [`D-KNW-120`][D-KNW-120] — A hint that states a merge names the lookup that reads the result · 2026-08-25
@@ -423,6 +424,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
 [D-KNW-126]: knowledge/knw-126-the-syntax-floor-a-core-patch-is-bound-by-is-a-subject-this-server-owns.md
+[D-KNW-127]: knowledge/knw-127-how-a-backend-web-component-surfaces-a-failed-load-is-a-subject-this-server-owns.md
 [D-KNW-118]: knowledge/knw-118-how-a-development-installation-renders-a-package-that-ships-no-page-typoscript-is-a-subject-this-server-owns.md
 [D-KNW-119]: knowledge/knw-119-the-corpus-tells-apart-the-failures-one-usage-synopsis-presents-alike.md
 [D-KNW-120]: knowledge/knw-120-a-hint-that-states-a-merge-names-the-lookup-that-reads-the-result.md
@@ -668,6 +670,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-079`][D-SKL-079] — A widened request re-establishes what the patch is and what it owes · 2026-08-27
 - [`D-SKL-075`][D-SKL-075] — A patch narrows the work, not the list of points it closes on · 2026-08-25
 - [`D-SKL-076`][D-SKL-076] — A description names both jobs a skill's body owns · 2026-08-25
 - [`D-SKL-077`][D-SKL-077] — The crossing out of a review is recognised on the first edit meant to survive · 2026-08-25
@@ -743,6 +746,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — A question no lookup settles is read from the installed source · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
+[D-SKL-079]: task-skills/skl-079-a-widened-request-re-establishes-what-the-patch-is-and-what-it-owes.md
 [D-SKL-075]: task-skills/skl-075-a-patch-narrows-the-work-not-the-list-of-points-it-closes-on.md
 [D-SKL-076]: task-skills/skl-076-a-description-names-both-jobs-a-skills-body-owns.md
 [D-SKL-077]: task-skills/skl-077-the-crossing-out-of-a-review-is-recognised-on-the-first-edit-meant-to-survive.md

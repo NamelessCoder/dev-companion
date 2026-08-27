@@ -30,6 +30,28 @@
     ]
   },
   {
+    "id": "backend-lit-task",
+    "title": "Async Data in a Backend Web Component and How Its Failure Shows",
+    "domains": [
+      "typescript"
+    ],
+    "scope": "core",
+    "appliesTo": [
+      "Build/Sources/TypeScript/backend/",
+      "@lit/task",
+      "lit task",
+      "task.render",
+      "async data in a web component",
+      "loading state",
+      "error state"
+    ],
+    "hints": [
+      "A backend web component loads data through a Task from @lit/task and renders it with task.render(), which takes one branch per state: pending while it runs, complete with the value, error with the reason it rejected.",
+      "The error branch renders only where the task function rejects. A task that catches its own failure and returns an empty value renders complete instead, so the branch the component declares is unreachable and the failure reaches the user as an empty result.",
+      "So a failure is surfaced by letting the task reject, and the declared branch renders it. A second error surface written beside that branch duplicates one the component already has and cannot reach."
+    ]
+  },
+  {
     "id": "backend-ui",
     "title": "Backend UI and Web Components",
     "domains": [

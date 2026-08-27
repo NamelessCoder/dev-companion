@@ -57,5 +57,45 @@
       "Keep the manual with the extension so a package release and the documentation for that release are one revision. Repository-wide deployment notes are a different artifact and belong with the project that deploys it.",
       "For a patch to TYPO3 itself, the documentation-changelog hint has the core's release-note filename, structure and checks; those are repository conventions, not a template for an extension."
     ]
+  },
+  {
+    "id": "documentation-links",
+    "title": "Linking Into the Official Documentation From a Template or From PHP",
+    "domains": [
+      "docs",
+      "fluid",
+      "php"
+    ],
+    "appliesTo": [
+      "link to the documentation",
+      "documentation link",
+      "docs.typo3.org",
+      "permalink",
+      "be:link.documentation",
+      "DocumentationViewHelper",
+      "getDocsLink",
+      "Typo3Information"
+    ],
+    "hints": [
+      "A link into the official documentation is built from a permalink identifier and never written out as a URL. The branch of the running installation is appended to it, so the reader lands on the documentation of the TYPO3 they are on and a backport carries the link unchanged.",
+      "The identifier is the one the link modal of a rendered manual shows: t3coreapi:extension-scanner, t3tsref:cobj-pageview. An identifier that already carries an @ is rejected with exception 1728643940, an InvalidArgumentException.",
+      "In a Fluid template that is <be:link.documentation identifier=\"t3coreapi:extension-scanner\">the official docs</be:link.documentation> rather than an a element written by hand. The be prefix is declared per template, and fluid-templates carries the declaration.",
+      "The rendered a element forces target=\"_blank\" and rel=\"noreferrer\". Passing either is overwritten with nothing raised, so leave both out; class and every other attribute reaches the tag as given.",
+      "An install-tool template may use it because it takes no constructor argument: under the failsafe container ViewHelperResolver builds a ViewHelper through makeInstance(). Only a ViewHelper with required constructor arguments has to be registered in install/Classes/ServiceProvider.php first, which is what the handful listed there are.",
+      "The ViewHelper class is marked @internal and not part of TYPO3 Core API. A backend module outside the core may call it and is given no promise that it survives the next major.",
+      {
+        "text": "From PHP the same link is Typo3Information::getDocsLink('t3coreapi:...'), static so that a message can build one before DI is ready. The core writes it into deprecation messages, TypoScript error messages and install-tool environment checks.",
+        "since": 14
+      },
+      {
+        "text": "From PHP the same link is (new Typo3Information())->getDocsLink('t3coreapi:...'). The method is not static here, so early-bootstrap code that cannot construct the object writes the URL out instead.",
+        "since": 13,
+        "until": 13
+      },
+      {
+        "text": "Typo3Information has no permalink method here and the ViewHelper builds the URL itself, so PHP that needs such a link writes it out. Only the template side of this subject exists on this branch.",
+        "until": 12
+      }
+    ]
   }
 ]

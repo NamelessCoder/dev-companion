@@ -240,6 +240,7 @@ Text:
     - extbase-persistence-internals — How a Query Becomes SQL, and How Extbase Writes a Row (PHP)
     - project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
     - extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
+    - documentation-links — Linking Into the Official Documentation From a Template or From PHP (Documentation)
     - extbase-domain-mapping — Models, Repositories and the Table Behind Them (PHP)
     - extbase-pagination — Paginating a List (PHP)
     - public-assets — Public Assets and the Publish Step (PHP)
@@ -597,6 +598,11 @@ Data:
                 "id": "extension-repository-installation",
                 "title": "Installing TYPO3 Beneath the Extension Repository",
                 "category": "PHP"
+            },
+            {
+                "id": "documentation-links",
+                "title": "Linking Into the Official Documentation From a Template or From PHP",
+                "category": "Documentation"
             },
             {
                 "id": "extbase-domain-mapping",
@@ -1543,6 +1549,7 @@ Text:
     - extbase-persistence-internals — How a Query Becomes SQL, and How Extbase Writes a Row (PHP)
     - project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
     - extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
+    - documentation-links — Linking Into the Official Documentation From a Template or From PHP (Documentation)
     - extbase-domain-mapping — Models, Repositories and the Table Behind Them (PHP)
     - extbase-pagination — Paginating a List (PHP)
     - public-assets — Public Assets and the Publish Step (PHP)
@@ -1805,6 +1812,11 @@ Data:
                 "id": "extension-repository-installation",
                 "title": "Installing TYPO3 Beneath the Extension Repository",
                 "category": "PHP"
+            },
+            {
+                "id": "documentation-links",
+                "title": "Linking Into the Official Documentation From a Template or From PHP",
+                "category": "Documentation"
             },
             {
                 "id": "extbase-domain-mapping",

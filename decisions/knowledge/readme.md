@@ -9,6 +9,7 @@ one is added.
 
 - [`D-KNW-126`][D-KNW-126] — The syntax floor a core patch is bound by is a subject this server owns · 2026-08-27
 - [`D-KNW-127`][D-KNW-127] — How a backend web component surfaces a failed load is a subject this server owns · 2026-08-27
+- [`D-KNW-128`][D-KNW-128] — Building a link into the official documentation is a subject this server owns · 2026-08-27
 - [`D-KNW-118`][D-KNW-118] — How a development installation renders a package that ships no page TypoScript is a subject this server owns · 2026-08-25
 - [`D-KNW-119`][D-KNW-119] — The corpus tells apart the failures one usage synopsis presents alike · 2026-08-25 · confirmed
 - [`D-KNW-120`][D-KNW-120] — A hint that states a merge names the lookup that reads the result · 2026-08-25
@@ -128,6 +129,7 @@ one is added.
 
 [D-KNW-126]: knw-126-the-syntax-floor-a-core-patch-is-bound-by-is-a-subject-this-server-owns.md
 [D-KNW-127]: knw-127-how-a-backend-web-component-surfaces-a-failed-load-is-a-subject-this-server-owns.md
+[D-KNW-128]: knw-128-building-a-link-into-the-official-documentation-is-a-subject-this-server-owns.md
 [D-KNW-118]: knw-118-how-a-development-installation-renders-a-package-that-ships-no-page-typoscript-is-a-subject-this-server-owns.md
 [D-KNW-119]: knw-119-the-corpus-tells-apart-the-failures-one-usage-synopsis-presents-alike.md
 [D-KNW-120]: knw-120-a-hint-that-states-a-merge-names-the-lookup-that-reads-the-result.md

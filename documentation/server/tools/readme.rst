@@ -136,7 +136,8 @@ at all in the state the machine is in.
         :label: Lookup
         :action: Open reference
 
-        Read the TYPO3 issue tracker at forge.typo3.org before writing a patch.
+        Reads the TYPO3 issue tracker at forge.typo3.org through the bot
+        protection the core's own AGENTS.md warns a hand-written request about.
 
     .. card:: :doc:`typo3_gerrit_lookup <typo3_gerrit_lookup>`
         :label: Lookup

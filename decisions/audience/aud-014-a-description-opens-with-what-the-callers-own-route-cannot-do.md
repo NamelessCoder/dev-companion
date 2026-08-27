@@ -18,7 +18,7 @@ both routes and taken the tool. Its first **Wrong if** has since happened.
 
 ## Evidence
 
-- [`feedback/2026-08-25-114714`](../../feedback/2026-08-25-114714-typo3-forge-lookup-lost-to-the-raw-curl-recipe.md)
+- [`feedback/2026-08-25-114714`](../../feedback/archive/2026-08-25-114714-typo3-forge-lookup-lost-to-the-raw-curl-recipe.md)
   queried Forge with three `curl` calls and two inline Python parsers while
   `typo3_forge_lookup` sat in its tool list, and it names the recipe in the
   core's `AGENTS.md` as the reason it never considered the tool. One of those

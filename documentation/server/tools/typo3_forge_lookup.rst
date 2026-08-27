@@ -3,17 +3,20 @@
 ``typo3_forge_lookup``
 ======================
 
-Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass
-issue with a number to read that one: subject, tracker, status, target version,
-the TYPO3 and PHP versions it was reported against, the related issues with
-their subjects, the review changes its comments name, the files hanging off it —
-which on a report about rendering is where the evidence usually is — and the
-comments, where a maintainer who closed or reassigned it said why, which the
-description never says. Or pass query with words to find out which other issues
-describe the same thing, which the relations of one issue only answer for what
-somebody linked by hand. Or pass open to enumerate the core project's unresolved
-issues without holding a number or a wording — oldest filed, longest untouched
-or newest filed, narrowed by tracker, by date and by person, which is where a
+Reads the TYPO3 issue tracker at forge.typo3.org through the bot protection the
+core's own AGENTS.md warns a hand-written request about. It also tells a tracker
+that did not answer from a search that matched nothing, which a request by hand
+spends a second call finding out. Read it before writing a patch. Pass issue
+with a number to read that one: subject, tracker, status, target version, the
+TYPO3 and PHP versions it was reported against, the related issues with their
+subjects, the review changes its comments name, the files hanging off it — which
+on a report about rendering is where the evidence usually is — and the comments,
+where a maintainer who closed or reassigned it said why, which the description
+never says. Or pass query with words to find out which other issues describe the
+same thing, which the relations of one issue only answer for what somebody
+linked by hand. Or pass open to enumerate the core project's unresolved issues
+without holding a number or a wording — oldest filed, longest untouched or
+newest filed, narrowed by tracker, by date and by person, which is where a
 triage of the backlog starts; the count of everything that matched comes back
 with the page, so a limited answer says whether it is the whole set. The newest
 end is what answers "has somebody filed this already" before you file it, which
@@ -37,9 +40,8 @@ the files hanging off it, and the changes on review.typo3.org whose commit
 message names it, each with the state it is in — the three that say a row was
 answered elsewhere or already attempted, without reading it whole. A call
 carries issue, query or open, never two of them. An issue that does not exist is
-answered as such, and so is a tracker that could not be reached. Reading only,
-and no credential: commenting, assigning and closing stay yours. Answers from:
-network.
+answered as such. Reading only, and no credential: commenting, assigning and
+closing stay yours. Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 

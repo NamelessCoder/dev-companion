@@ -327,6 +327,23 @@ final class Schema
         ], ['id', 'title']);
     }
 
+    /**
+     * A call to make next, and what makes it the right one.
+     *
+     * A brief ends on a list of them, and a commit draft carries the one that
+     * owns the workflow it drafted for (`D-ANS-117`). The `when` is a fragment
+     * read after the tool name, so it opens with the arguments to pass.
+     *
+     * @return array<string, mixed>
+     */
+    public static function nextTool(): array
+    {
+        return self::object([
+            'tool' => self::string(),
+            'when' => self::string('What to pass and why this call is the next one.'),
+        ], ['tool', 'when']);
+    }
+
     /** @return array<string, mixed> */
     public static function testSuiteRecord(): array
     {

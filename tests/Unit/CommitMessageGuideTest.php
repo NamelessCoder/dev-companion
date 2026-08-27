@@ -161,6 +161,56 @@ final class CommitMessageGuideTest extends TestCase
         );
     }
 
+    /**
+     * The draft is the last act of a piece of work, and the session that reads
+     * it under momentum asked for nothing else — so the answer names the call
+     * that owns the rest of the work, for the workflow it was asked with.
+     */
+    #[Decision('D-ANS-117')]
+    #[Test]
+    public function theDraftNamesTheGuideThatOwnsTheWorkflowItWasAskedWith(): void
+    {
+        $call = [
+            'changeType' => 'BUGFIX',
+            'summary' => 'Show hidden records in the import preview',
+            'issue' => '106123',
+            'releases' => ['main'],
+        ];
+
+        $core = CommitMessageGuide::answer($call + ['workflow' => 'core'])->text;
+        $project = CommitMessageGuide::answer($call)->text;
+
+        self::assertStringContainsString('typo3_task_guide — with the paths this commit touches', $core);
+        self::assertStringContainsString('one step of the core patch workflow', $core);
+        // The other workflow is other work, so it is named as what it is.
+        self::assertStringContainsString('typo3_task_guide — with the paths this commit touches', $project);
+        self::assertStringContainsString('one step of work in your own repository', $project);
+        self::assertStringNotContainsString('core patch workflow', $project);
+        // Under the pointer rather than over it: the page is a reading of the
+        // subject the caller is already in.
+        self::assertLessThan(
+            strpos($core, 'core/contribution/commit-messages'),
+            strpos($core, 'typo3_task_guide'),
+        );
+    }
+
+    /**
+     * A client that renders structuredContent and drops the text block reads
+     * every pointer this answer carries — `R-ANS-002`.
+     */
+    #[Requirement('R-ANS-002')]
+    #[Test]
+    public function theGuideTheDraftNamesIsInTheDataToo(): void
+    {
+        $data = CommitMessageGuide::answer([
+            'changeType' => 'TASK',
+            'summary' => 'Update the frontend build to current dependencies',
+        ])->data;
+
+        self::assertSame(['typo3_task_guide'], array_column($data['nextTools'], 'tool'));
+        self::assertStringContainsString('your own repository', $data['nextTools'][0]['when']);
+    }
+
     /** An answer the caller gave in the call wins over the one the subject withholds. */
     #[Test]
     public function anIsBreakingTheCallerPassedAnswersItEvenWhenItIsFalse(): void

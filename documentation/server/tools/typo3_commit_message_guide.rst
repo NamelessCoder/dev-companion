@@ -96,6 +96,13 @@ Answers with
     # "project" applies the subject and body rules and writes only the trailers the
     # call carried.
     workflow: string
+    # The workflow this commit is one step of, named as the call that answers it. A
+    # message is the last act of a piece of work rather than the whole of it, and
+    # what the work owes beside the message is not in this answer.
+    nextTools:
+      - tool: string
+        # What to pass and why this call is the next one.
+        when: string
 
 Answered
 --------
@@ -136,6 +143,8 @@ Text:
 
     Checked without the core workflow: keyword, 52/72 limits and wrapping apply, no Forge issue and no Releases: trailer are demanded, and the Resolves: and Related: lines carry the issues this call passed. workflow="core" for a patch against the TYPO3 core.
 
+    typo3_task_guide — with the paths this commit touches. This commit is one step of work in your own repository, and the brief names the core conventions that transfer to it and the hints for those paths.
+
 Data:
 
 .. code-block:: json
@@ -149,7 +158,13 @@ Data:
                 "message": "No commit message readiness issues found by the local checks."
             }
         ],
-        "workflow": "project"
+        "workflow": "project",
+        "nextTools": [
+            {
+                "tool": "typo3_task_guide",
+                "when": "with the paths this commit touches. This commit is one step of work in your own repository, and the brief names the core conventions that transfer to it and the hints for those paths."
+            }
+        ]
     }
 
 commit: from a message
@@ -182,6 +197,8 @@ Text:
 
     Checked without the core workflow: keyword, 52/72 limits and wrapping apply, no Forge issue and no Releases: trailer are demanded, and the Resolves: and Related: lines carry the issues this call passed. workflow="core" for a patch against the TYPO3 core.
 
+    typo3_task_guide — with the paths this commit touches. This commit is one step of work in your own repository, and the brief names the core conventions that transfer to it and the hints for those paths.
+
 Data:
 
 .. code-block:: json
@@ -195,5 +212,11 @@ Data:
                 "message": "No commit message readiness issues found by the local checks."
             }
         ],
-        "workflow": "project"
+        "workflow": "project",
+        "nextTools": [
+            {
+                "tool": "typo3_task_guide",
+                "when": "with the paths this commit touches. This commit is one step of work in your own repository, and the brief names the core conventions that transfer to it and the hints for those paths."
+            }
+        ]
     }

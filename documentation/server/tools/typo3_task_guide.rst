@@ -247,6 +247,7 @@ Answers with
         how: string
     nextTools:
       - tool: string
+        # What to pass and why this call is the next one.
         when: string
 
 Answered

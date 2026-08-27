@@ -326,10 +326,7 @@ final class TaskGuide extends ReadOnlyTool
                 'establish' => Schema::string(),
                 'how' => Schema::string(),
             ], ['establish', 'how']), 'What this server cannot see and the agent has to establish itself.'),
-            'nextTools' => Schema::listOf(Schema::object([
-                'tool' => Schema::string(),
-                'when' => Schema::string(),
-            ], ['tool', 'when'])),
+            'nextTools' => Schema::listOf(Schema::nextTool()),
         ], ['task', 'changeType', 'domains', 'skills', 'guides', 'hints', 'omittedHints', 'checks', 'checklist', 'nextTools']);
     }
 

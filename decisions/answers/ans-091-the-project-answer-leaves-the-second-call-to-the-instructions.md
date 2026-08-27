@@ -145,7 +145,7 @@ channel rather than this answer, and it is read at
 
 ### 2026-08-27 — a second zero opening, and the position it moves is not this one
 
-[`feedback/2026-08-25-114735`](../../feedback/2026-08-25-114735-the-mandated-opening-calls-project-describe-and.md)
+[`feedback/archive/2026-08-25-114735`](../../feedback/archive/2026-08-25-114735-the-mandated-opening-calls-project-describe-and.md)
 is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`, five turns of core
 work ending in a patch and a commit, with neither opening call made. It is the
 strongest account yet of why: the session quotes the imperative back word for

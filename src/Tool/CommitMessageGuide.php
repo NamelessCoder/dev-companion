@@ -32,6 +32,36 @@ final class CommitMessageGuide extends ReadOnlyTool
         . '- What a breaking change, a deprecation or a changed signature owes beside the message: the changelog '
         . 'file it announces, and the extension scanner entry a removed member takes.';
 
+    /**
+     * The workflow this commit is one step of, named in the answer a session
+     * under momentum still asks for (`D-ANS-117`).
+     *
+     * The imperative to open a task at `typo3_task_guide` was in one session's
+     * context from the first token, is quoted back in its report word for word,
+     * and produced no call in five turns; the two calls it did make were this
+     * tool, in the last turn, under challenge. So the pointer sits at the phase
+     * rather than at the opening, in the shape `GerritLookup::workflow()` took.
+     *
+     * Written for the workflow the call carries rather than guessed: `workflow`
+     * is a parameter, and the two answers are different work. It is a record
+     * rather than a sentence because a client that renders `structuredContent`
+     * and drops the text block would read no pointer at all — `R-ANS-002`.
+     *
+     * @return array{tool: string, when: string}
+     */
+    public static function workflowGuide(string $workflow): array
+    {
+        return [
+            'tool' => 'typo3_task_guide',
+            'when' => $workflow === CommitMessage::WORKFLOW_CORE
+                ? 'with the paths this commit touches, before pushing. This commit is one step of the core patch '
+                    . 'workflow, and the brief names what the patch owes beside the message: the deprecation '
+                    . 'sweep, the test coverage and the suites to run.'
+                : 'with the paths this commit touches. This commit is one step of work in your own repository, '
+                    . 'and the brief names the core conventions that transfer to it and the hints for those paths.',
+        ];
+    }
+
     public static function name(): string
     {
         return 'typo3_commit_message_guide';
@@ -87,7 +117,13 @@ final class CommitMessageGuide extends ReadOnlyTool
                     . 'issue and the Releases: trailer and demands them; "project" applies the subject and body '
                     . 'rules and writes only the trailers the call carried.',
             ],
-        ], ['message', 'checks', 'workflow']);
+            'nextTools' => Schema::listOf(
+                Schema::nextTool(),
+                'The workflow this commit is one step of, named as the call that answers it. A message is the '
+                . 'last act of a piece of work rather than the whole of it, and what the work owes beside the '
+                . 'message is not in this answer.',
+            ),
+        ], ['message', 'checks', 'workflow', 'nextTools']);
     }
 
     public static function answer(array $args): ToolResult
@@ -149,6 +185,14 @@ final class CommitMessageGuide extends ReadOnlyTool
             : 'Checked against the core contribution rules, trailers included. workflow="project" applies the same '
                 . 'subject and body rules without the Forge issue and the Releases: trailer.';
 
+        // Above the page and not under it: the pointer is an act the caller has
+        // not taken yet, and the page is a reading of the subject they are
+        // already in. Burying the one line under the longest block in the
+        // answer is the failure it was placed against (`D-ANS-117`).
+        $next = self::workflowGuide($workflow);
+        $lines[] = '';
+        $lines[] = $next['tool'] . ' — ' . $next['when'];
+
         // The core answer alone, because the page describes the core repository
         // and says so in its own whenToUse. A project commit is checked against
         // the subject and body rules the page shares, and owes none of what the
@@ -162,6 +206,7 @@ final class CommitMessageGuide extends ReadOnlyTool
             'message' => $result['message'],
             'checks' => $checks,
             'workflow' => $workflow,
+            'nextTools' => [$next],
         ]);
     }
 }

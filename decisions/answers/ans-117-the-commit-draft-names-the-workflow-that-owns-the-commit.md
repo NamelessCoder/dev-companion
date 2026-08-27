@@ -3,6 +3,8 @@ id: D-ANS-117
 title: The commit draft names the workflow that owns the commit
 date: 2026-08-27
 status: open
+coveredBy:
+  - CommitMessageGuideTest::theDraftNamesTheGuideThatOwnsTheWorkflowItWasAskedWith
 ---
 
 # D-ANS-117 — The commit draft names the workflow that owns the commit
@@ -18,7 +20,7 @@ call in five turns.
 ## Evidence
 
 - **The session.**
-  [`feedback/2026-08-25-114735`](../../feedback/2026-08-25-114735-the-mandated-opening-calls-project-describe-and.md),
+  [`feedback/archive/2026-08-25-114735`](../../feedback/archive/2026-08-25-114735-the-mandated-opening-calls-project-describe-and.md),
   `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`. The task was whether
   `./Build/Scripts/runTests.sh -s cglGit` runs inside a worktree of the core
   checkout, then the fix, then the commit. Roughly 49 tool calls, 46 of them
@@ -145,3 +147,38 @@ call in five turns.
   change that had to be made anyway.
 - `typo3_commit_message_guide` stops being what a session under momentum reaches
   for at the commit. The pointer would then sit on an answer nobody asks for.
+
+## Since then
+
+Built on 2026-08-27. `CommitMessageGuide::workflowGuide()` names
+`typo3_task_guide` and what a brief for the paths adds, in the words of the
+workflow the call was asked with: the core arm names the deprecation sweep, the
+test coverage and the suites, and the project arm the conventions that transfer
+and the hints for those paths. It fires on every answer, because this server
+sees one call rather than a session — the report asked for the first call in a
+session and nothing here can tell which that is.
+
+`R-ANS-002` decided the second half of **Decided**'s last bullet, and it decided
+both. The line is prose for a client that renders the text block, and the
+`nextTools` field for one that renders `structuredContent` and drops it — which
+is the reading that requirement was written from. The record is the shape
+`typo3_task_guide` already answers its own next calls in, moved into
+`Schema::nextTool()` so a client reads one model rather than two.
+
+The line stands above `CORE_GUIDE` rather than under it. The pointer is an act
+the caller has not taken and the page is a reading of the subject they are
+already in, so burying the one line under the longest block in the answer is the
+failure this was placed against.
+
+What it costs is measured rather than estimated. `bin/cli tools:measure` in this
+checkout on 2026-08-27 reads `typo3_commit_message_guide` at 2,494 bytes over
+two recorded calls, against 1,498 before the change: 498 bytes on each answer,
+and 66% of a tool that was the smallest of the twenty-six recorded. In absolute
+terms it is under the 721 bytes the Gerrit tail put on a change answer
+(`D-SKL-038`), which is the comparison the share hides.
+
+The first **Wrong if** is the one to watch, and it is now readable: a session
+holding a draft that names `typo3_task_guide` and writing the message without
+asking for the workflow is a delivered pointer nobody took. The last one is
+readable from the same reports — a commit written with no call to this tool at
+all leaves the pointer on an answer nobody asked for.

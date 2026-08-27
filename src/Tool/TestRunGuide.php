@@ -38,7 +38,7 @@ final class TestRunGuide extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'query' => ['type' => 'string', 'description' => 'Test or script topic, for example functional, phpstan, TypeScript, composer, or CGL.'],
-                'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The changed file paths, as they are in the repository they belong to. Given, only suites touching their domains are returned. Each path is placed on its own: one outside the core narrows nothing and is named in the answer, because runTests.sh is not in its repository.'],
+                'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The changed file paths, as they are in the repository they belong to. Given, only suites touching their domains are returned. Each path is placed on its own: one outside the core narrows nothing and is named in the answer, because runTests.sh is not in its repository. One no suite covers is named too, so a path nothing checks is read off the answer rather than out of its silence.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the commands have to run on, for example "13.4" or "14". Suites that branch\'s runTests.sh does not have are left out. Defaults to the version of the installation this server was started in; where there is none, every suite is listed.'],
             ],
         ];
@@ -51,6 +51,9 @@ final class TestRunGuide extends ReadOnlyTool
             'paths' => Schema::listOf(Schema::string(), 'The paths the answer was narrowed by, given ones and ones named in the query.'),
             'scopes' => Schema::scopes('Which kind of work each path is. Only core paths can run a suite: runTests.sh is not in a project or an extension repository, so the others are named in the answer and narrow nothing.'),
             'domains' => Schema::listOf(Schema::string(), 'Domains those paths touch. Empty means nothing was narrowed.'),
+            'uncoveredPaths' => Schema::listOf(Schema::string(), 'Given paths no suite covers. A suite is reached '
+                . 'through the domain of a path, and these reach none, so nothing in suites is about them and '
+                . 'nothing in it fails on them.'),
             'withheld' => Schema::object([
                 'domains' => Schema::listOf(Schema::string(), 'Domains no given path reached. A path landing in one of them means calling again, because this answer holds for the path set it was given.'),
                 'suites' => Schema::integer('How many suites those domains hold on the target version. Counted rather than listed: the list is what the narrowing exists to avoid.'),
@@ -71,7 +74,7 @@ final class TestRunGuide extends ReadOnlyTool
                     'command' => Schema::string(),
                 ], ['purpose', 'command'])),
             ], ['preconditions', 'notes', 'options', 'examples']),
-        ], ['scopes', 'withheld', 'suites', 'invocation']);
+        ], ['scopes', 'uncoveredPaths', 'withheld', 'suites', 'invocation']);
     }
 
     public static function answer(array $args): ToolResult
@@ -94,6 +97,15 @@ final class TestRunGuide extends ReadOnlyTool
         $runnable = Scope::pathsOf($scopes, Scope::Core, Scope::Uncertain);
         $domains = Domains::fromPaths($runnable);
 
+        // A suite is selected by the domains of the paths, so a path that
+        // reaches none selected nothing and is not what any command below runs
+        // over. Nothing said so, and the session that reported it worked out by
+        // hand that no suite covers an XML reference file (`D-GUI-022`).
+        $uncovered = array_values(array_filter(
+            $runnable,
+            static fn(string $path): bool => Domains::fromPaths([$path]) === [],
+        ));
+
         // Nothing here can run a suite: every path given is outside the core,
         // or none was and what the query says is.
         $nothingRunnable = $paths === []
@@ -112,6 +124,7 @@ final class TestRunGuide extends ReadOnlyTool
                     'paths' => $paths,
                     'scopes' => $scopes,
                     'domains' => $domains,
+                    'uncoveredPaths' => $uncovered,
                     'withheld' => TestSuiteHints::withheld($domains, $target),
                     'suites' => [],
                     'invocation' => ['preconditions' => [], 'notes' => [], 'options' => [], 'examples' => []],
@@ -163,6 +176,18 @@ final class TestRunGuide extends ReadOnlyTool
             }
             $blocks[] = $narrowing;
         }
+        // Beside the narrowing rather than after the suites, because both
+        // sentences answer the same question: which of the paths given this
+        // list of commands is about (`D-GUI-022`).
+        if ($uncovered !== []) {
+            $blocks[] = sprintf(
+                'No runTests.sh suite covers %s. A suite is reached through the domain of a path and %s, so '
+                . 'nothing below runs over %s.',
+                self::named($uncovered),
+                count($uncovered) === 1 ? 'that one reaches none' : 'those reach none',
+                count($uncovered) === 1 ? 'it' : 'them',
+            );
+        }
         if ($hints === []) {
             $blocks[] = sprintf(
                 'No runTests.sh suite matched "%s". Try "unit", "functional", "phpstan", "checkRst", "build", "composer", or "npm".',
@@ -212,6 +237,7 @@ final class TestRunGuide extends ReadOnlyTool
             'paths' => $paths,
             'scopes' => $scopes,
             'domains' => $domains,
+            'uncoveredPaths' => $uncovered,
             'withheld' => $withheld,
             'suites' => TestSuiteHints::records($hints),
             'invocation' => TestSuiteHints::invocation(),

@@ -99,3 +99,18 @@ the judgement of that report established and what it declined to build.
 - `typo3_test_run_guide` names the uncovered paths and a session still reports
   reading coverage into the silence. Naming them was then not the lever, and
   what to look at is where in the answer the sentence sits.
+
+## Since then
+
+**Built on 2026-08-27**, the first half. `typo3_test_run_guide` names the paths
+that reached no suite, as `uncoveredPaths` in the answer and as a sentence
+beside the narrowing one, before the suites rather than after them. The call
+this entry was judged from says: "No runTests.sh suite covers
+Build/git-hooks/commit-msg and
+typo3/sysext/backend/Resources/Private/tsref.xml." The promise is
+[`R-ANS-036`](../../requirements/answers/ans-036-a-suite-list-names-the-paths-no-suite-covers.md).
+
+The second half is where it was. `bin/cli feedback:list` on this branch that day
+reports 15 open in 4 directories, and none is a second report of a brief whose
+items did not bear on a mechanical change — so `changeType` stays queued, and
+the feedback is trimmed to that half.

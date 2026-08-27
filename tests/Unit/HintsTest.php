@@ -5554,6 +5554,60 @@ final class HintsTest extends TestCase
         self::assertStringNotContainsString('No given path reached', $answer->text);
     }
 
+    /**
+     * The call `D-GUI-022` was judged from: two of its four paths select no
+     * suite at all, and the session concluded that by hand.
+     *
+     * The XML reference is placed in the core and reaches no domain; the git
+     * hook is a path nothing placed and reaches none either. Both are named,
+     * because a list of thirteen suites that simply does not mention a file
+     * reads as coverage of it.
+     */
+    #[Requirement('R-ANS-036')]
+    #[Test]
+    public function aPathNoSuiteCoversIsNamedInTheAnswer(): void
+    {
+        $answer = Registry::call('typo3_test_run_guide', [
+            'paths' => [
+                'Build/git-hooks/commit-msg',
+                'typo3/sysext/backend/Resources/Private/tsref.xml',
+                'typo3/sysext/fluid/Classes/ViewHelpers/ImageViewHelper.php',
+                'typo3/sysext/install/Resources/Private/Templates/Upgrade/ExtensionScanner.fluid.html',
+            ],
+            'targetVersion' => '15.0',
+        ]);
+
+        self::assertSame([Domains::PHP, Domains::FLUID], $answer->data['domains']);
+        self::assertSame(
+            ['Build/git-hooks/commit-msg', 'typo3/sysext/backend/Resources/Private/tsref.xml'],
+            $answer->data['uncoveredPaths'],
+        );
+        self::assertStringContainsString(
+            'No runTests.sh suite covers Build/git-hooks/commit-msg and '
+            . 'typo3/sysext/backend/Resources/Private/tsref.xml. A suite is reached through the domain of a path '
+            . 'and those reach none, so nothing below runs over them.',
+            $answer->text,
+        );
+    }
+
+    /**
+     * Every path reached a domain, so there is nothing to name and the sentence
+     * would be noise — the same bound `aCallThatNarrowedNothingWithholdsNothing`
+     * puts on the withheld line.
+     */
+    #[Requirement('R-ANS-036')]
+    #[Test]
+    public function aCallWhoseEveryPathReachesASuiteNamesNoUncoveredPath(): void
+    {
+        $answer = Registry::call('typo3_test_run_guide', [
+            'paths' => ['typo3/sysext/core/Classes/Utility/GeneralUtility.php'],
+            'targetVersion' => '15.0',
+        ]);
+
+        self::assertSame([], $answer->data['uncoveredPaths']);
+        self::assertStringNotContainsString('No runTests.sh suite covers', $answer->text);
+    }
+
     #[Test]
     public function aNegatedDomainInTheQueryIsNotReadAsASignal(): void
     {

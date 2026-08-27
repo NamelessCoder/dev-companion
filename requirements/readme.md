@@ -124,6 +124,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-ANS-033`][R-ANS-033] — A path names the repository it is in · held
 - [`R-ANS-034`][R-ANS-034] — A suite an answer offers says what running it does to the checkout · held
 - [`R-ANS-035`][R-ANS-035] — An answer that names a target branch names the lines that take a patch · held
+- [`R-ANS-036`][R-ANS-036] — A suite list names the paths no suite covers · held
 
 [R-ANS-001]: answers/ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -161,6 +162,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-ANS-033]: answers/ans-033-a-path-names-the-repository-it-is-in.md
 [R-ANS-034]: answers/ans-034-a-suite-an-answer-offers-says-what-running-it-does-to-the-checkout.md
 [R-ANS-035]: answers/ans-035-an-answer-that-names-a-target-branch-names-the-lines-that-take-a-patch.md
+[R-ANS-036]: answers/ans-036-a-suite-list-names-the-paths-no-suite-covers.md
 
 ### documentation
 

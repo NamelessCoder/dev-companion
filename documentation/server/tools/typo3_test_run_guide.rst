@@ -35,7 +35,8 @@ Takes
     # The changed file paths, as they are in the repository they belong to. Given,
     # only suites touching their domains are returned. Each path is placed on its
     # own: one outside the core narrows nothing and is named in the answer, because
-    # runTests.sh is not in its repository.
+    # runTests.sh is not in its repository. One no suite covers is named too, so a
+    # path nothing checks is read off the answer rather than out of its silence.
     paths: [string]  # optional
     # The TYPO3 version the commands have to run on, for example "13.4" or "14".
     # Suites that branch's runTests.sh does not have are left out. Defaults to the
@@ -64,6 +65,10 @@ Answers with
         scope: string
     # Domains those paths touch. Empty means nothing was narrowed.
     domains: [string]  # optional
+    # Given paths no suite covers. A suite is reached through the domain of a path,
+    # and these reach none, so nothing in suites is about them and nothing in it
+    # fails on them.
+    uncoveredPaths: [string]
     # What the narrowing left out. Both empty where nothing was narrowed.
     withheld:
       # Domains no given path reached. A path landing in one of them means calling
@@ -486,6 +491,7 @@ Data:
         "paths": [],
         "scopes": [],
         "domains": [],
+        "uncoveredPaths": [],
         "withheld": {
             "domains": [],
             "suites": 0
@@ -1079,6 +1085,7 @@ Data:
         "paths": [],
         "scopes": [],
         "domains": [],
+        "uncoveredPaths": [],
         "withheld": {
             "domains": [],
             "suites": 0
@@ -1267,6 +1274,7 @@ Data:
         "paths": [],
         "scopes": [],
         "domains": [],
+        "uncoveredPaths": [],
         "withheld": {
             "domains": [],
             "suites": 0
@@ -1499,6 +1507,7 @@ Data:
         "domains": [
             "css"
         ],
+        "uncoveredPaths": [],
         "withheld": {
             "domains": [
                 "php",

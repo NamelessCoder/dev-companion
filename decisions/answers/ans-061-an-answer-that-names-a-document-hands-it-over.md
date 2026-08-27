@@ -130,3 +130,45 @@ the moment, and here the moment is a build workflow's verification step rather
 than an answer.
 [`D-SKL-045`](../task-skills/skl-045-a-build-workflow-names-the-guide-at-the-step-that-needs-it.md)
 is that judgement, and it is `D-SKL-030`'s one workflow over.
+
+### 2026-08-27 — the tool whose subject is one page names no page
+
+`feedback/2026-08-25-114819` is a core session under a client that defers the
+MCP resource tools themselves. Enumerating the shelf cost it a `ToolSearch` for
+a schema, then a call to list and a third to read, against a checkout it could
+grep in one.
+
+That is a fifth client-side account of this entry's first **Assumed**, and it
+moves nothing: the resource surface was never the lever. Its report of
+`typo3_server_scope` unreached — "certainty is what suppresses an orientation
+call" — is the third such account and is already the **Decided**.
+
+What is new is where the session looked instead. It called
+`typo3_commit_message_guide` twice and then assembled the page it wanted out of
+`AGENTS.md`, the checkout's `commit-msg` hook and three `git log` statistics
+runs. That page is `core/contribution/commit-messages`, and what it says it
+wanted — the subject preference, the hook's length boundary, the trailer set,
+which release lines a bugfix reaches — are headings of it.
+
+The **Decided** above put the work on "the three tools that already name a
+document". `typo3_commit_message_guide` is a fourth, its whole subject is that
+one page, and its answer names no page at all. So the boundary is one step wider
+than it was drawn: a tool that answers on a document's subject names it, whether
+or not it returns a section cut from it.
+
+Four sessions wanted that page and none read it. `feedback/2026-08-07-132535`
+held its uri from two `typo3_rule_lookup` calls, `feedback/2026-08-08-224406`
+was handed a cut of it and searched again, this one was inside the guide's own
+answer and got no pointer, and `feedback/2026-08-26-223348` names the guide as
+the natural place for the `Releases:` question it guessed from `git branch -r`
+instead.
+
+[`D-GUI-020`](../guides/gui-020-the-commit-guide-states-the-longest-line-the-hook-accepts.md)
+moved one of that page's facts into the answer the day before, and is the
+alternative this is weighed against. Inlining reaches the caller standing in the
+tool and does not scale past a fact or two, which is the second **Wrong if**
+above. Naming the page beside the inlined facts is its complement rather than
+its competitor.
+
+Step 2 of the ladder, delivery, and `todo/open/T-260825-2131.md` carries it. The
+change is in `src/`, so `D-FBK-052` queues it rather than closing it here.

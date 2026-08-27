@@ -485,6 +485,11 @@ final class Hints
         // anticipated still comes before one that only answers: the longer
         // pattern is the more specific claim, and `D-ANS-050` still decides
         // what a pattern reaches.
+        //
+        // The keywords tier is above the score, so first place is usually
+        // settled before a term weight is read at all — which is what makes a
+        // test naming the first hit a claim about that hint rather than about
+        // the rest of the corpus (`D-ANS-123`).
         usort($scored, static function (array $a, array $b): int {
             return ($b['score'] > 0 ? 1 : 0) <=> ($a['score'] > 0 ? 1 : 0)
                 ?: $b['keywords'] <=> $a['keywords']

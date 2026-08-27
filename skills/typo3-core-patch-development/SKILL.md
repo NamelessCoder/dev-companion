@@ -292,7 +292,8 @@ them: the author is asked before the patch set goes up, and every decision taken
 on their behalf is said in a comment on the change, because the diff between two
 patch sets says what moved and never why. The amend leaves them the author and
 makes you the committer, which is the shape this is supposed to have — the same
-page carries it.
+page carries it. The author line is never overwritten, however much of the patch
+you wrote: `--reset-author` has no use here.
 
 This skill owns writing a core patch and delivering it — the change itself, its
 tests, its changelog entry, the checks it has to pass, its commit message and

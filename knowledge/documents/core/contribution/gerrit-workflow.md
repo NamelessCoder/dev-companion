@@ -263,9 +263,10 @@ its author's:
   author date — and makes you the **committer**. That is the intended shape and
   not something to correct: the author of a change is whoever pushed its first
   patch set, and the committer is whoever last touched the commit.
-- `git commit --amend --reset-author` is what overwrites the author. The guide
-  keeps it for a change reworked so heavily that whoever pushes says it is no
-  longer the author's, which is rare.
+- `git commit --amend --reset-author` overwrites the author, and nothing here
+  takes it. The author of a change stays its author however much of the patch
+  somebody else wrote: what you contributed is the committer line and the
+  comment you leave on the change.
 - The `Change-Id` is untouched, and the `commit-msg` hook leaves an existing one
   alone rather than adding a second. The id belongs to the change and not to
   whoever is pushing.

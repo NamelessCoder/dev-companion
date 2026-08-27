@@ -961,6 +961,7 @@ final class KnowledgeTest extends TestCase
      * the upload owes the author on the change itself.
      */
     #[Decision('D-KNW-129')]
+    #[Decision('D-KNW-131')]
     #[Test]
     public function aPatchSetOnSomebodyElsesChangeSaysWhatItOwesThatAuthor(): void
     {
@@ -974,7 +975,11 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('ask first', $foreign, 'nothing says the author is asked');
         self::assertStringContainsString('git commit --amend', $foreign);
         self::assertStringContainsString('committer', $foreign, 'nothing says which of the two names moves');
+        // The page names `--reset-author` to refuse it rather than to keep it
+        // for a rare case — `D-KNW-131`. Asserted on a phrase short enough to
+        // survive a rewrap, which the refusal's own sentence is not.
         self::assertStringContainsString('--reset-author', $foreign, 'nothing names the overwrite this is not');
+        self::assertStringContainsString('stays its author', $foreign, 'the overwrite is named without being refused');
         self::assertStringContainsString('Change-Id', $foreign, 'nothing says the id survives the amend');
         // What the diff between two patch sets cannot carry, and therefore what
         // the change itself has to be told.

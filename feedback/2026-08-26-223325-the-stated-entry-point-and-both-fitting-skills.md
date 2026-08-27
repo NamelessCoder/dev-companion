@@ -23,11 +23,9 @@ Worth reporting honestly rather than as an accident, because a skill is chosen o
 
 What it cost, concretely: I derived the whole workflow from AGENTS.md instead. That mostly held — test-first was followed, cgl/phpstan were run, the commit message obeyed the 72-column and footer rules. Two things it did not cover, and I had to guess or flag: the maintained release branches for the Releases: trailer (filed separately) and whether a bugfix of this shape owes a changelog RST (I decided no, unverified).
 
-Also unread: typo3_project_describe returned a `guides` array of 19 documentIds — including core/contribution/changelog, core/contribution/commit-messages, core/contribution/rules, core/testing/scripts. I saw that list in the JSON and read none of them, because they arrived as a field inside a larger answer rather than as something to act on, and typo3_rule_lookup was never in front of me at a moment I felt uncertain. I never checked whether the server exposes MCP resources proper either — ListMcpResourcesTool sat in my deferred-tool list unloaded.
-
 ## Query
 
-Task text: "please find 1 old forge issue and fix it", later "please find something in extbase". Skills offered and not invoked: typo3-core-issue-triage, typo3-core-patch-development. Tool schema loaded and never called: typo3_task_guide. Guides listed by typo3_project_describe and never read via typo3_rule_lookup.
+Task text: "please find 1 old forge issue and fix it", later "please find something in extbase". Skills offered and not invoked: typo3-core-issue-triage, typo3-core-patch-development. Tool schema loaded and never called: typo3_task_guide.
 
 ## Suggestion
 
@@ -39,4 +37,4 @@ Concrete moves:
 
 2. Give typo3_task_guide a description that names what it knows that a repository's own AGENTS.md cannot: the maintained branches, whether this change shape owes a changelog, which check the project declares for this file type. As written it promises a checklist, and a model with AGENTS.md in context already believes it has one.
 
-3. Surface the `guides` list as an instruction rather than a data field — e.g. have typo3_project_describe's guides entries carry a one-line "read this when" so a documentId turns into a decision. Right now 19 ids arrive with titles only, inside a large JSON blob, and nothing marks which one answers a question I am about to get wrong.
+*Trimmed on 2026-08-27.* The third point — the `guides` list arriving as a data field, and the one-line "read this when" that would turn a documentId into a decision — is carried by `todo/waiting/T-260824-cecc.md`, where it is the fifth report of that placement and a third option for the question that card waits on. The reading is under the entry of 2026-08-27 in `D-GUI-012`.

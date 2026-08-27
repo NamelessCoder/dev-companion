@@ -79,3 +79,29 @@ both routes and taken the tool. Its first **Wrong if** has since happened.
 - The core's `AGENTS.md` paragraph comes to name this tool. Then the opening
   answers something no caller is told the opposite of any more, and it is a
   sentence to withdraw.
+
+## Since then
+
+### 2026-08-27 — the same file beats a second tool, and the tool is the entry point
+
+[`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+worked a core patch in the same checkout and never called `typo3_task_guide`,
+whose schema it had loaded in its first `ToolSearch` call. It names the reason
+in the same shape this entry was written from: the description opens "Build a
+task checklist enriched with matching hints and relevant core checks", it held
+the core's `AGENTS.md` with the test-first rule, the `runTests.sh` invocations
+and the commit conventions in context already, and a checklist was therefore not
+a gap it felt.
+
+The statement above transfers, and the tool it transfers to is the one the
+`instructions` name second. What the session then had to guess is what that file
+does not carry — the branches a `Releases:` trailer takes, and whether a bugfix
+of that shape owes a changelog entry — and neither is in the description's
+opening, which spends its first sentence on the artefact rather than on that.
+
+So `typo3_forge_lookup` is not a single case, and what the two share is a file
+read into every session in a core checkout. The rewrite is queued on
+[`T-260826-4194`](../../todo/open/T-260826-4194.md), beside the routing half
+[`D-SKL-081`](../task-skills/skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md).
+The **Assumed** above is unchanged and is now carried by two tools: neither
+session says how far into a description it read.

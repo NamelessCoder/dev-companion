@@ -373,3 +373,27 @@ every suite and is caught in review or not at all.
 That is evidence for the question and not an answer to it. Both cards stay in
 `todo/waiting/`, and the count they are to be written against is four reports
 from three surfaces plus this one, where the surface worked.
+
+### 2026-08-27 — a fifth report from the orientation answer, and a third option for the question
+
+[`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+read the `guides` array `typo3_project_describe` returned, nineteen entries with
+`core/contribution/changelog`, `core/contribution/commit-messages`,
+`core/contribution/rules` and `core/testing/scripts` among them, and opened
+none. Its account of why is the placement this entry already watches: they
+arrived as a field inside a larger answer rather than as something to act on.
+That is the same surface as `feedback/2026-08-24-173211`, and it makes five.
+
+**What it adds is a third option, and the question it belongs to is the one
+already up.** The two cards ask whether a page is handed over whole rather than
+named; this session asks for each entry to carry a line saying when to read it,
+so a `documentId` becomes a decision instead of a title.
+`Schema::guideReference` carries `id` and `title` and nothing else, read on
+2026-08-27, while `Schema::nextTool` beside it already has that shape in its
+`when`. It is cheaper than handing a page over and it is the same rung: what
+every answer of two tools volunteers, which `documentation/records/judging.rst`
+says is not changed quietly.
+
+The half of that feedback which reports this is trimmed off it, because
+[`T-260824-cecc`](../../todo/waiting/T-260824-cecc.md) carries the question and
+what comes back answers this report with the other four.

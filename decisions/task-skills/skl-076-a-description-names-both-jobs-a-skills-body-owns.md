@@ -111,3 +111,31 @@ is a second description that misses one.
 The **Assumed** above is discharged by this and the entry stays `open`: what is
 left is the two **Wrong if** a session opening the changed description would
 answer.
+
+### 2026-08-27 — the first Wrong if fired, and the session names another clause
+
+[`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+is the same checkout on `claude-opus-5[1m]` the day after `fa037c26` shipped the
+changed description, sent to "please find 1 old forge issue and fix it". It read
+the description, weighed it, and opened nothing. So the first **Wrong if** above
+has happened: naming the backlog job was not what was in the way.
+
+What it quotes settles that it read the changed one. Its fragment is "say what
+is still true about one issue", where the description `fa037c26` replaced opened
+"Say what is still true about an open issue on forge.typo3.org" — lowercase and
+"one issue" are both the new wording, past the clause this entry added.
+
+**The clause it names is the last sentence, which no reading here had weighed.**
+"Writing or reviewing a patch is other work" is what the session reports as
+having pushed it off, because its task ended in a patch and the sentence read as
+an exclusion of the whole of it. That is a boundary the description states about
+the successor skill, met by a brief that spans both — the same crossing
+[`D-SKL-022`](skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md)
+made an instruction in the body, standing in the description as a refusal.
+
+So the wording is still the rung, and the sentence to weigh is a different one.
+It is queued on [`T-260826-4194`](../../todo/open/T-260826-4194.md) beside the
+route that would not have named the skill either, which is
+[`D-SKL-081`](skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md).
+The entry stays `open`, with the second **Wrong if** still unmet and the first
+answered.

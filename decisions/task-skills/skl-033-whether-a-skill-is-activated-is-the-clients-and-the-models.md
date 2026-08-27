@@ -334,3 +334,25 @@ What the row is worth here is the ledger staying true: a session invoking
 strongest evidence yet against the second **Assumed**, and it is not that,
 because nothing put the third description in front of the choice.
 
+### 2026-08-27 — the second Assumed is answered for one session, and it was choosing
+
+[`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+is the counted shape once more — `/home/benji/projects/typo3-cms` on
+`claude-opus-5[1m]`, "please find 1 old forge issue and fix it", both core
+skills listed and neither opened. What separates it from every row above is that
+it reads the two descriptions back and says of each which clause decided it: the
+triage one excludes a patch in its last sentence, and the patch one reads as
+being for a patch already in hand.
+
+The second **Assumed** offers three readings of a passed-over description —
+choosing, failing to match, or held off the tool by the client. For this session
+it is the first, and the choice is stated rather than reconstructed from a
+silence. That is one session and it licenses nothing about the rest; the row of
+2026-08-25 already names a session whose cause was its own client's caution.
+
+The clauses themselves are judged where the descriptions belong, at
+[`D-SKL-076`](skl-076-a-description-names-both-jobs-a-skills-body-owns.md), and
+the route that would not have named either skill is
+[`D-SKL-081`](skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md).
+Everything **Decided** stands.
+

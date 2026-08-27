@@ -19,6 +19,12 @@ use TYPO3\DevCompanion\Search\Text;
 final class TaskIntents
 {
     /** Knowledge documents an intent may pull rule sections from. */
+    /**
+     * The intent whose workflow owns writing a core change, named where the
+     * task sentence names none — `D-SKL-082`.
+     */
+    private const PATCH = 'patch';
+
     private const RULE_DOCUMENTS = [
         'core/contribution/rules',
         'core/contribution/commit-messages',
@@ -190,7 +196,40 @@ final class TaskIntents
      */
     public static function skills(array $intents, bool $coreWork, bool $changesNothing): array
     {
-        return self::owned($intents, $coreWork ? 'skillCore' : 'skill', $changesNothing);
+        $named = self::owned($intents, $coreWork ? 'skillCore' : 'skill', $changesNothing);
+        if ($named !== [] || !$coreWork || $changesNothing) {
+            return $named;
+        }
+
+        // Nothing in the sentence named a workflow and the call already says
+        // what this is: files below `typo3/sysext/` and a change type that
+        // changes one. A task worded as the defect rather than as the work
+        // confirms no intent — *add the missing language parameter to
+        // getMovedRecordsFromPages* confirmed none — and a brief that knows it
+        // is a core change owes the caller the workflow that owns it anyway
+        // (`D-SKL-082`). `audit` and `triage` do not reach here: both confirm
+        // their own intent, so `changesNothing` is true above.
+        $patch = self::declared(self::PATCH, 'skillCore');
+
+        return $patch === '' ? [] : [$patch];
+    }
+
+    /**
+     * One field of one intent, read from the file that declares it.
+     *
+     * The skill name lives in `knowledge/task-intents.json` and this reads it
+     * from there rather than repeating it, so renaming a published skill stays
+     * one edit.
+     */
+    private static function declared(string $id, string $field): string
+    {
+        foreach (self::load() as $intent) {
+            if ($intent['id'] === $id) {
+                return is_string($intent[$field] ?? null) ? $intent[$field] : '';
+            }
+        }
+
+        return '';
     }
 
     /**

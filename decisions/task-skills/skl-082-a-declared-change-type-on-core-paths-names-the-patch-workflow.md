@@ -3,6 +3,8 @@ id: D-SKL-082
 title: A declared change type on core paths names the patch workflow
 date: 2026-08-27
 status: open
+coveredBy:
+  - SkillTest::aCoreChangeNamesThePatchWorkflowWhateverTheSentenceSays
 ---
 
 # D-SKL-082 — A declared change type on core paths names the patch workflow

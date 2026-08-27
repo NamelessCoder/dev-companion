@@ -2670,6 +2670,52 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * A core change names its workflow however the task sentence is worded.
+     *
+     * `skills` is read off confirmed intents, and a caller who describes the
+     * defect confirms none: with `changeType="bugfix"` on a `typo3/sysext/`
+     * path, *add the missing language parameter to getMovedRecordsFromPages*
+     * named no workflow at all, while *fix a bug in WorkspaceService* named the
+     * patch one. The session that reported it had both core skills in its
+     * listing and activated neither.
+     */
+    #[Decision('D-SKL-082')]
+    #[Test]
+    public function aCoreChangeNamesThePatchWorkflowWhateverTheSentenceSays(): void
+    {
+        $core = ['typo3/sysext/workspaces/Classes/Service/WorkspaceService.php'];
+
+        foreach (['bugfix', 'task', 'feature'] as $changeType) {
+            $brief = Registry::call('typo3_task_guide', [
+                'task' => 'add the missing language parameter to getMovedRecordsFromPages',
+                'changeType' => $changeType,
+                'paths' => $core,
+            ]);
+
+            self::assertSame([], array_column($brief->data['intents'], 'id'), 'the sentence names no intent');
+            self::assertSame(['typo3-core-patch-development'], $brief->data['skills'], $changeType);
+        }
+
+        // The two change types that read rather than write keep their own
+        // workflow: both confirm an intent, so the fallback is never reached.
+        foreach (['audit' => 'typo3-core-patch-review', 'triage' => 'typo3-core-issue-triage'] as $changeType => $skill) {
+            self::assertSame([$skill], Registry::call('typo3_task_guide', [
+                'task' => 'add the missing language parameter to getMovedRecordsFromPages',
+                'changeType' => $changeType,
+                'paths' => $core,
+            ])->data['skills']);
+        }
+
+        // And nothing is claimed outside the core, where which workflow owns a
+        // change to a package depends on what the package is.
+        self::assertSame([], Registry::call('typo3_task_guide', [
+            'task' => 'add the missing language parameter to getMovedRecordsFromPages',
+            'changeType' => 'bugfix',
+            'paths' => ['packages/blog/Classes/Domain/Repository/PostRepository.php'],
+        ])->data['skills']);
+    }
+
+    /**
      * The same request when it says what it is going to do with the issue.
      *
      * "Please find 1 old forge issue and fix it" reached neither skill: the

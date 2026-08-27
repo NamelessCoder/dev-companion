@@ -1,7 +1,8 @@
 ---
 date: 2026-08-24T22:50:44+00:00
 category: wrong-answer
-status: open
+status: closed
+closed: 2026-08-27
 model: claude-opus-5[1m]
 tool: typo3_test_run_guide, anytestingbrowser-check
 directory: /home/benji/projects/typo3-cms

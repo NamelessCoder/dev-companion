@@ -2128,6 +2128,13 @@ final class KnowledgeTest extends TestCase
      * failure a reading session cannot see — the same shape `cglGit` has above.
      * `feedback/2026-08-13-214729` lost the instance that way with `CI=true`
      * set, which the note beside it read as covering exactly this.
+     *
+     * The cleanup is named rather than its outcome, because the outcome holds
+     * for the run that reaches it and for no other: a run killed earlier leaves
+     * both containers up and serving, and a session read the unqualified
+     * sentence as "the instance is gone" while it was still answering
+     * (`feedback/2026-08-24-225044`). So the notes carry how what is running is
+     * read and how it is stopped.
      */
     #[Requirement('R-KNW-068')]
     #[Test]
@@ -2148,6 +2155,11 @@ final class KnowledgeTest extends TestCase
                 $whenToUse,
                 $suite . ' does not say that the run without one reports a green',
             );
+            self::assertStringContainsString(
+                'cleanup',
+                $whenToUse,
+                $suite . ' states the removal as an outcome rather than as the cleanup that does it',
+            );
         }
 
         $notes = implode("\n", TestSuiteHints::invocation()['notes']);
@@ -2160,6 +2172,16 @@ final class KnowledgeTest extends TestCase
             'script -qec',
             $notes,
             'the notes name no way to reach a waiting suite without a terminal',
+        );
+        self::assertStringContainsString(
+            'docker ps',
+            $notes,
+            'the notes say nothing about reading what a run actually left behind',
+        );
+        self::assertStringContainsString(
+            'docker rm -f',
+            $notes,
+            'the notes name no way to stop the containers a run left standing',
         );
     }
 

@@ -1171,7 +1171,7 @@ Text:
     Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.
     ## e2e-browser
     `CI=true ./Build/Scripts/runTests.sh -s e2e-browser`
-    Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.
+    Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal: a run that has none falls through to the cleanup that removes the containers, and still reports SUCCESS. A run killed before that cleanup leaves them up instead, which the invocation notes say how to read and end.
     ## cglGit
     `CI=true ./Build/Scripts/runTests.sh -s cglGit`
     Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
@@ -1395,7 +1395,7 @@ Data:
                 "runs": "unknown",
                 "targeted": null,
                 "description": "The e2e suite in Playwright's own UI, served from the container.",
-                "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.",
+                "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal: a run that has none falls through to the cleanup that removes the containers, and still reports SUCCESS. A run killed before that cleanup leaves them up instead, which the invocation notes say how to read and end.",
                 "domains": [
                     "php",
                     "typescript",

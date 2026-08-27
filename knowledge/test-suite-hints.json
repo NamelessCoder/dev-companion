@@ -17,7 +17,8 @@
       "A suite this answer does not list can still run git over the working tree: `checkIsoDatabase` and `checkCharsets` regenerate a table, discard uncommitted edits to composer.json and composer.lock, and stage everything with `git add *`.",
       "`runs: unknown` is what a test suite carries, and it means nothing here reads what the core's own test code writes into the checkout the container mounts. So commit or copy out untracked work before starting one, and a new test file with its fixtures under a `Tests/` directory is exactly that. One session lost four of them during a run and got them back only from a copy it had made on a hunch. The script itself removes files only in `-s clean`, `-s cleanBuild`, `-s cleanCache`, `-s cleanRenderedDocumentation` and `-s cleanTests`, so a file missing after any other suite did not go by `runTests.sh`.",
       "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.",
-      "A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes."
+      "A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes.",
+      "What a run left behind is read from the container runtime rather than from its exit code. The cleanup every run ends in kills the containers on that run's network. A run that never reaches it — a failing wait, a terminated wrapper — leaves `ac-web-<suffix>` and `ac-phpfpm-<suffix>` up with the test instance still served. `docker ps` names them, and `docker port ac-web-<suffix> 80/tcp` prints where the instance listens: a random high port on 127.0.0.1 that only `-s e2e-prepare` and `-s e2e-browser` publish. `docker rm -f ac-web-<suffix> ac-phpfpm-<suffix>` ends it, and `podman` stands in for `docker` where the run used the default runtime. The suffix is random per run and the summary prints it, so a run that printed no summary is found by name in that listing."
     ],
     "options": [
       {
@@ -420,7 +421,7 @@
         "css"
       ],
       "description": "Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.",
-      "whenToUse": "Use to look at a backend change in a real browser. It prints the instance URL and then waits: Enter re-runs the specs in the container, Control-C ends it. That wait is a read from /dev/tty, so the suite needs a controlling terminal — CI=true does not stand in for one, and a run that has none exits at the prompt, removes the instance it just installed and still reports SUCCESS. The two local Playwright commands it prints, headless and in the UI with PLAYWRIGHT_BASE_URL already set, are for iterating by eye rather than for reporting: they run on the host, where the browsers are an `npm --prefix=Build run playwright:install` of their own that the containerised suites never need. What a review reports is the `-s e2e` run."
+      "whenToUse": "Use to look at a backend change in a real browser. It prints the instance URL and then waits: Enter re-runs the specs in the container, Control-C ends it. That wait is a read from /dev/tty, so the suite needs a controlling terminal, and CI=true does not stand in for one. A run that has none fails on the redirect and falls straight through to the cleanup every run ends in, which takes the instance down while the summary still reports SUCCESS. That cleanup is what removes it, so a run killed before reaching it leaves the containers up with the instance still served, and the invocation notes say how to find and stop them. The two local Playwright commands it prints, headless and in the UI with PLAYWRIGHT_BASE_URL already set, are for iterating by eye rather than for reporting: they run on the host, where the browsers are an `npm --prefix=Build run playwright:install` of their own that the containerised suites never need. What a review reports is the `-s e2e` run."
     },
     {
       "suite": "e2e-browser",
@@ -434,7 +435,7 @@
         "css"
       ],
       "description": "The e2e suite in Playwright's own UI, served from the container.",
-      "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS."
+      "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal: a run that has none falls through to the cleanup that removes the containers, and still reports SUCCESS. A run killed before that cleanup leaves them up instead, which the invocation notes say how to read and end."
     },
     {
       "suite": "composerInstall",

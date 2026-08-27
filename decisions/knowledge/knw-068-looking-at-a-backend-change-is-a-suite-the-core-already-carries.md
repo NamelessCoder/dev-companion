@@ -133,3 +133,31 @@ The pty is the one thing here nobody in this repository ran: it is the reporting
 session's own, and it is written as util-linux `script` because that is what it
 used. A session reporting that the form does not work on its host is what would
 show it wrong.
+
+2026-08-27. `feedback/2026-08-24-225044` is the report that paragraph asked for,
+and it does not show the pty wrong. A headless session ran the prepare suite
+under `script` with a fifo, got exit code 0 and a log ending after the composer
+install, and then found `ac-web-<suffix>` and `ac-phpfpm-<suffix>` still up and
+answering 200 on the published port. It nearly reported the instance gone,
+because this entry's sentence says a run without a terminal removes it.
+
+Step 4, wording, and the reading is in the script. The banner is printed before
+the `read` loop, so a log without the banner is a run that never reached the
+prompt — the terminal is not what ended it. `cleanUp()` runs at the end of every
+run and kills the containers on that run's network, so a run that ended before
+it leaves them standing; that is why the containers were there at all, and it is
+the one thing the entry stated as an outcome rather than as a mechanism. What
+ends a run between the container start and the banner is `waitFor` failing,
+which sends `SIGINT` to the process group where `CI=true` has removed the trap.
+
+So the entries now name the cleanup rather than the removal, and the invocation
+notes carry the way back: `docker ps` for what is running,
+`docker port ac-web-<suffix> 80/tcp` for the random high port on 127.0.0.1 that
+only `-s e2e-prepare` and `-s e2e-browser` publish, `docker rm -f` to end it.
+Read in `runTests.sh` on `.checkouts/main`, `14.3` and `13.4`; 13.4 has the same
+cleanup inline instead of in a `printSummary()`, and all three print the random
+suffix beside the result.
+
+The decision stands. What a headless caller needed was not a reason to leave the
+suite alone but the two commands that turn its half-finished run into a working
+instance, and the entry that offers the command is where they belong.

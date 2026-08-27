@@ -233,8 +233,12 @@ final class ForgeTest extends TestCase
 
         $relations = $forge->issue('110348')['issue']['relations'];
 
-        self::assertCount(2, $asked);
+        // Three: the issue, the one bulk read that fills every relation, and
+        // the review server, which a single issue is asked of since
+        // `D-ANS-125` made `reviews` mean the same on both paths.
+        self::assertCount(3, $asked);
         self::assertStringContainsString('issue_id=105403%2C105953', $asked[1]);
+        self::assertStringContainsString('review.typo3.org', $asked[2]);
         // A relation is usually to something closed, and the default of that
         // endpoint is the open issues.
         self::assertStringContainsString('status_id=%2A', $asked[1]);
@@ -457,6 +461,46 @@ final class ForgeTest extends TestCase
         // change id the bot gave it three months earlier is still on it.
         self::assertSame('2011-10-06T01:13:23Z', $reviews[1]['on']);
         self::assertSame('I459aa01a8aba89ce361accd3dd84ea0329c5d1e4', $reviews[1]['changeId']);
+    }
+
+    /**
+     * The changes the review server holds for 15984, one of which the journal
+     * above already names and one of which it never mentions.
+     */
+    private const CHANGES_FOR_15984 = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] The one a comment named",'
+        . '"status":"ABANDONED","_number":1186,"current_revision_number":4,"current_revision":"a1","revisions":{'
+        . '"a1":{"commit":{"message":"[BUGFIX] The one a comment named\n\nResolves: #15984\nChange-Id: I1\n"}}}},'
+        . '{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] The one nobody mentioned here",'
+        . '"status":"NEW","_number":90210,"current_revision_number":2,"current_revision":"b2","revisions":{'
+        . '"b2":{"commit":{"message":"[BUGFIX] The one nobody mentioned here\n\nResolves: #15984\nChange-Id: I9\n"}}}}]';
+
+    /**
+     * A session read `reviews: []` on the issue it was about to patch and took
+     * it as evidence that nothing was in flight, having trusted the same field
+     * on enumerated rows an hour earlier — where it is the review server's
+     * answer rather than a parse of the text (`feedback/2026-08-27-145448`).
+     */
+    #[Decision('D-ANS-125')]
+    #[Test]
+    public function aSingleIssueJoinsTheProseHandlesWithWhatTheReviewServerHolds(): void
+    {
+        $forge = new Forge(static fn(string $url): string => str_contains($url, 'review.typo3.org')
+            ? self::CHANGES_FOR_15984
+            : (string) json_encode(['issue' => self::REVIEWED]));
+
+        $reviews = $forge->issue('15984')['issue']['reviews'];
+
+        // 1186 is in both halves and is one change; 2545 only the prose has;
+        // 90210 only the review server has.
+        self::assertSame([1186, 2545, 90210], array_column($reviews, 'change'));
+        self::assertSame(['ABANDONED', '', 'NEW'], array_column($reviews, 'status'));
+        // The prose fields survive the join, and the one the prose never named
+        // carries none of them.
+        self::assertSame(3, $reviews[0]['patchSet']);
+        self::assertSame('I98ea123ccdf1e370f28103546191b0a7234076f4', $reviews[0]['changeId']);
+        self::assertSame(0, $reviews[2]['patchSet']);
+        self::assertSame('', $reviews[2]['on']);
     }
 
     /**

@@ -386,10 +386,18 @@ Answers with
           # One of: description, note. Which text cites it. A number both of them
           # carry is a description, which is where the reporter framed the report.
           where: string
-      # The review changes the description and the journal name, lifted out of the
-      # prose that carries them. Nothing here says what state a change is in: a text
-      # says what was true the day it was written, and typo3_gerrit_lookup answers
-      # what is true now. Empty where neither named one.
+      # Every change on review.typo3.org this issue is known to have, from two
+      # sources this list joins: the handles the description and the journal name,
+      # lifted out of the prose that carries them, and the changes whose commit
+      # message names the issue number, asked of the review server. Neither half
+      # contains the other — a change discussed in a comment need not name the
+      # issue in its commit message, and one that does need never have been
+      # mentioned here. So an empty list means neither source has one, and a change
+      # the prose named carries the patch set and the date that prose is from while
+      # the state beside it is the review server's. What a reviewer objected to is
+      # the argument on the change, which is a typo3_gerrit_lookup call: an
+      # ABANDONED is grounds to read that argument rather than to pass the issue
+      # over.
       reviews:
         - # The change number on review.typo3.org, which is what typo3_gerrit_lookup
           # takes as change.
@@ -406,6 +414,11 @@ Answers with
           on: string
           # Where a person reads the change.
           url: string
+          # NEW while the change is open, MERGED once it landed, ABANDONED when it
+          # was given up — where it stood when the review server was asked. Empty
+          # where it was not asked or named no state, which includes every change
+          # only the prose names.
+          status: string
       # The files hanging off the issue. On a report about rendering these are
       # usually screenshots, and they are regularly where the evidence is: a comment
       # that consists of !image.jpg! references reads as an empty comment otherwise.
@@ -661,8 +674,8 @@ Text:
     The "imagesOnPage" feature is older than git. It needs to be revised to be integrated into FAL.
 
     ## Changes on review.typo3.org (1)
-    Named in the report above or in the comments below, and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
-    - change 95040 · patch set 2 · named 2026-08-01 · https://review.typo3.org/c/95040
+    Two sources joined: the handles the report and the comments name, and the changes whose commit message names this issue, asked of the review server. Neither half contains the other, so this list being empty is what says no change is in flight. A patch set and a date are what the prose said the day it was written; the state beside them is where the change stood just now. What a reviewer objected to is the argument on the change — pass the number as change to typo3_gerrit_lookup, or the Change-Id, which is what survives a rebase onto another branch.
+    - change 95040 · MERGED · patch set 2 · named 2026-08-01 · https://review.typo3.org/c/95040
 
     ## Comments (3 of 3, oldest first)
     What was decided is here rather than above.
@@ -717,7 +730,8 @@ Data:
                     "changeId": "",
                     "patchSet": 2,
                     "on": "2026-08-01T06:13:04Z",
-                    "url": "https://review.typo3.org/c/95040"
+                    "url": "https://review.typo3.org/c/95040",
+                    "status": "MERGED"
                 }
             ],
             "cites": [],
@@ -780,10 +794,10 @@ Text:
     Not sure whether this is a CKEditor or TYPO3 related issue.
 
     ## Changes on review.typo3.org (3)
-    Named in the report above or in the comments below, and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
-    - change 95108 · patch set 1 · named 2026-08-05 · https://review.typo3.org/c/95108
-    - change 95131 · patch set 1 · named 2026-08-06 · https://review.typo3.org/c/95131
-    - change 95132 · patch set 1 · named 2026-08-06 · https://review.typo3.org/c/95132
+    Two sources joined: the handles the report and the comments name, and the changes whose commit message names this issue, asked of the review server. Neither half contains the other, so this list being empty is what says no change is in flight. A patch set and a date are what the prose said the day it was written; the state beside them is where the change stood just now. What a reviewer objected to is the argument on the change — pass the number as change to typo3_gerrit_lookup, or the Change-Id, which is what survives a rebase onto another branch.
+    - change 95108 · MERGED · patch set 1 · named 2026-08-05 · https://review.typo3.org/c/95108
+    - change 95131 · MERGED · patch set 1 · named 2026-08-06 · https://review.typo3.org/c/95131
+    - change 95132 · MERGED · patch set 1 · named 2026-08-06 · https://review.typo3.org/c/95132
 
     ## Attachments (7)
     On a report about rendering these are usually where the evidence is, and Redmine writes an inline image into a comment as !filename! — so a comment below that is nothing but a filename is referring to one of these. Read the ones the report turns on; this server does not fetch them.
@@ -1158,21 +1172,24 @@ Data:
                     "changeId": "",
                     "patchSet": 1,
                     "on": "2026-08-05T03:25:06Z",
-                    "url": "https://review.typo3.org/c/95108"
+                    "url": "https://review.typo3.org/c/95108",
+                    "status": "MERGED"
                 },
                 {
                     "change": 95131,
                     "changeId": "",
                     "patchSet": 1,
                     "on": "2026-08-06T19:26:43Z",
-                    "url": "https://review.typo3.org/c/95131"
+                    "url": "https://review.typo3.org/c/95131",
+                    "status": "MERGED"
                 },
                 {
                     "change": 95132,
                     "changeId": "",
                     "patchSet": 1,
                     "on": "2026-08-06T19:26:58Z",
-                    "url": "https://review.typo3.org/c/95132"
+                    "url": "https://review.typo3.org/c/95132",
+                    "status": "MERGED"
                 }
             ],
             "cites": [],
@@ -1302,9 +1319,9 @@ Text:
     (issue imported from #M1277)
 
     ## Changes on review.typo3.org (2)
-    Named in the report above or in the comments below, and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
-    - change 38419 · patch set 3 · named 2015-04-01 · https://review.typo3.org/c/38419
-    - change 70962 · patch set 5 · named 2023-01-14 · https://review.typo3.org/c/70962
+    Two sources joined: the handles the report and the comments name, and the changes whose commit message names this issue, asked of the review server. Neither half contains the other, so this list being empty is what says no change is in flight. A patch set and a date are what the prose said the day it was written; the state beside them is where the change stood just now. What a reviewer objected to is the argument on the change — pass the number as change to typo3_gerrit_lookup, or the Change-Id, which is what survives a rebase onto another branch.
+    - change 38419 · ABANDONED · patch set 3 · named 2015-04-01 · https://review.typo3.org/c/38419
+    - change 70962 · ABANDONED · patch set 5 · named 2023-01-14 · https://review.typo3.org/c/70962
 
     ## Comments (8 of 16, oldest first)
     What was decided is here rather than above.
@@ -1401,14 +1418,16 @@ Data:
                     "changeId": "",
                     "patchSet": 3,
                     "on": "2015-04-01T20:54:18Z",
-                    "url": "https://review.typo3.org/c/38419"
+                    "url": "https://review.typo3.org/c/38419",
+                    "status": "ABANDONED"
                 },
                 {
                     "change": 70962,
                     "changeId": "",
                     "patchSet": 5,
                     "on": "2023-01-14T19:27:42Z",
-                    "url": "https://review.typo3.org/c/70962"
+                    "url": "https://review.typo3.org/c/70962",
+                    "status": "ABANDONED"
                 }
             ],
             "cites": [],
@@ -1670,7 +1689,7 @@ Text:
     TYPO3 issue tracker: no issue matches "file renderer RendererRegistry FileRendererInterface" at https://forge.typo3.org.
     These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a full-text search.
     Every word has to be in the same issue, so one word nobody wrote empties the answer whatever else is in it.
-    Asked one word at a time: "file" reaches 13944 · "renderer" reaches 1174 · "RendererRegistry" reaches 5 · "FileRendererInterface" reaches 0.
+    Asked one word at a time: "file" reaches 13946 · "renderer" reaches 1174 · "RendererRegistry" reaches 5 · "FileRendererInterface" reaches 0.
     No issue on the tracker carries "FileRendererInterface". A query it is in is empty whatever else is in it, so drop it.
     "RendererRegistry" is the narrowest of the rest and reaches something: ask it on its own, then read the subjects.
     What no wording of the report reaches is enumerated instead: open "newest" with createdSince from the day the defect could first have been reported, and limit 50. Add category in your own words — "import export", "rte" — only where the area is certain: thousands of the open bugs carry no Category at all, and an area filter reaches none of them.
@@ -1691,7 +1710,7 @@ Data:
         "terms": [
             {
                 "word": "file",
-                "total": 13944
+                "total": 13946
             },
             {
                 "word": "renderer",
@@ -1731,7 +1750,7 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2482 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2480 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
@@ -1780,7 +1799,7 @@ Data:
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
         "placedAgainst": "15.0.0-dev",
-        "total": 2482,
+        "total": 2480,
         "terms": [],
         "categories": [],
         "categoriesUsed": [],

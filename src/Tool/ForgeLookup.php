@@ -235,7 +235,8 @@ final class ForgeLookup extends ReadOnlyTool
                         'patchSet' => Schema::integer('The highest patch set a note mentioned, zero where none did. The review server may be further along.'),
                         'on' => Schema::string('When the last note naming this change was written, which is how old the reference is and not when the change last moved.'),
                         'url' => Schema::string('Where a person reads the change.'),
-                    ], ['change', 'changeId', 'patchSet', 'on', 'url']), 'The review changes the description and the journal name, lifted out of the prose that carries them. Nothing here says what state a change is in: a text says what was true the day it was written, and typo3_gerrit_lookup answers what is true now. Empty where neither named one.'),
+                        'status' => Schema::string('NEW while the change is open, MERGED once it landed, ABANDONED when it was given up — where it stood when the review server was asked. Empty where it was not asked or named no state, which includes every change only the prose names.'),
+                    ], ['change', 'changeId', 'patchSet', 'on', 'url', 'status']), 'Every change on review.typo3.org this issue is known to have, from two sources this list joins: the handles the description and the journal name, lifted out of the prose that carries them, and the changes whose commit message names the issue number, asked of the review server. Neither half contains the other — a change discussed in a comment need not name the issue in its commit message, and one that does need never have been mentioned here. So an empty list means neither source has one, and a change the prose named carries the patch set and the date that prose is from while the state beside it is the review server\'s. What a reviewer objected to is the argument on the change, which is a typo3_gerrit_lookup call: an ABANDONED is grounds to read that argument rather than to pass the issue over.'),
                     'attachments' => Schema::listOf(self::attachment(), 'The files hanging off the issue. On a report about rendering these are usually screenshots, and they are regularly where the evidence is: a comment that consists of !image.jpg! references reads as an empty comment otherwise. Empty where the issue carries none.'),
                     'cites' => self::cites('Read from the subject, the description and every comment, which is where a reproduction regularly names the class the description never did.'),
                     'noteCount' => Schema::integer('How many comments the issue carries in total.'),
@@ -544,12 +545,16 @@ final class ForgeLookup extends ReadOnlyTool
         if ($found['reviews'] !== []) {
             $lines[] = '';
             $lines[] = sprintf('## Changes on review.typo3.org (%d)', count($found['reviews']));
-            $lines[] = 'Named in the report above or in the comments below, and lifted out of them. What state one is in now is a'
-                . ' typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a'
-                . ' rebase onto another branch. A comment says what was true the day it was written.';
+            $lines[] = 'Two sources joined: the handles the report and the comments name, and the changes whose commit'
+                . ' message names this issue, asked of the review server. Neither half contains the other, so this'
+                . ' list being empty is what says no change is in flight. A patch set and a date are what the prose'
+                . ' said the day it was written; the state beside them is where the change stood just now. What a'
+                . ' reviewer objected to is the argument on the change — pass the number as change to'
+                . ' typo3_gerrit_lookup, or the Change-Id, which is what survives a rebase onto another branch.';
             foreach ($found['reviews'] as $review) {
                 $lines[] = '- ' . implode(' · ', array_filter([
                     $review['change'] > 0 ? 'change ' . $review['change'] : '',
+                    $review['status'],
                     $review['patchSet'] > 0 ? 'patch set ' . $review['patchSet'] : '',
                     $review['changeId'],
                     $review['on'] !== '' ? 'named ' . substr($review['on'], 0, 10) : '',

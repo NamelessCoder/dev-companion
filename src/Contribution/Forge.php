@@ -216,6 +216,7 @@ final class Forge
         }
 
         $found = $this->referenced([self::issueOf($answer['part'], $number, $notes)])[0];
+        $found['reviews'] = $this->changesOnReview($found['reviews'], (int) $found['id']);
 
         return [
             'status' => 'answered',
@@ -223,6 +224,56 @@ final class Forge
             'issue' => $found,
             'cause' => null,
         ];
+    }
+
+    /**
+     * The handles the issue's own text names and the changes the review server
+     * holds for its number, as one list.
+     *
+     * Neither half contains the other. A change discussed in a comment whose
+     * commit message never named the issue is missing from the review server's
+     * answer; a change that names the issue only in its commit message is
+     * missing from the text. An empty list means neither has one, which is what
+     * a caller was already reading it as — `D-ANS-125`.
+     *
+     * Deduplicated by change number, since a change named in a comment and
+     * found by commit message is one change; a handle that carries a Change-Id
+     * and no number has nothing to match on and stands as it came.
+     *
+     * @param list<array<string, mixed>> $named what the notes carry
+     * @return list<array<string, mixed>>
+     */
+    private function changesOnReview(array $named, int $number): array
+    {
+        $reviews = [];
+        foreach ($named as $review) {
+            $reviews[] = $review + ['status' => ''];
+        }
+
+        $at = [];
+        foreach ($reviews as $index => $review) {
+            if ($review['change'] > 0) {
+                $at[(int) $review['change']] = $index;
+            }
+        }
+
+        foreach ($this->review->changesForIssues([$number])[$number] ?? [] as $change) {
+            $status = is_string($change['status'] ?? null) ? $change['status'] : '';
+            if (isset($at[$change['number']])) {
+                $reviews[$at[$change['number']]]['status'] = $status;
+                continue;
+            }
+            $reviews[] = [
+                'change' => $change['number'],
+                'changeId' => '',
+                'patchSet' => 0,
+                'on' => '',
+                'url' => $change['url'],
+                'status' => $status,
+            ];
+        }
+
+        return $reviews;
     }
 
     /**

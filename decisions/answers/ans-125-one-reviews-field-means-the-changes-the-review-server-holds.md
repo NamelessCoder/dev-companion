@@ -3,6 +3,8 @@ id: D-ANS-125
 title: One reviews field means the changes the review server holds
 date: 2026-08-27
 status: open
+coveredBy:
+  - ForgeTest::aSingleIssueJoinsTheProseHandlesWithWhatTheReviewServerHolds
 ---
 
 # D-ANS-125 — One reviews field means the changes the review server holds

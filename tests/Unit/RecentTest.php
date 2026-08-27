@@ -48,7 +48,10 @@ final class RecentTest extends TestCase
 
         self::assertSame('answered', $first['status']);
         self::assertSame($first, $second);
-        self::assertSame(1, $this->reads, 'the second answer came from what was held');
+        // Two hosts, one round trip each: the tracker, and the review server a
+        // single issue is asked of since `D-ANS-125`. Both are held, so the
+        // second call reads neither.
+        self::assertSame(2, $this->reads, 'the second answer came from what was held');
     }
 
     /**
@@ -65,7 +68,8 @@ final class RecentTest extends TestCase
         $this->now += Forge::HELD_FOR;
         $forge->issue('105403');
 
-        self::assertSame(2, $this->reads);
+        // Two reads per call, both of them stale by then.
+        self::assertSame(4, $this->reads);
     }
 
     #[Decision('D-ANS-049')]

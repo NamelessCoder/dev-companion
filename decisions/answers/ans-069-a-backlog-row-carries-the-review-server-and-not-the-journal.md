@@ -159,3 +159,39 @@ Recorded live the same day, in
 issues carry six changes between them, four of them `ABANDONED` and two
 `MERGED`, and none still open. That is six calls a triage no longer makes to
 learn that every attempt on those rows has stopped.
+
+**Read back on 2026-08-27**, against the first session to hold the field. The
+third **Wrong if** did not fire and the first one did, in the same run.
+
+`feedback/2026-08-26-223414` swept this backlog 33 hours after the status
+shipped, from a task that was to find one old issue and fix it. Its own call was
+re-run on 2026-08-27 through `bin/typo3-dev-companion` — `open="stale"`, tracker
+`Bug`, `updatedBefore="2020-01-01"`, limit 25 — and answers 25 of 71 rows
+carrying five changes between them: `#70921` change 44202, `#82228` 53819,
+`#72962` 46262 and `#52070` 27263 all `ABANDONED`, `#62727` 71094 `MERGED`. The
+report names the first four and calls them prior attempts that died.
+
+Those four were not read whole. The eight issues its sibling
+`feedback/2026-08-26-223257` lists by number are eight others, so the page did
+take the reading off the caller rather than being read past, which is what the
+third **Wrong if** asks about.
+
+**It took it off in the way the wording was written to prevent.** The report
+calls the presence of an abandoned change "most of what makes an old issue worth
+or not worth picking up" and says `typo3_gerrit_lookup` never had to be opened.
+The argument on the change is what an `ABANDONED` is grounds to read, and none
+of the four was read.
+
+The answer says both things, and the session acted on the second. The paragraph
+above the rows says a state and not a verdict; `ForgeLookup::workflow()` below
+them opens its ordered readings with "What has already happened to it, which
+`typo3_gerrit_lookup` answers by the number before the checkout is opened. An
+abandoned change is a verdict somebody wrote down", under an instruction to stop
+at the first that decides. That block was written when the state cost that call.
+The row now carries the state, so its first reading reads as answered by the
+page, and the call that would have supplied the argument is the one the reading
+was about. `skills/typo3-core-issue-triage/SKILL.md` states the same sentence at
+step 7 with the diff behind it; the block is the compressed copy, and what the
+compression dropped is the half that costs a call.
+
+Queued rather than made here: it is `src/`, and `D-SKL-038` owns the block.

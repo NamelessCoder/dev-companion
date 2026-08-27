@@ -1021,6 +1021,32 @@ final class ForgeTest extends TestCase
     }
 
     /**
+     * The neglected end is two questions and the answer keeps them apart:
+     * filed long ago is about the report, untouched for years is about the
+     * attention it got.
+     *
+     * `feedback/2026-08-26-223414` used both on one backlog and reports that
+     * they returned materially different sets, which a re-run of its own calls
+     * shows: `stale` under `updatedBefore` reaches none of the issues `oldest`
+     * puts on its page that somebody touched last year. Only the `stale` half
+     * was asserted, and the arm that orders by filing date is a default nothing
+     * would have failed on.
+     */
+    #[Decision('D-ANS-054')]
+    #[Test]
+    public function theNeglectedEndIsOrderedByTwoThingsAndNotOne(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $forge->open('oldest', limit: 2);
+        $forge->open('stale', limit: 2);
+
+        self::assertStringContainsString('sort=created_on%3Aasc', self::pageRead($asked)[0]);
+        self::assertStringContainsString('sort=updated_on%3Aasc', self::pageRead($asked)[1]);
+    }
+
+    /**
      * The other end of the same backlog, which is where a duplicate of a defect
      * somebody has just found is. `oldest` and `stale` are both orderings of
      * the neglected end, so neither of them reaches it — `D-ANS-116`.

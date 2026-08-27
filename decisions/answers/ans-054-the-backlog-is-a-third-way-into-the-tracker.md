@@ -9,6 +9,7 @@ coveredBy:
   - ForgeTest::theAreasAreReadFromTheProjectAndHeld
   - ForgeTest::theCountOfEverythingThatMatchedComesBackWithThePage
   - ForgeTest::theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields
+  - ForgeTest::theNeglectedEndIsOrderedByTwoThingsAndNotOne
   - ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes
 ---
 

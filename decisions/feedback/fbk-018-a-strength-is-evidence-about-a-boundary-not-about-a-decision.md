@@ -1400,3 +1400,97 @@ right one is. The other half was held twice over already:
 The feedback is closed by this commit and nothing is queued. The statements
 about TYPO3 were read in `.checkouts/main`; the rest of the re-run read this
 server's answers.
+
+**One field name doing two jobs misplaces a strength's credit twice.**
+`feedback/2026-08-26-223414` credits four things in `typo3_forge_lookup` from a
+session that found and fixed one old Forge issue in
+`/home/benji/projects/typo3-cms`, and asks that all four survive a refactor.
+
+The quotations are checked before the boundary is. The reporting checkout is
+another session's work, so all of it was re-run on 2026-08-27 through
+`bin/typo3-dev-companion` with the report's own arguments:
+
+- The sweep answers 25 of 71 rows carrying five changes between them, and the
+  four the report names are there: `#70921` change 44202, `#82228` 53819,
+  `#72962` 46262 and `#52070` 27263, every one `ABANDONED`. `#62727` 71094 is
+  `MERGED` beside them.
+- `open="oldest"` with `category="extbase"` answers 99 matched and
+  `categoriesUsed` `Extbase` and `Extbase + l10n`, out of the 55 areas the
+  project holds. The tracker's own spelling comes back, which is what the report
+  credits it with.
+- The two orderings return materially different sets, which the report states
+  and neither call says on its own. The `oldest` page carries `#65859`, `#66447`
+  and `#69818`, last touched 2024-10-18, 2025-03-11 and 2026-01-25; the `stale`
+  page under that date excludes all three by construction.
+
+**The credit for two of the four is misplaced, and both misplacements are the
+same word read across two paths.** Item 1 says the state was scraped out of the
+review URLs in the text. Nothing is scraped on the enumeration path:
+`Forge::reviewed()` asks the review server one batched query per twelve rows and
+keeps the state it answers with. The scrape is `Forge::reviews()`, on the issue
+path, and the field it fills carries no state — `#76202` answers today with the
+reporting session's own change 95440 at patch set 1, lifted out of a bot note
+four minutes before it filed this, and no word about where that change stands.
+So "without a single Gerrit call" is true of the session and false of the
+answer.
+
+Item 3 credits `notes="people"` with keeping the 25-row sweep readable. `notes`
+narrows `issue`, and the enumeration ignores it: no path of it carries a comment
+at all, so the filter the report credits never ran. That is the seventh corpus
+in which a strength misplaces its credit, and the first in which the credited
+thing did not run.
+
+Why it was passed is readable in the parameter beside the misplacing. Its
+description invites the call — *ask for it when sweeping candidates, where the
+cost of reading ten issues is what decides whether the comments get read at all*
+— and says which ways in ignore it in its last sentence. Sweeping candidates is
+what this session called the enumeration, in this feedback and in its two
+siblings.
+
+The other half of item 1 is the lever, and it is `D-ANS-069`'s first **Wrong
+if** firing on the first session to hold the field. The judgement of it is
+there.
+
+**The boundary is what the payload names against what the prose carries.**
+Everything credited is a handle the answer resolved against the source that
+knows its state: a change number to `ABANDONED`, a caller's word to the
+project's own areas, a relation to its subject and status. The cost side is the
+same debrief, 103 seconds of it. `2026-08-26-223231` reports a
+`forge.typo3.org/issues/62553` written into a description that `relations: []`
+leaves invisible, and `2026-08-26-223257` the classes and methods a report cites
+that only the checkout can say still exist. Both are handles nothing resolved,
+and both were in the payload the strength came out of.
+
+**The proposal is checked against the data the reporting session derived it
+from, and the premise under it is the misplacing above.** It asks that a
+staleness verdict be modelled on `reviews` — a small field on the row that a
+sweep reads without a second call — and its sibling asks the same for a scraped
+issue URL, in this exact shape. What makes `reviews` cheap on a sweep is neither
+the scrape nor the size of the field: it is a source that answers a whole page
+in one query. `relations` is the shape both asks actually name, filled for a
+page by `Forge::related()` in one bulk read (`D-ANS-064`), with `handles()` as
+the scrape beside it. `223257` has no such source at all — whether a cited
+symbol still exists is a read of the checkout per issue. Both cards are unjudged
+and what fills them is theirs; what this run corrects is the premise they would
+otherwise inherit.
+
+One keep-request rested on nobody rewriting the file and is held now. The report
+puts item 2's whole value in the two orderings answering different questions,
+and only the `stale` half was asserted:
+`theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields` reads
+`sort=updated_on:asc` off the call, while the arm ordering by filing date was a
+match default in no assertion, so a rewrite collapsing the pair would have
+failed nothing. `theNeglectedEndIsOrderedByTwoThingsAndNotOne` holds both. The
+other three are held already — the row states by
+`aRowSaysWhichStateEachOfItsChangesIsIn` and
+`aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt`, the journal filter by
+`thePingsAreWhatALimitedReaderDropsAndTheChangesSurviveThem`, and the area
+matching by `anAreaIsNamedInTheCallersWordsAndMatchedAtAWordBoundary` and
+`anAreaNamingSeveralCategoriesIsOneCallAndSaysWhichItUsed`. The constraint the
+report says it never violated across eleven calls is held over every tool at
+once by `ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes`.
+
+The feedback is trimmed to the two wording halves and stays open behind its
+card. No statement about TYPO3 was established here: the re-runs read this
+server's answers, and the two paths were read in `Forge::reviewed()` and
+`Forge::reviews()`.

@@ -120,3 +120,26 @@ an area filter is a floor rather than the set. The enumeration says that in its
 answer where a category was used, which the "the areas that exist come back"
 bullet did not cover: a word that matched is as much of a partial answer as a
 word that did not.
+
+## Since then
+
+**The first and third Wrong if are engaged by a question this was not built
+for.**
+
+`D-ANS-038` routes a caller whose words matched nothing into this enumeration,
+so a duplicate check now arrives here beside the triage. The second **Assumed**
+covers the difference and was written the other way round: enumerating by age is
+a triage's entry point, and a duplicate of a defect somebody has just found is
+at the end neither ordering reaches. Both are ascending.
+
+Measured 2026-08-27. Backend User Interface holds 437 open issues, 227 of them
+Bugs and 153 filed within the last year, against the 26 of Import/Export the
+routing was written on. So a caller sent here for that question reads 50 of 437
+and asks again in other words, which is the first **Wrong if**; and `total` says
+the rest exists while `createdBefore` and `updatedBefore` narrow away from where
+it wants to look, which is the third one from the side nobody watched — the knob
+that would page it is missing rather than misused.
+
+Neither fires against the statement above, which is about a triage and holds.
+`D-ANS-116` is where the other question goes, and it is a further ordering on
+this enumeration rather than a fourth way into the tool.

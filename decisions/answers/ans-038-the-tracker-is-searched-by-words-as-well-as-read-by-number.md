@@ -232,6 +232,41 @@ words answering one irrelevant issue, and asked one at a time they reach between
 enumeration, and the miss already names it — the case never reaches the miss,
 because one hit is not a miss.
 
+## Since then
+
+**The miss delivers what the empty answer owed and promises more than the call
+it names can carry.**
+
+[`feedback/2026-08-24-225214`](../../feedback/2026-08-24-225214-no-way-to-establish-that-an-issue-has-not-been.md)
+is the same shape as `110926` one step earlier: a session establishing whether a
+defect was already on the tracker before filing it, three wordings, all empty,
+and a negative it could not rely on. It asked for two things — the enumeration
+named in the answer, and the empty answer saying what it does and does not
+establish. Both were built by the two sections above, before it was judged.
+
+Re-run on 2026-08-27 in the feedback's own words.
+`query: "LocalizationController getContent permission check"` still answers
+empty, and now opens with "which is not that nobody reported it", counts each
+word — `LocalizationController` 16, `getContent` 87, `permission` 1198, `check`
+10086 — names `LocalizationController` as the one to ask alone, and names `open`
+with `category` as the call to compose.
+`query: "localization wizard endpoints missing permission"` answers the same
+way, with `endpoints` at 18 as the narrowest that reaches. So the two calls the
+feedback says it wasted are recovered on the first one, which is the measure it
+set for itself. The third wording now answers #110533, because the user filed it
+after the session; that is the tracker having changed rather than this search,
+the same way two of `110926`'s wordings stopped reproducing.
+
+What is left is the sentence under them. "Reading those subjects is what settles
+whether somebody already reported this" was written from `110926`, whose area
+held 26 open issues, and it does not hold on the area this feedback was in:
+Backend User Interface has 437, both orderings point at the neglected end, and
+#110533 carries no Category at all. `D-ANS-116` is that half, taken on, and it
+carries the measurements.
+
+The first **Wrong if** held again — the session never read its empty answers as
+nobody having reported it, and said so in its review in as many words.
+
 The third **Wrong if** is engaged and not fired. `terms` is a further field on
 the answer, which is growth, but it is the third instance of a shape this tool
 already has: `categories` corrects a word that named no area,

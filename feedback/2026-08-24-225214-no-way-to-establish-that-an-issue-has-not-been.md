@@ -30,10 +30,18 @@ typo3_forge_lookup(query="LocalizationController getContent permission check", l
 
 ## Suggestion
 
-Two things, either of which would help:
+The second suggestion was answered on 2026-08-24 and this is trimmed to the
+first. An empty `query` now says that matching nothing is not that nobody
+reported it, counts each word on its own, and names `open` with `category` as
+the call to compose — `D-ANS-038`, which carries the re-run in these words.
 
-1. A structural narrowing like Gerrit's `path`. The core files issues under categories; `category` already exists and is resolved from the project's own list. Combining `category` with `open` and a recency window gives an enumeration a session can actually read — "these are the 18 open issues under Backend User Interface filed in the last year" — which answers "has this been reported" by reading subjects rather than by guessing at wording. The tool supports this today; what is missing is the routing that says so. The description sells `query` for "has this already been reported" and mentions the enumeration route only in the `category` parameter text.
+What is left is establishing the negative itself. A structural narrowing like
+Gerrit's `path`: combining `category` with `open` and a recency window to give
+an enumeration a session can actually read, which answers "has this been
+reported" by reading subjects rather than by guessing at wording.
 
-2. Say in the answer what an empty result establishes and what it does not, once, so a session does not spend three calls learning it: "no issue carries all of these words; this does not establish that none exists. Enumerate the area with category + open to read subjects instead."
-
-The second is a one-line change and would have saved two of my three calls.
+`D-ANS-116` takes that on and measured what the existing route cannot do:
+`open` orders only by oldest and by longest untouched, so both pages are the
+neglected end; Backend User Interface holds 437 open issues against a `limit`
+that stops at 50 with no offset; and #110533, the issue this session could not
+find, carries no Category at all.

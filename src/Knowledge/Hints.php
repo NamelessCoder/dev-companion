@@ -489,7 +489,7 @@ final class Hints
         // The keywords tier is above the score, so first place is usually
         // settled before a term weight is read at all — which is what makes a
         // test naming the first hit a claim about that hint rather than about
-        // the rest of the corpus (`D-ANS-123`).
+        // the rest of the corpus (`D-ANS-124`).
         usort($scored, static function (array $a, array $b): int {
             return ($b['score'] > 0 ? 1 : 0) <=> ($a['score'] > 0 ? 1 : 0)
                 ?: $b['keywords'] <=> $a['keywords']

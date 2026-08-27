@@ -1,12 +1,12 @@
 ---
-id: D-ANS-123
+id: D-ANS-124
 title: A first-hit assertion rests on the hint's own vocabulary
 date: 2026-08-27
 status: open
 coveredBy: []
 ---
 
-# D-ANS-123 — A first-hit assertion rests on the hint's own vocabulary
+# D-ANS-124 — A first-hit assertion rests on the hint's own vocabulary
 
 **An assertion naming the first hit is a claim about that hint: the tier above
 the score decides first place, and no reachable weight shift moves it.**

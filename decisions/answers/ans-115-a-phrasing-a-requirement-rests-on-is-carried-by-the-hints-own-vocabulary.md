@@ -82,7 +82,7 @@ writing it will ever read.
 ## Since then
 
 Both **Assumed** were measured on 2026-08-27 and neither held the way it was
-written, which `D-ANS-123` records. The queries reaching `find()` through a
+written, which `D-ANS-124` records. The queries reaching `find()` through a
 variable, a data provider or a tool are 456 rather than the 58 literals swept
 here, and they are the same shape: 66 of the pairs they return fall out at one
 further carrier, and no assertion names one of them.

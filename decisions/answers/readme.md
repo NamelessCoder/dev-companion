@@ -17,6 +17,7 @@ one is added.
 - [`D-ANS-121`][D-ANS-121] — A change answer says whether its patch set carries conflict markers · 2026-08-27
 - [`D-ANS-122`][D-ANS-122] — A backlog row says whether the code its report cites is still there · 2026-08-27
 - [`D-ANS-123`][D-ANS-123] — An issue answer carries the issues its prose cites · 2026-08-27
+- [`D-ANS-124`][D-ANS-124] — A first-hit assertion rests on the hint's own vocabulary · 2026-08-27
 - [`D-ANS-110`][D-ANS-110] — A changelog miss with no re-query names the manual and the rules · 2026-08-26
 - [`D-ANS-111`][D-ANS-111] — A change answer says which comment thread is open · 2026-08-26
 - [`D-ANS-112`][D-ANS-112] — A change answer establishes the patch without a fetch · 2026-08-26
@@ -136,6 +137,7 @@ one is added.
 [D-ANS-121]: ans-121-a-change-answer-says-whether-its-patch-set-carries-conflict-markers.md
 [D-ANS-122]: ans-122-a-backlog-row-says-whether-the-code-its-report-cites-is-still-there.md
 [D-ANS-123]: ans-123-an-issue-answer-carries-the-issues-its-prose-cites.md
+[D-ANS-124]: ans-124-a-first-hit-assertion-rests-on-the-hints-own-vocabulary.md
 [D-ANS-110]: ans-110-a-changelog-miss-with-no-re-query-names-the-manual-and-the-rules.md
 [D-ANS-111]: ans-111-a-change-answer-says-which-comment-thread-is-open.md
 [D-ANS-112]: ans-112-a-change-answer-establishes-the-patch-without-a-fetch.md

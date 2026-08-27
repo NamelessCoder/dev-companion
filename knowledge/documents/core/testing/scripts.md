@@ -115,6 +115,12 @@ the container, and a git worktree keeps its gitdir outside the mounted
 directory, so git fails, the list comes back empty and the suite reports SUCCESS
 having read no file. `-s cgl` asks git nothing and works from either.
 
+The file header is a separate check: `-s cglHeader` runs php-cs-fixer over
+`Build/php-cs-fixer/header-comment.php`, and `-s cgl` carries no header rule at
+all. `-s cglHeaderGit` is its latest-commit form and takes its file list from
+git the same way `-s cglGit` does, so from a git worktree it reports SUCCESS
+having read no file too.
+
 ### Run PHPStan
 
 ```bash
@@ -237,10 +243,13 @@ That message is printed for every failure of that script, whatever the cause, so
 here it is false — the script never got as far as reading a file. The commit is
 created anyway, because the hook only aborts when
 `TYPO3_GIT_HOOK_ABORT_ON_ERROR` is `yes`. Do not amend on the strength of it.
-`-s cglGit` against the commit that was just created is what settles whether
-there is a real finding, and it runs in the container on the PHP the branch asks
-for — from a normal checkout, because from a git worktree that suite reports
-SUCCESS having read no file, and `-s cgl` is the one to use there.
+What settles whether there is a real finding is the suite running the same
+config as the script that failed, and for this message that is `-s cglHeader`
+rather than `-s cglGit`. The coding-guideline message the hook prints for the
+other script is what `-s cgl` settles. Both run in the container on the PHP the
+branch asks for and both ask git nothing. Their quicker latest-commit forms,
+`-s cglHeaderGit` and `-s cglGit`, take their file list from git and so report
+SUCCESS having read nothing from a git worktree.
 `composer gerrit:setup:preCommitHook:disable` turns the hook off where the host
 PHP will not match for a while.
 

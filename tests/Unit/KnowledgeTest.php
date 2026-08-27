@@ -2016,7 +2016,11 @@ final class KnowledgeTest extends TestCase
 
         foreach (Finder::create()->files()->in(Paths::knowledge() . '/documents')->name('*.md') as $file) {
             foreach (preg_split('/^## /m', (string) file_get_contents($file->getPathname())) ?: [] as $section) {
-                if (str_contains($section, 'cglGit') && !str_contains(strtolower($section), 'worktree')) {
+                $names = array_filter(
+                    self::GIT_DRIVEN_SUITES,
+                    static fn(string $suite): bool => str_contains($section, $suite),
+                );
+                if ($names !== [] && !str_contains(strtolower($section), 'worktree')) {
                     $unqualified[] = $file->getFilename() . ': ' . substr($section, 0, 60);
                 }
             }

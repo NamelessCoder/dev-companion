@@ -915,6 +915,10 @@ Text:
     `CI=true ./Build/Scripts/runTests.sh -s cglGit`
     Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
     Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
+    ## cglHeaderGit
+    `CI=true ./Build/Scripts/runTests.sh -s cglHeaderGit`
+    Targeted: `CI=true ./Build/Scripts/runTests.sh -s cglHeader -n`
+    Use for a focused header check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommitFileHeader.sh` in the container, and its file list comes from git inside the container: a git worktree keeps its gitdir outside the mounted directory, git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cglHeader -n` where the checkout may be a worktree — it asks git nothing.
 
     Suggested checklist:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
@@ -1021,6 +1025,18 @@ Data:
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
                 "description": "Checks and fixes coding guideline issues in the latest committed patch.",
                 "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
+                "domains": [
+                    "php"
+                ],
+                "versions": ""
+            },
+            {
+                "suite": "cglHeaderGit",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s cglHeaderGit",
+                "runs": "change",
+                "targeted": "CI=true ./Build/Scripts/runTests.sh -s cglHeader -n",
+                "description": "Checks and fixes the licence header in the latest committed patch.",
+                "whenToUse": "Use for a focused header check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommitFileHeader.sh` in the container, and its file list comes from git inside the container: a git worktree keeps its gitdir outside the mounted directory, git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cglHeader -n` where the checkout may be a worktree — it asks git nothing.",
                 "domains": [
                     "php"
                 ],

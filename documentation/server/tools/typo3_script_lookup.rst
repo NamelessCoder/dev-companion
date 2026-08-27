@@ -154,7 +154,7 @@ Text:
     - `-b docker|podman` selects the container runtime; podman is the default.
 
     ## Common Commands
-    Source: TYPO3 Core Script Help (typo3://guides/core/testing/scripts) — matches 67% of the query terms
+    Source: TYPO3 Core Script Help (typo3://guides/core/testing/scripts) — matches 63% of the query terms
 
     ### Install Dependencies
 
@@ -215,8 +215,6 @@ Text:
     directory, so git fails, the list comes back empty and the suite reports SUCCESS
     having read no file. `-s cgl` asks git nothing and works from either.
 
-    ### Run PHPStan
-
     (section truncated — read core/testing/scripts whole for the rest)
 
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
@@ -248,10 +246,10 @@ Data:
                 "title": "TYPO3 Core Script Help",
                 "uri": "typo3://guides/core/testing/scripts",
                 "heading": "Common Commands",
-                "body": "### Install Dependencies\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s composerInstall\n```\n\nA suite runs against the `vendor/` and `bin/` of the directory it is started\nfrom, because `runTests.sh` mounts that directory and nothing else. A fresh\nclone has neither, and so does a git worktree of a checkout that has them:\n`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first\nsuite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit\nrather than the directory, so the cause is not readable from the symptom. Run\nthe install once in that directory first.\n\nSymlinking `vendor/` and `bin/` from another checkout does not stand in for it.\nThe target sits outside the one mount and does not resolve inside the container,\nwhether the link is absolute or relative.\n\n`composer install` on the host installs the same dependencies, but it wants the\nPHP the branch requires; the containerised form is why `runTests.sh` exists.\nEither way this is a precondition and not a step: a checkout that already has\n`vendor/` needs it again only after `composer.json` or `composer.lock` changed.\n\nEach of those two changes has a symptom of its own, and neither names the\ninstall: *When a Suite Fails for the Install Rather Than the Code* below.\n\n### Run PHP Unit Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s unit\n```\n\nRuns the TYPO3 core unit test suite. Add a path or `--filter` after `--` when\nworking on a narrow area.\n\n### Run Functional Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s functional\n```\n\nRuns functional tests. Use these for changes that touch TYPO3 services,\npersistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`\nto reproduce DBMS-specific behaviour.\n\n### Run Coding Standards\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s cgl -n\n```\n\nChecks coding guidelines for all core PHP files and reports without changing\nthem; drop `-n` to have them fixed. `-s cglGit` runs\n`Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,\nbut only from a normal checkout: that script asks git for its file list inside\nthe container, and a git worktree keeps its gitdir outside the mounted\ndirectory, so git fails, the list comes back empty and the suite reports SUCCESS\nhaving read no file. `-s cgl` asks git nothing and works from either.\n\n### Run PHPStan",
+                "body": "### Install Dependencies\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s composerInstall\n```\n\nA suite runs against the `vendor/` and `bin/` of the directory it is started\nfrom, because `runTests.sh` mounts that directory and nothing else. A fresh\nclone has neither, and so does a git worktree of a checkout that has them:\n`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first\nsuite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit\nrather than the directory, so the cause is not readable from the symptom. Run\nthe install once in that directory first.\n\nSymlinking `vendor/` and `bin/` from another checkout does not stand in for it.\nThe target sits outside the one mount and does not resolve inside the container,\nwhether the link is absolute or relative.\n\n`composer install` on the host installs the same dependencies, but it wants the\nPHP the branch requires; the containerised form is why `runTests.sh` exists.\nEither way this is a precondition and not a step: a checkout that already has\n`vendor/` needs it again only after `composer.json` or `composer.lock` changed.\n\nEach of those two changes has a symptom of its own, and neither names the\ninstall: *When a Suite Fails for the Install Rather Than the Code* below.\n\n### Run PHP Unit Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s unit\n```\n\nRuns the TYPO3 core unit test suite. Add a path or `--filter` after `--` when\nworking on a narrow area.\n\n### Run Functional Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s functional\n```\n\nRuns functional tests. Use these for changes that touch TYPO3 services,\npersistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`\nto reproduce DBMS-specific behaviour.\n\n### Run Coding Standards\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s cgl -n\n```\n\nChecks coding guidelines for all core PHP files and reports without changing\nthem; drop `-n` to have them fixed. `-s cglGit` runs\n`Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,\nbut only from a normal checkout: that script asks git for its file list inside\nthe container, and a git worktree keeps its gitdir outside the mounted\ndirectory, so git fails, the list comes back empty and the suite reports SUCCESS\nhaving read no file. `-s cgl` asks git nothing and works from either.",
                 "versions": "",
-                "coverage": 0.668,
-                "score": 12,
+                "coverage": 0.633,
+                "score": 11,
                 "truncated": true
             }
         ],

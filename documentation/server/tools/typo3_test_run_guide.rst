@@ -185,6 +185,26 @@ Text:
     Checks and fixes coding guideline issues in the latest committed patch.
     Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
+    ## cglHeader
+    Command from the TYPO3 core root:
+    `CI=true ./Build/Scripts/runTests.sh -s cglHeader`
+    Running it: change — it rewrites files in the checkout.
+    Targeted run while iterating:
+    `CI=true ./Build/Scripts/runTests.sh -s cglHeader -n`
+
+    Checks and fixes the licence header of all core PHP files.
+    Use where a PHP file was added or its header touched, and to settle the file-header error the pre-commit hook reports. It runs php-cs-fixer over `Build/php-cs-fixer/header-comment.php`, which `cgl` does not: a green `cgl` says nothing about a header. Add `-n` to only report.
+
+    ## cglHeaderGit
+    Command from the TYPO3 core root:
+    `CI=true ./Build/Scripts/runTests.sh -s cglHeaderGit`
+    Running it: change — it rewrites files in the checkout.
+    Targeted run while iterating:
+    `CI=true ./Build/Scripts/runTests.sh -s cglHeader -n`
+
+    Checks and fixes the licence header in the latest committed patch.
+    Use for a focused header check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommitFileHeader.sh` in the container, and its file list comes from git inside the container: a git worktree keeps its gitdir outside the mounted directory, git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cglHeader -n` where the checkout may be a worktree — it asks git nothing.
+
     ## lintPhp
     Command from the TYPO3 core root:
     `CI=true ./Build/Scripts/runTests.sh -s lintPhp`
@@ -516,6 +536,30 @@ Data:
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
                 "description": "Checks and fixes coding guideline issues in the latest committed patch.",
                 "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
+                "domains": [
+                    "php"
+                ],
+                "versions": ""
+            },
+            {
+                "suite": "cglHeader",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s cglHeader",
+                "runs": "change",
+                "targeted": "CI=true ./Build/Scripts/runTests.sh -s cglHeader -n",
+                "description": "Checks and fixes the licence header of all core PHP files.",
+                "whenToUse": "Use where a PHP file was added or its header touched, and to settle the file-header error the pre-commit hook reports. It runs php-cs-fixer over `Build/php-cs-fixer/header-comment.php`, which `cgl` does not: a green `cgl` says nothing about a header. Add `-n` to only report.",
+                "domains": [
+                    "php"
+                ],
+                "versions": ""
+            },
+            {
+                "suite": "cglHeaderGit",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s cglHeaderGit",
+                "runs": "change",
+                "targeted": "CI=true ./Build/Scripts/runTests.sh -s cglHeader -n",
+                "description": "Checks and fixes the licence header in the latest committed patch.",
+                "whenToUse": "Use for a focused header check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommitFileHeader.sh` in the container, and its file list comes from git inside the container: a git worktree keeps its gitdir outside the mounted directory, git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cglHeader -n` where the checkout may be a worktree — it asks git nothing.",
                 "domains": [
                     "php"
                 ],
@@ -1344,7 +1388,7 @@ Text:
     - The node suites need none of that. `-s build`, `-s lintTypescript`, `-s lintScss`, `-s lintHtml`, `-s unitJavascript` and `-s npm` run npm inside `Build/`, whose `package.json` and `package-lock.json` are tracked, and install the `node_modules` they need themselves. So a fresh clone and a bare git worktree run them without a composerInstall first, which is how a build is run for a checkout that has to stay as it is. Measured for `-s build` on 2026-08-26, in a worktree at the tip of 14.3 and one at the tip of main: both ran without a composerInstall and left `git status` empty. The other five are read off the suite bodies.
     - A checkout of an older revision runs that revision's own script against the `vendor/` on disk, and the two disagree about PHP. `Build/Scripts/runTests.sh` carries a default PHP version per branch, so a revision from before a raise starts its container with the older one. The run stops in Composer's platform check with `Your Composer dependencies require a PHP version >= 8.5.0. You are running 8.2.31.`, which names the two PHP versions rather than the revision they came from. Read in `.checkouts/` on 2026-08-26: main defaults to 8.5 and requires `^8.5` since the raise of 2026-07-16, and a revision from before it defaults to 8.2. `-p <the version vendor/ requires>` gets past it where the checked-out script accepts that version, and `-h` says which ones it accepts. Rebasing the revision onto what `vendor/` was installed for is the other fix, and the one a stale patch set needs anyway.
 
-    Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them. No given path reached php, fluid, typoscript, xliff, docs and typescript, which leaves 25 suites out. A path landing in one of those domains means calling again.
+    Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them. No given path reached php, fluid, typoscript, xliff, docs and typescript, which leaves 27 suites out. A path landing in one of those domains means calling again.
 
     ## build
     Command from the TYPO3 core root:
@@ -1464,7 +1508,7 @@ Data:
                 "docs",
                 "typescript"
             ],
-            "suites": 25
+            "suites": 27
         },
         "suites": [
             {

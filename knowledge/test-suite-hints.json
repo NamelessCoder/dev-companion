@@ -139,6 +139,28 @@
       "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n"
     },
     {
+      "suite": "cglHeader",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s cglHeader",
+      "runs": "change",
+      "domains": [
+        "php"
+      ],
+      "description": "Checks and fixes the licence header of all core PHP files.",
+      "whenToUse": "Use where a PHP file was added or its header touched, and to settle the file-header error the pre-commit hook reports. It runs php-cs-fixer over `Build/php-cs-fixer/header-comment.php`, which `cgl` does not: a green `cgl` says nothing about a header. Add `-n` to only report.",
+      "targeted": "CI=true ./Build/Scripts/runTests.sh -s cglHeader -n"
+    },
+    {
+      "suite": "cglHeaderGit",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s cglHeaderGit",
+      "runs": "change",
+      "domains": [
+        "php"
+      ],
+      "description": "Checks and fixes the licence header in the latest committed patch.",
+      "whenToUse": "Use for a focused header check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommitFileHeader.sh` in the container, and its file list comes from git inside the container: a git worktree keeps its gitdir outside the mounted directory, git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cglHeader -n` where the checkout may be a worktree — it asks git nothing.",
+      "targeted": "CI=true ./Build/Scripts/runTests.sh -s cglHeader -n"
+    },
+    {
       "suite": "lintPhp",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintPhp",
       "runs": "check",

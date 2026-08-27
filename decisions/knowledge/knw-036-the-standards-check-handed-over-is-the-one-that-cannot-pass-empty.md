@@ -121,3 +121,46 @@ term as a substring, so `cglFixMyCommit` scores on the "Fix" of "Fix the query
 that reads the events" and takes `composerInstall` out of that answer. The name
 is what the sentence is for, so it stays; what a matcher does with a script name
 is a finding about the matcher.
+
+## Since then
+
+On 2026-08-25 a core session established this entire finding again from scratch,
+and asked this server nothing while doing it. `feedback/2026-08-25-114910` is a
+session whose task was whether `-s cglGit` runs correctly in a git worktree of
+the core checkout. It reports the mount contract, the empty file list, and the
+SUCCESS on nothing as things it had to prove itself — with a worktree run
+against the main checkout, `"Found 0 of 5 files"` beside
+`fatal: not a git repository: (null)`, which is what this entry measured three
+weeks earlier. Its own "single answer that would have shortened this session
+most" is a paraphrase of the sentence the corpus already carried.
+
+That is not a gap and none of the three **Wrong if** above happened. Re-run here
+on 2026-08-27 with the session's own words, `typo3_script_lookup` answers
+"cglGit in a git worktree" and "runTests.sh container mount" with both sections,
+and `typo3_test_run_guide` states the mount contract in the preconditions block
+it prints before any suite and the false green in the `cglGit` entry. What the
+session says is that nothing was asked, which is the report beside it —
+`feedback/2026-08-25-114653`, on `typo3_script_lookup` never being called in a
+session about nothing but its subject — and that one is judged under its own
+card.
+
+What the re-run did find is a sentence of the corpus that was wrong in this
+entry's own area. The *Pre-Commit Hook* section named `-s cglGit` as what
+settles the hook's file-header error, and `cglGit` runs
+`Build/php-cs-fixer/config.php`, which carries no header rule: the header check
+is `-s cglHeader` over `Build/php-cs-fixer/header-comment.php`. Read in
+`.checkouts/main` on 2026-08-27, and the pair of scripts the hook runs is one
+per message. So the **Decided** above — `cglGit` stays where the entry has prose
+around it — held for the condition and not for the config: the prose named it
+for a check it does not perform.
+
+What kept the wrong sentence there is `R-KNW-024`: prose may name only a suite
+`knowledge/test-suite-hints.json` declares on every covered major, and neither
+header suite was declared at all. Both are entries from the same commit, and
+`bin/cli versions:check` reads them against `.checkouts/` on all four.
+
+`cglHeaderGit` carries its worktree condition beside the command, which is what
+`R-KNW-049` demanded of both suites and nothing held: the test read the
+documents for `cglGit` alone, and `cglHeaderGit` does not contain that string.
+It reads every suite of `GIT_DRIVEN_SUITES` now, which is the list it was
+already using on the JSON half.

@@ -206,7 +206,15 @@ final class TaskGuide extends ReadOnlyTool
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
             'Reproduce the bug first, ideally with a failing test that the fix turns green.',
-            'Check whether the bug also affects maintained older release branches.',
+            // The checkout a caller stands in is regularly the one branch, so
+            // this asked for a reading nobody could make and a session
+            // answered it from typo3_commit_message_guide instead and said so
+            // (`D-GUI-023`). That tool states which lines take the change and
+            // what naming an older one claims; which of them carry the defect
+            // is still the caller's reading, on whatever branches they have.
+            'Settle which release branches the fix goes to with typo3_commit_message_guide, which names the '
+                . 'lines a change of this type takes and says what claiming an older one costs. Whether the '
+                . 'defect is on them is your reading, and a checkout holding one branch cannot make it.',
             // The obligation the core's own conventions file leaves at "user-facing
             // changes need an entry", which a session working a bugfix answered by
             // guessing and said so (`D-AUD-014`). The directory is here for the

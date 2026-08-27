@@ -6246,6 +6246,34 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A bugfix brief names the call that settles the release branches.
+     *
+     * The item asked whether the defect also affects maintained older release
+     * branches, and the session reporting it held one — "the checklist item
+     * pointed at work I had no way to do". It answered the question from
+     * `typo3_commit_message_guide` instead and says that was the better answer
+     * (`D-GUI-023`).
+     */
+    #[Decision('D-GUI-023')]
+    #[Test]
+    public function theBugfixChecklistNamesTheCallThatSettlesTheReleaseBranches(): void
+    {
+        $checklist = implode("\n", Registry::call('typo3_task_guide', [
+            'task' => 'fix the workspaces language filter',
+            'changeType' => 'bugfix',
+            'paths' => ['typo3/sysext/workspaces/Classes/Service/WorkspaceService.php'],
+        ])->data['checklist']);
+
+        self::assertStringContainsString(
+            'Settle which release branches the fix goes to with typo3_commit_message_guide',
+            $checklist,
+        );
+        // And the half the tool cannot answer stays the caller's, or the
+        // Releases line reads as settling which branches carry the defect.
+        self::assertStringContainsString('Whether the defect is on them is your reading', $checklist);
+    }
+
+    /**
      * And the page that kind of work is written up in (`D-GUI-012`).
      *
      * The reporting session learned the corpus exists from one place — the

@@ -642,6 +642,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-GUI-021`][D-GUI-021] — The subject a draft carries is the summary the caller wrote · 2026-08-27
 - [`D-GUI-022`][D-GUI-022] — The paths a brief is composed from name a subsystem rather than a diff · 2026-08-27
+- [`D-GUI-023`][D-GUI-023] — A checklist item names the call that can answer it · 2026-08-27
 - [`D-GUI-019`][D-GUI-019] — The audit brief names the lookup that reads a configuration default · 2026-08-26
 - [`D-GUI-020`][D-GUI-020] — The commit guide states the longest line the hook accepts · 2026-08-26
 - [`D-GUI-017`][D-GUI-017] — An issue the caller passed is written in either workflow · 2026-08-21
@@ -664,6 +665,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-GUI-021]: guides/gui-021-the-subject-a-draft-carries-is-the-summary-the-caller-wrote.md
 [D-GUI-022]: guides/gui-022-the-paths-a-brief-is-composed-from-name-a-subsystem-rather-than-a-diff.md
+[D-GUI-023]: guides/gui-023-a-checklist-item-names-the-call-that-can-answer-it.md
 [D-GUI-019]: guides/gui-019-the-audit-brief-names-the-lookup-that-reads-a-configuration-default.md
 [D-GUI-020]: guides/gui-020-the-commit-guide-states-the-longest-line-the-hook-accepts.md
 [D-GUI-017]: guides/gui-017-an-issue-the-caller-passed-is-written-in-either-workflow.md

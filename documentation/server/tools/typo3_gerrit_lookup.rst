@@ -62,16 +62,22 @@ thread is open. A thread is open where the last comment in it says so, which is
 what the review server counts and what a tally of the flag on each comment does
 not. That is where a comment somebody left on an earlier patch set and nobody
 answered is read. Why a vote is gone is in the review log instead, which
-messages asks for. A call carries issue, change, commit, a search by query and
-path, or backlog, never two of those. Beside the branch each change targets it
-names the branches that take a patch today, each with the day its regular
-support ends — the list a Releases: trailer may name, which a core clone
-supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing
-about which of them is still maintained. Which of those lines a change belongs
-on is not answered here: that is the author's claim, and
-typo3_commit_message_guide with workflow="core" is what reads a trailer against
-them. This reaches the network, and it reads: reviewing, voting and uploading
-stay yours. Answers from: network.
+messages asks for. A change read by name also says whether its current patch set
+carries git conflict markers, whatever messages asked for: a change
+cherry-picked or rebased through the web UI can land with the markers committed
+into a shipped file, Gerrit reports that in the review log alone, and every
+other field of the answer then reads as a fresh patch set nobody has looked at
+yet. Where it was cherry-picked from stands beside it as provenance, since most
+backports are cherry-picks and almost none of them conflicted. A call carries
+issue, change, commit, a search by query and path, or backlog, never two of
+those. Beside the branch each change targets it names the branches that take a
+patch today, each with the day its regular support ends — the list a Releases:
+trailer may name, which a core clone supplies nowhere, since git branch -r
+reaches back to TYPO3_3-6 and says nothing about which of them is still
+maintained. Which of those lines a change belongs on is not answered here: that
+is the author's claim, and typo3_commit_message_guide with workflow="core" is
+what reads a trailer against them. This reaches the network, and it reads:
+reviewing, voting and uploading stay yours. Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -141,8 +147,10 @@ Takes
     # since it is 57.9 KB against 14.3 KB on a change with 21 patch sets. "people"
     # drops what a service user wrote, which on that change is 20 of 46 messages and
     # every one of them a CI pipeline report. "all" keeps them. How many were
-    # dropped is answered whichever you ask for. Narrows change and commit, and is
-    # ignored by every other way in.
+    # dropped is answered whichever you ask for. Whether the current patch set
+    # carries git conflict markers is answered whichever you ask for too, since that
+    # is a fact about the change rather than part of its review. Narrows change and
+    # commit, and is ignored by every other way in.
     messages: string  # optional
     # One of: oldest, stale. Enumerate the open changes of the TYPO3 core instead of
     # reading one or matching words: "oldest" orders them by when they were pushed,
@@ -302,6 +310,29 @@ Answers with
         # is grounds to expect a rebase rather than a finding. Null where it
         # computed none, which is not "it does not merge".
         mergeable: boolean or null  # optional
+        # The files Gerrit reported git conflicts in when the current patch set was
+        # created, which means the markers are committed lines in them: the patch is
+        # broken rather than merely unreviewed, and nothing else in this answer says
+        # so. A change created with the web Cherry pick action or rebased through it
+        # can land this way, and its status, its votes, its comment count and its
+        # subject all read as a fresh patch set. Empty means the current patch set
+        # carries none — a report on an earlier one is history and is not here.
+        # Null means the review log was not read, which is a search and an
+        # enumeration.
+        conflicts: array or null  # optional
+        # The change and patch set this one was cherry-picked from, null where it
+        # was pushed rather than cherry-picked. It is provenance and not a warning:
+        # most backports are cherry-picks and almost none of them conflicted, so
+        # what says a patch set is broken is conflicts beside it.
+        cherryPickOf:  # optional
+          # The change number it was picked from, which reads it by being passed
+          # back as change.
+          change: integer
+          # The patch set of that change it was picked from, which is not
+          # necessarily the one that change stands at now.
+          patchSet: integer
+          # Where a person reads that change.
+          url: string
         # Where a person reads the review.
         url: string  # optional
         # How to get this patch set into a checkout. Null where the server named no

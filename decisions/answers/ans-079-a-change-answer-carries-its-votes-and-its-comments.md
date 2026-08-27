@@ -232,3 +232,12 @@ what that thread stands at, the listing is a thread at a time, and the count in
 its heading is the threads rather than the flags. The refusal this entry decided
 is what that one carries forward — the state is handed over and the reading
 stays the caller's.
+
+On 2026-08-27 the bullet "the message log is asked for" stopped describing the
+fetch. `Gerrit::named()` now sends `o=MESSAGES` on every call and `messages`
+decides only what the caller is handed. What made that worth doing is a fact the
+log carries about the change rather than about its review: a patch set carrying
+git conflict markers is reported there and in no other payload, and a backport
+that landed with the markers committed read as a healthy new change in every
+other field. `D-ANS-121` is that reading. The 50 KB this entry weighed is the
+caller's context, and it is still opt-in.

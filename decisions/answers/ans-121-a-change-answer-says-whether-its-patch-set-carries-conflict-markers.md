@@ -3,7 +3,13 @@ id: D-ANS-121
 title: A change answer says whether its patch set carries conflict markers
 date: 2026-08-27
 status: open
-coveredBy: []
+coveredBy:
+  - GerritTest::aChangeNamesTheChangeItWasCherryPickedFrom
+  - GerritTest::aChangeSaysWhichFilesItsCurrentPatchSetCarriesConflictMarkersIn
+  - GerritTest::aReportOnAPatchSetSomebodyHasReplacedIsNotThisPatchSet
+  - GerritTest::aSearchAsksForNoLogAndSaysNothingAboutConflicts
+  - GerritTest::theConflictLineSaysTheChangeIsBrokenRatherThanUnreviewed
+  - GerritTest::theReviewLogIsAskedForAndTheServiceUsersHalfIsSeparated
 ---
 
 # D-ANS-121 — A change answer says whether its patch set carries conflict markers

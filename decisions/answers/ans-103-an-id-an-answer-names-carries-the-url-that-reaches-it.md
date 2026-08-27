@@ -6,6 +6,7 @@ status: open
 coveredBy:
   - ForgeTest::theRelationLineCarriesTheUrlOfTheIssueItNames
   - GerritTest::aChainEntryCarriesTheUrlBuiltFromItsProjectAndNumber
+  - GerritTest::aChangeNamesTheChangeItWasCherryPickedFrom
   - GerritTest::everyIdTheTextHalfNamesCarriesTheUrlThatReachesIt
 ---
 

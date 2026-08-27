@@ -477,13 +477,17 @@ final class Gerrit
      * patch set touches and the commit message whole, so a caller reaches both
      * without putting the change on disk (`D-ANS-112`).
      *
+     * The log is read on every call rather than where `$messages` asks for it,
+     * because one fact in it is about the change and not about the review: a
+     * patch set carrying git conflict markers is reported there and nowhere else
+     * (`D-ANS-121`). What `$messages` decides is what the caller is handed.
+     *
      * @param string $operator the Gerrit query prefix the handle belongs to
      * @return Answer
      */
     private function named(string $operator, string $change, int $limit, string $messages): array
     {
-        $options = self::REVIEW . self::CURRENT_COMMIT . self::CURRENT_FILES
-            . ($messages === 'none' ? '' : self::MESSAGES);
+        $options = self::REVIEW . self::CURRENT_COMMIT . self::CURRENT_FILES . self::MESSAGES;
         $handle = trim($change);
         $answer = $this->search($operator . $handle, $limit, $options);
 
@@ -520,6 +524,7 @@ final class Gerrit
             if (!is_array($found['messages'])) {
                 continue;
             }
+            $answer['changes'][$index]['conflicts'] = self::conflicts($found['messages'], $found['patchSet']);
             $written = array_values(array_filter(
                 $found['messages'],
                 static fn(array $message): bool => $message['bot'] === false,
@@ -528,9 +533,14 @@ final class Gerrit
             // reports answering zero here is Gerrit no longer tagging its
             // service users rather than a change no bot has been near.
             $answer['changes'][$index]['botMessageCount'] = count($found['messages']) - count($written);
-            if ($messages === 'people') {
-                $answer['changes'][$index]['messages'] = $written;
-            }
+            // The log itself is still what `$messages` asks for: it is 50 KB in
+            // a caller's context, and the fact above is the one thing that moved
+            // out of it.
+            $answer['changes'][$index]['messages'] = match ($messages) {
+                'people' => $written,
+                'all' => $found['messages'],
+                default => null,
+            };
         }
         $answer['changes'] = $this->issues($answer['changes']);
 
@@ -955,15 +965,32 @@ final class Gerrit
     private const REVIEW = '&o=DETAILED_LABELS&o=DETAILED_ACCOUNTS';
 
     /**
-     * The review log, which is asked for rather than answered with. The same
-     * change is 57.9 KB with it.
+     * The review log, fetched on every change read by name and handed on only
+     * where the caller asked for it. The same change is 57.9 KB with it.
      *
      * What it carries that the labels do not is why a vote is gone. Gerrit
      * writes "Outdated Votes: * Code-Review+1 (copy condition: …)" into the
      * message of the upload that dropped it, and the label state afterwards
-     * looks exactly like a change nobody has voted on (`D-ANS-079`).
+     * looks exactly like a change nobody has voted on (`D-ANS-079`). What it
+     * carries that no other payload does at all is the conflict report below.
+     *
+     * That is why a change read by name asks for it whatever the caller wanted
+     * the log for: over 50 open core changes read both ways on 2026-08-27 it
+     * cost a median of 6.3 KB on this server's own fetch — `D-ANS-121`. A search
+     * answers up to 25 changes and the enumeration reads up to 2000, so neither
+     * asks for it.
      */
     private const MESSAGES = '&o=MESSAGES';
+
+    /**
+     * The sentence Gerrit opens its conflict report with.
+     *
+     * The report is matched on this rather than on the "Cherry Picked from
+     * branch …" line above it: a rebase through the web UI writes the same list
+     * under "Patch Set N was rebased", and that is 13 of the 39 reports the core
+     * project carries — `D-ANS-121`.
+     */
+    private const CONFLICTED = 'The following files contain Git conflicts:';
 
     /**
      * The tag Gerrit puts on an account that is a machine.
@@ -1148,6 +1175,14 @@ final class Gerrit
             'messages' => is_array($entry['messages'] ?? null) ? self::messages($entry['messages']) : null,
             // Counted by `change()`, before the filter it is the measure of.
             'botMessageCount' => null,
+            // Filled by `change()` out of that log, which is the only place
+            // Gerrit reports a patch set carrying conflict markers. Null is a
+            // log that did not come back; the empty list is a patch set nothing
+            // was reported on — `D-ANS-121`.
+            'conflicts' => null,
+            // Read here instead, because the payload carries the two fields
+            // whatever the query asked for.
+            'cherryPickOf' => self::cherryPickOf($entry, $project),
         ];
     }
 
@@ -1309,6 +1344,79 @@ final class Gerrit
         }
 
         return $log;
+    }
+
+    /**
+     * The paths the conflict report on this patch set names.
+     *
+     * A change created with the web **Cherry pick** action can land with the
+     * markers committed into a shipped file, and every other field of the answer
+     * reads as a healthy new patch set: the change payload carries no such
+     * field, no revision carries one either, and only the message says it
+     * (`D-ANS-121`).
+     *
+     * Held against the patch set the message was written about, which is the
+     * whole of the field: a report on a patch set somebody has replaced is
+     * history, and 7 of the 8 open core changes carrying one are that.
+     *
+     * @param array<mixed> $log the review log, as `messages()` answers it
+     * @return list<string>
+     */
+    private static function conflicts(array $log, int $patchSet): array
+    {
+        $named = [];
+        foreach ($log as $message) {
+            if (!is_array($message) || ($message['patchSet'] ?? null) !== $patchSet) {
+                continue;
+            }
+            $said = is_string($message['message'] ?? null) ? $message['message'] : '';
+            $at = strpos($said, self::CONFLICTED);
+            if ($at === false) {
+                continue;
+            }
+            foreach (explode("\n", substr($said, $at + strlen(self::CONFLICTED))) as $line) {
+                $path = trim($line);
+                if ($path === '') {
+                    continue;
+                }
+                // The list runs to the first line that is not one of its items,
+                // so whatever Gerrit writes under it stays out of the paths.
+                if (!str_starts_with($path, '* ')) {
+                    break;
+                }
+                $path = trim(substr($path, 2));
+                if ($path !== '' && !in_array($path, $named, true)) {
+                    $named[] = $path;
+                }
+            }
+        }
+
+        return $named;
+    }
+
+    /**
+     * The change and the patch set this one was cherry-picked from.
+     *
+     * Two fields the payload carries unasked, which is why this is read here
+     * rather than out of the log beside it. It is provenance and not a warning:
+     * 133 of 400 recent merged core changes carry it and 17 of those ever
+     * conflicted — `D-ANS-121`.
+     *
+     * @param array<string, mixed> $entry
+     * @return array{change: int, patchSet: int, url: string}|null
+     */
+    private static function cherryPickOf(array $entry, string $project): ?array
+    {
+        $change = self::counted($entry['cherry_pick_of_change'] ?? null) ?? 0;
+        if ($change < 1) {
+            return null;
+        }
+
+        return [
+            'change' => $change,
+            'patchSet' => self::counted($entry['cherry_pick_of_patch_set'] ?? null) ?? 0,
+            'url' => self::url($change, $project),
+        ];
     }
 
     /**

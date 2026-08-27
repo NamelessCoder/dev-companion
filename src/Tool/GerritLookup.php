@@ -45,7 +45,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Or backlog to enumerate the core\'s open changes without holding a handle or a wording — oldest pushed or longest untouched, narrowed by size, by vote state, by whether it still merges, by branch, by date and by person. That is where a review session starts: "which open reviews have been sitting a long time", "which of them are small and almost voted through", "which are mine" and "which have I already voted on" are maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none of them is answerable by words in a commit message. "Which of them could I review" is reviewableBy, the one person filter that takes a person out — what they pushed and what they voted on both leave the answer. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Every change, whichever way it was reached, also carries how many lines it adds and removes, whether it still merges, when it was pushed, how many comment threads are unresolved, and what each label stands at — the size, the age and the vote state a reviewer picks a change by. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. It also carries every path its current patch set touches, with what the patch does to each, and its commit message whole — so what a review establishes first is established without putting the change on disk: the paths are the argument typo3_hint_lookup and typo3_test_run_guide take, and the message is what typo3_commit_message_guide reads. The diff stays out, so the hunks are what a fetch is still for, and a shortlist is triaged without fetching anything. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, the thread it is in and whether that thread is open. A thread is open where the last comment in it says so, which is what the review server counts and what a tally of the flag on each comment does not. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, commit, a search by query and path, or backlog, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Or backlog to enumerate the core\'s open changes without holding a handle or a wording — oldest pushed or longest untouched, narrowed by size, by vote state, by whether it still merges, by branch, by date and by person. That is where a review session starts: "which open reviews have been sitting a long time", "which of them are small and almost voted through", "which are mine" and "which have I already voted on" are maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none of them is answerable by words in a commit message. "Which of them could I review" is reviewableBy, the one person filter that takes a person out — what they pushed and what they voted on both leave the answer. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Every change, whichever way it was reached, also carries how many lines it adds and removes, whether it still merges, when it was pushed, how many comment threads are unresolved, and what each label stands at — the size, the age and the vote state a reviewer picks a change by. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. It also carries every path its current patch set touches, with what the patch does to each, and its commit message whole — so what a review establishes first is established without putting the change on disk: the paths are the argument typo3_hint_lookup and typo3_test_run_guide take, and the message is what typo3_commit_message_guide reads. The diff stays out, so the hunks are what a fetch is still for, and a shortlist is triaged without fetching anything. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, the thread it is in and whether that thread is open. A thread is open where the last comment in it says so, which is what the review server counts and what a tally of the flag on each comment does not. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A change read by name also says whether its current patch set carries git conflict markers, whatever messages asked for: a change cherry-picked or rebased through the web UI can land with the markers committed into a shipped file, Gerrit reports that in the review log alone, and every other field of the answer then reads as a fresh patch set nobody has looked at yet. Where it was cherry-picked from stands beside it as provenance, since most backports are cherry-picks and almost none of them conflicted. A call carries issue, change, commit, a search by query and path, or backlog, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
 
@@ -88,7 +88,7 @@ final class GerritLookup extends ReadOnlyTool
                     'type' => 'string',
                     'enum' => ['none', 'people', 'all'],
                     'default' => 'none',
-                    'description' => 'The review log of a change: every message its patch sets and its reviewers left. Ask for it to find out why a vote is gone — Gerrit writes "Outdated Votes: * Code-Review+1 (copy condition: ...)" into the message of the upload that dropped it, and the labels afterwards look exactly like a change nobody has voted on. "none" leaves it out and is the default, since it is 57.9 KB against 14.3 KB on a change with 21 patch sets. "people" drops what a service user wrote, which on that change is 20 of 46 messages and every one of them a CI pipeline report. "all" keeps them. How many were dropped is answered whichever you ask for. Narrows change and commit, and is ignored by every other way in.',
+                    'description' => 'The review log of a change: every message its patch sets and its reviewers left. Ask for it to find out why a vote is gone — Gerrit writes "Outdated Votes: * Code-Review+1 (copy condition: ...)" into the message of the upload that dropped it, and the labels afterwards look exactly like a change nobody has voted on. "none" leaves it out and is the default, since it is 57.9 KB against 14.3 KB on a change with 21 patch sets. "people" drops what a service user wrote, which on that change is 20 of 46 messages and every one of them a CI pipeline report. "all" keeps them. How many were dropped is answered whichever you ask for. Whether the current patch set carries git conflict markers is answered whichever you ask for too, since that is a fact about the change rather than part of its review. Narrows change and commit, and is ignored by every other way in.',
                 ],
                 'backlog' => [
                     'type' => 'string',
@@ -226,6 +226,30 @@ final class GerritLookup extends ReadOnlyTool
                         . 'review server\'s own last computation and not a merge run now, so false is grounds to '
                         . 'expect a rebase rather than a finding. Null where it computed none, which is not "it '
                         . 'does not merge".',
+                ],
+                'conflicts' => [
+                    'type' => ['array', 'null'],
+                    'description' => 'The files Gerrit reported git conflicts in when the current patch set was '
+                        . 'created, which means the markers are committed lines in them: the patch is broken rather '
+                        . 'than merely unreviewed, and nothing else in this answer says so. A change created with '
+                        . 'the web Cherry pick action or rebased through it can land this way, and its status, its '
+                        . 'votes, its comment count and its subject all read as a fresh patch set. Empty means the '
+                        . 'current patch set carries none — a report on an earlier one is history and is not here. '
+                        . 'Null means the review log was not read, which is a search and an enumeration.',
+                    'items' => Schema::string(),
+                ],
+                'cherryPickOf' => [
+                    'type' => ['object', 'null'],
+                    'description' => 'The change and patch set this one was cherry-picked from, null where it was '
+                        . 'pushed rather than cherry-picked. It is provenance and not a warning: most backports are '
+                        . 'cherry-picks and almost none of them conflicted, so what says a patch set is broken is '
+                        . 'conflicts beside it.',
+                    'properties' => [
+                        'change' => Schema::integer('The change number it was picked from, which reads it by being passed back as change.'),
+                        'patchSet' => Schema::integer('The patch set of that change it was picked from, which is not necessarily the one that change stands at now.'),
+                        'url' => Schema::string('Where a person reads that change.'),
+                    ],
+                    'required' => ['change', 'patchSet', 'url'],
                 ],
                 'url' => Schema::string('Where a person reads the review.'),
                 'fetch' => [
@@ -780,6 +804,7 @@ final class GerritLookup extends ReadOnlyTool
                 if ($standing !== '') {
                     $lines[] = $standing;
                 }
+                $lines = [...$lines, ...self::conflicts($entry, $byName), ...self::cherryPick($entry)];
                 $lines = [...$lines, ...self::releases($entry)];
                 foreach ($entry['labels'] ?? [] as $label) {
                     // Only where the voters were read, since the paragraph this
@@ -1242,6 +1267,72 @@ final class GerritLookup extends ReadOnlyTool
         }
 
         return $lines;
+    }
+
+    /**
+     * That this patch set carries git conflict markers, beside the line a
+     * reader decides on.
+     *
+     * The fact the default answer hid: change 95412 was cherry-picked through
+     * the web UI, landed with the markers committed into a shipped JavaScript
+     * file, and read as a fresh patch set in every field beside this one
+     * (`D-ANS-121`). So the line says which of the two it is rather than naming
+     * the paths and leaving the reading to a caller who has no other sign of it.
+     * Nothing is printed for a patch set carrying none, which is what almost
+     * every change is. Separated from `answer()` so it can be held without a
+     * review server.
+     *
+     * @param array<string, mixed> $entry
+     * @param bool $read whether the review log was asked for, which only a
+     *                   change read by name does
+     * @return list<string>
+     */
+    public static function conflicts(array $entry, bool $read): array
+    {
+        $named = $entry['conflicts'] ?? null;
+        if (!is_array($named)) {
+            return $read
+                ? ['The review log of this change could not be read, and Gerrit reports a patch set carrying git '
+                    . 'conflict markers there and nowhere else — so nothing here says whether this one does.']
+                : [];
+        }
+        if ($named === []) {
+            return [];
+        }
+
+        return [sprintf(
+            'Git conflicts in this patch set: %s. Gerrit reported them when the patch set was created, so the '
+                . 'markers are committed lines in those files and the patch is broken rather than merely '
+                . 'unreviewed.',
+            implode(', ', $named),
+        )];
+    }
+
+    /**
+     * The change this one was cherry-picked from, where it was one.
+     *
+     * Provenance rather than a warning, and said plainly for that reason: a
+     * cherry-pick is how a backport is ordinarily made, and 133 of 400 recent
+     * merged core changes are one (`D-ANS-121`). What says a patch set is broken
+     * is the line above. Separated from `answer()` so it can be held without a
+     * review server.
+     *
+     * @param array<string, mixed> $entry
+     * @return list<string>
+     */
+    public static function cherryPick(array $entry): array
+    {
+        $picked = $entry['cherryPickOf'] ?? null;
+        if (!is_array($picked)) {
+            return [];
+        }
+
+        return [sprintf(
+            'Cherry-picked from change %d patch set %d · %s',
+            $picked['change'],
+            $picked['patchSet'],
+            $picked['url'],
+        )];
     }
 
     /**

@@ -9,6 +9,7 @@ coveredBy:
   - GerritTest::aCommentCarriesItsThread
   - GerritTest::anAbandonedChangeIsAnsweredWholeByBothWaysIn
   - GerritTest::theReviewLogIsAskedForAndTheServiceUsersHalfIsSeparated
+  - GerritTest::theTextHalfListsOneThreadAtATimeAndSaysWhatEachStandsAt
 ---
 
 # D-ANS-079 — A change answer carries its votes and its comments

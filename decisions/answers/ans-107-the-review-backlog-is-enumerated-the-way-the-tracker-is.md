@@ -2,7 +2,7 @@
 id: D-ANS-107
 title: The review backlog is enumerated the way the tracker is
 date: 2026-08-25
-status: open
+status: confirmed
 coveredBy:
   - GerritTest::aBlockingVoteIsWhatALabelStandsAtWhereTheRulesDisagree
   - GerritTest::aPageOfTheBacklogSaysHowMuchOfItThatIs
@@ -147,3 +147,37 @@ The exclusion the second report's whole session rested on — `-owner:` and
 because this entry decided three person filters and every one of them selects.
 It is `reviewableBy` since the same day, and `D-ANS-109` is where the fourth
 filter and its name were settled.
+
+## Confirmed on 2026-08-27
+
+**The report this entry's last evidence bullet names proposed a different test
+for the same question, and the data refutes it.** `feedback/2026-08-25-105203`
+asks for a field naming the commit a patch set sits on, and whether that commit
+is still an ancestor of the target branch, so the answer says "this still
+applies" before anything is fetched. It had established that by hand with
+`git merge-base --is-ancestor`.
+
+The purpose is `mergeable`, decided here and shipped by `2779ff52` under two
+hours after the report was filed. The proposed test is not it. Change 83672 was
+measured on 2026-08-27: its patch set 4 sits on `f2cf6ada165`, and
+`git merge-base --is-ancestor` calls that commit an ancestor of `main` in
+`.checkouts/main`. The review server answers `mergeable: false` for the same
+change, and `standing()` prints `no longer merges`. Ancestry would have called
+it applicable.
+
+The two tests come apart on the ordinary case. A patch set nobody rebased sits
+on a commit the branch has moved past, and such a commit stays an ancestor
+whatever landed on top of it. So ancestry answers yes for every change that was
+not force-pushed, and the conflicts are inside that yes.
+
+The parent hash is therefore not added. What it carries beyond `mergeable` is
+which revision the patch was written against, which is a question about reading
+the diff rather than about whether it applies, and no report has asked it.
+
+The strength half of the same report is judged onto
+[`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md),
+where the boundary and the guard it left are. Re-run on 2026-08-27 through
+`bin/typo3-dev-companion`, change 95369 is `MERGED` at patch set 6 where the
+report saw 2, with 95418 on 14.3 and 95419 on 13.4 beside it — the backports the
+thread it acted on was about. `mergeable` is null on all three, which is what
+the review server computes for a change that landed.

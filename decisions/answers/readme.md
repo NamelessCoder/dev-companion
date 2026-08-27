@@ -18,7 +18,7 @@ one is added.
 - [`D-ANS-113`][D-ANS-113] — A suite whose mark warns the caller off names what answers its question instead · 2026-08-26
 - [`D-ANS-105`][D-ANS-105] — The unsupported answer says what would make it answerable · 2026-08-25
 - [`D-ANS-106`][D-ANS-106] — A commit in a checkout is a handle the review lookup takes · 2026-08-25
-- [`D-ANS-107`][D-ANS-107] — The review backlog is enumerated the way the tracker is · 2026-08-25
+- [`D-ANS-107`][D-ANS-107] — The review backlog is enumerated the way the tracker is · 2026-08-25 · confirmed
 - [`D-ANS-108`][D-ANS-108] — A suite the pre-merge pipeline gates is a base check of its domain · 2026-08-25
 - [`D-ANS-109`][D-ANS-109] — The backlog names what one person could still review · 2026-08-25
 - [`D-ANS-097`][D-ANS-097] — A bounded answer spends its slots on the hints that bind its caller · 2026-08-24

@@ -1241,3 +1241,69 @@ the arithmetic under it.
 The feedback is closed by this commit and nothing is queued. No statement about
 TYPO3 was established here: the re-runs read this server's answers, and the
 absence behind the proposal was read with `bin/cli hints:probe`.
+
+**A strength can reach its judging run after the lever in it has been pulled.**
+`feedback/2026-08-25-105203` credits `typo3_gerrit_lookup` and the
+`core/contribution/gerrit-workflow` document with carrying a Gerrit review end
+to end in `/home/benji/projects/typo3-cms`. `D-ANS-107` had already read it: its
+last evidence bullet is this report, and the field it asked for shipped under
+two hours after it was filed. What was left for this run is the half that entry
+did not need.
+
+The first **Wrong if** fired in its ordinary shape — the report names what it
+did instead, `git merge-base --is-ancestor` on the patch set it had fetched.
+Read against the data the proposal is refuted, and the measurement is on
+[`D-ANS-107`](../answers/ans-107-the-review-backlog-is-enumerated-the-way-the-tracker-is.md).
+
+The quotations are checked before the boundary is. The reporting checkout is
+another session's work, so both calls were re-run on 2026-08-27 through
+`bin/typo3-dev-companion` from here, and every one comes back:
+
+- Change 95369 answers the fetch ref `refs/changes/69/95369/6` with the review
+  server as its remote, `main` as its branch, and #110503 as `resolves` with its
+  subject and tracker state. Code-Review and Verified are both satisfied with
+  every voter's value beside them, and `releaseLines` names `main` as
+  development, 14.3 until 2029-06-30 and 13.4 until 2027-12-31. The backporting
+  thread it acted on comes back word for word — Garvin Hicking raising it, Elias
+  Häußler answering *I haven't considered a backport for this patch*. It is
+  resolved now, above the backports 95418 and 95419 the report recommended.
+- The `core/contribution/gerrit-workflow` document returns whole at 13,771
+  characters, with both things the report says it would not have got right
+  alone: `remote.origin.pushurl` as what a change ref is fetched from, and the
+  `Releases:` policy that a bug fix goes to `main` and one line back. So does
+  the warning against the contribution guide's cherry-pick page and the
+  `review/<change>` branch it prescribes instead.
+
+The credit for the guides list is neither checked nor read here. What the report
+says about it is a cost — that `typo3_project_describe` was the only place it
+saw the document ids at all — and two other open feedback carry that with cards
+of their own.
+
+**The boundary is what the source states against what this answer had lifted out
+of it.** Everything credited is a fact `review.typo3.org` states and this answer
+forwards, `releaseLines` excepted, which is shipped rather than fetched. The one
+thing the session went to git for is stated there too: `mergeable` is on every
+row the review server sends unasked, and `Gerrit::change_()` was dropping it
+along with five others. So the cost side of this strength is not a boundary of
+the source at all.
+
+That is the gap a reporting session cannot see. An answer missing what its
+source never had looks short, and the session says so; an answer missing what
+its source sends unasked looks complete, and what the session reports instead is
+the work it did around it. This one reported the work — four fields it rebuilt
+by hand — and proposed a test for the field it did not know was there.
+
+One keep-request rested on nobody rewriting the file and is held now. The report
+puts the comments' whole value in what they said, not in that there were three:
+its review note and its `Releases:` recommendation were both written against
+that thread. `theTextHalfListsOneThreadAtATimeAndSaysWhatEachStandsAt` held the
+headings, the counts and the thread states, and nothing asserted that a
+comment's message reaches the text at all. It now holds the question and the
+reply under the lines naming who wrote them, because a thread read without its
+reply is a question standing open. The rest was held already — the ref and its
+remote by `theAnswerCarriesTheRefThatFetchesThePatchSetItNames`, the issues by
+`aChangeCarriesTheIssuesItsCommitMessageNames`, and `releaseLines` by
+`theBranchesThatTakeAPatchStandBesideTheOneAChangeTargets` with its dates.
+
+The feedback is closed by this commit and nothing is queued. The one statement
+about TYPO3 is the ancestry measured on `D-ANS-107`, read in `.checkouts/main`.

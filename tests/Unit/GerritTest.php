@@ -1629,7 +1629,14 @@ final class GerritTest extends TestCase
      * The text half lists one thread at a time and says what each stands at,
      * which is the ranking the reporting session made for itself out of the
      * flags and the reply ids — `D-ANS-111`.
+     *
+     * What each comment says is under the line naming who wrote it, and that is
+     * the half the listing exists for: `feedback/2026-08-25-105203` rewrote its
+     * review note and its `Releases:` recommendation off a backporting thread it
+     * would not have read otherwise (`D-ANS-079`). A heading and a state alone
+     * would say a thread is there and leave the reader to fetch it.
      */
+    #[Decision('D-ANS-079')]
     #[Decision('D-ANS-111')]
     #[Test]
     public function theTextHalfListsOneThreadAtATimeAndSaysWhatEachStandsAt(): void
@@ -1642,6 +1649,17 @@ final class GerritTest extends TestCase
         self::assertStringContainsString('### Comments (7 comments in 5 threads, none unresolved)', $said);
         self::assertStringContainsString("#### Resolved · Oliver Klee\n\n- Oliver Klee · patch set 4", $said);
         self::assertStringContainsString('#### Resolved · Benjamin Franzke · /COMMIT_MSG:27', $said);
+        // What was written, under the line that says who wrote it and on which
+        // patch set. The question and the answer both, since a thread read
+        // without the reply is the question standing open.
+        self::assertStringContainsString(
+            "- Oliver Klee · patch set 4\n  Is there any way this can be covered with a functional test?",
+            $said,
+        );
+        self::assertStringContainsString(
+            "- Torben Hansen · patch set 4\n  For functional test I would say no. Acceptance test would be an option.",
+            $said,
+        );
         // The state is the thread's and stands over it once. A comment line
         // carrying one is what said seven states where the change has five.
         self::assertStringNotContainsString('· resolved', $said);

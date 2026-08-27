@@ -496,13 +496,15 @@
       "still a thing",
       "worth taking on",
       "already fixed",
-      "close the issue"
+      "close the issue",
+      "old issue",
+      "old forge issue",
+      "forge issues"
     ],
     "matchWeak": [
       "forge",
       "reproduce",
-      "unresolved",
-      "old issue"
+      "unresolved"
     ],
     "rulesQuery": "",
     "checklist": [
@@ -517,6 +519,28 @@
       "typo3_gerrit_lookup for the changes the issue answer's reviews field names, which is where an abandoned attempt says why",
       "typo3_gerrit_lookup with commit=<hash> where the checkout has already produced one, for the change it belongs to, the backports sharing its Change-Id and the branches its Releases: trailer claims — which is what an issue is closed as fixed on"
     ]
+  },
+  {
+    "id": "patch",
+    "title": "Writing the change",
+    "skillCore": "typo3-core-patch-development",
+    "match": [
+      "fix it",
+      "fix this",
+      "fix them",
+      "fix a",
+      "fix an",
+      "fix the",
+      "work it off",
+      "work them off",
+      "write the patch",
+      "write a patch",
+      "implement what"
+    ],
+    "rulesQuery": "",
+    "checklist": [],
+    "checks": [],
+    "tools": []
   },
   {
     "id": "audit",

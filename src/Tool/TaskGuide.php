@@ -109,6 +109,18 @@ final class TaskGuide extends ReadOnlyTool
         . 'the working order for this kind of work, and this brief is one call inside it.';
 
     /**
+     * The same line where the task reads something and then changes it
+     * (`D-SKL-081`).
+     *
+     * Two names without an order are two names to pick one of, and the session
+     * this was written from picked neither. The order is the work's: what
+     * establishes what is there comes before what writes the change.
+     */
+    public const SKILLS_IN_ORDER = 'Owned by: %s — in that order, because this task establishes what is there '
+        . 'before it changes it. Load both where this project has them installed: each carries the working order '
+        . 'for its half, and this brief is one call inside the first.';
+
+    /**
      * The sweep a change owes, said in the brief that classified it
      * (`D-GUI-013`).
      *
@@ -179,11 +191,30 @@ final class TaskGuide extends ReadOnlyTool
      */
     private const DIAGNOSIS = 'diagnosis';
 
+    /**
+     * The intent that recognizes the caller's own act of writing the change,
+     * and the one that ends every shape above where a brief carries it.
+     *
+     * It is the discriminator `D-SKL-039` had no word for: a review names the
+     * change it is about, and the words of that change are the words of writing
+     * one, while "and fix it" is the caller saying what they are going to do.
+     */
+    private const PATCH = 'patch';
+
     /** @var array<string, array<int, string>> */
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
             'Reproduce the bug first, ideally with a failing test that the fix turns green.',
             'Check whether the bug also affects maintained older release branches.',
+            // The obligation the core's own conventions file leaves at "user-facing
+            // changes need an entry", which a session working a bugfix answered by
+            // guessing and said so (`D-AUD-014`). Stated as the rule and the page,
+            // because the four types and the boundary against Breaking are that
+            // page's and retelling them here is a second copy.
+            'A bugfix owes a changelog entry only where it changes what an installation renders, is configured '
+                . 'by, or has documented, and then it is an Important below typo3/sysext/core/Documentation/'
+                . 'Changelog/. The whole rule is one typo3_rule_lookup call with documentId '
+                . '"core/contribution/changelog".',
         ],
         'feature' => [
             'Add a changelog feature file under typo3/sysext/core/Documentation/Changelog/ for public API additions.',
@@ -266,7 +297,7 @@ final class TaskGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Build a task checklist enriched with matching hints and relevant core checks. Not only for work that ends in a patch: deciding whether an open bug report still holds is changeType "triage", reviewing a body of code is "audit", bringing an installation up is "operations", and finding out why something is broken before anybody changes it is "diagnosis" — all four get a brief of their own rather than the steps a patch owes. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does, beside the guide the work is written up in where this server carries one. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
+        return 'Answers what one change owes, which a repository\'s own conventions file cannot: that file states its rules once for every task, and this narrows them to the kind of change, the paths and the TYPO3 majors in front of you — down to whether this fix owes a changelog entry. Where such a rule stays general it names the call that settles it, the branches a Releases: trailer takes among them. The answer is a task checklist with the hints and core checks that match. Not only for work that ends in a patch: deciding whether an open bug report still holds is changeType "triage", reviewing a body of code is "audit", bringing an installation up is "operations", and finding out why something is broken before anybody changes it is "diagnosis" — all four get a brief of their own rather than the steps a patch owes. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does, beside the guide the work is written up in where this server carries one. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
     }
 
     public static function inputSchema(): array
@@ -380,18 +411,32 @@ final class TaskGuide extends ReadOnlyTool
         $stated = !in_array($changeType, [self::AUDIT, self::TRIAGE, self::OPERATIONS, self::DIAGNOSIS, 'unknown'], true);
         $confirmed = TaskIntents::confirmed($intents);
         $confirmedIds = array_column($confirmed, 'id');
-        $triages = !$stated && in_array(self::TRIAGE, $confirmedIds, true);
+        // A task may read and then write, and "find an old Forge issue and fix
+        // it" is the shape two sessions asked for. Where the words name the
+        // caller's own change, the skeleton is the patch's and the reading half
+        // arrives as its intent's own items beside it — one brief, carrying
+        // what the change owes (`D-SKL-081`). A stated change type says the
+        // same thing by classification and already does this.
+        $writes = in_array(self::PATCH, $confirmedIds, true);
+        $reading = !$stated && !$writes;
+        $triages = $reading && in_array(self::TRIAGE, $confirmedIds, true);
         // A triage is checked before a review, because a task that reads as
         // both is the one this was written from: "review this old bug report"
         // reviews a report and not a diff, and the review arm is the answer
         // that was wrong.
-        $reviews = !$stated && !$triages && in_array(self::AUDIT, $confirmedIds, true);
-        $operates = !$stated && in_array(self::OPERATIONS_INTENT, $confirmedIds, true);
+        $reviews = $reading && !$triages && in_array(self::AUDIT, $confirmedIds, true);
+        $operates = $reading && in_array(self::OPERATIONS_INTENT, $confirmedIds, true);
         // Last of the four, so a task that reads as a boot and as a diagnosis is
         // a boot: booting is what makes the cause readable, and the diagnosis
         // intent's own items arrive in that brief anyway.
-        $diagnoses = !$stated && !$operates && in_array(self::DIAGNOSIS, $confirmedIds, true);
+        $diagnoses = $reading && !$operates && in_array(self::DIAGNOSIS, $confirmedIds, true);
         $changesNothing = $reviews || $triages || $operates || $diagnoses;
+        // Both halves recognized, which is what makes the two names an order
+        // rather than a choice between them.
+        $spansBoth = $writes && array_intersect(
+            [self::TRIAGE, self::AUDIT, self::OPERATIONS_INTENT, self::DIAGNOSIS],
+            $confirmedIds,
+        ) !== [];
         $conditional = array_values(array_filter(
             $intents,
             static fn(array $intent): bool => !in_array($intent, $confirmed, true)
@@ -508,7 +553,10 @@ final class TaskGuide extends ReadOnlyTool
         // workflow is in it for the whole answer, and the line is worth nothing
         // once the reading has started.
         if ($skills !== []) {
-            $lines[] = sprintf(self::SKILLS_OWNING, implode(', ', $skills));
+            $lines[] = sprintf(
+                $spansBoth && count($skills) > 1 ? self::SKILLS_IN_ORDER : self::SKILLS_OWNING,
+                implode(', ', $skills),
+            );
         }
         // Under the skill and above the payload for the same reason, and two
         // lines rather than one: the skill is a file in the caller's own

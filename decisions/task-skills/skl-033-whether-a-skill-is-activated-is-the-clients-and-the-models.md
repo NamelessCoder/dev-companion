@@ -336,7 +336,7 @@ because nothing put the third description in front of the choice.
 
 ### 2026-08-27 — the second Assumed is answered for one session, and it was choosing
 
-[`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+[`feedback/2026-08-26-223325`](../../feedback/archive/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
 is the counted shape once more — `/home/benji/projects/typo3-cms` on
 `claude-opus-5[1m]`, "please find 1 old forge issue and fix it", both core
 skills listed and neither opened. What separates it from every row above is that

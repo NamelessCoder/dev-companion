@@ -783,6 +783,7 @@ final class KnowledgeTest extends TestCase
             'submission' => 'Push the patch to Gerrit for review',
             'patch-checkout' => 'Check out the patch from review and see whether it still applies',
             'triage' => 'Triage an old open core bug report and say whether it still happens',
+            'patch' => 'Write the patch this task needs',
             'audit' => 'Review this extension for TYPO3 conformance',
             'diagnosis' => 'Find out what is causing the error one page answers with, and change nothing',
             'cleanup' => 'Clean up the repository and work off the findings',

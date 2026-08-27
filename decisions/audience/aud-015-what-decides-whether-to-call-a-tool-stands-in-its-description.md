@@ -38,7 +38,7 @@ tool supplies the set stands one property down in the input schema.
   out, the draft carries a RELEASE_TARGET placeholder and the checks name the
   lines taking a patch today".
 - The client defers schemas. The same session's
-  [`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+  [`feedback/2026-08-26-223325`](../../feedback/archive/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
   records loading `typo3_task_guide`'s schema through a search call, and
   [`feedback/2026-08-19-090401`](../../feedback/2026-08-19-090401-tools-arrived-as-bare-names-with-no-schemas-and.md)
   reports tools arriving as bare names with no schemas at all. The sentence that

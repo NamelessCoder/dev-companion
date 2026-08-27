@@ -3,7 +3,8 @@ id: D-AUD-014
 title: A description opens with what the caller's own route cannot do
 date: 2026-08-27
 status: open
-coveredBy: []
+coveredBy:
+  - SkillTest::theBriefOpensWithWhatTheCheckoutsOwnConventionsCannotSay
 ---
 
 # D-AUD-014 — A description opens with what the caller's own route cannot do
@@ -84,7 +85,7 @@ both routes and taken the tool. Its first **Wrong if** has since happened.
 
 ### 2026-08-27 — the same file beats a second tool, and the tool is the entry point
 
-[`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+[`feedback/2026-08-26-223325`](../../feedback/archive/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
 worked a core patch in the same checkout and never called `typo3_task_guide`,
 whose schema it had loaded in its first `ToolSearch` call. It names the reason
 in the same shape this entry was written from: the description opens "Build a
@@ -101,7 +102,24 @@ opening, which spends its first sentence on the artefact rather than on that.
 
 So `typo3_forge_lookup` is not a single case, and what the two share is a file
 read into every session in a core checkout. The rewrite is queued on
-[`T-260826-4194`](../../todo/open/T-260826-4194.md), beside the routing half
+`T-260826-4194`, beside the routing half
 [`D-SKL-081`](../task-skills/skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md).
 The **Assumed** above is unchanged and is now carried by two tools: neither
 session says how far into a description it read.
+
+### 2026-08-27 — the second opening is written, and one of the two guesses was answered nowhere
+
+`typo3_task_guide` now opens on what one change owes against a file that states
+its rules once for every task, and names the two the session guessed at: whether
+this fix owes a changelog entry, and the branches a `Releases:` trailer takes.
+
+The second was already answered here and the first was not. `.checkouts/main`'s
+`AGENTS.md` says bugfixes are backported to the maintained release branches and
+never which those are, and `typo3_commit_message_guide` names them with the rule
+for which of them a fix goes on — a call the brief has always routed to. The
+changelog obligation was in `knowledge/documents/core/contribution/changelog.md`
+and reached no bugfix brief: that document is not among `TaskIntents`' three
+rule documents, and a plain bugfix confirms no intent that would pull it. So the
+`bugfix` change type gained one item, stating the rule and naming the page it is
+read whole from. An opening that had claimed the answer without it would have
+been the lie this repository's own rule about outward surfaces names.

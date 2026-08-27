@@ -376,7 +376,7 @@ from three surfaces plus this one, where the surface worked.
 
 ### 2026-08-27 — a fifth report from the orientation answer, and a third option for the question
 
-[`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+[`feedback/2026-08-26-223325`](../../feedback/archive/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
 read the `guides` array `typo3_project_describe` returned, nineteen entries with
 `core/contribution/changelog`, `core/contribution/commit-messages`,
 `core/contribution/rules` and `core/testing/scripts` among them, and opened

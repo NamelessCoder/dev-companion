@@ -23,6 +23,7 @@ use TYPO3\DevCompanion\Server\Installer;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Tool\TaskGuide;
 use TYPO3\DevCompanion\Upkeep\Fixture;
 use TYPO3\DevCompanion\Upkeep\Scenarios;
 
@@ -2625,6 +2626,147 @@ final class SkillTest extends TestCase
         ])->data;
 
         self::assertContains('Keep the patch focused on the stated task.', $patch['checklist']);
+    }
+
+    /**
+     * The same request when it says what it is going to do with the issue.
+     *
+     * "Please find 1 old forge issue and fix it" reached neither skill: the
+     * needles that carry the tracker were weak, and the one brief on that list
+     * that did match — `D-SKL-078`'s own worked example — was answered as work
+     * that changes nothing and dropped the six items a patch owes, the commit
+     * message among them (`D-SKL-081`).
+     */
+    #[Decision('D-SKL-081')]
+    #[Test]
+    public function aBriefThatTriagesAndThenFixesCarriesBothWorkflows(): void
+    {
+        $spanning = Registry::call('typo3_task_guide', [
+            'task' => 'please find 1 old forge issue and fix it',
+        ]);
+
+        // Both, and in the order the work runs in: the front half establishes
+        // what is still true and the second is where the patch is written.
+        self::assertSame(
+            ['typo3-core-issue-triage', 'typo3-core-patch-development'],
+            $spanning->data['skills'],
+        );
+        self::assertStringContainsString(
+            'typo3-core-issue-triage, typo3-core-patch-development — in that order',
+            $spanning->text,
+        );
+
+        // The patch skeleton stays whatever else was recognized, and what the
+        // reading half knows arrives as its own items beside it.
+        foreach ([
+            'Keep the patch focused on the stated task.',
+            'Add or update the narrowest useful test coverage.',
+        ] as $owed) {
+            self::assertContains($owed, $spanning->data['checklist'], 'the brief dropped what the change owes');
+        }
+        self::assertStringContainsString(
+            'Write the commit message with typo3_commit_message_guide',
+            implode("\n", $spanning->data['checklist']),
+        );
+        self::assertStringContainsString(
+            'A report is about the version it was filed against',
+            implode("\n", $spanning->data['checklist']),
+        );
+        // And the line a brief that changes nothing opens with is gone, or the
+        // answer tells the caller the steps above are not for this task.
+        self::assertStringNotContainsString('This is a brief for work that changes nothing', $spanning->text);
+
+        // `D-SKL-078`'s own worked example, which matched already and lost the
+        // patch half to the fork.
+        $worked = Registry::call('typo3_task_guide', [
+            'task' => 'fetch another old issue from Forge, create a branch, work it off',
+        ])->data;
+
+        self::assertSame(['typo3-core-issue-triage', 'typo3-core-patch-development'], $worked['skills']);
+        self::assertContains('Keep the patch focused on the stated task.', $worked['checklist']);
+
+        // The second session's brief, which ends before any change: the backlog
+        // search alone still routes the triage workflow and nothing else.
+        $backlog = Registry::call('typo3_task_guide', [
+            'task' => 'search forge issues in the asset renderer area',
+        ])->data;
+
+        self::assertSame(['typo3-core-issue-triage'], $backlog['skills']);
+        self::assertNotContains('Keep the patch focused on the stated task.', $backlog['checklist']);
+    }
+
+    /**
+     * The closing sentence of the triage description, which a session working a
+     * task that ended in a patch read as an exclusion of the whole of it.
+     *
+     * "Writing or reviewing a patch is other work" stated in the description the
+     * boundary `D-SKL-022` made an instruction in the body, and a description is
+     * read before the body is loaded, so it arrived as a refusal
+     * (`D-SKL-076`, entry of 2026-08-27).
+     */
+    #[Decision('D-SKL-076')]
+    #[Test]
+    public function aTaskEndingInAPatchIsNotSentAwayByTheTriageDescription(): void
+    {
+        $triage = self::description('typo3-core-issue-triage');
+
+        self::assertStringNotContainsString('is other work', $triage);
+        self::assertStringContainsString('A task that ends in a patch starts here', $triage);
+        // Named, or the sentence takes the task off this skill without saying
+        // where it goes — which is what the refusal did.
+        self::assertStringContainsString('typo3-core-patch-development', $triage);
+
+        // The body owes the same crossing at the moment it happens, or the
+        // description promises a handover the file does not perform.
+        $body = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-issue-triage/SKILL.md',
+        ));
+        self::assertStringContainsString(
+            'invoke `typo3-core-patch-development` before making the change',
+            $body,
+        );
+    }
+
+    /**
+     * What `typo3_task_guide`'s description opens with, against the file the
+     * caller already has.
+     *
+     * A session in a core checkout loaded this tool's schema in its first call
+     * and never made one, and names the opening as the reason: it promised a
+     * checklist, and the core's own `AGENTS.md` was in context with the
+     * test-first rule, the `runTests.sh` invocations and the commit conventions
+     * already. What that file leaves general is what the opening now names —
+     * `D-AUD-014`.
+     */
+    #[Decision('D-AUD-014')]
+    #[Test]
+    public function theBriefOpensWithWhatTheCheckoutsOwnConventionsCannotSay(): void
+    {
+        $description = TaskGuide::description();
+        $opening = mb_substr($description, 0, (int) mb_strpos($description, '.') + 1);
+
+        self::assertStringNotContainsString('Build a task checklist', $opening);
+        self::assertStringContainsString('conventions file cannot', $opening);
+
+        // The two the session had to guess, and each answered rather than
+        // claimed: the changelog obligation in the brief a bugfix gets, the
+        // release branches in the call that brief routes to.
+        $bugfix = Registry::call('typo3_task_guide', [
+            'task' => 'fix a null pointer in the data handler',
+            'paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php'],
+            'changeType' => 'bugfix',
+        ])->data;
+
+        $checklist = implode("\n", $bugfix['checklist']);
+        self::assertStringContainsString('A bugfix owes a changelog entry only where', $checklist);
+        self::assertStringContainsString('core/contribution/changelog', $checklist);
+        self::assertContains('typo3_commit_message_guide', array_column($bugfix['nextTools'], 'tool'));
+
+        $trailer = Registry::call('typo3_commit_message_guide', [
+            'workflow' => 'core',
+            'summary' => 'Fix a null pointer in the data handler',
+        ])->text;
+        self::assertStringContainsString('The lines that can take a patch at all are', $trailer);
     }
 
     /**

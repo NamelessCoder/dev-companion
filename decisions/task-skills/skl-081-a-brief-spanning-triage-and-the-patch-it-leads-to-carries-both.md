@@ -3,7 +3,8 @@ id: D-SKL-081
 title: A brief spanning triage and the patch it leads to carries both
 date: 2026-08-27
 status: open
-coveredBy: []
+coveredBy:
+  - SkillTest::aBriefThatTriagesAndThenFixesCarriesBothWorkflows
 ---
 
 # D-SKL-081 — A brief spanning triage and the patch it leads to carries both
@@ -19,7 +20,7 @@ items, the commit message among them.
 ## Evidence
 
 - **The session.**
-  [`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md),
+  [`feedback/2026-08-26-223325`](../../feedback/archive/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md),
   `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`, sent to "please find
   1 old forge issue and fix it" and then narrowed to Extbase.
   `typo3-core-issue-triage` and `typo3-core-patch-development` were both listed
@@ -104,3 +105,46 @@ items, the commit message among them.
   issue, sent to establish what it still claims anyway.
 - A brief of this shape opens nothing once both names arrive. Then no answer is
   what the choice is made on, and it is `D-SKL-033`'s count.
+- A filing brief reaches the triage skill through one of the three needles added
+  below. `write a new forge issue` is the shape that comes closest and does not,
+  measured on the corpus in the section under this one.
+- A review is answered with the patch skeleton because the request quoted the
+  change it is about. That would say `patch`'s needles read the words of
+  somebody else's work, which is the failure `D-SKL-039` names from the other
+  side.
+
+## Since then
+
+### 2026-08-27 — made, and what it cost the neighbouring briefs
+
+The three levers were built and measured over twenty-five briefs, before and
+after, in this worktree.
+
+**The route.** `triage` takes `old issue`, `old forge issue` and `forge issues`
+as strong needles, and `old issue` leaves `matchWeak`. A new `patch` intent
+recognizes the caller's own act of writing the change — `fix it`, `fix the`,
+`work it off`, `write the patch`, `implement what` and the rest — and names
+`typo3-core-patch-development` inside the core. `TaskGuide` reads that intent as
+what ends every shape that changes nothing, so the skeleton is the patch's, and
+`TaskIntents::owned()` returns what reads before what writes.
+
+What moved: "please find 1 old forge issue and fix it" and "find an old forge
+issue and fix it" go from `skills: []` and no recognized intent to both skills
+and sixteen items; "fetch another old issue from Forge, create a branch, work it
+off" goes from seven items to twelve and gains the second name; "search forge
+issues in the asset renderer area" — the second session's own brief — goes from
+nothing to the triage skill and eleven items; "implement what Forge 98765 asks
+for" gains `typo3-core-patch-development`.
+
+What did not move: the three filing briefs of `D-SKL-078`'s measurement keep
+`reporting` alone, because the plural and the adjective separate taking an issue
+from writing one; `D-SKL-039`'s review briefs answer exactly what they did,
+`fixes` being no match for a needle that ends in a space. "fix an old issue in
+the FormEngine" is the brief this entry declined `old issue` over, and it is a
+patch brief with twelve items: the needle and the fork together are what that
+bullet asked for.
+
+`typo3_task_guide` still answers no skill for "fix Forge 15984 in the
+FormEngine". No intent has ever named the patch workflow for a plain fix that
+carries none of the seven change-type words, and nothing here was widened to
+reach it.

@@ -230,8 +230,8 @@ at all in the state the machine is in.
         :label: Guide
         :action: Open reference
 
-        Build a task checklist enriched with matching hints and relevant core
-        checks.
+        Answers what one change owes, which a repository's own conventions file
+        cannot.
 
     .. card:: :doc:`typo3_ter_lookup <typo3_ter_lookup>`
         :label: Lookup

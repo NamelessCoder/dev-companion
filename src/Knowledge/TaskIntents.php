@@ -213,25 +213,37 @@ final class TaskIntents
     }
 
     /**
-     * What the confirmed intents name under one key, once each.
+     * What the confirmed intents name under one key, once each, reading before
+     * writing.
+     *
+     * A brief that finds an issue on the tracker and then fixes it names two
+     * workflows, and the order is what tells the caller which one to be in
+     * first: the half that establishes what is there runs before the half that
+     * changes it (`D-SKL-081`). Within each half the catalog order stands.
      *
      * @param array<int, array<string, mixed>> $intents
      * @return array<int, string>
      */
     private static function owned(array $intents, string $key, bool $changesNothing): array
     {
-        $owned = [];
+        $reading = [];
+        $writing = [];
         foreach (self::confirmed($intents) as $intent) {
             if ($changesNothing && $intent['changesNothing'] !== true) {
                 continue;
             }
             $named = (string) $intent[$key];
-            if ($named !== '') {
-                $owned[$named] = true;
+            if ($named === '') {
+                continue;
             }
+            if ($intent['changesNothing'] === true) {
+                $reading[$named] = true;
+                continue;
+            }
+            $writing[$named] = true;
         }
 
-        return array_keys($owned);
+        return array_keys($reading + $writing);
     }
 
     /**

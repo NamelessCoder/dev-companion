@@ -3,16 +3,21 @@
 ``typo3_task_guide``
 ====================
 
-Build a task checklist enriched with matching hints and relevant core checks.
-Not only for work that ends in a patch: deciding whether an open bug report
-still holds is changeType "triage", reviewing a body of code is "audit",
-bringing an installation up is "operations", and finding out why something is
-broken before anybody changes it is "diagnosis" — all four get a brief of their
-own rather than the steps a patch owes. Built from bundled conventions only: it
-does not read your checkout, so it also names what you have to establish there
-yourself, routes to the lookups that fit the task, and names the task skill that
-owns the work where a published one does, beside the guide the work is written
-up in where this server carries one. Work that reads as a project or third-party
+Answers what one change owes, which a repository's own conventions file cannot:
+that file states its rules once for every task, and this narrows them to the
+kind of change, the paths and the TYPO3 majors in front of you — down to whether
+this fix owes a changelog entry. Where such a rule stays general it names the
+call that settles it, the branches a Releases: trailer takes among them. The
+answer is a task checklist with the hints and core checks that match. Not only
+for work that ends in a patch: deciding whether an open bug report still holds
+is changeType "triage", reviewing a body of code is "audit", bringing an
+installation up is "operations", and finding out why something is broken before
+anybody changes it is "diagnosis" — all four get a brief of their own rather
+than the steps a patch owes. Built from bundled conventions only: it does not
+read your checkout, so it also names what you have to establish there yourself,
+routes to the lookups that fit the task, and names the task skill that owns the
+work where a published one does, beside the guide the work is written up in
+where this server carries one. Work that reads as a project or third-party
 extension is answered with what transfers only — the core checks, checklist
 items and steps that name something only the core repository has are left out
 rather than handed over. Answers from: knowledge.
@@ -1142,7 +1147,9 @@ Text:
     Paths:
     - packages/acme_events/Classes/Domain/Repository/EventRepository.php (extension)
     - typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
+    Recognized as: Writing the change
     Possibly also: Registering an event listener, only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this. Its checklist items are marked as conditional below and its checks are listed separately.
+    Owned by: typo3-core-patch-development. Load it where this project has it installed — the skill carries the working order for this kind of work, and this brief is one call inside it.
 
     Hints:
     The hints below are typo3_hint_lookup's, matched for these paths and quoted whole. A finding that cites one of these rules is citing that lookup rather than this guide.
@@ -1207,6 +1214,7 @@ Text:
     - Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.
     - Reproduce the bug first, ideally with a failing test that the fix turns green.
     - Check whether the bug also affects maintained older release branches.
+    - A bugfix owes a changelog entry only where it changes what an installation renders, is configured by, or has documented, and then it is an Important below typo3/sysext/core/Documentation/Changelog/. The whole rule is one typo3_rule_lookup call with documentId "core/contribution/changelog".
     - Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: find the event that is really dispatched before writing a listener for it. An event class that reads plausibly and is dispatched nowhere is a listener that never runs and throws nothing, which is the failure this task shape has instead of an error.
     - Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: how a listener is registered is bound to the TYPO3 line and is not stated here: typo3_hint_lookup with id=events-extension-points carries both mechanisms with the versions each holds on, and a package serving two majors gets both from it.
     - Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: say what happens when another listener has already run. Ordering is declared or it is not there, and a listener that quietly assumes it goes first is correct until somebody installs a second extension.
@@ -1267,13 +1275,21 @@ Data:
         "scope": "core",
         "intents": [
             {
+                "id": "patch",
+                "title": "Writing the change",
+                "confidence": "strong",
+                "condition": ""
+            },
+            {
                 "id": "event-listener",
                 "title": "Registering an event listener",
                 "confidence": "weak",
                 "condition": "only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this"
             }
         ],
-        "skills": [],
+        "skills": [
+            "typo3-core-patch-development"
+        ],
         "guides": [],
         "hints": [
             {
@@ -1457,6 +1473,7 @@ Data:
             "Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.",
             "Reproduce the bug first, ideally with a failing test that the fix turns green.",
             "Check whether the bug also affects maintained older release branches.",
+            "A bugfix owes a changelog entry only where it changes what an installation renders, is configured by, or has documented, and then it is an Important below typo3/sysext/core/Documentation/Changelog/. The whole rule is one typo3_rule_lookup call with documentId \"core/contribution/changelog\".",
             "Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: find the event that is really dispatched before writing a listener for it. An event class that reads plausibly and is dispatched nowhere is a listener that never runs and throws nothing, which is the failure this task shape has instead of an error.",
             "Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: how a listener is registered is bound to the TYPO3 line and is not stated here: typo3_hint_lookup with id=events-extension-points carries both mechanisms with the versions each holds on, and a package serving two majors gets both from it.",
             "Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: say what happens when another listener has already run. Ordering is declared or it is not there, and a listener that quietly assumes it goes first is correct until somebody installs a second extension.",

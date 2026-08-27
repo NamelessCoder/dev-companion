@@ -5,6 +5,7 @@ date: 2026-08-25
 status: open
 coveredBy:
   - SkillTest::aBacklogSearchMatchesTheSkillThatOwnsTheCandidates
+  - SkillTest::aTaskEndingInAPatchIsNotSentAwayByTheTriageDescription
 ---
 
 # D-SKL-076 — A description names both jobs a skill's body owns
@@ -114,7 +115,7 @@ answer.
 
 ### 2026-08-27 — the first Wrong if fired, and the session names another clause
 
-[`feedback/2026-08-26-223325`](../../feedback/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
+[`feedback/2026-08-26-223325`](../../feedback/archive/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
 is the same checkout on `claude-opus-5[1m]` the day after `fa037c26` shipped the
 changed description, sent to "please find 1 old forge issue and fix it". It read
 the description, weighed it, and opened nothing. So the first **Wrong if** above
@@ -134,8 +135,26 @@ the successor skill, met by a brief that spans both — the same crossing
 made an instruction in the body, standing in the description as a refusal.
 
 So the wording is still the rung, and the sentence to weigh is a different one.
-It is queued on [`T-260826-4194`](../../todo/open/T-260826-4194.md) beside the
-route that would not have named the skill either, which is
+It is queued on `T-260826-4194` beside the route that would not have named the
+skill either, which is
 [`D-SKL-081`](skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md).
 The entry stays `open`, with the second **Wrong if** still unmet and the first
 answered.
+
+### 2026-08-27 — the sentence is a handover, and the description names where it goes
+
+The closing sentence now reads "A task that ends in a patch starts here; the
+patch is typo3-core-patch-development's", which says the same boundary as an
+offer rather than as a refusal: the front half is this skill's and the successor
+is named. It is what
+[`D-SKL-022`](skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md)
+already made an instruction in the body, brought into the one part a client
+reads before it chooses.
+
+What it cost is the review boundary. "Writing or reviewing a patch is other
+work" carried both, and the cap
+`SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` allows 360 characters
+where naming both successors takes 416 — so the review stays where it already
+stood, in the closing paragraph of the body. Nothing has reported a task about
+somebody else's patch reaching this skill, and a session that does is what would
+say the wrong half was dropped.

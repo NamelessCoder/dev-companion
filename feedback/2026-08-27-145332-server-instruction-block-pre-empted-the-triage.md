@@ -9,6 +9,11 @@ directory: /home/benji/projects/typo3-cms
 
 # Server instruction block pre-empted the triage and patch skills; neither activated
 
+Trimmed on 2026-08-27. The routing half is answered: `in forge` and `on forge`
+are strong tracker needles now, so this session's own sentence names
+`typo3-core-issue-triage` and `typo3-core-patch-development` in order — the
+reading under 2026-08-27 in `D-SKL-081`. What is left is below.
+
 ## Observation
 
 Task: "please search for 1 workspace bug in forge and fix it" — pick a workspaces bug off forge.typo3.org and patch the core checkout. I can see the whole session; there is no summary of earlier turns in my window.

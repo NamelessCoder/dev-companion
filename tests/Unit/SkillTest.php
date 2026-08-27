@@ -2692,6 +2692,16 @@ final class SkillTest extends TestCase
             ['typo3-core-issue-triage', 'typo3-core-patch-development'],
             $spanning->data['skills'],
         );
+
+        // The preposition is the caller's and the needle list carries four of
+        // them now. `feedback/2026-08-27-145332` wrote "in forge" and reached
+        // the patch skill alone, having triaged seven issues by hand.
+        self::assertSame(
+            ['typo3-core-issue-triage', 'typo3-core-patch-development'],
+            Registry::call('typo3_task_guide', [
+                'task' => 'please search for 1 workspace bug in forge and fix it',
+            ])->data['skills'],
+        );
         self::assertStringContainsString(
             'typo3-core-issue-triage, typo3-core-patch-development — in that order',
             $spanning->text,

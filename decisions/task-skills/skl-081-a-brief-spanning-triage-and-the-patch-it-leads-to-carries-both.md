@@ -148,3 +148,25 @@ bullet asked for.
 FormEngine". No intent has ever named the patch workflow for a plain fix that
 carries none of the seven change-type words, and nothing here was widened to
 reach it.
+
+### 2026-08-27 — a third session, a fourth preposition, and what the needles cannot reach
+
+**"in forge" and "on forge" join the tracker needles, and the shape that
+survives them is a task worded as the defect rather than as the work.**
+`feedback/2026-08-27-145332` asked *please search for 1 workspace bug in forge
+and fix it* and got the patch skill alone: `forge` on its own is `matchWeak`,
+and the strong list carried `from forge` and `off forge` and not the two
+prepositions a third session used. It triaged seven issues by hand and reports
+that it never considered either skill.
+
+That is the second session in one day whose only obstacle was which preposition
+it wrote, so the list is the finding rather than the fix. What it cannot reach
+is measured beside it: with `changeType="bugfix"` and a core path, *add the
+missing language parameter to getMovedRecordsFromPages* and *workspaces service
+does not filter moved records by language* both answer `skills: []`, while *fix
+a bug in WorkspaceService* names the patch skill. A brief knows it is core work
+that changes something and still names no workflow, because only the sentence is
+read and the declared `changeType` is not.
+
+`D-SKL-082` decides that half. This entry keeps the route it built; what the
+route cannot be reached by is the other entry's.

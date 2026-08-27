@@ -816,6 +816,12 @@ final class CommitMessageTest extends TestCase
      * neither an error nor nothing: a bug fix and a task go to the development
      * line and the one back from it, and an older one is earned by the severity
      * of the defect rather than by the defect being present there.
+     *
+     * The change type and the lines it does go to are asserted because that is
+     * the half a session acts on. Warning that 13.4 claims a severity says what
+     * to drop; "a BUGFIX is released on main, 14.3" says what to write instead,
+     * and a trim keeping the severity sentence alone leaves a caller told their
+     * trailer is wrong and not what the right one is.
      */
     #[Decision('D-ANS-073')]
     #[Test]
@@ -838,6 +844,8 @@ final class CommitMessageTest extends TestCase
         self::assertSame('warning', $checks[0]['level']);
         self::assertStringContainsString($older, $checks[0]['message']);
         self::assertStringContainsString('priority bug fix', $checks[0]['message']);
+        self::assertStringContainsString('BUGFIX', $checks[0]['message']);
+        self::assertStringContainsString(implode(', ', ReleaseLines::ordinary()), $checks[0]['message']);
 
         // A feature is the release managers' call and never this warning.
         $feature = CommitMessage::create([

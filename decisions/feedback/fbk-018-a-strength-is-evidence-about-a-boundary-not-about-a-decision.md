@@ -1307,3 +1307,96 @@ remote by `theAnswerCarriesTheRefThatFetchesThePatchSetItNames`, the issues by
 
 The feedback is closed by this commit and nothing is queued. The one statement
 about TYPO3 is the ancestry measured on `D-ANS-107`, read in `.checkouts/main`.
+
+## Confirmed on 2026-08-27
+
+**A rule reaches a session at the gate it runs through, not at the place it is
+written.** `feedback/2026-08-25-114605` credits two corrections that arrived in
+one call, and what it praises is a checkout that could not have supplied either.
+
+The quotations are checked before the boundary is. The reporting checkout is
+another session's work, so the call was re-run on 2026-08-27 through
+`bin/typo3-dev-companion` from here, with the workflow, the releases and the
+issue the report names:
+
+- `summary-length-preferred` comes back word for word — 56 characters, a
+  47-character summary, 9 for the keyword prefix, and 43 left. It now carries
+  the shortening half after it, which `D-GUI-021` built for this session's own
+  sibling, so the answer says more than it did rather than less.
+- `older-release-line` comes back as
+  `13.4 is maintained, and a BUGFIX is released on main, 14.3`, with the
+  severity sentence the report acted on.
+
+Both quotations from the core checkout hold too, and both were read in
+`.checkouts/main`. `checkForLineLength()` is `grep -q -E '^[^#].{72}'`, verbatim
+as the report has it, and the `AGENTS.md` sentence is
+`**No line of the message may reach 72 characters** — the hook rejects the commit, footer trailers included`.
+No file in that checkout carries the 52 outside the changelog.
+
+**The praised absence is real, and the axis it is closed over is the checkout
+rather than the process.** The report enumerates "the repository's own two
+sources of truth" and both are files on the machine. There is a third, and the
+first names it: the hook prints a `docs.typo3.org` permalink when it refuses a
+commit, and the contribution guide's commit message appendix is what
+`knowledge/documents/core/contribution/commit-messages.md` cites as its
+`Source:`. So the rule was one hop away and the hop leaves the checkout, which
+is the distinction the session was in no position to draw.
+
+The boundary is **what a checkout gates mechanically against what the process
+requires**. Every gate in that hook is a regex over the message's own text: is
+there a keyword, is there a `Resolves:` line, does the `Releases:` line have the
+shape, is any line too long. None reaches a fact outside the message.
+`checkForReleases()` takes any `main|[0-9]+\.[0-9]`, so it would have passed a
+trailer naming a branch that has not existed for years, and the length gate
+measures 72 because 72 is what a regex can count. Both things this server
+supplied are on the other side: what 52 is preferred for, and which lines a
+`BUGFIX` is released on today.
+
+The cost side is the same session, 90 seconds later, and it is the mirror.
+[`feedback/archive/2026-08-25-114735`](../../feedback/archive/2026-08-25-114735-the-mandated-opening-calls-project-describe-and.md)
+reports that this server's own initialize instruction — start every task with
+`typo3_project_describe`, then `typo3_task_guide` — was in context from the
+first token, is quoted back word for word, and produced neither call in five
+turns. A rule this server states and cannot enforce lost to the harness prompt,
+in the session where a rule the checkout could not enforce was the answer's
+whole value. One session filed both directions.
+
+**The first Wrong if fired, and both levers had been pulled before this run
+reached them.** The report names what it did instead — it read the hook's regex,
+measured every line at 68 or less, and called the message ready.
+[`D-GUI-020`](../guides/gui-020-the-commit-guide-states-the-longest-line-the-hook-accepts.md)
+took that half on 2026-08-26 with this feedback in its evidence, and the
+re-run's `line-length-boundary` states the boundary on a clean draft.
+[`D-ANS-117`](../answers/ans-117-the-commit-draft-names-the-workflow-that-owns-the-commit.md)
+took the report's own suggestion — that the value would rise if the tool were
+easier to reach at draft time — and shipped it hours before this judgement: the
+re-run carries `typo3_task_guide` in the text and in `nextTools`. That is the
+shape the 2026-08-25 section named, a strength arriving after its lever, and
+here it happened twice to one file.
+
+One thing the report does not claim was found beside it, and it is not queued.
+The session corroborated `older-release-line` by counting the `Releases:`
+trailers of 40 `[BUGFIX]` commits, which
+`knowledge/documents/core/contribution/commit-messages.md` refuses in as many
+words: counting trailers on recent commits samples what other changes needed
+rather than what this one does. It is the second session in the corpus to reach
+for the log on that question — `D-ANS-058`'s evidence records the first, which
+counted 40 commits too and used them to establish rather than to confirm. That
+makes the log the thing a checkout offers where the answer is not in it, which
+is this boundary again. It stays evidence: the session accepted the check on its
+merits first and the sample changed nothing, so it is the corroboration of a
+right answer that `2026-07-31-194823` established is outside the ladder.
+
+One half of the keep-request rested on nobody rewriting the file and is held
+now. `aMaintainedLineFurtherBackSaysWhatItClaims` held the level, the older line
+and `priority bug fix` — the half that says what to drop. What the session acted
+on is the half that says what to write instead, and the change type and the
+ordinary lines were in no assertion, so a trim keeping the severity sentence
+alone would have left a caller told their trailer was wrong and not what the
+right one is. The other half was held twice over already:
+`theLengthCheckSaysWhatMadeTheSubjectLong` for the arithmetic, and
+`theLengthCheckNamesWhatToCutAndWhoCutsIt` on this session's own subject.
+
+The feedback is closed by this commit and nothing is queued. The statements
+about TYPO3 were read in `.checkouts/main`; the rest of the re-run read this
+server's answers.

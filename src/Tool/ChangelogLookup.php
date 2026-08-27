@@ -87,8 +87,8 @@ final class ChangelogLookup extends ReadOnlyTool
                 'file' => Schema::string('Where to read the description and the migration: an EXT: reference where the installation ships the entry, and a docs.typo3.org URL where it does not.'),
                 'publishedIn' => Schema::string('Which side the entry came from. "installation" is the core package on disk, which is the version that installation runs. "manual" is docs.typo3.org, which is every version above the installed major — what an upgrade reads, and a moving target for a major that is not released yet.'),
             ], ['type', 'version', 'issue', 'title', 'removal', 'tags', 'file', 'publishedIn'])),
-            'termCounts' => self::termCounts('What each word of the query reaches on its own, inside the version and the type that were asked for. A word at 0 is the one that emptied the answer — it is misspelled, or nothing here is named after it. Returned on a miss that carried words. These are counts and not a query: termSubsets is what can be asked outright.'),
-            'termCountsWithoutTheNarrowing' => self::termCounts('The same words counted over the whole changelog rather than inside the version and the type. Returned only where a word reaches there and nothing inside the narrowing, which makes the filter what emptied this answer rather than the words: ask again without it.'),
+            'termCounts' => Schema::termCounts('What each word of the query reaches on its own, inside the version and the type that were asked for. A word at 0 is the one that emptied the answer — it is misspelled, or nothing here is named after it. Returned on a miss that carried words. These are counts and not a query: termSubsets is what can be asked outright.'),
+            'termCountsWithoutTheNarrowing' => Schema::termCounts('The same words counted over the whole changelog rather than inside the version and the type. Returned only where a word reaches there and nothing inside the narrowing, which makes the filter what emptied this answer rather than the words: ask again without it.'),
             'termSubsets' => Schema::listOf(Schema::object([
                 'terms' => Schema::listOf(Schema::string(), 'Words of the query, as a query to ask again with.'),
                 'matchCount' => Schema::integer('Entries carrying every word of this subset, inside the same version and type.'),
@@ -341,7 +341,7 @@ final class ChangelogLookup extends ReadOnlyTool
                     implode(' and ', $narrowing),
                     count($narrowing) === 1 ? 'that filter is' : 'those filters are',
                     count($narrowing) === 1 ? 'it' : 'them',
-                    self::reaches($outside),
+                    Miss::reaching($outside, 'entry', 'entries'),
                     count($narrowing) === 1 ? 'it' : 'them',
                 );
             }
@@ -359,10 +359,8 @@ final class ChangelogLookup extends ReadOnlyTool
             $subsets = $tag === '' ? LabelSearch::largestReachingSubsets($narrowed, $terms) : [];
             if (count($terms) > 1 && $reached !== []) {
                 $lines[] = ($narrowing === [] ? 'On its own, ' : sprintf('Inside %s, on its own, ', implode(' and ', $narrowing)))
-                    . implode(', ', array_map(
-                        static fn(array $term): string => sprintf('"%s" reaches %d entr(ies)', $term['term'], $term['matchCount']),
-                        $reached,
-                    )) . ($subsets === [] && $outside === [] ? ' — ask again with the one that narrows best.' : '.');
+                    . Miss::reaching($reached, 'entry', 'entries')
+                    . ($subsets === [] && $outside === [] ? ' — ask again with the one that narrows best.' : '.');
             }
             if ($subsets !== []) {
                 $lines[] = Miss::largestReaching(
@@ -630,24 +628,6 @@ final class ChangelogLookup extends ReadOnlyTool
     }
 
     /**
-     * What each word of the query reaches on its own, as a field.
-     *
-     * The same shape twice, and which of the two fields carries it is what says
-     * where it was counted: a number taken inside a version reads as a fact
-     * about the changelog otherwise, which is the miss `D-ANS-016` was
-     * corrected for.
-     *
-     * @return array<string, mixed>
-     */
-    private static function termCounts(string $description): array
-    {
-        return Schema::listOf(Schema::object([
-            'term' => Schema::string('The word, lowercased as it was searched for.'),
-            'matchCount' => Schema::integer(),
-        ], ['term', 'matchCount']), $description);
-    }
-
-    /**
      * The axes the call was narrowed on, as a miss names them back.
      *
      * The tag is not one of them: it is read inside the file rather than off
@@ -667,20 +647,5 @@ final class ChangelogLookup extends ReadOnlyTool
         }
 
         return $narrowing;
-    }
-
-    /**
-     * What each word reaches on its own, as a sentence.
-     *
-     * @param array<int, array{term: string, matchCount: int}> $counts
-     */
-    private static function reaches(array $counts): string
-    {
-        return implode(', ', array_map(static fn(array $term): string => sprintf(
-            '"%s" reaches %d entr%s',
-            $term['term'],
-            $term['matchCount'],
-            $term['matchCount'] === 1 ? 'y' : 'ies',
-        ), $counts));
     }
 }

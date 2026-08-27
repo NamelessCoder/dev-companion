@@ -19,6 +19,23 @@ final class Miss
     private const SHOWN = 4;
 
     /**
+     * What each word reaches on its own, as a clause.
+     *
+     * @param array<int, array{term: string, matchCount: int}> $counts
+     * @param string $singular What one item of this corpus is called.
+     * @param string $plural
+     */
+    public static function reaching(array $counts, string $singular, string $plural): string
+    {
+        return implode(', ', array_map(static fn(array $term): string => sprintf(
+            '"%s" reaches %d %s',
+            $term['term'],
+            $term['matchCount'],
+            $term['matchCount'] === 1 ? $singular : $plural,
+        ), $counts));
+    }
+
+    /**
      * The largest part of the query something still carries, as the next call.
      *
      * @param array<int, array{terms: array<int, string>, matchCount: int}> $subsets Narrowest first.

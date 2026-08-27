@@ -111,7 +111,7 @@ final class ChangelogTest extends TestCase
         $result = Registry::call('typo3_changelog_lookup', ['query' => 'getTemporaryImageWithText quantumflux']);
 
         self::assertSame(0, $result->data['matchCount']);
-        self::assertStringContainsString('"gettemporaryimagewithtext" reaches 1 entr(ies)', $result->text);
+        self::assertStringContainsString('"gettemporaryimagewithtext" reaches 1 entry', $result->text);
         self::assertStringNotContainsString('"quantumflux" reaches', $result->text);
     }
 

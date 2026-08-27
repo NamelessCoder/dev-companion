@@ -477,8 +477,8 @@ final class PackageSourcesTest extends TestCase
 
         $result = Registry::call('typo3_changelog_lookup', ['query' => 'forms yaml']);
 
-        self::assertStringContainsString('On its own, "forms" reaches 1 entr(ies)', $result->text);
-        self::assertStringContainsString('entr(ies) — ask again with the one that narrows best.', $result->text);
+        self::assertStringContainsString('On its own, "forms" reaches 1 entry', $result->text);
+        self::assertStringContainsString('entry — ask again with the one that narrows best.', $result->text);
         self::assertStringNotContainsString('No entry carries more than', $result->text);
     }
 
@@ -536,7 +536,7 @@ final class PackageSourcesTest extends TestCase
         );
         // The count that stays says where it was taken, and the call to action
         // is dropping the version rather than asking again inside it.
-        self::assertStringContainsString('Inside version "15", on its own, "preview" reaches 1 entr(ies).', $narrowed->text);
+        self::assertStringContainsString('Inside version "15", on its own, "preview" reaches 1 entry.', $narrowed->text);
         self::assertStringNotContainsString('ask again with the one that narrows best', $narrowed->text);
         self::assertLessThan(
             strpos($narrowed->text, 'Inside version "15"'),
@@ -548,7 +548,7 @@ final class PackageSourcesTest extends TestCase
         // the reason.
         $unnarrowed = Registry::call('typo3_changelog_lookup', $query);
         self::assertStringNotContainsString('Narrowed to', $unnarrowed->text);
-        self::assertStringContainsString('On its own, "gifbuilder" reaches 1 entr(ies)', $unnarrowed->text);
+        self::assertStringContainsString('On its own, "gifbuilder" reaches 1 entry', $unnarrowed->text);
     }
 
     /**
@@ -571,7 +571,7 @@ final class PackageSourcesTest extends TestCase
 
         self::assertStringNotContainsString('Narrowed to', $result->text);
         self::assertStringContainsString(
-            'Inside version "14", on its own, "forms" reaches 1 entr(ies), "yaml" reaches 1 entr(ies) '
+            'Inside version "14", on its own, "forms" reaches 1 entry, "yaml" reaches 1 entry '
             . '— ask again with the one that narrows best.',
             $result->text,
         );

@@ -347,6 +347,24 @@ final class Schema
     }
 
     /**
+     * What each word of a query reaches on its own, as a miss reports it.
+     *
+     * The same shape wherever it is answered, and which field carries it is
+     * what says where it was counted: a number taken inside a filter reads as a
+     * fact about the corpus otherwise, which is the miss `D-ANS-016` was
+     * corrected for.
+     *
+     * @return array<string, mixed>
+     */
+    public static function termCounts(string $description): array
+    {
+        return self::listOf(self::object([
+            'term' => self::string('The word, lowercased as it was searched for.'),
+            'matchCount' => self::integer(),
+        ], ['term', 'matchCount']), $description);
+    }
+
+    /**
      * The majors a catalog entry was verified on — the same since/until the
      * hints carry, so a client reads one model rather than two.
      *

@@ -22,10 +22,10 @@ Saying which of the three moved is what separates the re-establishing from a
 repetition. A widening that moves none of them is an answer too, and it is the
 one that lets the work continue.
 
-This is
-[R-SKL-027](skl-027-a-core-patch-covers-every-point-its-issue-lists.md) in the
-other direction. That one holds the patch to the list the issue already carries;
-this one is for the list the request grows after the assessment is over.
+This is [R-SKL-027](skl-027-a-core-patch-covers-every-point-its-issue-lists.md)
+in the other direction. That one holds the patch to the list the issue already
+carries; this one is for the list the request grows after the assessment is
+over.
 
 ## From
 

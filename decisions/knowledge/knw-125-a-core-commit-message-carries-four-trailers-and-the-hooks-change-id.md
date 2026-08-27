@@ -37,15 +37,15 @@ two places to be wrong.
   maintainer decided on 2026-08-25 that this project sets it always, which is
   the step from the board's recommendation to the rule stated here.
 - The same statement settles what signing claims: a contribution "may be
-  published under GPL v2 and … does not violate the rights of third parties",
-  an obligation that "is indivisible and is not diminished by the use of an AI
+  published under GPL v2 and … does not violate the rights of third parties", an
+  obligation that "is indivisible and is not diminished by the use of an AI
   tool".
-- The core's own `AGENTS.md` asks for it: "Sign off every commit — `git commit
-  -s` appends the `Signed-off-by:` trailer, or set `git config format.signOff
-  true` to get it automatically", certifying the right to submit under the
-  project's licence. `D-KNW-110` was written against that file; the rule now
-  agrees with it, so the conflict two sessions reported is gone rather than
-  resolved.
+- The core's own `AGENTS.md` asks for it: "Sign off every commit —
+  `git commit -s` appends the `Signed-off-by:` trailer, or set
+  `git config format.signOff true` to get it automatically", certifying the
+  right to submit under the project's licence. `D-KNW-110` was written against
+  that file; the rule now agrees with it, so the conflict two sessions reported
+  is gone rather than resolved.
 - The same file says "Do not credit tooling or assistants in commit messages",
   which is the core's own ground for the two trailers that stay refused. The
   maintainer's ruling of 2026-08-24 had been the only source for it.

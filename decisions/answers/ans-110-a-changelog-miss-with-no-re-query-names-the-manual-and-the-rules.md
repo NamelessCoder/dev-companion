@@ -25,13 +25,13 @@ the session.
   the installation ships. No tool is named in either half.
 - The branch is most of the short queries rather than an edge of them.
   `Subsets::largestReaching` skips a carried set of one and one the size of the
-  query, so no entry can produce a subset from two words at all — every
-  two-word miss lands here, whatever the changelog holds.
+  query, so no entry can produce a subset from two words at all — every two-word
+  miss lands here, whatever the changelog holds.
 - The manual does not answer the reported question. `typo3_documentation_lookup`
-  at `targetVersion: "14"` with `["changelog entry visibility", "method
-  visibility protected public"]` returns the Backend entry point page at 44% of
-  the query's weight and says so itself: "These pages carry words of the
-  question rather than its subject."
+  at `targetVersion: "14"` with
+  `["changelog entry visibility", "method visibility protected public"]` returns
+  the Backend entry point page at 44% of the query's weight and says so itself:
+  "These pages carry words of the question rather than its subject."
 - The rules do answer it. `typo3_rule_lookup` with
   `documentId: "core/contribution/changelog"` returns the document whole, 5990
   characters, opening on `Which Change Owes a Changelog File` — which change
@@ -53,8 +53,8 @@ the session.
   already routes to `typo3_rule_lookup`, and it self-selects: a site developer
   reading it is not writing a core patch and skips the clause.
 - **Withheld where a filter or a tag emptied the answer.** Both name their own
-  way back into this corpus — ask again without the filter, or replace the tag
-  — and routing out of it ahead of a re-query that answers is what `D-ANS-043`
+  way back into this corpus — ask again without the filter, or replace the tag —
+  and routing out of it ahead of a re-query that answers is what `D-ANS-043`
   declined.
 - **The per-word counts are not a re-query.** They name one word out of the
   question, and following one discards the question; the subsets are the offer
@@ -69,9 +69,9 @@ the session.
 
 - That a caller reading the miss follows a route it did not ask for. That is
   `D-ANS-043`'s third **Assumed** and this entry inherits it whole.
-- That the rule corpus answers the obligation question for the change the
-  caller has in hand. It answers the reported one, and `D-KNW-123` is why; a
-  change type the document does not place would send the caller back.
+- That the rule corpus answers the obligation question for the change the caller
+  has in hand. It answers the reported one, and `D-KNW-123` is why; a change
+  type the document does not place would send the caller back.
 
 ## Wrong if
 
@@ -83,5 +83,5 @@ the session.
   belongs behind a core checkout rather than beside the manual.
 - A two-word miss turns out to be reachable by a subset after all, because
   `Subsets` stops skipping the full-size carried set. Then this branch is an
-  edge rather than most of the short queries, and the sentence is being paid
-  for on misses that had a re-query all along.
+  edge rather than most of the short queries, and the sentence is being paid for
+  on misses that had a re-query all along.

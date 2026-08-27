@@ -34,5 +34,4 @@ are to be followed strictly, and a change to them is theirs to approve.
 Exercised on 2026-08-25, which is what the requirement is for: the maintainer
 brought the TYPO3 Association board's statement on GPL and AI-generated code and
 reversed the sign-off rule. Two sessions had reported the check as wrong against
-the core's `AGENTS.md` and neither could have reached that source
-(`D-KNW-125`).
+the core's `AGENTS.md` and neither could have reached that source (`D-KNW-125`).

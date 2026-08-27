@@ -193,7 +193,8 @@ a second card.
 ## Since then
 
 The branch was built on 2026-08-26 and names both tools rather than one, which
-is [`D-ANS-110`](ans-110-a-changelog-miss-with-no-re-query-names-the-manual-and-the-rules.md).
+is
+[`D-ANS-110`](ans-110-a-changelog-miss-with-no-re-query-names-the-manual-and-the-rules.md).
 What decided it is that neither corpus answers the other's shape and the miss
 cannot tell them apart: the manual returns the Backend entry point page at 44%
 of the reported query's weight, and the rules return which change types owe an

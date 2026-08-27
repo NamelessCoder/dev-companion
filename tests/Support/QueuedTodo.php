@@ -44,6 +44,17 @@ trait QueuedTodo
      */
     private int $queued = 0;
 
+    /**
+     * What this case wrote, by file name, in the order it wrote them.
+     *
+     * A todo is named by its id and nothing else — `D-DOC-061` — so a fixture
+     * is told from the queue it sits in rather than from anything readable in
+     * its path.
+     *
+     * @var array<int, string>
+     */
+    private array $written = [];
+
     #[After]
     public function removeQueuedTodos(): void
     {
@@ -60,6 +71,7 @@ trait QueuedTodo
         $queue = $this->ownQueue;
         $this->ownQueue = null;
         $this->queued = 0;
+        $this->written = [];
         if (!is_dir($queue)) {
             return;
         }
@@ -127,9 +139,10 @@ trait QueuedTodo
         ?string $day = null,
         string $serves = 'todo/',
         string $step = 'The step this fixture stands for.',
-        string $slug = self::MARKER,
+        string $seed = self::MARKER,
     ): array {
-        $name = sprintf('%s-%s.md', Todo::id($slug . ++$this->queued, $day), $slug);
+        $name = Todo::id($seed . ++$this->queued, $day) . '.md';
+        $this->written[] = $name;
         file_put_contents(
             $this->ownQueue() . '/todo/open/' . $name,
             '# ' . self::MARKER . "\n\n**Serves:** " . $serves . "\n**Priority:** " . $priority
@@ -225,8 +238,10 @@ trait QueuedTodo
     /** One todo blocked on an answer, which is what `bin/cli todo:waiting` reports. */
     private function waitATodo(string $waitingOn = 'the answer this fixture stands for'): void
     {
+        $name = Todo::id(self::MARKER . ++$this->queued) . '.md';
+        $this->written[] = $name;
         file_put_contents(
-            $this->ownQueue() . '/todo/waiting/' . self::MARKER . '.md',
+            $this->ownQueue() . '/todo/waiting/' . $name,
             '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Waiting on:** " . $waitingOn
             . "\n\nThe step this question blocks.\n",
         );
@@ -243,9 +258,11 @@ trait QueuedTodo
      */
     private function ownTodos(array $todos, ?string $named = null): array
     {
+        $wanted = $named === null ? $this->written : [$named];
+
         return array_values(array_filter(
             $todos,
-            static fn(array $todo): bool => str_contains($todo['path'], $named ?? self::MARKER),
+            static fn(array $todo): bool => in_array(basename($todo['path']), $wanted, true),
         ));
     }
 }

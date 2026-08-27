@@ -502,10 +502,10 @@ that lives in `todo/reference/`, where it can go stale without taking a case
 with it.
 
 - A feedback arriving brings its card with it: `typo3_feedback_record` writes
-  `todo/open/<the feedback's own name>.md` beside the report. A feedback that
-  got here some other way — added by hand, or its card deleted while it stayed
-  open — is reported by `bin/cli todo:check` and by CI, and the repair is a card
-  written into `todo/open/` by hand.
+  `todo/open/<the id derived from the feedback>.md` beside the report. A
+  feedback that got here some other way — added by hand, or its card deleted
+  while it stayed open — is reported by `bin/cli todo:check` and by CI, and the
+  repair is a card written into `todo/open/` by hand.
 - A feedback is worked off in a commit that both implements the improvement
   **and** archives it with `bin/cli feedback:archive <feedback>`, so `feedback/`
   only ever holds open items and the commit that moved it is the record of what

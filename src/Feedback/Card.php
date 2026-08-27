@@ -67,8 +67,7 @@ final class Card
         $name = basename($feedback, '.md');
         preg_match('/^\d{2}(\d{2})-(\d{2})-(\d{2})-/', $name, $arrived);
 
-        return 'todo/open/' . Todo::id($name, implode('', array_slice($arrived, 1)) ?: null)
-            . '-' . preg_replace('/^\d{4}-\d{2}-\d{2}-\d{6}-/', '', $name) . '.md';
+        return 'todo/open/' . Todo::id($name, implode('', array_slice($arrived, 1)) ?: null) . '.md';
     }
 
     /**

@@ -46,14 +46,18 @@ final class Todo
     public const PRIORITIES = ['high', 'normal', 'low'];
 
     /**
-     * What a todo in a stage is named by: the id its file name opens with.
+     * What a todo in a stage is named: its id, and nothing beside it.
      *
      * The day is what a listing sorts by — within a priority the older one comes
      * first, and that is the whole of the order below the three words. The digest
      * beside it is what two writers in one second cannot both produce, which the
      * day and the time on their own could.
+     *
+     * A slug behind the id would be a second name for the same todo, read by
+     * nothing and shareable by two of them — `D-DOC-061`. What the work is is
+     * the title inside the file, which every listing prints.
      */
-    public const STAMP = '/^T-\d{6}-[0-9a-f]{4}-/';
+    public const NAME = '/^T-\d{6}-[0-9a-f]{4}$/';
 
     /**
      * The id a todo is cited by, which is also what its file name opens with.
@@ -200,7 +204,7 @@ final class Todo
     }
 
     /**
-     * The branch a todo is worked on, derived rather than chosen.
+     * The branch a todo is worked on, which is the id and nothing else.
      *
      * Two sessions that name their own branches produce two names for one piece
      * of work, and nothing then says which is which. Deriving it means the
@@ -208,15 +212,15 @@ final class Todo
      * what lets the worktree standing on it say the todo is in hand —
      * `D-DOC-060`.
      *
-     * So a name is never given out twice. Where the derived branch is already
-     * there, the todo is one somebody has in hand or one whose branch nobody
-     * took down, and both are answered by looking rather than by a second name.
+     * The id is the whole of the name a todo carries, so the branch is that name
+     * under `todo/` — `D-DOC-061`. Nothing has to be stripped off it, and a
+     * retitle moves neither the branch nor the worktree standing on it.
      *
      * @param Section $todo
      */
     public static function branch(array $todo): string
     {
-        return 'todo/' . preg_replace(self::STAMP, '', basename($todo['path'], '.md'));
+        return 'todo/' . self::identifier($todo);
     }
 
     /**
@@ -395,15 +399,15 @@ final class Todo
     }
 
     /**
-     * The id a todo is cited by, read off the file name it opens.
+     * The id a todo is cited by, which is the whole of its file name.
      *
      * @param Section $todo
      */
     public static function identifier(array $todo): string
     {
-        preg_match(self::STAMP, basename($todo['path']), $id);
+        $name = basename($todo['path'], '.md');
 
-        return rtrim($id[0] ?? '', '-');
+        return preg_match(self::NAME, $name) === 1 ? $name : '';
     }
 
     /**
@@ -411,7 +415,7 @@ final class Todo
      *
      * A todo is named by its id and a worktree is an implementation of having
      * one in hand, so both are accepted and the id is the one written down.
-     * Anything a caller pastes resolves: the id, the whole file name, the path,
+     * Anything a caller pastes resolves: the id, the path whose file name it is,
      * or the worktree's own directory.
      */
     public static function worktreeNamed(string $reference, ?string $root = null): ?string
@@ -422,9 +426,8 @@ final class Todo
             return $named;
         }
 
-        $wanted = preg_match(self::STAMP, $named . '-') === 1 ? rtrim($named, '-') : '';
         foreach (self::items() as $todo) {
-            if (self::identifier($todo) !== $wanted && basename($todo['path'], '.md') !== $named) {
+            if (self::identifier($todo) !== $named) {
                 continue;
             }
 

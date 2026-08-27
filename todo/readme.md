@@ -46,10 +46,11 @@ report has no git to read the deletion out of.
 - **`reference/`** — not work at all: what a session would otherwise rediscover
   and mistake for some.
 
-A todo in a stage is named by its id, `T-<yymmdd>-<hash>`, and the file name
-opens with it. The day is what a listing sorts by and the digest is what two
+A todo in a stage is named by its id, `T-<yymmdd>-<hash>`, and that is the whole
+of the file name. The day is what a listing sorts by and the digest is what two
 writers in one second cannot both produce; a card's is derived from the feedback
-it serves, so the pair is found from either end — `D-DOC-061`.
+it serves, so the pair is found from either end — `D-DOC-061`. What the todo is
+about is the title inside it, which every listing prints.
 
 Each file opens with its title, then a head of labelled lines:
 

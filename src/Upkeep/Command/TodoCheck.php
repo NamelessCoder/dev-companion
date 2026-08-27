@@ -86,10 +86,10 @@ final class TodoCheck
                     $problems[] = $where . ' carries no `**Priority:**`, so nothing says where it stands';
                 }
                 // The id is the second half of the order and the only way to
-                // cite one, so a todo in a stage without it sorts wherever the
-                // file system puts it and is named by seventy characters.
-                if (preg_match(Todo::STAMP, basename($where)) !== 1) {
-                    $problems[] = $where . ' opens with no `T-<yymmdd>-<hash>`, so nothing orders or cites it';
+                // cite one, so a todo in a stage named anything else sorts
+                // wherever the file system puts it and is cited by nothing.
+                if (preg_match(Todo::NAME, basename($where, '.md')) !== 1) {
+                    $problems[] = $where . ' is not named `T-<yymmdd>-<hash>`, so nothing orders or cites it';
                 }
             } elseif ($todo['priority'] !== '') {
                 $problems[] = $where . ' recurs and carries a priority, where the cadence is what orders it';

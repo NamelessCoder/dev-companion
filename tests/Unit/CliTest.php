@@ -359,6 +359,25 @@ final class CliTest extends TestCase
     }
 
     /**
+     * The branch is the todo's id, which is the whole of its file name.
+     *
+     * A claim reads a standing branch as a todo somebody has in hand, so a
+     * derivation that dropped any of the name would hand two todos one branch
+     * and take the second out of the queue while the first is being worked.
+     */
+    #[Decision('D-DOC-061')]
+    #[Test]
+    public function aBranchIsTheTodosIdAndNothingElse(): void
+    {
+        $one = $this->queueATodo();
+        $other = $this->queueATodo();
+
+        self::assertSame('todo/' . Todo::identifier($one), Todo::branch($one));
+        self::assertSame('todo/' . Todo::identifier($other), Todo::branch($other));
+        self::assertNotSame(Todo::branch($one), Todo::branch($other));
+    }
+
+    /**
      * A branch carrying commits is left where it is, because it is the only
      * place that work exists.
      */

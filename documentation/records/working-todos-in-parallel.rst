@@ -29,13 +29,9 @@ worktree stands on is one somebody has in hand, and every command that hands out
 work passes over it. The half-finished diff is on that worktree's branch, where
 nobody else has to look at it.
 
-Nothing is written down to say so — ``D-DOC-060``. The branch is derived from
-the todo's own name and the worktree is named after the branch, so
-``bin/cli todo:list`` answers the question from what is standing and cannot
-disagree with itself. It was a file in ``todo/progress/`` until 2026-08-27,
-committed onto ``main`` before the worktrees were cut from it: a third copy of
-what the branch and the worktree already said, and the one copy that outlived
-them.
+Nothing is written down to say so — ``D-DOC-060``. The branch is the todo's id
+and the worktree is named after the branch, so ``bin/cli todo:list`` answers the
+question from what is standing and cannot disagree with itself.
 
 **A todo is named by its id**, ``T-<yymmdd>-<hash>``, which every listing prints
 and every command takes. That the work happens in a worktree is how this

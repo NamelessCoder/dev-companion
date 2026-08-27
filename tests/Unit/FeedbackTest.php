@@ -216,13 +216,13 @@ final class FeedbackTest extends TestCase
         // the pair is found from either end without either name being looked up
         // — `D-DOC-061`. It carries the day the report arrived, which is what
         // the queue is ordered by.
-        // A feedback is named `<date>-<time>-<slug>`, so the day and the slug are
-        // read off it by position rather than by a pattern the card does not use.
+        // A feedback is named `<date>-<time>-<slug>`, so the day is read off it
+        // by position rather than by a pattern the card does not use.
         $name = basename($file, '.md');
         $day = substr($name, 2, 2) . substr($name, 5, 2) . substr($name, 8, 2);
 
         $card = Card::path($file);
-        self::assertSame('todo/open/' . Todo::id($name, $day) . '-' . substr($name, 18) . '.md', $card);
+        self::assertSame('todo/open/' . Todo::id($name, $day) . '.md', $card);
 
         $contents = (string) file_get_contents($this->inStore($card));
         self::assertStringContainsString('# ' . self::MARKER . ' the lookup found nothing', $contents);

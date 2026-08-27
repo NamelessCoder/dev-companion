@@ -22,10 +22,7 @@ use TYPO3\DevCompanion\Upkeep\Todo;
  * whose branch one stands on is one somebody has in hand, so the second session
  * is offered the item behind it rather than the one somebody is already writing.
  *
- * Nothing is moved and nothing is committed — `D-DOC-060`. The claim used to be
- * a file in `todo/progress/` carried onto `main` before the worktrees were cut
- * from it, which is a third copy of what the branch and the worktree say and the
- * one copy that could outlive them.
+ * Nothing is moved and nothing is committed — `D-DOC-060`.
  *
  * It carries the setup out rather than printing it, and the reason is the order
  * rather than the typing: a worktree apiece with its own `composer install`, and

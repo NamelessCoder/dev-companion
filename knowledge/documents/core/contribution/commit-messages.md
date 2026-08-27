@@ -29,8 +29,9 @@ Guide.
 - Add `[!!!]` before the keyword for breaking changes.
 - `[!!!]` is the only prefix a merge-ready subject carries.
 - Do not use `[SECURITY]` unless this is handled by the TYPO3 Security Team.
-- Keep the summary below 52 characters if possible, and the subject line no
-  longer than 72.
+- Keep the whole subject line below 52 characters if possible. The keyword
+  prefix is counted, so `[BUGFIX]` spends nine of them and leaves the summary
+  43.
 - Use imperative present tense, for example `Fix`, `Add`, `Improve`, or
   `Remove`.
 - Describe what the patch changes, not what used to be broken.

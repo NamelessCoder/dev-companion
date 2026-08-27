@@ -73,6 +73,32 @@ final class CommitMessageGuideTest extends TestCase
     }
 
     /**
+     * What the length check sends the caller to do, done: the shorter summary
+     * takes the subject and the message it arrived beside keeps the rest, which
+     * is the assembly one session did by hand — `D-GUI-021`.
+     */
+    #[Decision('D-GUI-021')]
+    #[Test]
+    public function aSummaryPassedBesideAMessageReplacesTheSubjectAlone(): void
+    {
+        $result = CommitMessageGuide::answer([
+            'message' => "[BUGFIX] Make the git based CGL suites work in worktrees\n\n"
+                . "The suites read .git as a directory, which is a file in a worktree.\n\n"
+                . "Resolves: #110534\nReleases: main\nChange-Id: I0123456789abcdef\n"
+                . "Signed-off-by: Somebody <somebody@example.com>\n",
+            'summary' => 'Make CGL suites work in git worktrees',
+            'workflow' => 'core',
+        ]);
+
+        $message = $result->data['message'];
+        self::assertStringStartsWith('[BUGFIX] Make CGL suites work in git worktrees', $message);
+        self::assertStringContainsString('which is a file in a worktree', $message);
+        self::assertStringContainsString("\nChange-Id: I0123456789abcdef", $message);
+        self::assertStringContainsString("\nSigned-off-by: Somebody <somebody@example.com>", $message);
+        self::assertNotContains('summary-length-preferred', array_column($result->data['checks'], 'code'));
+    }
+
+    /**
      * The width is what the draft is wrapped to, and the boundary is what
      * refuses a commit. Only the second settles a checkout whose own rule is one
      * character stricter than the hook it cites — `D-GUI-020`.

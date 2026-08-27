@@ -732,6 +732,34 @@ final class CommitMessageTest extends TestCase
     }
 
     /**
+     * The budget on its own left a session writing four candidate subjects and
+     * measuring them in a shell — `D-GUI-021`.
+     */
+    #[Decision('D-GUI-021')]
+    #[Test]
+    public function theLengthCheckNamesWhatToCutAndWhoCutsIt(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Make the git based CGL suites work in worktrees',
+            'issue' => '110534',
+            'releases' => ['main'],
+            'isBreaking' => false,
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ]);
+
+        $checks = $this->checksWithCode($result['checks'], 'summary-length-preferred');
+        self::assertCount(1, $checks);
+        self::assertStringContainsString('4 fewer than the one you passed', $checks[0]['message']);
+        self::assertStringContainsString('summary="..."', $checks[0]['message']);
+        self::assertStringStartsWith(
+            '[BUGFIX] Make the git based CGL suites work in worktrees',
+            $result['message'],
+            'the draft carries the summary that was passed',
+        );
+    }
+
+    /**
      * The trailer the feedback was filed about came back clean, and a long dead
      * branch would have come back the same way — `D-ANS-058`.
      */

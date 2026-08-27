@@ -454,14 +454,17 @@ final class CommitMessage
     }
 
     /**
-     * How long the subject is, what made it that long, and what the limit
-     * leaves the summary.
+     * How long the subject is, what made it that long, what the limit leaves
+     * the summary, and who writes the shorter one.
      *
      * The caller passes `summary` and the rule measures the subject the keyword
      * makes of it, so a message naming one and counting the other reads as a
      * claim about what was passed. A session shortened by the nine characters
      * it was over, twice, before the arithmetic became visible — the feedback
      * of 2026-08-05. The room is stated so the first answer is enough.
+     *
+     * The draft keeps the summary it was given, and the check says so and names
+     * the call that measures a replacement — `D-GUI-021`.
      */
     private static function subjectLength(int $length, string $summary, int $limit, string $verdict): string
     {
@@ -469,12 +472,18 @@ final class CommitMessage
 
         return sprintf(
             'The subject line is %d characters long: a %d-character summary plus %d for the keyword prefix. '
-                . '%s in total, which leaves the summary %d.',
+                . '%s in total, which leaves the summary %d — %d fewer than the one you passed. '
+                . 'The draft carries your summary as you wrote it: a shorter one makes a different claim about '
+                . 'the change, and that claim is yours. '
+                . 'Call again with the shortened text as summary="..." and this call measures the subject it makes. '
+                . 'Passed beside a message it replaces the subject alone, keeping the body and every trailer, '
+                . 'Change-Id included.',
             $length,
             $length - $prefix,
             $prefix,
             $verdict,
             $limit - $prefix,
+            $length - $limit,
         );
     }
 

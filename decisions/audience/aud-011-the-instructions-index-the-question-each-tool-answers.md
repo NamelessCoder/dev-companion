@@ -200,5 +200,44 @@ characters that do not exist. That is
 [`D-ANS-004`](../answers/ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md),
 which measured one client on 2026-07-31 and has not been re-measured; the client
 reporting here is another one, it delivered the block whole, and where it
-truncates only a session inside it can say. `todo/progress/2026-08-19-090401`
+truncates only a session inside it can say. `todo/waiting/T-260819-dcaf.md`
 carries the question.
+
+**The first Wrong if fired again** on 2026-08-25, this time against the entry
+this one bought. `feedback/2026-08-25-105141` is a core commit message written
+in the TYPO3 CMS checkout under the same deferring client: the session read the
+block, read the fifth entry, and made no call in that turn. Its account of why
+is not that the line was missed — the checkout's own `AGENTS.md` carries the
+commit rules in full, so a tool named for the same question read as redundant.
+
+What that cost is on the record. The session wrote `Releases: main, 14.3, 13.4`
+off the branch dates `git for-each-ref` prints, and a `typo3_rule_lookup` on
+`core/contribution/gerrit-workflow` in the next turn corrected it to
+`main, 14.3`. The guide answers that without the second call: run on 2026-08-27
+for a core bugfix carrying no `releases`, it names the lines that can take a
+patch at all and says a bug fix goes to main and 14.3, an older line only where
+the severity earns it. So the entry named a tool that was right, and the file
+that was wrong won.
+
+The wording is the lever, which is step 4 rather than step 2 or 3: the block
+arrived, the entry was current, and the session read it. What the entry did not
+say is what the guide settles that a rules file cannot. The branch set is a
+project fact that changes and no checkout carries it, which is why
+`feedback/2026-08-26-223348` lost it too — a second session, at another task
+shape, guessing the set off `git branch -r` and reporting that nothing suggested
+this server would know it. That one is judged on its own card.
+
+The entry now reads *the commit message, yours as much as the core's, and its
+branches*, and it pays for itself.
+`in your own repository as much as in the core` is `yours as much as the core's`
+in eighteen characters fewer, which is what the branch clause costs to the
+character: measured on 2026-08-27 both assemblies are unchanged at 1948 and 2033
+against the 2048. The third **Wrong if** is therefore untouched, and the budget
+question stays where `D-ANS-004` has it.
+
+The feedback's other suggestion is refused rather than deferred. It asks that
+the three tools a core session opens with arrive with their schemas loaded, and
+nothing in the protocol lets a server ask a client for that. The fetch line
+[`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it.md)
+proposed was the last lever of that kind, and the maintainer answered not to on
+2026-08-19.

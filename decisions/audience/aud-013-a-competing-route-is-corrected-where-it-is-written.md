@@ -81,3 +81,26 @@ Forge, and this server has a tool that answers the same question better.
 - The maintainer answers that no core patch naming this server is to be
   proposed. Then the route is corrected nowhere, and what is left is the
   statement on this server's own surfaces that this entry declined to make.
+
+## Since then
+
+**The commit-message bullet above is bounded**, by a session in the same
+checkout on the same day. `feedback/2026-08-25-105141` also wrote its core
+commit message out of that `AGENTS.md` without calling
+`typo3_commit_message_guide`, and the `Releases:` trailer it wrote that way was
+wrong. So the reading holds for the subject and body conventions the file states
+in full, and not for the branch set, which it states as a rule without the
+value.
+
+That bounds the evidence rather than what was decided. The lever is still a
+patch in the other repository, and what this server says on its own surfaces is
+what its tool settles rather than what another file leaves out: the index entry
+[`D-AUD-011`](aud-011-the-instructions-index-the-question-each-tool-answers.md)
+bought now names the branches, in the characters the old wording gave back.
+
+**The first Wrong if is met** by a feedback standing on the board.
+`feedback/2026-08-25-114714` searched and read Forge with three `curl` calls
+while `typo3_forge_lookup` was offered to it, and names the documented recipe as
+the reason it never considered the tool. It carries its own card and the
+judgement is that card's; what is recorded here is that the event this entry
+watches for has happened.

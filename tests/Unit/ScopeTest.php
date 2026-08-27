@@ -407,6 +407,10 @@ final class ScopeTest extends TestCase
      * commit messages written for a sitepackage repository with the convention
      * derived from `git log`, because "TYPO3 commit message" read as the core's
      * Gerrit convention. So the entry says whose repository it is for.
+     *
+     * It names the branches for `feedback/2026-08-25-105141`, which read the
+     * entry, judged the core checkout's own AGENTS.md sufficient and wrote a
+     * Releases: set the guide would have corrected.
      */
     #[Requirement('R-ANS-032')]
     #[Decision('D-AUD-011')]
@@ -418,7 +422,7 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('What to call for what:', $instructions);
         self::assertStringContainsString('typo3_changelog_lookup', $instructions);
         self::assertStringContainsString(
-            'the commit message, in your own repository as much as in the core: typo3_commit_message_guide',
+            "the commit message, yours as much as the core's, and its branches: typo3_commit_message_guide",
             $instructions,
         );
     }
@@ -489,7 +493,7 @@ final class ScopeTest extends TestCase
         // The questions rather than the tool names: the prefix in front of the
         // routing names both of them, which is what it is there for.
         self::assertStringNotContainsString('a backend icon identifier', $instructions);
-        self::assertStringNotContainsString('the commit message, in your own repository', $instructions);
+        self::assertStringNotContainsString('the commit message, yours as much as', $instructions);
         // What is still offered keeps its entry, so the index is shorter rather
         // than gone.
         self::assertStringContainsString('backend markup or a CSS class: typo3_component_lookup', $instructions);

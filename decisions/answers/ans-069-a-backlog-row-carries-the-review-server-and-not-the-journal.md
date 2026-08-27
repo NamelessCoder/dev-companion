@@ -210,3 +210,31 @@ cost a call, and beside a row that carries the state it read as the reading
 itself, which is what the session did with it.
 `ForgeTest::theFirstReadingNamesWhatTheRowLeavesToACall` holds the three halves,
 so a later compression of the block fails rather than drops one again.
+
+### 2026-08-27 — a second task shape works the boundary the way it was drawn
+
+**A session shortlisted 25 rows in one call and then read three journals, which
+is the split this entry decided.** `feedback/2026-08-27-145349` asked
+`open="stale"`, `tracker="Bug"`, `category="workspaces"`, `limit=25`, then read
+seven issues with `notes="people"`. Three candidates died on a comment rather
+than on a description: #92377 on a reporter saying it no longer reproduces,
+#42109 on a maintainer calling it architectural, #93286 on a relation to a
+closed streamlining. It names none of that as reachable from a row.
+
+That is the third **Wrong if** not firing, from a task shape this entry never
+saw — find any workspace bug worth fixing, rather than triage a named backlog.
+The comment count this entry declined to carry per row is what those three reads
+cost, and the session paid it three times out of twenty-five rather than
+twenty-five times.
+
+The first **Wrong if** is closer than it was and is not settled. Six rows
+carried an `ABANDONED` change and one of the six was read whole; the session
+names the flag as what told it those issues "had already defeated somebody,
+before I read any of them", and says nothing about why the other five went
+unread. An account that does not say why a row was passed over cannot tell the
+flag being read as a verdict from the flag ranking a shortlist, so this is
+evidence to hold rather than a firing.
+
+The lowercase `category` resolving to the project's own spelling, with
+`categoriesUsed` echoed back, is named as what kept the session from guessing —
+one more surface that costs nothing per row.

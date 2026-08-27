@@ -5,6 +5,7 @@ date: 2026-08-24
 status: open
 coveredBy:
   - KnowledgeTest::aChangelogQuestionIsToldWhichTypeTheChangeOwes
+  - KnowledgeTest::aCommitMessageQueryIsAnsweredWithTheObligationAndNotOnlyThePage
   - KnowledgeTest::aQueryForTheChangelogObligationReachesTheSectionThatStatesIt
   - KnowledgeTest::aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage
   - KnowledgeTest::theChangelogProcedureIsFoundUnderItsOwnName

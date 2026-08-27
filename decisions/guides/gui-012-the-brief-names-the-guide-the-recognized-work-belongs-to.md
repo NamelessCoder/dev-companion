@@ -345,3 +345,31 @@ list and with what the page carries, which is this entry's own rule that a guide
 is named as the call that reads it. A `guideCore` beside it would be a second
 pointer to one page in one answer, which is the third **Wrong if** here. So what
 is corrected is the reason and not the shape.
+
+### 2026-08-27 — the fourth report is a rule that was read, and it bounds what the pull can buy
+
+**A rule delivered whole, in the answer, and quoted approvingly is still not
+what decided the moment it was about.** Three reports have the shape the card
+serving `feedback/2026-08-24-140239` is blocked on — a page named to a session
+and never opened, from the brief and a hint, from the orientation answer, and
+from a skill body. This is the fourth and it is on the other side of that line.
+
+`feedback/2026-08-24-225153` asked `typo3_rule_lookup` for `changelog entry` and
+received the obligation as prose, not as a pointer: *A casual bug fix carries
+none, because the commit message is what informs the reader*, re-run on
+2026-08-27 and still the first match at 100%. The session names it as one of the
+five answers it would keep. Two hours later it wrote an `Important` entry for a
+hardening patch anyway, matched it against neighbouring entries, ran `checkRst`,
+and deleted it once the user objected — `feedback/2026-08-24-225243`, its own
+second cost, filed 50 seconds after the strength.
+
+So the content was in context, in the caller's own words, and had already been
+read. Handing the guide over whole is what the three reports above ask for, and
+on this one it would have changed nothing: nothing about the delivery was
+missing. What the moment of need lacked was not the page but the return to it,
+and `checkRst` cannot supply that — the corpus already says a wrong type passes
+every suite and is caught in review or not at all.
+
+That is evidence for the question and not an answer to it. Both cards stay in
+`todo/waiting/`, and the count they are to be written against is four reports
+from three surfaces plus this one, where the surface worked.

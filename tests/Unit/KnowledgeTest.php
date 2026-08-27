@@ -1437,6 +1437,34 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * The section left behind by the split states the obligation rather than
+     * only pointing at the page that carries it.
+     *
+     * `feedback/2026-08-24-225153` asked for `changelog entry` and acted on the
+     * sentence this section leads with, twice hours apart. That query answers
+     * with this page first, so a rewrite reducing the section to its pointer
+     * would leave the winning match saying where the rule is and not what it is
+     * — which `D-KNW-111` moved the rest of the page for and did not intend
+     * here.
+     */
+    #[Decision('D-KNW-111')]
+    #[Test]
+    public function aCommitMessageQueryIsAnsweredWithTheObligationAndNotOnlyThePage(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', ['query' => 'changelog entry']);
+
+        self::assertSame(
+            ['core/contribution/commit-messages', 'The Changelog Entry a Message Announces'],
+            [$result->data['matches'][0]['documentId'], $result->data['matches'][0]['heading']],
+        );
+        // Unwrapped, since the sentence crosses a line break.
+        self::assertStringContainsString(
+            'A casual bug fix carries none, because the commit message is what informs the reader',
+            (string) preg_replace('/\s+/', ' ', $result->data['matches'][0]['body']),
+        );
+    }
+
+    /**
      * The trailers a core commit message carries, and the two it does not.
      *
      * `feedback/2026-08-24-110851` asked for the sign-off and got one unrelated

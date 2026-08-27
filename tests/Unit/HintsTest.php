@@ -5787,6 +5787,15 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('stops reading its own options at the first word that is not one', $notes);
         self::assertStringContainsString('shift $((OPTIND - 1))', $notes);
         self::assertStringContainsString('Test file "--filter" not found', $notes, 'the line the failing run prints');
+        // The mechanism above says what goes wrong; this says where to put the
+        // words, and it is the half a caller acts on. A session wrote roughly
+        // fifteen targeted invocations off it and hit the line above none of
+        // the times — `feedback/2026-08-24-225153`.
+        self::assertStringContainsString(
+            'Every option the script owns stands before the `--`, and the path stands after it',
+            $notes,
+            'the mechanism is stated and the order to write is left to be worked out',
+        );
     }
 
     /**

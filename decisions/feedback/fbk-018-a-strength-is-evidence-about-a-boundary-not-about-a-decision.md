@@ -1063,3 +1063,78 @@ do. Nothing asserted that section of the document at all, and `D-SKL-041`, whose
 subject it is, declared no test.
 
 The feedback is trimmed to the ranking half and stays open behind its card.
+
+## Confirmed on 2026-08-27
+
+**What a negative is worth is what the set behind it is worth.**
+`feedback/2026-08-24-225153` credits five answers from a review of change 93177
+in `/home/benji/projects/typo3-cms`, and one of them is an answer it read as a
+negative. Every cost from the same debrief is a negative too, and none of those
+could be read.
+
+The quotations are checked before the boundary is. The reporting checkout is
+another session's work, so all five were re-run on 2026-08-27 through
+`bin/typo3-dev-companion` from this repository's own `.checkouts/main`:
+
+- Change 93177 answers patch set 12 at `fd57c988fde`, `MERGED` on `main`, where
+  the report saw patch set 10. It has moved twice more since, which is the
+  report's own point made again. `messages="people"` holds 10 service messages
+  back of 35, nine of the 25 that are left carry Gerrit's `Outdated Votes` line,
+  and `issues` names #109233 as `resolves` and #110365 as `related` with both
+  subjects. Its four threads are all resolved now.
+- `typo3_rule_lookup` with the bare query `changelog entry` answers
+  `The Changelog Entry a Message Announces` first at 100%, and the sentence the
+  report acted on twice is its lead, word for word.
+- `typo3_project_describe` lists 20 guides with `any/testing/browser-check`
+  among them, last in the answer and in both halves of it.
+- The invocation note comes back whole, the failure line
+  `Test file "--filter" not found` included.
+- `typo3_changelog_lookup` with `type=deprecation, version=15, limit=100`
+  answers the same five entries, by the same issue numbers.
+
+**The praised negative is exhaustive, and the set is the answer's own.** The
+2026-08-03 section asks that of a praised absence, and the axis is written down
+here rather than supplied by the reader: five entries were shown against a limit
+of 100, so the caller sees the set and draws the conclusion off it.
+`.checkouts/main` at `d7b21b717b` carries exactly those five `Deprecation-*.rst`
+files below `typo3/sysext/core/Documentation/Changelog/15.0/` and no sixth.
+
+The four costs from the same session are the other side. `2026-08-24-225214`
+spent three Forge searches on a zero and says why it bought nothing — a hit is
+conclusive and an empty is not, over a set nobody enumerated. `225129` read a
+`matchCount 0` that meant the resource was never resolved, which calls for the
+opposite move from the one it made. `225022` read a page that carries the
+browser environment and is silent on driving the backend, and took the silence
+for coverage. `225243` built a second error surface beside four `error:`
+branches that were declared and switched off. Each is on a card of its own and
+what fills it belongs there.
+
+**The first Wrong if fired, and the lever is one event filed twice by one
+session.** Item 3 credits the changelog rule with settling two decisions hours
+apart; `2026-08-24-225243`, filed 50 seconds later, reports the second of those
+as a cost — the entry written from precedent, matched against neighbours, run
+through `checkRst`, then deleted. Both accounts are of the same `Important` file
+and both are true. The rule arrived, was quoted approvingly, and did not decide
+the moment it was about.
+
+That is the pairing this entry calls the step 5 signal, in a form it has not
+carried: not two sessions on one property, but one session on one event, from
+both sides. The judgement of it is on
+[`D-GUI-012`](../guides/gui-012-the-brief-names-the-guide-the-recognized-work-belongs-to.md),
+where the two cards blocked on that question already are.
+
+Two keep-requests rested on nobody rewriting the file and are held now.
+`KnowledgeTest::aCommitMessageQueryIsAnsweredWithTheObligationAndNotOnlyThePage`
+holds the sentence and the section a `changelog entry` query wins with, which
+`D-KNW-111` left behind as prose beside a pointer and a summarising rewrite
+takes for a pointer alone.
+`HintsTest::theInvocationNoteSaysWhereTheOptionParsingStops` gains the clause
+that says where the words go; it held the mechanism and the failure line, and
+the report credits the instruction rather than either. The other two are held
+already — the patch set and its commit by `R-ANS-021`, the guides inventory by
+`ProjectTest::theCallEveryTaskOpensWithNamesTheGuidesThereAre`, which asserts it
+is every document there is and that it comes last.
+
+The feedback is closed by this commit and nothing is queued. The one statement
+about TYPO3 was read in `.checkouts/main`; the rest of the re-runs read this
+server's answers.

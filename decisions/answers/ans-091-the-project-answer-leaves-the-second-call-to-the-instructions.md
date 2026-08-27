@@ -142,3 +142,27 @@ next, because it did not begin with it; and no tool was called because this
 answer named one. What the zero opening is evidence about is the instruction
 channel rather than this answer, and it is read at
 [`D-SKL-033`](../task-skills/skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md).
+
+### 2026-08-27 — a second zero opening, and the position it moves is not this one
+
+[`feedback/2026-08-25-114735`](../../feedback/2026-08-25-114735-the-mandated-opening-calls-project-describe-and.md)
+is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`, five turns of core
+work ending in a patch and a commit, with neither opening call made. It is the
+strongest account yet of why: the session quotes the imperative back word for
+word, calls it right, and names its own harness prompt — do the work through
+`Bash` — as what the sentence lost to.
+
+The first **Wrong if** does not fire on it. That one counts the two calls with
+the imperative in place and asks whether the ratio moved; this is zero against
+zero, so there is no ratio, and the reading of the 2026-08-24 row above holds
+unchanged. Neither of the other two fires either: no tool was called because
+this answer named one, and the session did not finish this answer, having never
+begun with it.
+
+What it does carry is a position this entry does not decide about. The one
+answer the session did receive was `typo3_commit_message_guide`, in the turn the
+work became a core patch, and it named nothing onward — which is
+[`D-ANS-117`](ans-117-the-commit-draft-names-the-workflow-that-owns-the-commit.md).
+The distinction is the one the 2026-08-24 row already drew: this entry declines
+a sentence at the *opening*, and that one places a sentence at the *phase*, on
+an answer a session under momentum still asks for.

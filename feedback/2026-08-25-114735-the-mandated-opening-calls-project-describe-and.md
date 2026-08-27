@@ -9,6 +9,12 @@ directory: /home/benji/projects/typo3-cms
 
 # the mandated opening calls project_describe and task_guide were never made in five turns
 
+Trimmed on 2026-08-27. The half asking that `typo3_test_run_guide`'s description
+carry the characters "runTests.sh" is answered: it has opened with
+"Build/Scripts/runTests.sh" since 2026-08-08, and the reading is in
+[`D-ANS-117`](../decisions/answers/ans-117-the-commit-draft-names-the-workflow-that-owns-the-commit.md).
+What is left is below.
+
 ## Observation
 
 Task: check whether ./Build/Scripts/runTests.sh -s cglGit runs correctly inside a git worktree of the TYPO3 core checkout, fix it, and write the commit.
@@ -37,4 +43,4 @@ Never called, across a five-turn session. Server instructions received at initia
 
 ## Suggestion
 
-The instruction is right; what it lacks is a hook that fires mid-session. Consider having every tool's response carry a short routing line when the arguments indicate a phase the caller has not consulted a guide for — the first typo3_commit_message_guide call in a session could return "typo3_task_guide has the core patch workflow this commit belongs to; it also covers the changelog and Releases decisions", which would have reached me in turn 5 and, on a second session, in turn 3. A one-line nudge inside an answer I already asked for is the only channel that reaches an agent with momentum; a rule in the initialize block competes with the harness prompt and loses. Separately: if typo3_test_run_guide covers ./Build/Scripts/runTests.sh suite invocation, its description should say "runTests.sh" in those characters — that is the string an agent in this repository is thinking in.
+The instruction is right; what it lacks is a hook that fires mid-session. Consider having every tool's response carry a short routing line when the arguments indicate a phase the caller has not consulted a guide for — the first typo3_commit_message_guide call in a session could return "typo3_task_guide has the core patch workflow this commit belongs to; it also covers the changelog and Releases decisions", which would have reached me in turn 5 and, on a second session, in turn 3. A one-line nudge inside an answer I already asked for is the only channel that reaches an agent with momentum; a rule in the initialize block competes with the harness prompt and loses.

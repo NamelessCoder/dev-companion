@@ -10,6 +10,7 @@ one is added.
 - [`D-ANS-114`][D-ANS-114] — A page read whole names the hints it declares · 2026-08-27
 - [`D-ANS-115`][D-ANS-115] — A phrasing a requirement rests on is carried by the hint's own vocabulary · 2026-08-27
 - [`D-ANS-116`][D-ANS-116] — A duplicate check reads the recent end of the backlog · 2026-08-27
+- [`D-ANS-117`][D-ANS-117] — The commit draft names the workflow that owns the commit · 2026-08-27
 - [`D-ANS-110`][D-ANS-110] — A changelog miss with no re-query names the manual and the rules · 2026-08-26
 - [`D-ANS-111`][D-ANS-111] — A change answer says which comment thread is open · 2026-08-26
 - [`D-ANS-112`][D-ANS-112] — A change answer establishes the patch without a fetch · 2026-08-26
@@ -122,6 +123,7 @@ one is added.
 [D-ANS-114]: ans-114-a-page-read-whole-names-the-hints-it-declares.md
 [D-ANS-115]: ans-115-a-phrasing-a-requirement-rests-on-is-carried-by-the-hints-own-vocabulary.md
 [D-ANS-116]: ans-116-a-duplicate-check-reads-the-recent-end-of-the-backlog.md
+[D-ANS-117]: ans-117-the-commit-draft-names-the-workflow-that-owns-the-commit.md
 [D-ANS-110]: ans-110-a-changelog-miss-with-no-re-query-names-the-manual-and-the-rules.md
 [D-ANS-111]: ans-111-a-change-answer-says-which-comment-thread-is-open.md
 [D-ANS-112]: ans-112-a-change-answer-establishes-the-patch-without-a-fetch.md

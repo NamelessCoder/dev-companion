@@ -855,7 +855,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
 - [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
 - [`D-FBK-009`][D-FBK-009] — A todo nobody can start waits where it says why · 2026-08-01
-- [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
 - [`D-FBK-001`][D-FBK-001] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — A feedback asks the caller which model is recording it · 2026-07-31 · confirmed
@@ -895,7 +894,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-FBK-007]: feedback/fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
 [D-FBK-008]: feedback/fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md
 [D-FBK-009]: feedback/fbk-009-a-todo-nobody-can-start-waits-where-it-says-why.md
-[D-FBK-010]: feedback/fbk-010-main-carries-the-state-and-the-branch-carries-the-work.md
 [D-FBK-001]: feedback/fbk-001-the-backlog-is-read-out-rather-than-enforced.md
 [D-FBK-002]: feedback/fbk-002-the-order-of-the-work-is-declared-not-inferred.md
 [D-FBK-004]: feedback/fbk-004-a-feedback-asks-the-caller-which-model-is-recording-it.md
@@ -1058,6 +1056,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
 - [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a subject this server owns · 2026-08-02 → D-KNW-037
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
+- [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
 - [`D-SCO-007`][D-SCO-007] — The signals are combined per call · 2026-08-01 → D-SCO-008
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
@@ -1098,6 +1097,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-015]: knowledge/knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md
 [D-KNW-025]: knowledge/knw-025-what-a-backend-preview-owes-the-editor-is-a-subject-this-server-owns.md
 [D-FBK-005]: feedback/fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
+[D-FBK-010]: feedback/fbk-010-main-carries-the-state-and-the-branch-carries-the-work.md
 [D-SCO-007]: scope/sco-007-the-signals-are-combined-per-call.md
 [D-SCO-008]: scope/sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md
 [D-FBK-003]: feedback/fbk-003-a-session-is-handed-one-todo-not-the-file.md

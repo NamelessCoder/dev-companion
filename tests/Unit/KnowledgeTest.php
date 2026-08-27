@@ -1110,7 +1110,33 @@ final class KnowledgeTest extends TestCase
         );
         // Whole means whole: the section two queries missed is in it.
         self::assertStringContainsString('## Release Targets', $whole->text);
-        self::assertSame(Documents::read('core/contribution/commit-messages'), $whole->text);
+        self::assertStringContainsString(Documents::read('core/contribution/commit-messages'), $whole->text);
+    }
+
+    /**
+     * `D-ANS-114`. The hints a page declares are the other corpus on its
+     * subject, and a reader who has reached the foot of the page has no query
+     * of its own left to find them with.
+     *
+     * `feedback/2026-08-24-225022` read `any/testing/browser-check` whole and
+     * then spent roughly five round trips establishing that a backend module
+     * renders in an iframe — which `browser-tests`, the hint that page declares,
+     * states verbatim. The ids were in the answer as `alsoInHints` data and in
+     * the raw front matter, and no sentence said what they were.
+     */
+    #[Decision('D-ANS-114')]
+    #[Test]
+    public function aPageReadWholeNamesTheHintsItDeclares(): void
+    {
+        $whole = Registry::call('typo3_rule_lookup', ['documentId' => 'any/testing/browser-check']);
+
+        self::assertContains('browser-tests', array_column($whole->data['alsoInHints'], 'id'));
+        // The same line the search answer carries, so the ids arrive as a call
+        // rather than as metadata.
+        self::assertStringContainsString('call typo3_hint_lookup with the id', $whole->text);
+        self::assertStringContainsString('- browser-tests — ', $whole->text);
+        // Under the page, not instead of it.
+        self::assertStringContainsString(Documents::read('any/testing/browser-check'), $whole->text);
     }
 
     /**

@@ -3,6 +3,8 @@ id: D-ANS-114
 title: 'A page read whole names the hints it declares'
 date: 2026-08-27
 status: open
+coveredBy:
+  - KnowledgeTest::aPageReadWholeNamesTheHintsItDeclares
 ---
 
 # D-ANS-114 — A page read whole names the hints it declares

@@ -254,6 +254,11 @@ final class RuleLookup extends ReadOnlyTool
                 $alsoInHints[] = ['id' => $hint['id'], 'title' => $hint['title']];
             }
         }
+        // In the text as well, as the call that reads them: as data and as raw
+        // front matter they were read past — `D-ANS-114`.
+        if ($alsoInHints !== []) {
+            $body .= "\n" . self::alsoInHints($alsoInHints);
+        }
 
         return ToolResult::create($body, [
             'query' => $documentId,

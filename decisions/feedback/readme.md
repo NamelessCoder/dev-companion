@@ -46,7 +46,6 @@ earns one.
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
 - [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
 - [`D-FBK-009`][D-FBK-009] — A todo nobody can start waits where it says why · 2026-08-01
-- [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
 - [`D-FBK-001`][D-FBK-001] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — A feedback asks the caller which model is recording it · 2026-07-31 · confirmed
@@ -86,7 +85,6 @@ earns one.
 [D-FBK-007]: fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
 [D-FBK-008]: fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md
 [D-FBK-009]: fbk-009-a-todo-nobody-can-start-waits-where-it-says-why.md
-[D-FBK-010]: fbk-010-main-carries-the-state-and-the-branch-carries-the-work.md
 [D-FBK-001]: fbk-001-the-backlog-is-read-out-rather-than-enforced.md
 [D-FBK-002]: fbk-002-the-order-of-the-work-is-declared-not-inferred.md
 [D-FBK-004]: fbk-004-a-feedback-asks-the-caller-which-model-is-recording-it.md
@@ -96,9 +94,11 @@ earns one.
 - [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03 → D-FBK-038
 - [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02 → D-FBK-045
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
+- [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 
 [D-FBK-037]: fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
 [D-FBK-022]: fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md
 [D-FBK-005]: fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
+[D-FBK-010]: fbk-010-main-carries-the-state-and-the-branch-carries-the-work.md
 [D-FBK-003]: fbk-003-a-session-is-handed-one-todo-not-the-file.md

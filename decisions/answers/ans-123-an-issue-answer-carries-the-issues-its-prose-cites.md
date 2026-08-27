@@ -3,7 +3,10 @@ id: D-ANS-123
 title: An issue answer carries the issues its prose cites
 date: 2026-08-27
 status: open
-coveredBy: []
+coveredBy:
+  - ForgeTest::aReviewChangeTheReportNamesIsAHandleTheSameWay
+  - ForgeTest::anIssueWithNoRelationsStillSaysWhatItsProseCites
+  - ForgeTest::theIssuesAnIssuesProseCitesAreLiftedOutOfIt
 ---
 
 # D-ANS-123 — An issue answer carries the issues its prose cites

@@ -215,7 +215,7 @@ final class Forge
             return ['status' => 'unavailable', 'url' => $url, 'issue' => null, 'cause' => $answer['cause']];
         }
 
-        $found = $this->related([self::issueOf($answer['part'], $number, $notes)])[0];
+        $found = $this->referenced([self::issueOf($answer['part'], $number, $notes)])[0];
 
         return [
             'status' => 'answered',
@@ -226,21 +226,32 @@ final class Forge
     }
 
     /**
-     * The relations of these records, filled with what decides whether to read
-     * one.
+     * The issues these records name, filled with what decides whether to read
+     * one — the relations they are filed against, and the citations an issue's
+     * prose carries.
      *
-     * One bulk read for everything handed in rather than one per relation
+     * One bulk read for everything handed in rather than one per reference
      * (`D-ANS-064`), which is why a whole page goes through here at once. Where
      * it cannot be reached the relations stand as they came back.
+     *
+     * A citation is the other way round: it is kept only where the read
+     * answered for the number, because three digits in a sentence are as often
+     * a version as an issue and the resolving read is what tells the two apart
+     * (`D-ANS-123`). So a tracker that did not answer drops them, which is the
+     * same answer as a number nobody filed.
      *
      * @param list<array<string, mixed>> $records
      * @return list<array<string, mixed>>
      */
-    private function related(array $records): array
+    private function referenced(array $records): array
     {
         $numbers = [];
         foreach ($records as $record) {
-            $numbers = [...$numbers, ...array_column($record['relations'], 'issue')];
+            $numbers = [
+                ...$numbers,
+                ...array_column($record['relations'], 'issue'),
+                ...array_column($record['mentioned'] ?? [], 'issue'),
+            ];
         }
 
         $fields = $this->fields($numbers);
@@ -251,6 +262,21 @@ final class Forge
                 $records[$at]['relations'][$index]['tracker'] = $read['tracker'] ?? '';
                 $records[$at]['relations'][$index]['status'] = $read['status'] ?? '';
             }
+            if (!isset($record['mentioned'])) {
+                continue;
+            }
+            $mentioned = [];
+            foreach ($record['mentioned'] as $mention) {
+                $read = $fields[$mention['issue']] ?? null;
+                if ($read === null) {
+                    continue;
+                }
+                $mention['subject'] = $read['subject'];
+                $mention['tracker'] = $read['tracker'];
+                $mention['status'] = $read['status'];
+                $mentioned[] = $mention;
+            }
+            $records[$at]['mentioned'] = $mentioned;
         }
 
         return $records;
@@ -672,7 +698,7 @@ final class Forge
             'categoriesUsed' => $used,
             'people' => $people,
             'breakdown' => null,
-            'results' => $this->reviewed($this->related($results)),
+            'results' => $this->reviewed($this->referenced($results)),
             'cause' => null,
         ];
     }
@@ -1268,6 +1294,20 @@ final class Forge
         $shown = $wanted === 'people' ? $written : $notes;
 
         $own = (int) ($raw['id'] ?? $number);
+        $description = is_string($raw['description'] ?? null) ? trim($raw['description']) : '';
+        $relations = self::relationsOf($raw, $own);
+        // The description is a text like a note and is read as one. A review URL
+        // pasted into the report was dropped while the same URL in a comment was
+        // a handle, and 5 of the 100 newest open bugs carry one there
+        // (`D-ANS-123`).
+        $texts = [
+            [
+                'author' => self::name($raw['author'] ?? null),
+                'on' => is_string($raw['created_on'] ?? null) ? $raw['created_on'] : '',
+                'note' => $description,
+            ],
+            ...$notes,
+        ];
 
         return [
             'id' => (int) ($raw['id'] ?? $number),
@@ -1282,12 +1322,15 @@ final class Forge
             'createdOn' => is_string($raw['created_on'] ?? null) ? $raw['created_on'] : '',
             'updatedOn' => is_string($raw['updated_on'] ?? null) ? $raw['updated_on'] : '',
             'url' => self::HOST . '/issues/' . (int) ($raw['id'] ?? $number),
-            'description' => is_string($raw['description'] ?? null) ? trim($raw['description']) : '',
-            'relations' => self::relationsOf($raw, $own),
+            'description' => $description,
+            'relations' => $relations,
+            // Filled by `referenced()`, which resolves the numbers in the read
+            // the relations already make.
+            'mentioned' => self::mentions($description, $notes, $own, array_column($relations, 'issue')),
             'attachments' => self::attachments($raw),
             // Read from every note rather than from the ones that come back, so
             // a patch-set ping older than the bound is still a handle.
-            'reviews' => self::reviews($notes),
+            'reviews' => self::reviews($texts),
             'noteCount' => count($notes),
             'botNoteCount' => count($notes) - count($written),
             'notes' => array_slice($shown, -self::NOTES),
@@ -1328,7 +1371,80 @@ final class Forge
     }
 
     /**
-     * The review changes the journal names, as handles rather than as prose.
+     * The issues the report and the comments cite, which no relation carries.
+     *
+     * A relation is somebody's triage and a citation is the writer's own claim
+     * about prior art, which on an old report is regularly the load-bearing one
+     * and sits in the first line of a description while the answer says
+     * `relations: []` (`D-ANS-123`). So the two are separate fields, and a
+     * number already filed as a relation is left to the relation, which says
+     * more about it.
+     *
+     * Each once, in the order it was written, and a citation in both texts is a
+     * description: that is where the reporter framed the report.
+     *
+     * @param list<array{author: string, on: string, note: string}> $notes
+     * @param list<int>                                             $linked
+     * @return list<array<string, mixed>>
+     */
+    private static function mentions(string $description, array $notes, int $own, array $linked): array
+    {
+        $where = [];
+        foreach (self::cited($description) as $number) {
+            $where[$number] = 'description';
+        }
+        foreach ($notes as $note) {
+            foreach (self::cited($note['note']) as $number) {
+                $where[$number] ??= 'note';
+            }
+        }
+
+        $mentioned = [];
+        foreach ($where as $number => $text) {
+            if ($number === $own || in_array($number, $linked, true)) {
+                continue;
+            }
+            $mentioned[] = [
+                'issue' => $number,
+                'subject' => '',
+                'tracker' => '',
+                'status' => '',
+                'url' => self::HOST . '/issues/' . $number,
+                'where' => $text,
+            ];
+        }
+
+        return $mentioned;
+    }
+
+    /**
+     * The issue numbers one text cites, in the two forms people write them in.
+     *
+     * A URL is the form the report this was written from used and the rare one:
+     * 5 of 200 open bugs read on 2026-08-27 carried one, against 29 of them
+     * carrying Redmine's own `#NNNN`. That form is bounded to what an issue
+     * number is — a TYPO3 exception code is ten digits, and two of them stand in
+     * the description of #76202 (`D-ANS-123`).
+     *
+     * @return list<int>
+     */
+    private static function cited(string $text): array
+    {
+        // One group for both forms, so the bound on the bare one is a lookahead
+        // rather than a second alternative to read out.
+        preg_match_all('~(?:forge\.typo3\.org/issues/|#(?=\d{3,6}(?!\d)))(\d+)~', $text, $found);
+
+        $numbers = [];
+        foreach ($found[1] as $citation) {
+            $numbers[(int) $citation] = (int) $citation;
+        }
+
+        return array_values($numbers);
+    }
+
+    /**
+     * The review changes the report and the journal name, as handles rather than
+     * as prose.
      *
      * They are in the payload already and only inside a sentence, which is where
      * a triage stops reading them (`D-ANS-064`). Nothing is claimed about their
@@ -1336,7 +1452,9 @@ final class Forge
      * the bot's note names the change id and the number together where a human's
      * later note is a bare URL.
      *
-     * @param list<array{author: string, on: string, note: string}> $notes
+     * @param list<array{author: string, on: string, note: string}> $notes The
+     *     description first and then the journal, in the order they were
+     *     written, so the date on a handle is the last text that named it.
      * @return list<array<string, mixed>>
      */
     private static function reviews(array $notes): array

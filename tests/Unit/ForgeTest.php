@@ -280,6 +280,143 @@ final class ForgeTest extends TestCase
     }
 
     /**
+     * An issue whose prose cites others, in the shape #76202 has: a forge URL
+     * in the first line of the description, Redmine's own `#NNNN` in a comment,
+     * a number a relation already carries, a three-digit number that is no
+     * issue, an exception code that is ten digits, and a review URL in the
+     * report rather than in the journal.
+     */
+    private const CITING = [
+        'id' => 76202,
+        'subject' => 'ObjectStorage::attach() is slow on large storages',
+        'author' => ['id' => 990, 'name' => 'Sascha Egerer'],
+        'created_on' => '2016-05-19T09:12:00Z',
+        'description' => "seems bug from 6.2 version https://forge.typo3.org/issues/62553 is still in typo3 7.6\n"
+            . "It throws #1234567890, the server answers #404, and the patch is at https://review.typo3.org/c/Packages/TYPO3.CMS/+/48211\n"
+            . 'Related to #105403.',
+        'relations' => [
+            ['issue_id' => 76202, 'issue_to_id' => 105403, 'relation_type' => 'relates'],
+        ],
+        'journals' => [
+            [
+                'user' => ['name' => 'Markus Klein'],
+                'created_on' => '2016-06-01T10:00:00Z',
+                'notes' => 'See #105953 for the same on the read path, and #62553 again.',
+            ],
+        ],
+    ];
+
+    /** What the bulk read answers for those numbers, #404 among them being none. */
+    private const CITED = [
+        'issues' => [
+            [
+                'id' => 105403,
+                'subject' => 'Massive Memory Leak in 4.5.8+ / 4.6',
+                'tracker' => ['name' => 'Bug'],
+                'status' => ['name' => 'Closed'],
+            ],
+            [
+                'id' => 62553,
+                'subject' => 'ObjectStorage::offsetExists() breaks on numeric keys',
+                'tracker' => ['name' => 'Bug'],
+                'status' => ['name' => 'Closed'],
+            ],
+            [
+                'id' => 105953,
+                'subject' => 'Rework AdminPanel',
+                'tracker' => ['name' => 'Task'],
+                'status' => ['name' => 'New'],
+            ],
+        ],
+        'total_count' => 3,
+    ];
+
+    /**
+     * A reporter's "this is the 6.2 bug still in 7.6" is the claim the patch
+     * gets framed against, and it sits in a sentence while the answer says
+     * `relations: []` — `D-ANS-123`. So the citations are a field, resolved in
+     * the read the relations already make.
+     */
+    #[Decision('D-ANS-123')]
+    #[Test]
+    public function theIssuesAnIssuesProseCitesAreLiftedOutOfIt(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return (string) json_encode(str_contains($url, 'issue_id=') ? self::CITED : ['issue' => self::CITING]);
+        });
+
+        $mentioned = $forge->issue('76202')['issue']['mentioned'];
+
+        // The URL form and Redmine's own, and neither the exception code nor
+        // the three digits that answer for no issue. #105403 is left to the
+        // relation, which says more about it than a citation does.
+        self::assertSame([62553, 105953], array_column($mentioned, 'issue'));
+        self::assertSame(['description', 'note'], array_column($mentioned, 'where'));
+        self::assertSame('ObjectStorage::offsetExists() breaks on numeric keys', $mentioned[0]['subject']);
+        self::assertSame('Closed', $mentioned[0]['status']);
+        self::assertSame('Bug', $mentioned[0]['tracker']);
+        self::assertSame('https://forge.typo3.org/issues/105953', $mentioned[1]['url']);
+        // One read for the relations and the citations together, which is what
+        // makes the field cost nothing on an issue that has both.
+        $filling = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, 'issue_id=')));
+        self::assertCount(1, $filling);
+        self::assertStringContainsString('issue_id=105403%2C62553%2C404%2C105953', $filling[0]);
+    }
+
+    /**
+     * A review URL in the report is the handle a URL in a comment is. The
+     * journal was the only text read, so 5 of the 100 newest open bugs named a
+     * change no answer carried — `D-ANS-123`.
+     */
+    #[Decision('D-ANS-123')]
+    #[Test]
+    public function aReviewChangeTheReportNamesIsAHandleTheSameWay(): void
+    {
+        $forge = new Forge(static fn(string $url): string => (string) json_encode(
+            str_contains($url, 'issue_id=') ? self::CITED : ['issue' => self::CITING],
+        ));
+
+        $reviews = $forge->issue('76202')['issue']['reviews'];
+
+        self::assertSame([48211], array_column($reviews, 'change'));
+        // When the reference was written, which for a description is the day
+        // the issue was filed.
+        self::assertSame('2016-05-19T09:12:00Z', $reviews[0]['on']);
+    }
+
+    /**
+     * The text half says it where `relations` is empty, which is the sentence
+     * the report was written about: a session read `relations: []` as nothing
+     * linked while the first line of the description named the issue its whole
+     * framing rested on — `D-ANS-123`.
+     */
+    #[Decision('D-ANS-123')]
+    #[Test]
+    public function anIssueWithNoRelationsStillSaysWhatItsProseCites(): void
+    {
+        Forge::useReader(static fn(string $url): string => (string) json_encode(
+            str_contains($url, 'issue_id=') ? self::CITED : ['issue' => ['relations' => []] + self::CITING],
+        ));
+
+        $result = Registry::call('typo3_forge_lookup', ['issue' => '76202']);
+
+        self::assertSame([], $result->data['issue']['relations']);
+        self::assertStringContainsString(
+            'Mentioned in the description: #62553 — Bug · Closed · ObjectStorage::offsetExists() breaks on numeric'
+                . ' keys · https://forge.typo3.org/issues/62553',
+            $result->text,
+        );
+        self::assertStringContainsString('Mentioned in the note: #105953', $result->text);
+        // What the field is not: the reporter's claim was wrong on the issue it
+        // was measured on, and reading a citation as a duplicate is the same
+        // failure in the other direction.
+        self::assertStringContainsString('never pass this issue over as a duplicate', $result->text);
+    }
+
+    /**
      * The journal of 15984, in the wording measured on 2026-08-08: the bot
      * names both handles, a human names the number alone three months later,
      * and one comment is a query for a topic rather than a change.

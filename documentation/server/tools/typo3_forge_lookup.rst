@@ -9,19 +9,21 @@ that did not answer from a search that matched nothing, which a request by hand
 spends a second call finding out. Read it before writing a patch. Pass issue
 with a number to read that one: subject, tracker, status, target version, the
 TYPO3 and PHP versions it was reported against, the related issues with their
-subjects, the review changes its comments name, the files hanging off it — which
-on a report about rendering is where the evidence usually is — and the comments,
-where a maintainer who closed or reassigned it said why, which the description
-never says. Or pass query with words to find out which other issues describe the
-same thing, which the relations of one issue only answer for what somebody
-linked by hand. Or pass open to enumerate the core project's unresolved issues
-without holding a number or a wording — oldest filed, longest untouched or
-newest filed, narrowed by tracker, by date and by person, which is where a
-triage of the backlog starts; the count of everything that matched comes back
-with the page, so a limited answer says whether it is the whole set. The newest
-end is what answers "has somebody filed this already" before you file it, which
-no wording of the report settles: narrow it with createdSince to the day the
-defect could first have been reported and read the subjects. reportedBy and
+subjects, the review changes its report and its comments name, the files hanging
+off it — which on a report about rendering is where the evidence usually is —
+and the comments, where a maintainer who closed or reassigned it said why, which
+the description never says. The issues that text cites and no relation carries
+come with it: on an old report the reporter's claim about prior art is what a
+patch gets framed against. Or pass query with words to find out which other
+issues describe the same thing, which the relations of one issue only answer for
+what somebody linked by hand. Or pass open to enumerate the core project's
+unresolved issues without holding a number or a wording — oldest filed, longest
+untouched or newest filed, narrowed by tracker, by date and by person, which is
+where a triage of the backlog starts; the count of everything that matched comes
+back with the page, so a limited answer says whether it is the whole set. The
+newest end is what answers "has somebody filed this already" before you file it,
+which no wording of the report settles: narrow it with createdSince to the day
+the defect could first have been reported and read the subjects. reportedBy and
 assignedTo take a person's name and answer what they filed and what they are on
 the hook for, which is the one question query cannot be made to answer: it
 matches text, so a name reaches the issues that mention the person and not the
@@ -346,10 +348,33 @@ Answers with
           status: string
           # Where a person reads it.
           url: string
-      # The review changes the journal names, lifted out of the prose that carries
-      # them. Nothing here says what state a change is in: a note says what was true
-      # the day it was written, and typo3_gerrit_lookup answers what is true now.
-      # Empty where no note named one.
+      # The issues the description and the comments cite and no relation carries,
+      # written as #NNNN or as a URL. A relation is somebody's triage and this is
+      # the writer's own claim about prior art, which on an old report is regularly
+      # the load-bearing one — and regularly wrong: it is a thing to read before a
+      # patch is framed against it and never a duplicate this issue can be passed
+      # over for. Only a number the tracker answered for is here, which is what
+      # keeps a version out of it. Empty where the texts cite nothing and where
+      # every citation is already a relation.
+      mentioned:
+        - # The issue the text cites.
+          issue: integer
+          # What it is about, so the claim is weighed without a call per number.
+          subject: string
+          # Bug, Feature, Task.
+          tracker: string
+          # Where the cited issue stands, which is what says whether the prior art
+          # was dealt with.
+          status: string
+          # Where a person reads it.
+          url: string
+          # One of: description, note. Which text cites it. A number both of them
+          # carry is a description, which is where the reporter framed the report.
+          where: string
+      # The review changes the description and the journal name, lifted out of the
+      # prose that carries them. Nothing here says what state a change is in: a text
+      # says what was true the day it was written, and typo3_gerrit_lookup answers
+      # what is true now. Empty where neither named one.
       reviews:
         - # The change number on review.typo3.org, which is what typo3_gerrit_lookup
           # takes as change.
@@ -496,7 +521,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-26 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-27 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
@@ -529,7 +554,7 @@ Text:
     The "imagesOnPage" feature is older than git. It needs to be revised to be integrated into FAL.
 
     ## Changes on review.typo3.org (1)
-    Named in the comments below and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
+    Named in the report above or in the comments below, and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
     - change 95040 · patch set 2 · named 2026-08-01 · https://review.typo3.org/c/95040
 
     ## Comments (3 of 3, oldest first)
@@ -576,6 +601,7 @@ Data:
             "url": "https://forge.typo3.org/issues/110348",
             "description": "The \"imagesOnPage\" feature is older than git. It needs to be revised to be integrated into FAL.",
             "relations": [],
+            "mentioned": [],
             "attachments": [],
             "reviews": [
                 {
@@ -631,6 +657,8 @@ Text:
     Target version: Candidate for patchlevel
     Reported against TYPO3 12, PHP 8.2 — which is what the reporter had, not what it still reproduces on.
     Relation: relates #96466 — Bug · Rejected · RTE parse func paragraph duplication bug · https://forge.typo3.org/issues/96466
+    Cited in the text below and filed as no relation, so this is the writer's own claim about prior art rather than somebody's triage. It is regularly wrong: read it before framing a patch against it, and never pass this issue over as a duplicate of it.
+    Mentioned in the note: #88655 — Bug · Closed · richtextConfiguration, set via TCA for a text field is ignored · https://forge.typo3.org/issues/88655
 
     ## Reported
     <pre><code class="html">
@@ -643,7 +671,7 @@ Text:
     Not sure whether this is a CKEditor or TYPO3 related issue.
 
     ## Changes on review.typo3.org (3)
-    Named in the comments below and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
+    Named in the report above or in the comments below, and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
     - change 95108 · patch set 1 · named 2026-08-05 · https://review.typo3.org/c/95108
     - change 95131 · patch set 1 · named 2026-08-06 · https://review.typo3.org/c/95131
     - change 95132 · patch set 1 · named 2026-08-06 · https://review.typo3.org/c/95132
@@ -953,6 +981,16 @@ Data:
                     "status": "Rejected"
                 }
             ],
+            "mentioned": [
+                {
+                    "issue": 88655,
+                    "subject": "richtextConfiguration, set via TCA for a text field is ignored",
+                    "tracker": "Bug",
+                    "status": "Closed",
+                    "url": "https://forge.typo3.org/issues/88655",
+                    "where": "note"
+                }
+            ],
             "attachments": [
                 {
                     "filename": "ckeditor-3-p-tags.png",
@@ -1153,7 +1191,7 @@ Text:
     (issue imported from #M1277)
 
     ## Changes on review.typo3.org (2)
-    Named in the comments below and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
+    Named in the report above or in the comments below, and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
     - change 38419 · patch set 3 · named 2015-04-01 · https://review.typo3.org/c/38419
     - change 70962 · patch set 5 · named 2023-01-14 · https://review.typo3.org/c/70962
 
@@ -1243,6 +1281,7 @@ Data:
                     "status": "Closed"
                 }
             ],
+            "mentioned": [],
             "attachments": [],
             "reviews": [
                 {
@@ -1461,8 +1500,8 @@ Text:
     Every word has to be in the same issue, so one word nobody wrote empties the answer whatever else is in it.
     Asked one word at a time: "quantumflux" reaches 0 · "transponder" reaches 0.
     No issue on the tracker carries "quantumflux" or "transponder". A query one of them is in is empty whatever else is in it, so drop them.
-    What no wording of the report reaches is enumerated instead: open "stale" with category in your own words for the area — "import export", "rte" — and limit 50.
-    Reading those subjects is what settles whether somebody already reported this.
+    What no wording of the report reaches is enumerated instead: open "newest" with createdSince from the day the defect could first have been reported, and limit 50. Add category in your own words — "import export", "rte" — only where the area is certain: thousands of the open bugs carry no Category at all, and an area filter reaches none of them.
+    Those subjects settle whether somebody already reported this where total and the rows agree, and are the recent end of a larger set where they do not — narrow the window until they do.
     Where the words are a person, pass them as reportedBy or assignedTo with open.
 
 Data:
@@ -1515,8 +1554,8 @@ Text:
     Asked one word at a time: "file" reaches 13944 · "renderer" reaches 1174 · "RendererRegistry" reaches 5 · "FileRendererInterface" reaches 0.
     No issue on the tracker carries "FileRendererInterface". A query it is in is empty whatever else is in it, so drop it.
     "RendererRegistry" is the narrowest of the rest and reaches something: ask it on its own, then read the subjects.
-    What no wording of the report reaches is enumerated instead: open "stale" with category in your own words for the area — "import export", "rte" — and limit 50.
-    Reading those subjects is what settles whether somebody already reported this.
+    What no wording of the report reaches is enumerated instead: open "newest" with createdSince from the day the defect could first have been reported, and limit 50. Add category in your own words — "import export", "rte" — only where the area is certain: thousands of the open bugs carry no Category at all, and an area filter reaches none of them.
+    Those subjects settle whether somebody already reported this where total and the rows agree, and are the recent end of a larger set where they do not — narrow the window until they do.
     Where the words are a person, pass them as reportedBy or assignedTo with open.
 
 Data:
@@ -1572,7 +1611,7 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2483 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2482 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
@@ -1603,7 +1642,7 @@ Text:
 
     ## What a page of the backlog opens
     `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
-    - What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the checkout is opened. An abandoned change is a verdict somebody wrote down.
+    - What has already happened to it. The row carries the change and the state it stands in; the reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.
     - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
     - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
     - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
@@ -1619,7 +1658,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
-        "total": 2483,
+        "total": 2482,
         "terms": [],
         "categories": [],
         "categoriesUsed": [],
@@ -1806,7 +1845,7 @@ Text:
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
-    An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject.
+    An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject. An issue carrying no Category at all is in no area, and thousands of the open bugs carry none, so no wording of this reaches one: ask again without category, narrowed by createdSince instead, where the question is whether it was reported.
 
     ## #87400 CKEditor: assign correct CSS class to tags with entryHTMLparser_db
     Bug · New · RTE (rtehtmlarea + ckeditor) · filed by Benedikt Imminger · unassigned · filed 2019-01-11 · last touched 2019-01-11 · https://forge.typo3.org/issues/87400
@@ -1827,7 +1866,7 @@ Text:
 
     ## What a page of the backlog opens
     `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
-    - What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the checkout is opened. An abandoned change is a verdict somebody wrote down.
+    - What has already happened to it. The row carries the change and the state it stands in; the reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.
     - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
     - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
     - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
@@ -2100,7 +2139,7 @@ Text:
 
     ## What a page of the backlog opens
     `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
-    - What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the checkout is opened. An abandoned change is a verdict somebody wrote down.
+    - What has already happened to it. The row carries the change and the state it stands in; the reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.
     - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
     - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
     - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
@@ -2309,7 +2348,7 @@ Text:
 
     ## What a page of the backlog opens
     `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
-    - What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the checkout is opened. An abandoned change is a verdict somebody wrote down.
+    - What has already happened to it. The row carries the change and the state it stands in; the reading is the argument under that state. `typo3_gerrit_lookup` answers it by the number, before the checkout is opened, and an ABANDONED is grounds to read it rather than to pass the row over.
     - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
     - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
     - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.

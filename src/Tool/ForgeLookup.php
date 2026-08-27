@@ -54,7 +54,7 @@ final class ForgeLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Reads the TYPO3 issue tracker at forge.typo3.org through the bot protection the core\'s own AGENTS.md warns a hand-written request about. It also tells a tracker that did not answer from a search that matched nothing, which a request by hand spends a second call finding out. Read it before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed, longest untouched or newest filed, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. The newest end is what answers "has somebody filed this already" before you file it, which no wording of the report settles: narrow it with createdSince to the day the defect could first have been reported and read the subjects. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs, and involving answers both sides of a person at once — the tracker ANDs its filters, so what somebody filed or holds cannot be asked of it directly. The areas the core files issues under are the project\'s own list, read from it live. Pass category as "*" for that list on its own — the spelling the Category field of a new report takes. Or pass breakdown with any of those to be answered how the matched set is distributed — per status, per tracker, per area, per year — instead of a page of it, which is what a set of hundreds is answered by: limit stops at 50 and nothing pages past it. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Reads the TYPO3 issue tracker at forge.typo3.org through the bot protection the core\'s own AGENTS.md warns a hand-written request about. It also tells a tracker that did not answer from a search that matched nothing, which a request by hand spends a second call finding out. Read it before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its report and its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. The issues that text cites and no relation carries come with it: on an old report the reporter\'s claim about prior art is what a patch gets framed against. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed, longest untouched or newest filed, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. The newest end is what answers "has somebody filed this already" before you file it, which no wording of the report settles: narrow it with createdSince to the day the defect could first have been reported and read the subjects. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs, and involving answers both sides of a person at once — the tracker ANDs its filters, so what somebody filed or holds cannot be asked of it directly. The areas the core files issues under are the project\'s own list, read from it live. Pass category as "*" for that list on its own — the spelling the Category field of a new report takes. Or pass breakdown with any of those to be answered how the matched set is distributed — per status, per tracker, per area, per year — instead of a page of it, which is what a set of hundreds is answered by: limit stops at 50 and nothing pages past it. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
 
@@ -208,13 +208,21 @@ final class ForgeLookup extends ReadOnlyTool
                     'url' => Schema::string('Where a person reads it.'),
                     'description' => Schema::string('The report as it was written, which is what the reporter saw and not what was decided.'),
                     'relations' => Schema::listOf(self::relation(), 'Issues this one is filed against, which is where a duplicate, a blocker, and the issue a revert was filed under are named. Each carries its subject, so which of them is worth reading is decided from here rather than from one call each.'),
+                    'mentioned' => Schema::listOf(Schema::object([
+                        'issue' => Schema::integer('The issue the text cites.'),
+                        'subject' => Schema::string('What it is about, so the claim is weighed without a call per number.'),
+                        'tracker' => Schema::string('Bug, Feature, Task.'),
+                        'status' => Schema::string('Where the cited issue stands, which is what says whether the prior art was dealt with.'),
+                        'url' => Schema::string('Where a person reads it.'),
+                        'where' => ['type' => 'string', 'enum' => ['description', 'note'], 'description' => 'Which text cites it. A number both of them carry is a description, which is where the reporter framed the report.'],
+                    ], ['issue', 'subject', 'tracker', 'status', 'url', 'where']), 'The issues the description and the comments cite and no relation carries, written as #NNNN or as a URL. A relation is somebody\'s triage and this is the writer\'s own claim about prior art, which on an old report is regularly the load-bearing one — and regularly wrong: it is a thing to read before a patch is framed against it and never a duplicate this issue can be passed over for. Only a number the tracker answered for is here, which is what keeps a version out of it. Empty where the texts cite nothing and where every citation is already a relation.'),
                     'reviews' => Schema::listOf(Schema::object([
                         'change' => Schema::integer('The change number on review.typo3.org, which is what typo3_gerrit_lookup takes as change.'),
                         'changeId' => Schema::string('The Change-Id the commit message carries, empty where no note named one. typo3_gerrit_lookup takes this too, and it is what survives a rebase onto another branch.'),
                         'patchSet' => Schema::integer('The highest patch set a note mentioned, zero where none did. The review server may be further along.'),
                         'on' => Schema::string('When the last note naming this change was written, which is how old the reference is and not when the change last moved.'),
                         'url' => Schema::string('Where a person reads the change.'),
-                    ], ['change', 'changeId', 'patchSet', 'on', 'url']), 'The review changes the journal names, lifted out of the prose that carries them. Nothing here says what state a change is in: a note says what was true the day it was written, and typo3_gerrit_lookup answers what is true now. Empty where no note named one.'),
+                    ], ['change', 'changeId', 'patchSet', 'on', 'url']), 'The review changes the description and the journal name, lifted out of the prose that carries them. Nothing here says what state a change is in: a text says what was true the day it was written, and typo3_gerrit_lookup answers what is true now. Empty where neither named one.'),
                     'attachments' => Schema::listOf(self::attachment(), 'The files hanging off the issue. On a report about rendering these are usually screenshots, and they are regularly where the evidence is: a comment that consists of !image.jpg! references reads as an empty comment otherwise. Empty where the issue carries none.'),
                     'noteCount' => Schema::integer('How many comments the issue carries in total.'),
                     'botNoteCount' => Schema::integer('How many of those a review bot wrote, which notes: "people" is what drops. Answered whichever way notes was asked, so a journal full of patch-set pings answering zero here is the list of bot names gone stale rather than an issue nobody pushed a patch for.'),
@@ -224,7 +232,7 @@ final class ForgeLookup extends ReadOnlyTool
                         'note' => Schema::string(),
                     ], ['author', 'on', 'note']), 'The most recent comments, oldest first. A closure, a reassignment and a "we will not do this" are here rather than in the description.'),
                 ],
-                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'attachments', 'reviews', 'noteCount', 'botNoteCount', 'notes'],
+                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'mentioned', 'attachments', 'reviews', 'noteCount', 'botNoteCount', 'notes'],
             ],
             'results' => Schema::listOf(Schema::object([
                 'issue' => Schema::integer('The issue number, which is what this tool reads whole.'),
@@ -374,13 +382,30 @@ final class ForgeLookup extends ReadOnlyTool
         foreach ($found['relations'] as $relation) {
             $lines[] = self::relationLine($relation);
         }
+        // Beside the relations and on every issue that has one, because a
+        // citation says the same kind of thing — and where `relations` is empty
+        // this is the whole of what the answer had to say about prior art,
+        // which is the sentence `D-ANS-123` was written about.
+        if ($found['mentioned'] !== []) {
+            $lines[] = 'Cited in the text below and filed as no relation, so this is the writer\'s own claim about'
+                . ' prior art rather than somebody\'s triage. It is regularly wrong: read it before framing a patch'
+                . ' against it, and never pass this issue over as a duplicate of it.';
+            foreach ($found['mentioned'] as $mention) {
+                $lines[] = sprintf(
+                    'Mentioned in the %s: #%d — %s',
+                    $mention['where'],
+                    $mention['issue'],
+                    implode(' · ', array_filter([$mention['tracker'], $mention['status'], $mention['subject'], $mention['url']])),
+                );
+            }
+        }
         $lines[] = '';
         $lines[] = '## Reported';
         $lines[] = $found['description'];
         if ($found['reviews'] !== []) {
             $lines[] = '';
             $lines[] = sprintf('## Changes on review.typo3.org (%d)', count($found['reviews']));
-            $lines[] = 'Named in the comments below and lifted out of them. What state one is in now is a'
+            $lines[] = 'Named in the report above or in the comments below, and lifted out of them. What state one is in now is a'
                 . ' typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a'
                 . ' rebase onto another branch. A comment says what was true the day it was written.';
             foreach ($found['reviews'] as $review) {

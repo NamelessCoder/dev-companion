@@ -1470,8 +1470,8 @@ sweep reads without a second call — and its sibling asks the same for a scrape
 issue URL, in this exact shape. What makes `reviews` cheap on a sweep is neither
 the scrape nor the size of the field: it is a source that answers a whole page
 in one query. `relations` is the shape both asks actually name, filled for a
-page by `Forge::related()` in one bulk read (`D-ANS-064`), with `handles()` as
-the scrape beside it. `223257` has no such source at all — whether a cited
+page by `Forge::referenced()` in one bulk read (`D-ANS-064`), with `handles()`
+as the scrape beside it. `223257` has no such source at all — whether a cited
 symbol still exists is a read of the checkout per issue. Both cards are unjudged
 and what fills them is theirs; what this run corrects is the premise they would
 otherwise inherit.

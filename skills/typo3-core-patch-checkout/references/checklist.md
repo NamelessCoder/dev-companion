@@ -44,6 +44,25 @@ whatever happened in the first.
   patch is stale enough that its author rebasing it is the honest outcome; say
   how many and where.
 
+## Taking your own work onto the patch
+
+The same rule, applied to a whole file rather than to a hunk. Your work and the
+patch were written on two different bases, and what decides whether a file of
+yours can go over wholesale is whether those two bases already agree about it.
+
+- **The file is identical on both bases.** Nothing of the author's is
+  overwritten, so copying yours over is transcription. Establish that by
+  comparing the two bases on that path — reading the file says nothing about it.
+- **The two bases differ on it.** Your version carries whatever moved on your
+  base as well as your own work, and taking it whole reverts the author's side
+  without saying so. Move your own hunks instead, and each of them is decided by
+  the rule above.
+- **The patch itself touches the file.** A conflict from the start, whatever the
+  bases say, and never a transcription.
+
+Say per file which of the three it was. That is what the author has to be able
+to check, and the diff between two patch sets does not carry it.
+
 ## What a stop reports
 
 - The change, its patch set, its target branch, and the commit the checkout was
@@ -64,6 +83,9 @@ whatever happened in the first.
   revision under review. Every result from it is about the commit you made and
   not about the patch set the reviewers see, and reporting one as the other is
   the failure this whole file guards.
-- The carried state is local. It is not pushed, and pushing it would be opening
-  a patch set in somebody else's name — that belongs to the workflow that owns
-  amending a change, and only where the change is yours to amend.
+- The carried state is local, and pushing it opens a further patch set on the
+  change it came from: the identifier that links the two travels with the
+  commit. Where that is what was asked for, it is a normal move and what it owes
+  its author is on the Gerrit workflow page; the push itself belongs to the
+  workflow that owns amending a change. Where it was not asked for, the state
+  stays here and the report is the answer.

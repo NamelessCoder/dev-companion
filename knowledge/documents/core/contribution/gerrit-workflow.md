@@ -1,8 +1,8 @@
 ---
 description: >-
-  How a core patch reaches review: the one-time git setup, fetching a patch set into the checkout, carrying one onto current code, pushing, amending a patch set, and backporting.
+  How a core patch reaches review: the one-time git setup, fetching a patch set into the checkout, carrying one onto current code, pushing, amending a patch set, opening one on somebody else's change, and backporting.
 whenToUse: >-
-  When a change is ready to leave the checkout, when a patch under review has to be read or tried out locally, or when a patch already under review has to be changed.
+  When a change is ready to leave the checkout, when a patch under review has to be read or tried out locally, or when a patch already under review has to be changed — your own or another author's.
 hints: []
 ---
 
@@ -240,6 +240,59 @@ git push origin HEAD:refs/for/main
   amending is safe.
 - Before amending, fetch the current patch set when it is not already the local
   commit. Which ref that is and where it is fetched from is above.
+
+## Open a Patch Set on Somebody Else's Change
+
+Anybody may improve a change under review, and the improvement goes up as a
+patch set on that change rather than as a change of its own. The contribution
+guide asks for one thing first: "You can even commit and contribute on other
+people's patches - always make sure to ask first, before you do that."
+
+The review server asks for nothing. `Add Patch Set` is granted to registered
+users on `refs/for/*` by default, so Gerrit cannot tell the owner's push from
+anybody else's. The ask is what stands between them.
+
+Nor is it a last resort. The guide asks a reviewer to fix a coding guidelines
+violation and push a new set rather than vote -1, because "voting -1 because of
+simple CGL violations can easily scare away people and kill motivation".
+
+The commit is amended exactly as above, and the amend is what keeps the change
+its author's:
+
+- `git commit --amend` leaves the **author** as it was — name, address and
+  author date — and makes you the **committer**. That is the intended shape and
+  not something to correct: the author of a change is whoever pushed its first
+  patch set, and the committer is whoever last touched the commit.
+- `git commit --amend --reset-author` is what overwrites the author. The guide
+  keeps it for a change reworked so heavily that whoever pushes says it is no
+  longer the author's, which is rare.
+- The `Change-Id` is untouched, and the `commit-msg` hook leaves an existing one
+  alone rather than adding a second. The id belongs to the change and not to
+  whoever is pushing.
+- Still one commit. `git log --oneline origin/main..HEAD` says so before the
+  push, whoever wrote the commit.
+
+Measured on 2026-08-27 in a scratch clone with `Build/git-hooks/commit-msg`
+installed: amending a commit made under another name left the author line
+unchanged, moved the committer to the local identity, kept the one `Change-Id`
+line and left one commit above the base. `git cherry-pick` answers the same way
+— it keeps the author and carries the `Change-Id` with it. So a patch carried
+onto current code is a rebase of that change, and pushing it opens a patch set
+on it rather than a review of your own.
+
+What the upload owes the author is a comment on the change. The diff between two
+patch sets says what moved and never why, so anything decided on the author's
+behalf is said there — another anchor, a reworded body, a different `Releases:`
+line. The guide's own model is a reviewer writing "Just pushed a new version
+fixing minor CGL stuff. Would be cool if you read through my changes compared to
+your version".
+
+A comment is the whole answer where what would change is the author's to decide.
+The guide votes -1 on a change that "is broken, does not fix the issue, is
+bogus, architecturally wrong or collides with other goals". None of those is a
+correction somebody else writes into the patch, because what comes out is a
+change its author did not propose, under their name. The same holds while the
+ask is unanswered.
 
 ## The Forge Issue a Change Hangs Off
 

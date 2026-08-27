@@ -287,6 +287,13 @@ Reviewer comments are addressed in the patch or answered in the review, never
 silently dropped: a comment nobody replied to is the reason a change sits
 unmerged.
 
+Where the change is somebody else's, those steps hold and two more come with
+them: the author is asked before the patch set goes up, and every decision taken
+on their behalf is said in a comment on the change, because the diff between two
+patch sets says what moved and never why. The amend leaves them the author and
+makes you the committer, which is the shape this is supposed to have — the same
+page carries it.
+
 This skill owns writing a core patch and delivering it — the change itself, its
 tests, its changelog entry, the checks it has to pass, its commit message and
 its push. It does not own judging somebody else's patch, and it does not own

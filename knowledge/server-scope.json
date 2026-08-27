@@ -43,7 +43,7 @@
       "scope": "core"
     },
     {
-      "topic": "Gerrit workflow: setup, pushing, amending, backports",
+      "topic": "Gerrit workflow: setup, pushing, amending, opening a patch set on somebody else's change, backports",
       "depth": "Curated prose, command level. Covers the local git side; it cannot talk to the Gerrit server.",
       "tools": [
         "typo3_rule_lookup"
@@ -556,7 +556,7 @@
       "call": "typo3_commit_message_guide, whose default is a repository of your own"
     },
     {
-      "when": "Pushing for review, amending a patch set, or backporting",
+      "when": "Pushing for review, amending a patch set — your own or another author's — or backporting",
       "call": "typo3_rule_lookup with a Gerrit query"
     },
     {

@@ -423,6 +423,7 @@
       "push",
       "patch set",
       "submit",
+      "amend",
       "backport"
     ],
     "rulesQuery": "gerrit push patch set",
@@ -455,7 +456,9 @@
       "cherry pick",
       "apply the patch",
       "try out the patch",
-      "still applies"
+      "still applies",
+      "amend",
+      "extend the patch"
     ],
     "matchWeak": [
       "review.typo3.org",
@@ -466,7 +469,8 @@
     "checklist": [
       "Fetch the patch set the change is on rather than the one a link happens to name. A change is a series of patch sets, and reading an older one is a review of code nobody is proposing.",
       "A patch that no longer applies is a finding: the branch moved under a change nobody rebased. Resolving your way to something that compiles destroys that finding and produces a patch its author never wrote, so a conflict you cannot take from the change itself ends the work with what it found.",
-      "Leave the checkout on a clean current branch when you are done or when the patch will not apply. A fetched change sitting on a detached head is the state the next session cannot tell from its own work, and a branch you carried the patch onto is that state under a name: delete it as deliberately as you made it."
+      "Leave the checkout on a clean current branch when you are done or when the patch will not apply. A fetched change sitting on a detached head is the state the next session cannot tell from its own work, and a branch you carried the patch onto is that state under a name: delete it as deliberately as you made it. Where the work continues on that branch the checkout stays there and the answer says so, because the branch is the result.",
+      "Local work carried onto somebody else's patch set goes up as a further patch set on their change, which is ordinary practice asked for before it is done. The amend leaves them the author and makes you the committer, so nothing about the name has to be corrected; what the diff between two patch sets cannot say is why, so every decision taken on their behalf is said in a comment on the change."
     ],
     "checks": [],
     "tools": [

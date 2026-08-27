@@ -951,6 +951,39 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('no account configured', $carry, 'nothing says the https URL needs none');
     }
 
+    /**
+     * The page carried amending a change of your own and stopped there, so a
+     * session asked twice to put local work on somebody else's open change
+     * worked out the mechanics and the etiquette alone — `D-KNW-129`.
+     *
+     * The four claims below are what it had to establish: that the practice
+     * exists, what the amend does to the two names, what survives it, and what
+     * the upload owes the author on the change itself.
+     */
+    #[Decision('D-KNW-129')]
+    #[Test]
+    public function aPatchSetOnSomebodyElsesChangeSaysWhatItOwesThatAuthor(): void
+    {
+        $foreign = implode(
+            "\n",
+            array_column(Documents::search('open a patch set on somebody else\'s change'), 'body'),
+        );
+
+        // The contribution guide makes it a condition rather than a courtesy,
+        // and it is the half no reading of git would have supplied.
+        self::assertStringContainsString('ask first', $foreign, 'nothing says the author is asked');
+        self::assertStringContainsString('git commit --amend', $foreign);
+        self::assertStringContainsString('committer', $foreign, 'nothing says which of the two names moves');
+        self::assertStringContainsString('--reset-author', $foreign, 'nothing names the overwrite this is not');
+        self::assertStringContainsString('Change-Id', $foreign, 'nothing says the id survives the amend');
+        // What the diff between two patch sets cannot carry, and therefore what
+        // the change itself has to be told.
+        self::assertStringContainsString('comment on the change', $foreign);
+        // The same rule as the fetch direction above: a claim measured on a day
+        // says which day, so the next session can be wrong about it on purpose.
+        self::assertStringContainsString('Measured on 2026-08-27', $foreign, 'the claim does not say when it held');
+    }
+
     #[Decision('D-ANS-037')]
     #[Test]
     public function aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt(): void
@@ -1643,9 +1676,20 @@ final class KnowledgeTest extends TestCase
      * and the entry at once now reaches both pages by construction. The one
      * page it holds is the new one, on the words a session already editing the
      * file asks with.
+     *
+     * A third time with `D-KNW-129`, which added a section about patch sets to
+     * the Gerrit page. A term's weight is computed over the sections in front
+     * of the query, so one more section carrying `patch` costs every term of
+     * this query a quarter of a percent — and `Release Branches and Backports`
+     * and `Release Targets` were sitting at 0.501286 against a floor of 0.5.
+     * Both fell through it, which is what a fixture resting on a thousandth was
+     * worth. The cut is still a cut and still spans two pages, so what it holds
+     * is the other half: the page the second call is answered with is already
+     * excerpted and already offered here.
      */
     #[Decision('D-ANS-076')]
     #[Decision('D-KNW-111')]
+    #[Decision('D-KNW-129')]
     #[Test]
     public function aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage(): void
     {
@@ -1658,12 +1702,13 @@ final class KnowledgeTest extends TestCase
             [
                 'core/contribution/changelog',
                 'core/contribution/commit-messages',
-                'core/contribution/gerrit-workflow',
             ],
             array_values(array_unique(array_column($first->data['matches'], 'documentId'))),
         );
-        // What the second call went for is in the answer to the first.
-        self::assertStringContainsString('## Release Targets', $first->text);
+        // What the second call goes for is on a page this one excerpts and
+        // hands over whole.
+        self::assertStringContainsString('## Which Change Owes a Changelog File', $first->text);
+        self::assertStringContainsString('typo3_rule_lookup with documentId', $first->text);
 
         $second = Registry::call('typo3_rule_lookup', [
             'query' => 'changelog rst file template sections checkRst',

@@ -1,6 +1,6 @@
 ---
 name: typo3-core-patch-checkout
-description: 'Get a patch under review on review.typo3.org into a core checkout and out again — onto the branch it targets, into a git worktree beside it, or cherry-picked onto current code on a review branch. Trying one out, checking whether it still applies, getting a checkout back onto a clean current branch. Rebasing your own commit is typo3-core-patch-development.'
+description: 'Get a patch under review on review.typo3.org into a core checkout and out again — onto the branch it targets, into a git worktree beside it, cherry-picked onto current code, or as the base for extending somebody else''s change. Trying one out, seeing whether it still applies, leaving the checkout clean. Pushing is typo3-core-patch-development.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/TYPO3/dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 
@@ -42,17 +42,19 @@ them.
 3. `typo3_rule_lookup` for the Gerrit workflow. It carries the ref a patch set
    is fetched by, the one thing about fetching a core change that is not
    guessable — which remote the ref is on, which is not the one the checkout
-   fetches from — and the form the third way in below takes. Those are sections
-   of one page and a search returns the one your words matched, so where the
-   fetch is the task read it whole: `typo3_rule_lookup` with
-   `documentId="core/contribution/gerrit-workflow"`, which also stands as
+   fetches from — the form the third way in below takes, and what a patch set
+   opened on somebody else's change owes its author. Those are sections of one
+   page and a search returns the one your words matched, so read it whole where
+   the fetch is the task, and always on the fourth way in: `typo3_rule_lookup`
+   with `documentId="core/contribution/gerrit-workflow"`, which also stands as
    `typo3://guides/core/contribution/gerrit-workflow`.
 
-## Three ways in
+## Four ways in
 
 The patch goes onto the branch it targets in the checkout you are standing in,
-into a git worktree beside it, or onto current code as a commit of your own. The
-request usually says which.
+into a git worktree beside it, onto current code as a commit of your own, or
+under work of your own as the base it is carried on. The request usually says
+which.
 
 The first two hold the patch as its author wrote it, and what decides between
 them is whether the checkout is free: the branch path needs it to itself, and a
@@ -75,6 +77,14 @@ work, found again after anything moves, and removed on purpose. Where the
 checkout is not free, this way in takes the worktree as the second does, and the
 branch is created there.
 
+The fourth is the one the other three read as an obstacle: the patch is the base
+and work of your own goes on top of it. "Extend their patch with ours", "amend
+somebody else's change" and "add this to the change under review" all ask for
+it, and what comes out is a further patch set on that change rather than a
+change of yours. It uses the third's branch, started at the fetched patch set
+instead of at current code, and the section below is what it owes before
+anything is committed.
+
 ## Before the checkout is changed
 
 Establish these three, in this order, and stop at the first that fails. The
@@ -85,7 +95,10 @@ the worktree path is the worktree.
   of each other cannot be told apart afterwards, and what carrying it does to
   the mixture is not recoverable from the checkout alone. Stop and say what is
   uncommitted; do not stash it as a convenience. Where that uncommitted work is
-  what stands in the way, the worktree is the way past it.
+  what stands in the way, the worktree is the way past it. On the fourth way in
+  it is the material instead: commit it where it stands, before anything is
+  fetched, and say in the answer which branch and which commit that is. Then it
+  has a base, which is what the file by file rule below is asked against.
 - **The target branch is there and current.** A change targeting a release
   branch carried onto the wrong one produces conflicts that are an artefact of
   the mistake, and they look exactly like a stale patch.
@@ -99,10 +112,10 @@ the worktree path is the worktree.
 Fetch the patch set the server says is current, and put the checkout on it. It
 is somebody else's commit and belongs on no local branch of yours for as long as
 it is still that commit, which is what the detached checkout and the worktree
-say. The fetch is the same on all three paths and only its destination differs:
-the checkout detached onto the commit, a worktree created on it while the branch
-you were on stays where it is, or the branch named for the change with the
-commit carried onto it.
+say. The fetch is the same on every path and only its destination differs: the
+checkout detached onto the commit, a worktree created on it while the branch you
+were on stays where it is, the branch named for the change with the commit
+carried onto it, or that same branch started at the commit itself.
 
 Then establish what you are holding before judging anything about it: the
 checkout's commit is the change's current revision, or it is not, and only the
@@ -134,6 +147,38 @@ Where it conflicts, [references/checklist.md](references/checklist.md) is what
 decides whether to resolve or to stop, one conflict at a time. Read it at the
 first conflict rather than after resolving a few — the rule it carries is about
 what you are allowed to know, and it cannot be applied backwards.
+
+## Carry your own work onto the patch set
+
+The ask comes first and it is the author's to answer. Extending a change under
+review is ordinary practice and it is asked for before it is done, so a session
+that has not been told the ask was made makes it rather than assumes it. Where
+it is unanswered, or where what you would change is the author's own decision
+rather than a correction, the answer is a comment on the change and this
+workflow stops with what it found. That is a result and not a failure to
+deliver.
+
+The page step 3 reads whole is what says the rest: what the amend does to the
+author and to the committer, what the upload owes the author on the change
+itself, and what stays fixed whoever pushes. Read it before the first commit and
+not before the push — the ask is not a step that can be taken afterwards.
+
+Then the work moves one file at a time, and the rule is the one that already
+decides a conflict. The checklist carries both halves: whether a file of yours
+can go onto the patch whole, and whether a hunk where the two collide is yours
+to write.
+
+Say what came from where. The patch set the branch started at, the commit your
+own work was on, and which files came from which side: the author is going to
+read the diff between two patch sets, and that diff says what moved and never
+why.
+
+**Once the result stands, invoke `typo3-core-patch-development`.** Pushing it
+belongs to that workflow — the amend, the message and the question of what goes
+up visible to everyone are its steps. What crosses over is the change number,
+the patch set the branch started at, the branch the result sits on, and every
+decision taken on the author's behalf, because that last one is what the comment
+on the change has to carry.
 
 ## Stopping is the normal ending
 
@@ -168,6 +213,13 @@ A checkout sitting on somebody's patch set is not a state to leave behind, and
 it is not a state to start the next piece of work from either. Restoring it is a
 step of its own, taken whether the patch applied or stopped. On the branch path
 it is these six, in this order, because each part makes the next one possible.
+
+There is one ending it does not run for, and it is the handover above: the work
+continues on the review branch, so steps 2, 3, 5 and 6 would move the checkout
+off the result or delete it. What that ending owes is steps 1 and 4 and then the
+answer — the branch, the commit, what on it is not the author's, and that the
+checkout was left there on purpose. Neither "restored" nor silence is what such
+a session reports.
 
 1. **End whatever is in progress first.** A carry that is half applied, or one
    that stopped in a conflict, owns the working tree until it is aborted, and
@@ -222,15 +274,18 @@ rather than the result.
 
 This skill owns getting a change under review into a checkout and back out of
 it: finding it, fetching the patch set, putting it on the branch it targets,
-into a worktree beside it, or onto current code on a branch named for the
-change, resolving what the change itself decides, stopping where it does not,
-and leaving behind a clean branch current with its remote, no worktree of its
-own and no branch it made. It owns the undo as much as the do, and the undo is
-what runs whichever way the rest went. It does not own judging the patch — where
-the request is to say what is wrong with it, `typo3-core-patch-review` owns
-that, and it starts from the working copy this leaves the patch in, worktree,
-checkout or review branch, before the undo runs; carry across which commit the
-findings will be about. It does not own changing the patch either: amending a
-change into a new patch set and pushing it belongs to
-`typo3-core-patch-development`, and carry over the change number, the patch set
-that was fetched and whether it had to be carried onto current code to apply.
+into a worktree beside it, onto current code on a branch named for the change,
+or under work of your own where that change is being extended, resolving what
+the change itself decides, stopping where it does not, and leaving behind a
+clean branch current with its remote, no worktree of its own and no branch it
+made. It owns the undo as much as the do, and the undo is what runs whichever
+way the rest went — the one exception being the branch it hands over, which is
+the result. It does not own judging the patch — where the request is to say what
+is wrong with it, `typo3-core-patch-review` owns that, and it starts from the
+working copy this leaves the patch in, worktree, checkout or review branch,
+before the undo runs; carry across which commit the findings will be about. It
+does not own changing what is on the review server either: amending a change
+into a new patch set and pushing it belongs to `typo3-core-patch-development`,
+and carry over the change number, the patch set that was fetched, whether it had
+to be carried onto current code to apply, and what was decided on the author's
+behalf.

@@ -2530,10 +2530,51 @@ final class SkillTest extends TestCase
         $body = self::flat((string) file_get_contents(
             Paths::root() . '/skills/typo3-core-patch-checkout/SKILL.md',
         ));
-        self::assertStringContainsString('## Three ways in', $body);
+        self::assertStringContainsString('## Four ways in', $body);
         // What the worktree path costs and the branch path does not, which is
         // the half a trigger alone would route a task into a body without.
         self::assertStringContainsString('no suite runs in it until they are installed there', $body);
+    }
+
+    /**
+     * `D-KNW-129`. Two published files disagreed about whether a patch set may
+     * be opened on somebody else's change: `typo3-core-patch-development`
+     * routed the case and this skill's checklist ruled it out, and the session
+     * of 2026-08-25 read the second and worked the whole task out alone.
+     *
+     * The four are held together because they were one gap seen from four
+     * places — the way in, the precondition that read the local work as an
+     * obstacle, the file rule the carry needs, and the ending the mandatory
+     * undo allowed for nowhere. A route whose checklist still forbids it is the
+     * same contradiction in a longer file.
+     */
+    #[Decision('D-KNW-129')]
+    #[Test]
+    public function extendingSomebodyElsesChangeIsAWayIntoTheCheckout(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-checkout/SKILL.md',
+        ));
+        $checklist = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-checkout/references/checklist.md',
+        ));
+
+        // Without the apostrophe: the description is read as the YAML scalar it
+        // is written as, where a single quote stands doubled.
+        self::assertStringContainsString('the base for extending somebody else', self::description(
+            'typo3-core-patch-checkout',
+        ));
+        self::assertStringContainsString('## Carry your own work onto the patch set', $skill);
+        self::assertStringContainsString('On the fourth way in it is the material instead', $skill);
+        self::assertStringContainsString('There is one ending it does not run for', $skill);
+
+        self::assertStringContainsString('## Taking your own work onto the patch', $checklist);
+        self::assertStringNotContainsString(
+            'opening a patch set in somebody else\'s name',
+            $checklist,
+            'the clause that stopped the session still forbids what the skill now routes',
+        );
+        self::assertStringContainsString('it is a normal move', $checklist);
     }
 
     /**
@@ -4177,6 +4218,11 @@ final class SkillTest extends TestCase
             // nowhere. `feedback/2026-08-24-205158` then fetched three patches
             // while holding these two skills and opened it for none of them.
             'typo3-core-patch-development' => ['typo3-core-patch-review', 'typo3-core-patch-checkout'],
+            // The way back out of the fourth way in — `D-KNW-129`. A patch set
+            // carried onto somebody else's change is pushed by the workflow
+            // that owns the amend, and the checkout skill had no crossing at
+            // all until the case it hands over existed.
+            'typo3-core-patch-checkout' => ['typo3-core-patch-development'],
             'typo3-content-element-development' => [
                 'typo3-extension-testing',
                 'typo3-extension-documentation',

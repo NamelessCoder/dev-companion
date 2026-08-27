@@ -3,7 +3,10 @@ id: D-KNW-129
 title: Opening a patch set on somebody else's change is a subject this server owns
 date: 2026-08-27
 status: open
-coveredBy: []
+coveredBy:
+  - KnowledgeTest::aPatchSetOnSomebodyElsesChangeSaysWhatItOwesThatAuthor
+  - KnowledgeTest::aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage
+  - SkillTest::extendingSomebodyElsesChangeIsAWayIntoTheCheckout
 ---
 
 # D-KNW-129 — Opening a patch set on somebody else's change is a subject this server owns
@@ -103,3 +106,26 @@ the mechanics and the etiquette out on its own.
 - Everything the case needs turns out to be one sentence in the section that is
   already there. Then this made a section out of a sentence, and the cost falls
   on a reader who was told to read the page whole.
+
+## Since then
+
+The assumption was read on 2026-08-27 and holds. The contribution guide answers
+a foreign change with a patch set — "You can even commit and contribute on other
+people's patches - always make sure to ask first, before you do that" — and asks
+a reviewer to push a coding guidelines fix rather than vote -1. Gerrit grants
+`Add Patch Set` to registered users on `refs/for/*` by default, so nothing on
+the review server separates the owner's push from anybody else's. A scratch
+clone carrying the core's own `commit-msg` hook settled the rest: the amend
+keeps the author and moves the committer, the `Change-Id` line survives it
+single and unchanged, one commit stays one commit, and a cherry-pick answers the
+same way. So the first **Wrong if** is answered and the other three are not —
+each of those needs a session in the field. The empty `coveredBy` the entry
+predicted is filled by the same commit, in the two assertions it names.
+
+One bullet of the evidence was a misreading, and it stands rather than being
+edited, because it is what the judging session read. `changesNothing: true` on
+an intent does not declare that the task changes nothing: `TaskIntents::owned()`
+reads it as leave to route in a brief that already changes nothing, and what
+makes a brief one of those is the stated change type or an audit, triage,
+operations or diagnosis intent. Landing on `patch-checkout` withholds no route
+on its own.

@@ -129,6 +129,38 @@ final class CommitMessageGuideTest extends TestCase
         self::assertArrayNotHasKey('line-length-boundary', $checks);
     }
 
+    /**
+     * The tool checks one message against a page it never named, and four
+     * sessions wanting that page read none of it — `R-ANS-028`. The pointer is
+     * the call, because a client that lists no resources cannot act on the
+     * address.
+     */
+    #[Requirement('R-ANS-028')]
+    #[Test]
+    public function theCoreAnswerNamesThePageItsRulesAreWrittenIn(): void
+    {
+        $call = [
+            'changeType' => 'BUGFIX',
+            'summary' => 'Show hidden records in the import preview',
+            'issue' => '106123',
+            'releases' => ['main'],
+        ];
+
+        $core = CommitMessageGuide::answer($call + ['workflow' => 'core'])->text;
+
+        self::assertStringContainsString(
+            'typo3_rule_lookup with documentId "core/contribution/commit-messages"',
+            $core
+        );
+        self::assertStringNotContainsString('typo3://guides', $core);
+        // The page describes the core repository and says so in its own
+        // whenToUse, so a project commit is not sent to it.
+        self::assertStringNotContainsString(
+            'core/contribution/commit-messages',
+            CommitMessageGuide::answer($call)->text
+        );
+    }
+
     /** An answer the caller gave in the call wins over the one the subject withholds. */
     #[Test]
     public function anIsBreakingTheCallerPassedAnswersItEvenWhenItIsFalse(): void

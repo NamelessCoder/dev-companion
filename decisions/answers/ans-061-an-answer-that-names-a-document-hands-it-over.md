@@ -170,5 +170,10 @@ tool and does not scale past a fact or two, which is the second **Wrong if**
 above. Naming the page beside the inlined facts is its complement rather than
 its competitor.
 
-Step 2 of the ladder, delivery, and `todo/open/T-260825-2131.md` carries it. The
-change is in `src/`, so `D-FBK-052` queues it rather than closing it here.
+Step 2 of the ladder, delivery, and `todo/open/T-260825-2131.md` carried it. The
+change is in `src/`, so `D-FBK-052` queued it rather than closing it here.
+
+Built the same day: the core answer ends on the page as the `typo3_rule_lookup`
+call, naming what it holds beside the checks above it, and the project answer
+does not. `R-ANS-028` is what it is held by, widened there from a cut section to
+a tool's subject.

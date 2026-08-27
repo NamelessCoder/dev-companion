@@ -13,6 +13,25 @@ use TYPO3\DevCompanion\Result\ToolResult;
  */
 final class CommitMessageGuide extends ReadOnlyTool
 {
+    /**
+     * The page this tool's whole subject is written up in, named where the
+     * caller is already standing in the answer.
+     *
+     * Four sessions wanted `core/contribution/commit-messages` and none read
+     * it. One was inside this answer when it gave up and assembled the page out
+     * of `AGENTS.md`, the checkout's hook and three `git log` statistics runs —
+     * `D-ANS-061`, `R-ANS-028`. Named as the call rather than as the
+     * `typo3://guides` address, which is delivery to a client that lists
+     * resources and none of the four had one.
+     */
+    private const CORE_GUIDE = 'The rules this was checked against are one page, and reading it whole is one call '
+        . '— typo3_rule_lookup with documentId "core/contribution/commit-messages", which needs no resource list. '
+        . "What it carries beside the checks above:\n"
+        . '- What the commit hook writes into the message afterwards, and how a subject marks a patch that is '
+        . "still work in progress.\n"
+        . '- What a breaking change, a deprecation or a changed signature owes beside the message: the changelog '
+        . 'file it announces, and the extension scanner entry a removed member takes.';
+
     public static function name(): string
     {
         return 'typo3_commit_message_guide';
@@ -129,6 +148,15 @@ final class CommitMessageGuide extends ReadOnlyTool
                 . 'passed. workflow="core" for a patch against the TYPO3 core.'
             : 'Checked against the core contribution rules, trailers included. workflow="project" applies the same '
                 . 'subject and body rules without the Forge issue and the Releases: trailer.';
+
+        // The core answer alone, because the page describes the core repository
+        // and says so in its own whenToUse. A project commit is checked against
+        // the subject and body rules the page shares, and owes none of what the
+        // rest of it demands.
+        if ($workflow === CommitMessage::WORKFLOW_CORE) {
+            $lines[] = '';
+            $lines[] = self::CORE_GUIDE;
+        }
 
         return ToolResult::create(implode("\n", $lines), [
             'message' => $result['message'],

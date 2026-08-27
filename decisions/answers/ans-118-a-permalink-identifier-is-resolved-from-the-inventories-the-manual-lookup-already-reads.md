@@ -3,7 +3,12 @@ id: D-ANS-118
 title: A permalink identifier is resolved from the inventories the manual lookup already reads
 date: 2026-08-27
 status: open
-coveredBy: []
+coveredBy:
+  - PermalinkTest::aManualServedFromAnotherBranchSaysWhichOneAnswered
+  - PermalinkTest::aUrlThatIsGoneIsAnsweredWithTheNamesCarryingItsWords
+  - PermalinkTest::aUrlThatStillExistsIsAnsweredWithTheIdentifiersReachingIt
+  - PermalinkTest::anIdentifierResolvesToThePageAndAnchorTheInventoryNames
+  - PermalinkTest::bothSpellingsOfAConfigurationValueAnswerWithTheDeclaredOne
 ---
 
 # D-ANS-118 — A permalink identifier is resolved from the inventories the manual lookup already reads
@@ -35,9 +40,8 @@ of it on one question — does this identifier resolve, and what replaces this U
 - The artefact is already fetched. `Manual\Documentation` reads each manual's
   `objects.inv` per branch and holds it against the host's `ETag` (`D-ANS-065`),
   so a second read of a current inventory costs one round trip and no payload.
-- `Documentation::pages()` reads only the `std:doc` role, because what it
-  searches is a table of contents (`R-DOC-001`). The identifiers are in the
-  roles it skips.
+- The manual search reads only the `std:doc` role, because what it searches is a
+  table of contents (`R-DOC-001`). The identifiers are in the roles it skips.
 - **The inventory is the identifier index.** TYPO3 Explained at `main` lists
   12093 names, and `extension-scanner` is among them as `std:label` pointing at
   `ExtensionArchitecture/HowTo/UpdateExtensions/ExtensionScanner.html#extension-scanner`
@@ -130,3 +134,24 @@ of it on one question — does this identifier resolve, and what replaces this U
 - It answers what `typo3_documentation_lookup` already answers. The two read one
   artefact, and a caller asked to choose between them by name is a boundary
   stated in the wrong place.
+
+## Since then
+
+`typo3_permalink_lookup` was built on 2026-08-27 and the question this entry
+left open was settled first.
+[`D-ANS-120`](ans-120-a-manual-is-reached-by-a-listed-shortcode-or-by-a-core-package-name.md)
+is which manuals it answers for: twelve named ones in `knowledge/manuals.json`,
+every manual of a package the core ships derived from the package name, and no
+extension manual — that last one is this entry's third **Assumed** with a reason
+under it, since such a manual is versioned on the extension's own releases.
+[`D-ANS-119`](ans-119-a-permalink-identifier-is-every-inventory-name-that-is-not-a-page.md)
+is which names it resolves: every role of the inventory except `std:doc`, which
+is the complement of what the manual search reads.
+
+Two things this entry assumed were read against the host in that run. The
+inventory names and the identifiers the route accepts agree over one name of
+each of the fourteen non-page roles, and `std:doc` is the one role the route
+rejects. The version fallback is detectable without a second request: the
+inventory's own `# Version:` line says which branch answered, so the widening
+this entry demanded be reported is reported off the artefact rather than off the
+redirect.

@@ -23,12 +23,14 @@ JavaScript reached it.
 
 ## Evidence
 
-- Measured against `docs.typo3.org` on 2026-08-08, over the four manuals
-  `Documentation::DOCUMENTS` names at 14.3. Coverage: the rendered roots index
-  1420 pages, the inventories 1431, 1416 of them shared. What only the root has
-  is `singlehtml/Index.html`, one per manual, which `robots.txt` disallows for
-  `User-agent: *`. What only the inventory has is each manual's own entry page,
-  its `404.html`, and the pages its navigation omits.
+- Measured against `docs.typo3.org` on 2026-08-08, over the four manuals this
+  server searches at 14.3, which `Manuals::searched()` is the list of since
+  `D-ANS-120` and was a constant of `Documentation` until then. Coverage: the
+  rendered roots index 1420 pages, the inventories 1431, 1416 of them shared.
+  What only the root has is `singlehtml/Index.html`, one per manual, which
+  `robots.txt` disallows for `User-agent: *`. What only the inventory has is
+  each manual's own entry page, its `404.html`, and the pages its navigation
+  omits.
 - The titles disagree on **505 of the 1416 shared pages**. The ViewHelper
   reference agrees on 30 of 188: it navigates to `Global/If.html` as "if" and
   publishes it as "If ViewHelper <f:if>".

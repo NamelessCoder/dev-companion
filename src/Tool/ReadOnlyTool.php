@@ -17,9 +17,9 @@ abstract class ReadOnlyTool implements Tool
 {
     /**
      * Whether the answer is read from a host this package does not own, which
-     * is the one annotation that varies. Five tools reach one — the manuals,
-     * the tracker, the review server, the registry, and the changelog above
-     * the installed major.
+     * is the one annotation that varies. The tools that reach one are the
+     * manuals and their permalinks, the tracker, the review server, the
+     * registry, and the changelog above the installed major.
      */
     protected const OPEN_WORLD = false;
 

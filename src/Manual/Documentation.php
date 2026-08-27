@@ -20,18 +20,6 @@ use TYPO3\DevCompanion\Search\Text;
  */
 final class Documentation
 {
-    private const HOST = 'https://docs.typo3.org';
-
-    /**
-     * The table of contents of one manual, in the form its own builder writes.
-     *
-     * The rendered root was read for it until 2026-08-08, and what it gave was
-     * the link text of a navigation tree rather than the title a page states.
-     * The inventory carries the stated one, is a documented artefact rather than
-     * a theme's markup, and lists the pages the navigation omits — `D-ANS-065`.
-     */
-    private const INVENTORY = 'objects.inv';
-
     /**
      * The page of a manual that is not one, and the one page an inventory lists
      * that a caller must never be sent to.
@@ -39,28 +27,14 @@ final class Documentation
     private const NOT_A_PAGE = '404.html';
 
     /**
-     * The manuals searched, each with the collection it is published in.
-     * docs.typo3.org serves the manuals of the core under `/m/` and the ones
-     * maintained beside it under `/other/`, so the collection is part of what
-     * says where a manual is and not a constant of the host.
+     * What an inventory lists that this searches: the pages, which is what a
+     * table of contents is made of.
      *
-     * @var array<string, array{title: string, collection: string}>
+     * The other roles are the addressable objects inside those pages, they are
+     * what a permalink identifier names, and `Manual\Permalink` reads them
+     * (`R-DOC-001`, `D-ANS-119`).
      */
-    private const DOCUMENTS = [
-        'typo3/reference-coreapi' => ['title' => 'TYPO3 Explained', 'collection' => 'm'],
-        'typo3/reference-typoscript' => ['title' => 'TypoScript Explained', 'collection' => 'm'],
-        // The TCA reference is its own manual, and TYPO3 Explained does not
-        // repeat it: a question about `inline`, `foreign_field` or a column
-        // type was searched in two manuals that describe everything around TCA
-        // and never TCA itself, and came back with whatever else carried the
-        // word.
-        'typo3/reference-tca' => ['title' => 'TCA Reference', 'collection' => 'm'],
-        // And the same for a ViewHelper. No manual above documents one, so
-        // `f:if` was answered with whatever prose carries the word — the page
-        // that says what it does is `Global/If.html` of this reference
-        // (`D-ANS-023`).
-        'typo3/view-helper-reference' => ['title' => 'Fluid ViewHelper Reference', 'collection' => 'other'],
-    ];
+    private const PAGE = 'std:doc';
 
     /**
      * What a page is searched by. The title is what it is called; the path is
@@ -91,46 +65,15 @@ final class Documentation
     /** What this reader prints as a block of its own, which is also what makes a `dd` more than a value. */
     private const BLOCKS = './/h1|.//h2|.//h3|.//h4|.//h5|.//h6|.//p|.//pre|.//li|.//dt|.//dd';
 
-    /** @param \Closure(string): ?string|null $fetch */
     private readonly Fetch $reader;
 
-    /**
-     * What leaves this process, and the seam a unit test takes instead.
-     *
-     * `DocumentationLookup` builds its own instance, so a test driving the tool
-     * itself — its text half, which is where a caller reads the coverage — has
-     * nowhere else to hand a transport in. `R-COD-003`.
-     *
-     * @var (\Closure(string): ?string)|null
-     */
-    private static ?\Closure $transport = null;
-
-    /**
-     * The index of each manual as it was last read, under the URL it came from.
-     *
-     * @var array<string, array{etag: string, pages: list<array{title: string, path: string, url: string}>}>
-     */
-    private static array $index = [];
+    private readonly Inventory $inventory;
 
     /** @param (\Closure(string): ?string)|null $fetch */
     public function __construct(?\Closure $fetch = null)
     {
-        $this->reader = new Fetch($fetch ?? self::$transport);
-    }
-
-    /**
-     * What a test hands in, so nothing it drives reaches docs.typo3.org. Null
-     * puts the host back.
-     *
-     * What is held goes with it: another reader is another host, and an index
-     * kept across the two would answer for a manual that was never read.
-     *
-     * @param (\Closure(string): ?string)|null $reader
-     */
-    public static function useReader(?\Closure $reader): void
-    {
-        self::$transport = $reader;
-        self::$index = [];
+        $this->reader = new Fetch($fetch ?? Manuals::reader());
+        $this->inventory = new Inventory($this->reader);
     }
 
     /**
@@ -162,7 +105,7 @@ final class Documentation
         $pages = [];
         $indexed = [];
 
-        foreach (self::DOCUMENTS as $document => $manual) {
+        foreach (Manuals::searched() as $document => $manual) {
             $base = self::base($document, $targetVersion);
             $index = $this->index($base);
             if ($index === null) {
@@ -292,7 +235,7 @@ final class Documentation
     public function page(string $url, string $targetVersion): array
     {
         $owner = null;
-        foreach (self::DOCUMENTS as $document => $manual) {
+        foreach (Manuals::searched() as $document => $manual) {
             $base = self::base($document, $targetVersion);
             if (str_starts_with($url, $base) && str_ends_with(explode('#', $url, 2)[0], '.html')) {
                 $owner = ['document' => $document, 'title' => $manual['title']];
@@ -339,98 +282,41 @@ final class Documentation
     /** Where one manual is published, at one version. */
     private static function base(string $document, string $targetVersion): string
     {
-        return sprintf(
-            '%s/%s/%s/%s/en-us/',
-            self::HOST,
-            self::DOCUMENTS[$document]['collection'],
-            $document,
-            rawurlencode($targetVersion),
-        );
+        return Manuals::base(Manuals::searched()[$document]['collection'], $document, $targetVersion);
     }
 
     /**
-     * The pages of one manual, held until the host says they changed.
+     * The pages of one manual, each with the title it was published under.
      *
-     * Every artefact on this host carries an `ETag` and answers `If-None-Match`
-     * with a 304 and a zero-byte body, so the second lookup of a session pays
-     * one round trip and no payload for an index that is still current. That is
-     * what makes the inventory affordable at all: it is 308 kB for TYPO3
-     * Explained against 19.9 kB for the compressed root, so a session that
-     * fetched it again every time would cost the host more than the navigation
-     * tree it replaced.
-     *
-     * It is not held in `Http\Recent`, which holds an answer for a chosen while
-     * because its source cannot say whether it is still current. This one can,
-     * so there is no while to choose: a 304 is the host saying that what is held
-     * is still its answer.
-     *
-     * A read that failed answers the same way a 304 does, with what is held. The
-     * pages are what this host published; a caller reaching one of them while
-     * the host is down gets an empty excerpt, which is a better answer than the
-     * book disappearing from the search.
+     * Null is a manual that did not answer and has not answered before, which is
+     * `Inventory`'s whole error vocabulary; an empty list is a book that
+     * answered and lists no page.
      *
      * @return list<array{title: string, path: string, url: string}>|null
      */
     private function index(string $base): ?array
     {
-        $url = $base . self::INVENTORY;
-        $held = self::$index[$url] ?? null;
-        $response = $this->reader->read($url, $held === null ? [] : ['If-None-Match: ' . $held['etag']]);
-        if ($response['body'] === null) {
-            return $held['pages'] ?? null;
-        }
-
-        $pages = self::pages($response['body'], $base);
-        if ($pages === null) {
-            return $held['pages'] ?? null;
-        }
-        if ($response['etag'] !== null) {
-            self::$index[$url] = ['etag' => $response['etag'], 'pages' => $pages];
-        }
-
-        return $pages;
-    }
-
-    /**
-     * The pages a Sphinx inventory lists, each with the title it was published
-     * under.
-     *
-     * The format is four comment lines and then everything else compressed with
-     * zlib, one object per line: the name, its `domain:role`, a priority, the
-     * URI it resolves to and the name it is displayed under, where a `-` stands
-     * for a display name equal to the object's own. Only `std:doc` is read,
-     * because the other roles are the addressable objects inside the pages and
-     * what this searches is a table of contents (`R-DOC-001`). Null is a body
-     * that is not an inventory, which is what bot protection answers with a 200
-     * in front of it (`D-ANS-034`), and an empty list is a book that answered.
-     *
-     * @return list<array{title: string, path: string, url: string}>|null
-     */
-    private static function pages(string $inventory, string $base): ?array
-    {
-        $compressed = explode("\n", $inventory, 5)[4] ?? '';
-        $listing = @zlib_decode($compressed);
-        if (!is_string($listing)) {
+        $inventory = $this->inventory->of($base);
+        if ($inventory === null) {
             return null;
         }
 
         $pages = [];
         $seen = [];
-        foreach (explode("\n", $listing) as $line) {
-            if (preg_match('/^(.+?) +std:doc +-?\d+ +(\S+) +(.*)$/', $line, $object) !== 1) {
+        foreach ($inventory['objects'] as $object) {
+            if ($object['role'] !== self::PAGE) {
                 continue;
             }
-            [, $name, $path, $title] = $object;
             // `<Unknown>` is what the writer puts where a page has no title of
             // its own — three pages of the ViewHelper reference at 14.3 — and
             // the document name is what the navigation showed for them.
-            $title = $title === '-' || $title === '<Unknown>' ? $name : $title;
-            $url = $base . ltrim($path, '/');
-            if ($path === self::NOT_A_PAGE || $title === '' || isset($seen[$url])) {
+            $title = $object['display'] === '<Unknown>' ? $object['name'] : $object['display'];
+            $url = $base . $object['uri'];
+            if ($object['uri'] === self::NOT_A_PAGE || $title === '' || isset($seen[$url])) {
                 continue;
             }
             $seen[$url] = true;
-            $pages[] = ['title' => $title, 'path' => $path, 'url' => $url];
+            $pages[] = ['title' => $title, 'path' => $object['uri'], 'url' => $url];
         }
 
         return $pages;
@@ -716,7 +602,7 @@ final class Documentation
             'mode' => $mode,
             'status' => $status,
             'targetVersion' => $targetVersion,
-            'source' => self::HOST,
+            'source' => Manuals::HOST,
             'queries' => $queries,
             'results' => $results,
             'unavailable' => $unavailable,

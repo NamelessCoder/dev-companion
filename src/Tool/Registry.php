@@ -36,6 +36,7 @@ final class Registry
         TestRunGuide::class,
         HintLookup::class,
         DocumentationLookup::class,
+        PermalinkLookup::class,
         ForgeLookup::class,
         GerritLookup::class,
         ComponentLookup::class,

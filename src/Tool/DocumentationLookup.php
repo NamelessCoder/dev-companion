@@ -10,8 +10,9 @@ use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
 
 /**
- * The official, versioned TYPO3 manuals at docs.typo3.org — one of the two
- * tools that reach a host outside this package, beside `typo3_gerrit_lookup`.
+ * The official, versioned TYPO3 manuals at docs.typo3.org, searched for what a
+ * page says. Where a link points in them is `typo3_permalink_lookup`, which
+ * reads the same inventories for the names the pages carry.
  */
 final class DocumentationLookup extends ReadOnlyTool
 {

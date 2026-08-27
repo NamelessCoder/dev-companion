@@ -12,8 +12,8 @@ namespace TYPO3\DevCompanion\Upkeep;
  * writes down what a filled answer looks like. A second table would drift, and
  * the recording would then illustrate calls nothing validates. It lives in
  * `Upkeep` rather than in `tests/` because a command may not depend on a test
- * class. The two calls that reach outside this repository are here rather than
- * behind a skip list, because a host that does not answer is an answer the
+ * class. The calls that reach a host outside this repository are here rather
+ * than behind a skip list, because a host that does not answer is an answer the
  * schema declares — `D-DOC-008`.
  */
 final class ToolCalls
@@ -233,6 +233,22 @@ final class ToolCalls
             ]],
             'documentation: unsupported version' => ['typo3_documentation_lookup', [
                 'queries' => ['page title event'],
+                'targetVersion' => '999',
+            ]],
+            // The three shapes of the reporting session's own question, in one
+            // call: an identifier that resolves, one it guessed wrong, and the
+            // dead URL the guess came from — `D-ANS-118`.
+            'permalink: identifiers and a URL at once' => ['typo3_permalink_lookup', [
+                'identifiers' => ['t3tca:columns-onchange', 'typo3-cms-lowlevel:start'],
+                'urls' => ['https://docs.typo3.org/m/typo3/reference-tca/11.5/en-us/Columns/Properties/OnChange.html'],
+                'targetVersion' => '14.3',
+            ]],
+            'permalink: no manual is known for the shortcode' => ['typo3_permalink_lookup', [
+                'identifiers' => ['quantumflux:start'],
+                'targetVersion' => '14.3',
+            ]],
+            'permalink: unsupported version' => ['typo3_permalink_lookup', [
+                'identifiers' => ['t3coreapi:start'],
                 'targetVersion' => '999',
             ]],
             'components: list' => ['typo3_component_lookup', []],

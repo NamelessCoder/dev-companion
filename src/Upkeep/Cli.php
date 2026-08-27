@@ -30,6 +30,7 @@ use TYPO3\DevCompanion\Upkeep\Command\HintCoverage;
 use TYPO3\DevCompanion\Upkeep\Command\HintProbe;
 use TYPO3\DevCompanion\Upkeep\Command\KnowledgeFormat;
 use TYPO3\DevCompanion\Upkeep\Command\LinkCheck;
+use TYPO3\DevCompanion\Upkeep\Command\ManualCheck;
 use TYPO3\DevCompanion\Upkeep\Command\ProseCheck;
 use TYPO3\DevCompanion\Upkeep\Command\ProseFormat;
 use TYPO3\DevCompanion\Upkeep\Command\ReferenceCheck;
@@ -144,6 +145,7 @@ final class Cli
         $application->addCommand(new ComponentCheck());
         $application->addCommand(new ComponentDerive());
         $application->addCommand(new ComponentPaths());
+        $application->addCommand(new ManualCheck());
         $application->addCommand(new ReferenceCheck());
         $application->addCommand(new SystemExtensionCheck());
         $application->addCommand(new VersionCheck());

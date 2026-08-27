@@ -1,0 +1,90 @@
+{
+  "manuals": [
+    {
+      "shortcode": "t3coreapi",
+      "collection": "m",
+      "document": "typo3/reference-coreapi",
+      "title": "TYPO3 Explained",
+      "searched": true
+    },
+    {
+      "shortcode": "t3tsref",
+      "collection": "m",
+      "document": "typo3/reference-typoscript",
+      "title": "TypoScript Explained",
+      "searched": true
+    },
+    {
+      "shortcode": "t3tca",
+      "collection": "m",
+      "document": "typo3/reference-tca",
+      "title": "TCA Reference",
+      "searched": true
+    },
+    {
+      "shortcode": "t3viewhelper",
+      "collection": "other",
+      "document": "typo3/view-helper-reference",
+      "title": "Fluid ViewHelper Reference",
+      "searched": true
+    },
+    {
+      "shortcode": "changelog",
+      "collection": "c",
+      "document": "typo3/cms-core",
+      "title": "TYPO3 Core Changelog",
+      "searched": false
+    },
+    {
+      "shortcode": "t3start",
+      "collection": "m",
+      "document": "typo3/tutorial-getting-started",
+      "title": "Getting Started",
+      "searched": false
+    },
+    {
+      "shortcode": "t3sitepackage",
+      "collection": "m",
+      "document": "typo3/tutorial-sitepackage",
+      "title": "Site Package Tutorial",
+      "searched": false
+    },
+    {
+      "shortcode": "t3editors",
+      "collection": "m",
+      "document": "typo3/tutorial-editors",
+      "title": "Tutorial for Editors",
+      "searched": false
+    },
+    {
+      "shortcode": "t3contribute",
+      "collection": "m",
+      "document": "typo3/guide-contributionworkflow",
+      "title": "TYPO3 Core Contribution Guide",
+      "searched": false
+    },
+    {
+      "shortcode": "h2document",
+      "collection": "m",
+      "document": "typo3/docs-how-to-document",
+      "title": "How to Document",
+      "searched": false
+    },
+    {
+      "shortcode": "t3renderguides",
+      "collection": "other",
+      "document": "t3docs/render-guides",
+      "title": "Render guides",
+      "searched": false
+    },
+    {
+      "shortcode": "fluid",
+      "collection": "other",
+      "document": "typo3fluid/fluid",
+      "title": "Fluid Explained",
+      "searched": false
+    }
+  ],
+  "verifiedAt": "2026-08-27",
+  "verifyCommand": "bin/cli manuals:check"
+}

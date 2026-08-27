@@ -166,6 +166,13 @@ at all in the state the machine is in.
         Search the labels registered in the TYPO3 installation you are working
         in.
 
+    .. card:: :doc:`typo3_permalink_lookup <typo3_permalink_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Validate docs.typo3.org permalink identifiers and turn old documentation
+        URLs into the identifiers that replace them.
+
     .. card:: :doc:`typo3_project_describe <typo3_project_describe>`
         :label: Describe
         :action: Open reference
@@ -265,6 +272,7 @@ at all in the state the machine is in.
     typo3_hint_lookup
     typo3_icon_lookup
     typo3_label_lookup
+    typo3_permalink_lookup
     typo3_project_describe
     typo3_reference_list
     typo3_rule_lookup

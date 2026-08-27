@@ -90,11 +90,13 @@ queries that entry offers as proof that *LoginProvider* is reachable at all.
   minimum" half is built; its second sentence — return the fact rather than the
   best six collisions — is not, and that is the floor. The feedback is trimmed
   to it and the card keeps waiting on the measure.
-- **`Documentation::useReader()`, so the text half is driven by a test.** The
-  tool builds its own `Documentation`, so a fixture had nowhere to go and the
+- **A reader a test hands in, so the text half is driven by one.** The tool
+  builds its own `Documentation`, so a fixture had nowhere to go and the
   sentence would have been held by docs.typo3.org answering during a test run.
   `R-COD-003` says a unit test stubs what is outside it, and this is the seam
-  `Typo3Cli::useRunner()` already is for the console.
+  `Typo3Cli::useRunner()` already is for the console. It sat on `Documentation`
+  until `D-ANS-119` gave the two manual readers one inventory, and is
+  `Manuals::useReader()` since.
 
 ## Assumed
 

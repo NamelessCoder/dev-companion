@@ -8,6 +8,7 @@ use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Manual\Documentation;
+use TYPO3\DevCompanion\Manual\Manuals;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\DocumentationLookup;
@@ -18,7 +19,7 @@ final class DocumentationTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Documentation::useReader(null);
+        Manuals::useReader(null);
     }
 
     #[Test]
@@ -465,7 +466,7 @@ final class DocumentationTest extends TestCase
     #[Test]
     public function theAnswerSaysWhereNothingCoversHalfTheQuery(): void
     {
-        Documentation::useReader($this->manuals());
+        Manuals::useReader($this->manuals());
 
         $text = Registry::call('typo3_documentation_lookup', [
             'queries' => ['TCA inline foreign_field foreign_sortby localization children'],
@@ -486,7 +487,7 @@ final class DocumentationTest extends TestCase
     #[Test]
     public function anAnswerThatCoversTheQuestionCarriesNoSuchSentence(): void
     {
-        Documentation::useReader($this->manuals());
+        Manuals::useReader($this->manuals());
 
         $text = Registry::call('typo3_documentation_lookup', [
             'queries' => ['inline'],
@@ -726,7 +727,7 @@ final class DocumentationTest extends TestCase
     #[Test]
     public function aMissOnAnIdentifierNamesTheBareNamesInsideIt(): void
     {
-        Documentation::useReader(fn(string $url): string => $this->inventory([]));
+        Manuals::useReader(fn(string $url): string => $this->inventory([]));
 
         $answer = Registry::call('typo3_documentation_lookup', [
             'queries' => ['stdWrap_override', 'ContentObjectRenderer::stdWrap_override', 'tt_content', 'getByTag()'],
@@ -752,7 +753,7 @@ final class DocumentationTest extends TestCase
     #[Test]
     public function aMissOnOrdinaryWordsOffersNothingInstead(): void
     {
-        Documentation::useReader(fn(string $url): string => $this->inventory([]));
+        Manuals::useReader(fn(string $url): string => $this->inventory([]));
 
         $answer = Registry::call('typo3_documentation_lookup', [
             'queries' => ['backend layout'],

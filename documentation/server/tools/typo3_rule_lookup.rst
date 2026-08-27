@@ -290,8 +290,8 @@ Text:
     - core/contribution/rules — TYPO3 Core Contribution Rules: 4 of its 5 headings are not above — Contribution Flow, Code Style, Testing, Documentation.
 
     The hints also cover this — call typo3_hint_lookup with the id:
-    - documentation-links — Linking Into the Official Documentation From a Template or From PHP
     - documentation-changelog — Documentation and Changelog
+    - documentation-links — Linking Into the Official Documentation From a Template or From PHP
 
 Data:
 
@@ -373,12 +373,12 @@ Data:
         "withheldDocuments": [],
         "alsoInHints": [
             {
-                "id": "documentation-links",
-                "title": "Linking Into the Official Documentation From a Template or From PHP"
-            },
-            {
                 "id": "documentation-changelog",
                 "title": "Documentation and Changelog"
+            },
+            {
+                "id": "documentation-links",
+                "title": "Linking Into the Official Documentation From a Template or From PHP"
             }
         ]
     }

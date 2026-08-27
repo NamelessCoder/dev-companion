@@ -4,6 +4,8 @@ title: 'The live manuals answer for the version they were asked for'
 status: held
 heldBy:
   - DocumentationTest
+  - PermalinkTest
+  - PermalinkTest::aManualServedFromAnotherBranchSaysWhichOneAnswered
   - ScopeTest::everyToolIsReachableThroughTheScope
   - ScopeTest::everyToolNamedInTheScopeExists
   - ToolContractTest::aToolCallAnswersWithTextAndMatchingData

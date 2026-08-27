@@ -55,6 +55,9 @@ final class ToolContractTest extends TestCase
             self::assertSame(
                 in_array($name, [
                     'typo3_documentation_lookup',
+                    // The inventories those same manuals publish, read for the
+                    // identifiers rather than for the pages — `D-ANS-119`.
+                    'typo3_permalink_lookup',
                     'typo3_forge_lookup',
                     'typo3_gerrit_lookup',
                     // The versions above the installed major, which the
@@ -338,8 +341,8 @@ final class ToolContractTest extends TestCase
      * The table is `Upkeep\ToolCalls`, because `bin/cli tools:record` drives the
      * same calls and a second table would drift from this one. In a test run
      * nothing discovers an installation, so every installation-backed entry here
-     * exercises the unanswered path. Two of the calls reach docs.typo3.org, and
-     * what is asserted below does not turn on the host: unreached, it answers
+     * exercises the unanswered path. Several of the calls reach docs.typo3.org,
+     * and what is asserted below does not turn on the host: unreached, it answers
      * `source-not-answering`, which validates like any other answer —
      * `D-DOC-008`.
      *

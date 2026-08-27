@@ -284,6 +284,15 @@
       "scope": "any"
     },
     {
+      "topic": "Whether a documentation permalink resolves, what it lands on, and which identifier replaces an old docs.typo3.org URL",
+      "depth": "The Sphinx inventory every manual publishes, read for the names a permalink addresses rather than for the pages. Per identifier: the page and anchor it reaches, what the manual registers the name as, every other spelling reaching the same target, and which of them the manual declares rather than generates. Per URL: the identifiers pointing at it, or, where the page is gone, the names carrying the words of the URL as candidates a reader picks from. Many at a time, because one inventory answers every identifier of its manual. It says which branch answered, since the host serves main for a manual it has no branch for and says nothing about it. The named manuals are a maintained list and a system extension is addressed by its Composer package name; an extension manual outside the core is not answered for, because it is versioned on its own releases rather than on TYPO3's.",
+      "tools": [
+        "typo3_permalink_lookup"
+      ],
+      "source": "https://docs.typo3.org (network), knowledge/manuals.json",
+      "scope": "any"
+    },
+    {
       "topic": "Backend CSS architecture, design tokens, class naming",
       "depth": "Curated prose covering the Sass sources, the token contract, and the component structure.",
       "tools": [
@@ -537,6 +546,10 @@
     {
       "when": "Needing the official API, reference or tutorial documentation for a covered TYPO3 version",
       "call": "typo3_documentation_lookup with several short English queries and targetVersion, then with page and the same targetVersion to read a selected result"
+    },
+    {
+      "when": "Writing a documentation link, replacing a docs.typo3.org URL with a permalink, or checking that the permalinks a patch touches still resolve — a guessed identifier is a 404 nothing in a checkout reports",
+      "call": "typo3_permalink_lookup with identifiers for the ones to validate and urls for the ones to replace, as many at a time as the change holds"
     },
     {
       "when": "Writing or amending the commit message",

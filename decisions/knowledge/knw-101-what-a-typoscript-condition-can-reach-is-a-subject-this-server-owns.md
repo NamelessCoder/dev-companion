@@ -111,22 +111,10 @@ runs.
 
 ## Confirmed on 2026-08-18
 
-The statement was written as a hint of its own, `typoscript-conditions` in
-`knowledge/hints/typoscript-conditions.json`, and both probe queries the
-evidence recorded as reaching nothing now reach it.
-
-The 12.4 reading the entry left open came out the other way from the **Wrong
-if** above. `AfterPageAndLanguageIsResolvedEvent` is dispatched from
-`TypoScriptFrontendController::determineId()` — `.checkouts/12.4:718` — which
-the `tsfe` middleware calls, and `prepare-tsfe-rendering` declares itself
-`after` that one and is where the conditions are matched. So the event is ahead
-of condition matching on every covered major and the recommendation is not
-bound; what binds is the accessor a listener takes the record off, because the
-event carries the controller on 12.4 and the `PageInformation` from 13.4 on. The
-variable set is the same reading on 12.4 as the entry recorded for 13.4, minus
-the middleware: it is assembled in `getFromCache()` and completed by the same
-visitor, `tsfe` included.
-
-Both globals are populated before condition matching on 12.4 as well —
-`TypoScriptFrontendInitialization.php:55` and `:114` — so the statement about
-them binds at 14 rather than at 13.
+Written as a hint of its own, and both probe queries that reached nothing now
+reach it. The reading the entry left open came out the other way from the
+**Wrong if**: the event is dispatched ahead of condition matching on every
+covered major, so the recommendation is not bound. What binds is the accessor a
+listener takes the record off, the event carrying different objects across the
+boundary, and both globals are populated before matching on the oldest major too
+— so that statement binds a major later than the entry had it.

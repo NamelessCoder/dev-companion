@@ -87,29 +87,15 @@ three sources that answer disagree with each other.
 ## Since then
 
 The section is written, and the Contribution Guide was read first because that
-is what **Decided** left owed. It asks for nothing. Its commit message appendix
-lists `Resolves:`, `Related:`, `Releases:`, `Depends:` and `Change-Id:` and
-stops there; the Git setup page names every config a contributor sets and not
-`format.signOff`; the commit hook appendix describes the hook without the
-trailer; the page that walks through writing a patch commits with
-`git commit -a`; and the guide read whole as one document on 2026-08-24 carries
-none of "Signed-off-by", "sign off", "commit -s", "format.signOff", "Developer
-Certificate of Origin" or "DCO". So the first half of the last **Wrong if** is
-answered and the second is not: a review convention nobody wrote down is still
-what could turn this round, and only a maintainer asking for the trailer would
-show it.
+is what **Decided** left owed. It asks for nothing: the commit message appendix
+lists five trailers and stops, the setup page names every config a contributor
+sets and not this one, and the guide read whole carries none of the phrases at
+all. So the first half of the last **Wrong if** is answered and the second is
+not — a review convention nobody wrote down is still what could turn this round.
 
-`typo3_documentation_lookup` is not what read it, though the todo asked for it.
-That tool indexes four manuals — TYPO3 Explained, TypoScript Explained, the TCA
-Reference and the Fluid ViewHelper Reference — and the Contribution Guide is
-none of them, so the guide was fetched page by page instead.
-
-The **Evidence** above was verified again at `9dd4e1bfd7` in the bare repository
-below `.checkouts/`, and every line of it holds: the `AGENTS.md` sentence and
-its footer example, the silence of `CONTRIBUTING.md`, `/^Signed-off-by:/d` on
-line 44 of `Build/git-hooks/commit-msg`, and 5 of the last 500 commits on
-`main`. The entry stays open on its two assumptions, which are about what the
-core does next rather than about what it does.
+The documentation lookup is not what read it, though the todo asked for it: that
+tool indexes four manuals and the guide is none of them. The **Evidence** was
+verified again in the bare repository and every line holds.
 
 ## Revoked on 2026-08-24
 

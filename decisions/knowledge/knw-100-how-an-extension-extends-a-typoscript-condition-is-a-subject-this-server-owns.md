@@ -122,46 +122,17 @@ sees them and cannot carry a dot. The feedback is queued at `normal`.
 
 ## Confirmed on 2026-08-18
 
-The gap is filled by `typoscript-condition-providers` in
-`knowledge/hints/typoscript-condition-providers.json`, unbound, and the three
-queries measured above now answer with it first.
+The gap is filled and the three measured queries answer with it first. The two
+halves became two hints, and not because the assumption was tested: both
+feedback were worked on two branches at once. What makes that survivable is that
+the two are asked in different words.
 
-The two halves became two hints, and not because the assumption was tested. Both
-feedback were claimed as todos on the same day and worked on two branches at
-once, so the evaluation-time half is written under `D-KNW-101` and this hint
-states the registration half alone. What that costs is a caller who arrives on
-one and needs the other, and what makes it survivable is that the two are asked
-in different words: this hint is curated on the provider and the registration
-file, and gives up the bare phrase `typoscript condition` to the half that
-answers a condition which stopped matching.
+The first **Wrong if** does not hold on any checkout: the interface declares two
+getters, the resolver is byte-identical, and it instantiates each provider with
+no argument at all. The third does not hold either. The fourth is answered by
+where the requirement bites: a provider with no dependencies never consults the
+container, and the moment it takes one the default visibility is what makes the
+lookup fall through — which is the case the report arrived with.
 
-The first **Wrong if** was read on all four checkouts and does not hold.
-`ProviderInterface` declares the two getters and nothing else, `Resolver.php` is
-byte-identical from `12.4` to `main`, and its constructor instantiates each
-provider with no argument at all — there is no tag, no interface it checks and
-no constructor argument a provider could take from the `Resolver`.
-
-The third does not hold either. The container query still reaches
-`di-service-not-found`, now third where it was second, behind
-`dependency-injection` and this hint; the neighbour keeps its statement and
-gains a line naming the new hint.
-
-The fourth is answered by where the requirement bites rather than by whether it
-does. A provider with no constructor arguments is built by `new` and never
-consults the container, so nothing is asked of an extension that ships one — and
-the moment it takes a dependency, the default `public: false` under `_defaults`
-is what makes `makeInstance` fall through. That is the case the report arrived
-with, and it is the case the statement is written for.
-
-The **Assumed** on the version bindings is settled and the one about the
-attribute was too narrow. `#[Autoconfigure]` is honoured on `12.4` as well —
-`Frontend\Cache\MetaDataState` and
-`Backend\Hooks\DataHandlerAuthenticationContext` carry it there — so what is
-bound is core's own spelling for `DefaultProvider` rather than what an extension
-may write, and the hint states the rule and both spellings without a binding.
-
-The **Assumed** about the event stays where it is, and is `D-KNW-101`'s. This
-hint states only that a variable object has to be given its request-time state
-from outside, and what makes that possible: the provider is instantiated while
-`IncludeTreeConditionMatcherVisitor` builds its `Resolver`, so a service filled
-earlier in the request is readable through constructor injection at that moment.
+The **Assumed** about the attribute was too narrow, so the hint states the rule
+and both spellings without a binding.

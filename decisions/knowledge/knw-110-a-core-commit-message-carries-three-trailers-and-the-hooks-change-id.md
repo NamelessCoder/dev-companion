@@ -78,65 +78,30 @@ rule rather than the conflict behind it.
 
 ## Since then
 
-The core's `AGENTS.md` was measured on 2026-08-24 rather than taken from
-`D-KNW-109`, because two sessions read it differently on the same day. It landed
-in `781c852587` on 2026-07-28 and stands at the bare repository's `main`,
-`9dd4e1bfd7`. So the file is a month old and deliberately added, not the
-days-old arrival `D-KNW-109` assumed, and the conflict this entry rules on is
-the durable kind rather than one a revert would end.
+The core's own instruction file was measured rather than taken from the
+neighbouring entry, because two sessions read it differently on the same day. It
+is a month old and deliberately added rather than the days-old arrival that
+entry assumed, so the conflict this entry rules on is the durable kind.
 
-The other reading was an absence that is not there: a session working the
-changelog guide reported no `AGENTS.md` in `origin/main`, which is a ref no
-worktree below `.checkouts/` carries — `git ls-tree main -- AGENTS.md` in
-`.checkouts/typo3.git` answers the file. It withheld a sentence rather than
-writing a wrong one, so nothing false reached the corpus.
+Two sessions then met the refusal and no **Wrong if** fired: both quote the
+error, both grant the practice, and both went to the log to establish it for
+themselves. Neither read the page: the check message states the rule and names
+none of what stands behind it.
 
-### 2026-08-25 — reported twice, and an amend is the case the ruling misses
-
-**Two sessions met the refusal after it landed and no `Wrong if` above fired:
-what they report is the price this entry named, plus one case it does not
-reach.**
-
-`feedback/2026-08-24-183512` and `feedback/2026-08-25-114636` come from
-`/home/benji/projects/typo3-cms` on two unrelated tasks. Both quote the
-`refused-trailer` error verbatim, both grant that the practice is what this
-entry says, and both went to `git log` to establish that for themselves — 2 of
-the last 200 commits and 3 of the last 200. Every fact they came back with is
-already in `core/contribution/commit-messages`, verified here and ruled on.
-Neither session read the page, because the check message states the rule and
-names none of what stands behind it: it overrules the core's `AGENTS.md` as
-"whatever the checkout you are working in says", so a session holding that file
-cannot tell whether the server knows about it. That half of the cost is this
-server's to take back, and the card serving both feedback carries it.
-
-The case the ruling does not reach is somebody else's patch set. What the
-maintainer ruled is that the sign-off is not **set**, and both entries weighed
-what a core commit message is written to carry. Measured again on 2026-08-25: a
-core message handed in with a `Signed-off-by:` and a `Change-Id:` comes back
-carrying the `Change-Id:` and not the sign-off, whoever wrote either. So a
-session amending another contributor's patch set is told to strike that person's
-Developer Certificate of Origin attestation, which is a different act from
-declining to write one's own. `feedback/2026-08-24-183512` stood exactly there
-on Gerrit change 91127, where the trailer had survived eight patch sets, and it
-kept the line and said why. Whether the rule reaches an amend is `R-KNW-075`'s
-question and the maintainer's to answer.
+The case the ruling does not reach is somebody else's patch set: a message
+handed in with the trailer comes back without it, so a session amending another
+contributor's work is told to strike that person's attestation, which is a
+different act from declining to write one's own.
 
 ## Revoked on 2026-08-25
 
-The maintainer required the sign-off on every core patch, on the TYPO3
-Association board's statement on GPL and AI-generated code of 2026-07-20 — a
-recommendation nobody here had read when this entry was written. So the trailer
-this entry strikes is the trailer a core commit now carries, and `D-KNW-125` is
-what a reader builds on.
+The maintainer required the sign-off on every core patch, on an association
+statement nobody here had read when this entry was written. So the trailer this
+entry strikes is the one a core commit now carries, and `D-KNW-125` is what a
+reader builds on.
 
-The second **Wrong if** fired word for word: the maintainer set a sign-off on a
-core patch. What it did not anticipate is the direction — it was written
-watching for a case the ruling was too narrow for, and what arrived was a source
-that changed the ruling's own grounds.
-
-Everything else here stands and is carried into `D-KNW-125` rather than left
-behind: the three trailers that did not move, the ruling on `Co-Authored-By:`
-and an agent's own session trailer, the core-only boundary, and the shape of the
-refusal — a trailer the rule refuses comes off the draft rather than being
-reported beside it, because the draft is committed as it stands. Which trailers
-a core commit carries is one rule, so it is stated in one entry.
+The second **Wrong if** fired word for word, and what it did not anticipate is
+the direction: it watched for a ruling that was too narrow, and what arrived was
+a source that changed the ruling's grounds. Everything else is carried into the
+successor rather than left behind, because which trailers a core commit carries
+is one rule.

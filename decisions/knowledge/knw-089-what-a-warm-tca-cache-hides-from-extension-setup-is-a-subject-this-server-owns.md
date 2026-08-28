@@ -136,28 +136,12 @@ package that was already active, on an installation whose caches are warm.
 
 The statement carries no binding, and the assumption that left the question open
 is settled the other way round: what a warm cache hides is not only tables. On
-`.checkouts/12.4` `DefaultTcaSchema::enrichSingleTableFields()` and
-`enrichMmTables()` both skip a table `ext_tables.sql` did not declare, so a TCA
-file for a new table adds nothing there — but both read `$GLOBALS['TCA']`, which
-`ExtensionManagementUtility::loadBaseTca()` takes from the same `tca_base`
-entry, and the MM table of a `select`, `group`, `inline` or `category` column is
-created from TCA alone. So a stale entry hides the derived columns and the MM
-tables on 12.4 and whole tables from 13 on, where
-`ensureTableDefinitionForAllTCAManagedTables()` adds an empty `CREATE TABLE` per
-TCA name — out of `$GLOBALS['TCA']` on 13.4 and out of `TcaSchemaFactory` on
-14.3 and main. The mechanism itself is one sentence on all four: the identifier
-is `PackageDependentCacheIdentifier` with the `tca_base` prefix everywhere, its
-base is the TYPO3 version, the project path and the package manager's cache
-identifier, and the success message is unconditional in `SetupExtensionsCommand`
-on all of them — `Extensionmanager\Command` up to 12.4, `Core\Command` from
-13.4. The two statements the hint already carries say what is derived from TCA
-per major, so the new one states what it is derived from and stays unbound.
+the oldest major the enrichment skips a table the schema file did not declare,
+but it reads the same cached TCA, and an MM table is created from TCA alone — so
+a stale entry hides the derived columns and the MM tables there, and whole
+tables from the next major on. The mechanism itself is one sentence on all four,
+so the new statement says what the identifier is derived from and stays unbound.
 
-Neither `installation-boot` nor `installation-upgrade` took a neighbour line.
-Each describes a case that invalidates the entry as part of its own procedure: a
-fresh clone carries no `var/cache` to read from, and a package move changes the
-package list and usually the TYPO3 version, which is two thirds of what the
-identifier is built from. What the trap needs is a TCA file changing while the
-package list does not, which is neither procedure's case, and a pointer there
-would warn about a trap the reader is not walking into — the third **Wrong if**
-of `D-KNW-087`.
+Neither neighbouring hint took a pointer: each describes a case that invalidates
+the entry as part of its own procedure, and what the trap needs is a TCA file
+changing while the package list does not.

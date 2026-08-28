@@ -106,81 +106,31 @@ exception naming the trusted hosts pattern rather than the file that carries it.
 
 ## Confirmed on 2026-08-18
 
-Read in DDEV v1.25.1's own source, which is what the first two **Wrong if**
-asked for: `pkg/ddevapp/typo3.go` and `pkg/ddevapp/apptypes.go` at the tag. The
-condition is a detection and it belongs to DDEV rather than to the reporting
-project. `CreateSettingsFile` calls `SetApptypeSettingsPaths` before the
-generator, `setTypo3SiteSettingsPaths` looks for an installed TYPO3 — the
-`Typo3Version.php` below the Composer vendor directory for a Composer
-installation, `docroot/typo3` for a legacy one — and where it finds neither it
-sets both paths to files at the project root. `createTypo3SettingsFile` returns
-on its first line where the file's directory is that root, before the warning it
-would otherwise print, so the start says nothing at all. `CreateGitIgnore` is
-skipped by the same test in `CreateSettingsFile`, which is why the reporting
-session found `config/system/` holding only what it had committed.
+Read in DDEV's own source, which is what the first two **Wrong if** asked for.
+The condition is a detection and it belongs to DDEV rather than to the reporting
+project: the settings paths are set before the generator runs, the lookup is for
+an installed core, and where it finds none both paths point at the project root
+— where the generator returns on its first line, before the warning it would
+otherwise print. So the start says nothing at all, and the ignore file is
+skipped by the same test.
 
-So the reporting session's account holds and the phrase it used for the trigger
-was accurate. It is the installed core rather than the document root, which is
-the third **Wrong if** settled too: the hypothesis that session disproved for
-itself — that `config/system/` existing is what triggers the write — is
-disproved in the source.
-
-One thing the statement says differently from the feedback's own suggestion. The
-report asks for the clone to be named as a second trigger for taking the file
-over, beside the SQLite and `omit_containers` case. Those two are not the same
-kind: the database-less installation is a collision that every start repeats, so
-the file has to be taken over there, while the clone is an ordering that a
-second start ends for good. So the statement names starting again as the way out
-and the committed project-owned file as the other, rather than presenting the
-takeover as the remedy.
-
-What the reading added beyond the report is the hooks. Both `CreateSettingsFile`
-calls in `Start()` run before `ProcessHooks("post-start")`, so the install hook
-`installation-operations` already discusses does not produce the file in the
-start that ran it — which is exactly the shape of setup that intent is briefing.
-
-`R-KNW-071` holds both places, and `bin/cli hints:probe` on the reporting
-session's own subject — "DDEV additional.php trustedHostsPattern first start
-fresh clone" — reaches `project-configuration-files` first at
-`appliesTo(37) + text(366)`, against the `text(335)` this entry recorded before
-the statement landed.
+The reporting session's account holds, and it is the installed core rather than
+the document root, which settles the third **Wrong if** too. One thing the
+statement says differently from the report's own suggestion: the two triggers
+are not the same kind, one being a collision every start repeats and the other
+an ordering a second start ends.
 
 ## Since then
 
-The ordering this entry decided did not land in the wording, and the next
-session read the pair flat. Judged on 2026-08-24 from
-`feedback/2026-08-24-140222`, a session setting a DDEV development installation
-up for a TYPO3 extension.
+The ordering did not land in the wording, and the next session read the pair
+flat: both surfaces carry a semicolon and an "or", neither an order nor what the
+second costs. It took that for the route to a single-command start, committed
+the file with all four sections and had the commit rejected against a reference
+repository that leaves it generated.
 
-The confirmation above says the statement names starting again as the way out
-and the committed project-owned file as the other. What both surfaces were
-written with is a semicolon and an "or": "starts it again afterwards; a
-project-owned additional.php is the other way out", and "— or commit a
-project-owned additional.php that is there from the first request". Neither
-carries an order, neither says what the second costs, and the reporting session
-took it for the route to a single-command start. It committed
-`config/system/additional.php` with all four sections, set
-`disable_settings_management: true`, un-ignored the path, and had the commit
-rejected by the user against a reference repository that leaves the file
-generated.
-
-Step 4 of the ladder on that half, and step 2 on the other. The answer for the
-repository the session was actually in exists here and did not reach the brief:
-`extension-repository-installation` states that the Composer root is the package
-and that `config/` with `settings.php`, `additional.php` and `sites/` belongs in
-`.gitignore`. The brief had placed `Configuration/Sets/…/config.yaml` as an
-extension path in its own opening paragraph and then handed over the
-`installation-operations` checklist, which is `scope: project` throughout. The
-re-run of the feedback's own query on 2026-08-24 returned both items unchanged.
-
-Closed on the spot rather than queued. Nothing about DDEV or TYPO3 is looked up
-by it: the ordering is this entry's own reading, and what an extension
-repository does with `config/` is `extension-repository-installation`, read
-against `/home/benji/projects/syntax` on 2026-08-04 and recorded in `D-KNW-049`.
-What is added is the order, the cost and the pointer, in the hint and in the
-checklist item, and `R-KNW-076` holds both.
-
-No gate on the intent itself. `installation-operations` is right for an
-extension repository in everything but that clause — the hooks, the setup order,
-the seeding and the two starts all hold there — so the repair is the clause
-rather than a scope condition that would withhold the whole checklist.
+Step 4 on that half and step 2 on the other: the answer for the repository the
+session was in exists here and did not reach the brief, which had placed an
+extension path in its opening paragraph and then handed over a project-scoped
+checklist. Closed on the spot, because the ordering is this entry's own reading.
+No gate on the intent itself — the checklist is right there in everything but
+that clause.

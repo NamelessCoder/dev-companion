@@ -100,16 +100,9 @@ dropped: five review findings and an HTTP 500 on every page.
 ## Since then
 
 The second **Wrong if** is half true and does not falsify the entry. A declared
-column holding no records does render quietly: `ContentArea::getRecords()`
-returns nothing, the ViewHelper's loop produces the empty string, and no error
-is raised anywhere. What throws is the other path —
-`ContentAreaCollection::has()` does not know an identifier the layout never
-declared, `StandardVariableProvider::getByPath()` returns null for it, and the
-ViewHelper refuses anything that is not a `ContentArea`. That is the path the
+column holding no records does render quietly. What throws is the other path,
+where the identifier was never declared at all — and that is the path the
 reporting session was on, so the pointer warns about the trap the reader is
-actually walking into rather than the one beside it. Both paths are now
-statements of their own in `page-content-areas`, and what an undeclared column
-costs carries a version binding the old sentence did not have: on 14 it is keyed
-on an md5 of the layout identifier and the colPos with a deprecation, on 15 the
-layout resolution refuses it outright. `site-set-labels-and-layouts` carried the
-same denial in its own words and is corrected with it.
+walking into rather than the one beside it. Both are statements of their own
+now, and what an undeclared column costs carries a version binding the old
+sentence did not have.

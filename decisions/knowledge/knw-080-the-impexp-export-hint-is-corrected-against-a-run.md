@@ -119,45 +119,16 @@ was ever read off `ExportCommand`.
 ## Confirmed on 2026-08-18
 
 Both sentences were run against the command they describe and both are wrong as
-reported. The installation is an `E-SITE` on 14.3.6 — the version both feedback
-came from — built on mariadb below this worktree and seeded through DataHandler
-with a page carrying one content element and nine image references. Seven
-exports of that tree, read back as XML.
+reported, over seven exports of one seeded tree. The hint's own prescription
+wrote the references and no file; adding the related-files option wrote the rows
+and the bytes beside them, and both runs answered `[OK]`.
 
-The hint's own prescription,
-`--table=tt_content --table=sys_file_reference --save-files-outside-export-file`,
-wrote a document with two parts: nine `sys_file_reference` rows under `records`,
-no `sys_file` row, no `files_fal`, and a `.files` directory created and left
-empty. Adding `--include-related=sys_file` to the same invocation wrote
-`files_fal` as a third part beside `header` and `records`, nine `sys_file` rows,
-and nine files under their sha1 — 43106 bytes against 22135. That is the
-feedback's observation reproduced, including that both runs answered `[OK]`.
+Naming the table instead produced the first result byte for byte, which settles
+the **Wrong if** that would have made this a correction about which of two
+routes to take: a page tree holds no such rows, so there is one route, and
+either option names the reference table.
 
-`--table=sys_file` in place of it produced the first result byte for byte, which
-settles the **Wrong if** that would have made this a correction about which of
-two routes to take: a page tree holds no `sys_file` rows, so there is one route.
-The reference table has to be named as well, and either option names it —
-`--include-related=sys_file_reference` without `--table=sys_file_reference`
-exported the same nine files, while `--include-related=sys_file` with the
-reference table named nowhere exported no reference and no file.
-
-The assumption about the invocation holds, with a second option beside it.
-`--include-related=sys_file_metadata` is what brings the nine
-`sys_file_metadata` rows, and `_ALL` adds `sys_file_storage` on top of them; the
-bytes need neither.
-
-The filename argument behaved as read. `EXT:some_ext/Initialisation/runD`
-answered
-`[OK] Exporting to fileadmin/user_upload/_temp_/importexport/runD.xml succeeded.`
-The other direction resolves the same form: `impexp:import` on a missing
-`EXT:impexp/…` path failed naming the absolute path below `vendor/`, and the
-correct artifact imported through that form with its `.files` directory beside
-it.
-
-Building the installation found one defect of this repository's own.
-`Environments::build()` asked DDEV for the project name of the default driver
-whatever driver it was building, so an environment on a second database was
-refused by `ddev config` for a project root it does not own — which is how a
-worktree gets an installation of its own while another checkout holds the sqlite
-one. Fixed on this branch, with the driver added to the test that holds the
-build's project name.
+Building the installation found one defect of this repository's own: the build
+asked for the project name of the default driver whatever driver it was
+building, so an environment on a second database was refused for a project root
+it does not own.

@@ -94,31 +94,16 @@ ends on "the .gitignore is where the answer is read off" and names no path.
 
 ## Since then
 
-Step 1a was carried out on 2026-08-18 and the enumeration is not what the
-statement leads with. `typo3/cms-base-distribution` ships one ignore file on
-every covered major and it enumerates nothing: `/vendor`, `/var/*` with
-`!/var/labels`, and `/public/*` with `!/public/.htaccess`. Denying both
-directories and naming back what the project owns is the rule that survives the
-timing the decision is about, and the enumeration is what a reader needs to
-recognise the paths afterwards. So the hint carries both, the rule after the
-set.
+Step 1a was carried out and the enumeration is not what the statement leads
+with: the distribution ships one ignore file that enumerates nothing, denying
+both directories and naming back what the project owns. That is the rule which
+survives the timing this decision is about, so the hint carries both, the rule
+after the set.
 
-The set moved more than the decision assumed. A `composer create-project` of the
-distribution per major left `public/typo3/index.php` and
-`public/typo3/install.php` on 13 and no `typo3/` directory at all on 14, because
-the entry-point installer scripts of `typo3/cms-backend` and `typo3/cms-install`
-are gone there — the document root's own contents are bound in both directions
-rather than only by `_assets_install/`. The feedback's ignore file named
-`/public/typo3/`, which on its own installation was already a path that does not
-exist.
-
-`_assets_install/` is published unconditionally by the same `asset:publish` run,
-from the failsafe container, so the second **Wrong if** does not hold: it is not
-a path that is sometimes absent on a covered major. Its content is a subset,
-which is what the statement says instead.
-
-Only 13 and 14 were installed. Composer refuses to resolve
-`typo3/cms-base-distribution` for 12 at all — every release of `typo3/cms-core`
-on that line is blocked by its security-advisory audit — so 12's shape was read
-from `.checkouts/12.4`, where `typo3/cms-frontend` writes `index.php` and the
-backend and install entry points are registered as on 13.
+The set moved more than the decision assumed — a create-project per major left
+two entry points on one and no such directory on the next, the installer scripts
+being gone there — so the document root's contents are bound in both directions.
+The second **Wrong if** does not hold: the published assets directory is written
+unconditionally, and its content is a subset, which is what the statement says
+instead. Only two majors could be installed; the third was read from its
+checkout.

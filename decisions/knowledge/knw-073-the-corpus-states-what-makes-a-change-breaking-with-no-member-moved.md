@@ -99,7 +99,5 @@ obligation, and its case was configuration rather than markup.
  The casual-bugfix bullet refused the demand on "removes nothing public", which
  a fix that stops reading a configured option passes while owing an entry; it
  names what such a fix has to change nothing of now, with the hint one line
- above it. The section's lead is untouched deliberately: two sessions were saved
- by the flat exemption against one misled by it. The section is capped, and a
- first draft carrying both tests in full came back truncated — one delivery
- failure traded for another.
+ above it. The section is capped, and a first draft carrying both tests in full
+ came back truncated — one delivery failure traded for another.

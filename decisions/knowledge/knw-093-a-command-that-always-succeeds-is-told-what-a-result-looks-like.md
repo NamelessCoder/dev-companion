@@ -132,7 +132,5 @@ The three the sweep found are each one class deep: a language update that moves
 its status only under a flag, so a download the server answered with nothing
 hides behind the progress bar; a backend user creation that reads neither the
 error log nor the result of the write; and an upgrade run that marks a wizard
-done where its own check returned false, which also corrects the hint that said
-a wizard is marked done after a successful run. The `ddev`, `composer` and
-`runTests.sh` commands are outside what the checkouts settle, and guessing them
-is this entry's third **Wrong if**.
+done where its own check returned false. The `ddev`, `composer` and
+`runTests.sh` commands are outside what the checkouts settle, .

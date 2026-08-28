@@ -92,20 +92,16 @@ developer found it broken in Firefox.
 
 The hint was reported a second time from the other side: it stopped a Blink-only
 feature going into a core patch with a rationale attached, which is the first
-**Wrong if** with the sign reversed. All three sentences reproduce and the
-report says which of them did what, so **Decided** was read back by somebody who
+**Wrong if** with the sign reversed. **Decided** was read back by somebody who
 did not know it existed.
 
 **A policy hint has to be reachable by the vocabulary of the thing it governs,
-and this one was reachable by its own.** Both sessions reached it by id, and
-measured rather than inferred: the session's own task text returned five other
-CSS hints and not this one. Worse, a query naming a feature reached a second
-copy of the policy in the coarse wording this entry sharpened out of the first,
-reading as permission. So the duplicate defers, and the vocabulary gains the
-feature words a session types when it is about to adopt one, which grows one
-incident at a time and is wrong if a third gets through for want of its own
-word.
+and this one was reachable by its own.** Both sessions reached it by id, and the
+session's own task text returned five other CSS hints and not this one. Worse, a
+query naming a feature reached a second copy of the policy in the coarse wording
+this entry sharpened out of the first, reading as permission. So the duplicate
+defers, and the vocabulary gains the feature words a session types when it is
+about to adopt one.
 
 The press is refused: this hint is core-scoped where the instructions are read
-by every caller, and it answers a procedure rather than an identifier a guess
-gets wrong at runtime.
+by every caller.

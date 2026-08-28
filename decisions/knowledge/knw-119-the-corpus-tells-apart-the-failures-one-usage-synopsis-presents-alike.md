@@ -105,6 +105,4 @@ looking at.
 
 The password half gained what only a run could say: the schema is written before
 the password is judged, so a rejected run leaves forty-two tables and the next
-attempt is refused by a check `--force` does not clear. What the run also turned
-up is outside this entry: a create stopped at its own setup step on tables in a
-directory that had never existed here.
+attempt is refused by a check `--force` does not clear.

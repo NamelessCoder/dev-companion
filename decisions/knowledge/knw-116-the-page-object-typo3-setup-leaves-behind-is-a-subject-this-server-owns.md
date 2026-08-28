@@ -126,20 +126,14 @@ core for a CSS length out of the rendered markup.
 
 ## Since then
 
-The statement was written on 2026-08-24, bound twice as decided, and the reading
-the entry deferred settled the first **Wrong if**: the `13.4` row does reach a
-set, and `12.4` has no sets to reach. `SysTemplateTreeBuilder` hangs the sets
-below the site's own include node, `IncludeTreeTraverser` reads a node's
-children before the node's own lines, and `IncludeTreeAstBuilderVisitor` resets
-the AST for a `SysTemplateInclude` with the clear flag and for nothing else — so
-the row discards what the sets built and the file on `14.3` and `main` replaces
-only the paths it assigns. Sets exist from `13`, so the clearing half is bound
-to that major alone and the row itself to both. The **Assumed** about `main`
-held: its `createSite()` is `14.3`'s but for the injected services.
+The statement was written, bound twice as decided, and the reading settled the
+first **Wrong if**: the row does reach a set, and the oldest major has no sets
+to reach. The sets hang below the site's own include node, a node's children are
+read before its own lines, and the AST is reset for that include and nothing
+else — so the row discards what the sets built and the newer file replaces only
+the paths it assigns.
 
-The re-run behind `--force` is half settled. `SetupCommand` calls `createSite()`
-whenever a URL is given and no distribution is active, with no guard on a site,
-a root page or a file that already exists, so a second run that reaches that
-step writes both again. Whether it reaches it is the database check the run
-stops at first, which is `D-KNW-046`'s subject and an installation's answer
-rather than a checkout's. The other two **Wrong if** are a forward run's.
+The re-run behind the force flag is half settled: the site is written again
+whenever a URL is given and no distribution is active, with no guard on what
+already exists, and whether the run reaches that step is another entry's
+subject.

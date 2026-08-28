@@ -106,22 +106,12 @@ which do not bear on the diff.
 
 ## Since then
 
-The hint was written on 2026-08-26, as `frontend-render-pipeline-state` in
-`knowledge/hints/page-rendering.json`, and the fixture trap as a statement on
-`core-tests`. Writing it corrected one reading above: 12.4 does have a
-`bodyContent` property — `PageRenderer.php:247`, untyped — and what is absent
-there is its line in `reset()`, so on that line every render starts from what
-the one before it left. The bullets carry the corrected reading and this says
-what moved.
+The hint was written and the fixture trap stated beside it. Writing it corrected
+one reading above: the oldest major does have the property, and what is absent
+there is its line in the reset — so on that line every render starts from what
+the one before it left.
 
-Two further readings the entry did not have, both unbound because they hold on
-all four: `reset()` also restores the locale, the doctype and the template file,
-and it leaves `headTag` standing beside the title and the favicon; and what
-carries the serialised state across the uncached pass is
-`PrepareTypoScriptFrontendRendering` from the page cache row on 14 and up,
-against `TypoScriptFrontendController::INTincScript()` reading
-`config['INTincScript_ext']` until 13.
-
-The **Wrong if** are untouched by that. Whether a session with the hint
-installed still goes to the checkout is a forward run, and nothing here can
-answer it.
+Two further readings the entry did not have, both unbound: the reset also
+restores three more things and leaves one standing, and what carries the
+serialised state across the uncached pass moved class between the majors. The
+**Wrong if** are untouched, being a forward run's.

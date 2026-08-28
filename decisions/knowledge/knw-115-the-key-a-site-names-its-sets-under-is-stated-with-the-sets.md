@@ -137,41 +137,17 @@ other file of that name — so a reader who gets that far is one file off.
 
 ## Since then
 
-The statement is in `site-sets`, with the direction the corpus stated in neither
-half: a site names its sets under `dependencies` in its own `config.yaml`, that
-list is what the site entity's `getSets()` returns, `settings` reaches
-`getSettings()`, and the site's own TypoScript and page TSconfig come from
-`setup.typoscript`, `constants.typoscript` and `page.tsconfig` beside the file
-rather than from a key in it. The entity and `SiteConfiguration` read line for
-line the same on `.checkouts/13.4` and `.checkouts/main`, and `.checkouts/12.4`
-has neither the key nor the accessor, so the statements are bound from 13. The
-fourth **Wrong if** did not happen: `SiteConfiguration` hands the raw
-configuration to the constructor, which keeps the list, and `SetRegistry`
-resolves only what those names contain.
+The statement is in, with the direction the corpus stated in neither half: a
+site names its sets in its own configuration, and its TypoScript comes from the
+files beside that one rather than from a key in it. The entity reads the same on
+both covered lines and the oldest has neither the key nor the accessor, so the
+statements are bound. The fourth **Wrong if** did not happen.
 
-`isTypoScriptRoot()` is stated, with its marker and with what it decides. The
-corpus already states an `@internal` member where a caller needs one, which
-`assets.json` does, and what this one buys is the consequence rather than the
-method: a site naming a set or holding one of those files renders without a
-`sys_template` record on its root page, and a site with neither errors out
-instead of rendering. That holds on both covered lines from a different class
-each — `TypoScriptFrontendInitialization` on 13, `PageInformationFactory` on
-main — so the statement names the behaviour and not the message.
+What the internal marker buys is the consequence rather than the method: a site
+naming a set renders without a template record, and one with neither errors out.
 
-The placement alone did not make the question reachable, and the domain is what
-did. A site's `config.yaml` is YAML, `Domains` reads YAML as PHP, and a hint
-filed under TypoScript alone is no candidate for a PHP query unless the task
-spells out a curated phrase no PHP hint claims — "site configuration" is claimed
-by `routing-request-handling`. So `site-sets` is asked from `php` as well, as
-fifteen hints already are, and the reporting session's own question returns it
-first. What that risks is a PHP query answered with `site-sets` in place of the
-hint that was about it: the bare word `dependencies`, curated onto the hint, put
-it above `extension-repository-dependencies` on a `composer.json` question,
-which is why the key is curated as "dependencies key" and "under dependencies"
-instead.
-
-`fresh-instance-seeding` keeps its sentence and owes no pointer. Its reader is
-asking what fills a fresh instance, and `site-sets` says nothing about that, so
-a pointer there would name no consequence for the reader who is holding that
-question — which is what `D-KNW-087` asks of the pointers that exist rather than
-a reason to write one.
+The placement alone did not make the question reachable and the domain is what
+did — a hint filed under one language is no candidate for a query in another
+unless the task spells out a curated phrase. What that risks is a query answered
+with this hint in place of the one that was about it, which is why the key is
+curated as a phrase rather than as the bare word.

@@ -99,18 +99,16 @@ handed the asset pipeline.
 
 The boundary generalises and the first **Wrong if** does not hold: two more
 subsystems submit an intent and resolve the resource behind it on the server,
-read on all four checkouts, .
+read on all four checkouts.
 
 The second is settled the other way round from how it was written. It asked
 whether the core would move towards the client resolving a resource; the
 checkouts show it moving away, inside this very subsystem — the one literal
 `EXT:` resource path in the backend TypeScript tree is gone on the two newer
-lines, dropped rather than moved into the payload.
+lines.
 
 So the feedback's own rule is corrected rather than copied: carrying a value the
 server gave it is what the core does, and working one out is what it removed.
-One bullet is left out because no checkout does it — an empty argument is
-rejected rather than defaulted — and a hint stating it would be this
-repository's preference wearing a TYPO3 fact's clothes. The **Assumed** about
-arrival cost the hint one pattern: a hint about the seam is not a hint about
-every file in the tree.
+One bullet is left out because no checkout does it: a hint stating it would be
+this repository's preference wearing a TYPO3 fact's clothes. The **Assumed**
+about arrival cost the hint one pattern.

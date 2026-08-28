@@ -103,31 +103,14 @@ query reaches answers how to configure the tool rather than how to satisfy it.
 
 ## Since then
 
-The reading was made on 2026-08-24 and the hint is `core-static-analysis` in
-`knowledge/hints/testing.json`, ten statements beside
-`extension-static-analysis` and reached first by the query the reported failure
-produces.
-
-Both assumptions were tested and one of them moved. The narrowing is the
-codebase's rather than the four sites': the inline `@var` is written throughout
-`Classes/` and `Tests/`, and `assert($value instanceof …)` is written nowhere,
-so the first **Wrong if** does not hold. The one `instanceof` beside a cache
-frontend is `ContainerBuilder::createDependencyInjectionContainer()`, which
-takes the value as a parameter and cannot know it — a distinction the hint
-carries, because it is what tells a caller when the check is the right fix.
+The hint is written and reached first by the query the reported failure
+produces. Both assumptions were tested and one moved: the narrowing is the
+codebase's rather than the four sites', the inline annotation being written
+throughout and the runtime assertion nowhere, so the first **Wrong if** does not
+hold. The one exception takes the value as a parameter and cannot know it, which
+is what tells a caller when the check is the right fix.
 
 The four rules are not stable across the covered majors, so what the hint states
-about them is bound as data. `12.4` registers `UnneededInstanceOfRule` alone,
-`13.4` adds `UnserializeRule`, and `14.3` and `main` add `ForbidAttributeRule`
-and `NamedArgumentUsageRule`. The core's own `AGENTS.md` is on `13.4`, `14.3`
-and `main` in identical words and on `12.4` not at all, so the baseline rule is
-bound the same way; the file is in no checkout here and was read from the
-branches themselves.
-
-What the hint states beside those: that a `@var` narrows within the native type
-rather than replacing it, that the analysis runs at level 5 with
-`treatPhpDocTypesAsCertain: false`, that `bnf/phpstan-psr-container` is why the
-container call in front of `getCache()` needs no annotation, what is analysed at
-all, and how a file is read out of the baseline. Ten statements is not one fact,
-so the second **Wrong if** does not hold either. The last two are about sessions
-after the hint lands and stay open.
+about them is bound as data, and the core's own instruction file is bound the
+same way. Ten statements is not one fact, so the second **Wrong if** does not
+hold either.

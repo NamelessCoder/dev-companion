@@ -109,30 +109,15 @@ the mechanics and the etiquette out on its own.
 
 ## Since then
 
-The assumption was read on 2026-08-27 and holds. The contribution guide answers
-a foreign change with a patch set — "You can even commit and contribute on other
-people's patches - always make sure to ask first, before you do that" — and asks
-a reviewer to push a coding guidelines fix rather than vote -1. Gerrit grants
-`Add Patch Set` to registered users on `refs/for/*` by default, so nothing on
-the review server separates the owner's push from anybody else's. A scratch
-clone carrying the core's own `commit-msg` hook settled the rest: the amend
-keeps the author and moves the committer, the `Change-Id` line survives it
-single and unchanged, one commit stays one commit, and a cherry-pick answers the
-same way. So the first **Wrong if** is answered and the other three are not —
-each of those needs a session in the field. The empty `coveredBy` the entry
-predicted is filled by the same commit, in the two assertions it names.
+The assumption was read and holds: the contribution guide answers a foreign
+change with a patch set and asks a reviewer to push a fix rather than vote
+against it, and the review server grants that push to registered users by
+default. A scratch clone settled the rest — the amend keeps the author, the
+identifier survives single and unchanged, and a cherry-pick answers the same
+way. So the first **Wrong if** is answered and the other three need a session in
+the field.
 
-One bullet of the evidence was a misreading, and it stands rather than being
-edited, because it is what the judging session read. `changesNothing: true` on
-an intent does not declare that the task changes nothing: `TaskIntents::owned()`
-reads it as leave to route in a brief that already changes nothing, and what
-makes a brief one of those is the stated change type or an audit, triage,
-operations or diagnosis intent. Landing on `patch-checkout` withholds no route
-on its own.
-
-The review `writing-a-skill.rst` asks for before publication was made on
-2026-08-27, on the branch and before the merge. It returned one correction, the
-author line, which is `D-KNW-131`; the fourth way in, the ask before the upload,
-the file by file rule and the ending on the review branch were read and passed.
-That is the first skill here reviewed by the maintainer before it shipped rather
-than after.
+One bullet of the evidence was a misreading and stands rather than being edited,
+because it is what the judging session read. The review the skill rules ask for
+was made before the merge and returned one correction, which is the first skill
+here reviewed before it shipped rather than after.

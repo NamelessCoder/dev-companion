@@ -242,12 +242,11 @@ which is what made it rewrite the finder: the excluded names are matched at any
 depth and the finder excludes the vendor directory before the configuration is
 reached, so a package whose vendor sits under a dot directory is covered twice
 over. What does need a correction is a build directory that is neither hidden
-nor one of those names, the match being case-sensitive.
+nor one of those names.
 
-A second feedback stopped reading the index, and its premise holds while its
-conclusion does not. The hint those six calls went around ranks seventh of 52
-and was cut by the limit; in the index it stands near the end, because the index
-re-reads the corpus by file and discards the rank just computed. The other id it
-names is a different case: nothing in the query's words reaches it, so no
-ordering would have raised it. What goes up is which of the two the index
-becomes, since both change `src/` and every answer of the tool.
+A second feedback stopped reading the index, and its premise holds and its
+conclusion does not. The hint those six calls went around ranks seventh and was
+cut by the limit, and in the index it stands near the end, because the index
+re-reads the corpus by file. The other id it names is a different case: nothing
+in the query's words reaches it. What goes up is which of the two the index
+becomes.

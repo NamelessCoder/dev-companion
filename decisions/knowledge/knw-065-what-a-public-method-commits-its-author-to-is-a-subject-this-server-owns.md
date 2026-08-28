@@ -135,10 +135,8 @@ anyway. The first **Wrong if** does not hold, and the one exception is a member
 taken out of the public API, which is an `Important` rather than nothing and is
 the only way such a change reaches a release line.
 
-That the parameter is optional changes nothing is PHP's rule rather than the
-project's. No matcher is owed either way, the matchers being keyed on where a
-member is called.
+That the parameter is optional changes nothing is PHP's rule. No matcher is owed
+either way.
 
 The second **Wrong if** held and decided the placement: keyed on paths the hint
-displaced a better one out of a brief, so the path patterns came off and the
-vocabulary of the move is what reaches it.
+displaced a better one out of a brief, so the patterns came off.

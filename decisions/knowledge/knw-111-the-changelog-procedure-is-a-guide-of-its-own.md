@@ -104,19 +104,16 @@ sat in a page named for a different subject.
 
 The split was made and the third **Wrong if** happened immediately: headings
 named for what each states left the page unreachable by the query that used to
-return the section by its heading, so the headings name their subject as well as
-their claim now. The byte level is the core's own template, byte-identical on
-all four, so the second **Wrong if** did not happen.
+return it, so they name their subject as well now. The byte level is the core's
+own template, byte-identical on all four, so the second **Wrong if** did not
+happen.
 
 Both reports were wrong about the two facts they had guessed at, which is why
-neither was copied: the include directive takes one or two spaces, and the title
-fence is not measured against the title. A third session spent a round on that
-same length, which is what the hint now tells a caller not to do, and it says
-why it never called the changelog lookup — the description read as consuming
-changelogs rather than authoring one, which the same commit answered.
+neither was copied. A third session spent a round on that same length, which is
+what the hint now tells a caller not to do.
 
 The content half is answered too: the session's own six calls now land in one,
 and its question about which type a fix that changes rendered output owes is
-stated in the matched section. The brief is unchanged either way — the changelog
+stated in the matched section. The brief is unchanged either way: the changelog
 prose never won a slot there, and adding the page to the rule documents leaves
-that unchanged, which is the repair that suggests itself and does nothing.
+that unchanged.

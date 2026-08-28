@@ -78,18 +78,14 @@ corrections before the developer asked whether it had actually looked.
 Two feedback from one session land on the `whenToUse` rather than on the suite.
 The **Assumed** is the half that failed: the local route has a precondition this
 entry never names, and the session hit it as a browser build that was not on the
-host. The statement holds and the clause is true — every e2e case builds its
-command from the project alone and reaches no passthrough — which makes it the
-wrong sentence to hang a route on, because a Playwright-only diff costs the
-whole suite.
+host. The clause is true and is the wrong sentence to hang a route on, because a
+Playwright-only diff costs the whole suite.
 
 The second feedback is step 1a and the first **Wrong if** firing as written: the
 suite blocks on a read from `/dev/tty`, so a headless session loses the instance
 and is told SUCCESS. The condition and the false green sit in the entry that
 offers the command.
 
-A later headless run corrected the mechanism rather than the outcome: the banner
-is printed before the read loop, so a log without it never reached the prompt,
-and what leaves containers standing is the cleanup a run ended before. The
-entries name the cleanup now and carry the two commands that turn a
-half-finished run into a working instance.
+A later headless run corrected the mechanism rather than the outcome: what
+leaves containers standing is the cleanup a run ended before, and the entries
+carry the two commands that turn a half-finished run into a working instance.

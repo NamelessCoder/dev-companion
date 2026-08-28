@@ -20,7 +20,7 @@ the manifest declares it, and the environment as a separate object.
 
 - **The session.** `/home/benji/projects/bootstrap_package` on 2026-08-28,
   `claude-opus-5[1m]`,
-  [`feedback/2026-08-28-001333`](../../feedback/2026-08-28-001333-declared-commands-and-the-declared-environment.md).
+  [`feedback/2026-08-28-001333`](../../feedback/archive/2026-08-28-001333-declared-commands-and-the-declared-environment.md).
   It ran `composer cgl:ci` as reported and got Composer's platform check: "Your
   Composer dependencies require a PHP version >= 8.4.1. You are running 8.3.23."
 - **The text already answers it.** `ProjectDescribe::whereTheyRun()` prints,
@@ -91,3 +91,24 @@ held.
 The report's second half is still open, and so is its feedback:
 `ddev composer <script>` and the stdout of a tool the script wraps needs a DDEV
 project to establish.
+
+The report's second half was measured rather than left to the card, in
+`.environments/e-site-14.3` against DDEV v1.25.3, with a composer script writing
+one line to each stream and exiting 8:
+
+| form                           | exit code the caller sees | stdout         | stderr                   |
+| ------------------------------ | ------------------------- | -------------- | ------------------------ |
+| `ddev composer <name>`, exit 0 | 0                         | passed through | passed through           |
+| `ddev composer <name>`, exit 8 | 1                         | dropped        | folded into ddev's error |
+| `ddev exec composer <name>`    | 8                         | passed through | passed through           |
+
+So the wrapper loses exactly the run whose output is the finding, which is what
+the session hit: a formatter's dry run exits non-zero and writes the diff to
+stdout.
+
+**`invocation` still composes `ddev composer <name>`.** It is DDEV's own command
+for a composer script and what a caller running an installing script needs;
+swapping the default to `ddev exec` for every command would trade a lost diff
+for a host tree the wrapper exists to keep in step, which is not measured here.
+The caveat is a statement in `project-build-and-scripts` instead, naming both
+forms and what each does with a failing script.

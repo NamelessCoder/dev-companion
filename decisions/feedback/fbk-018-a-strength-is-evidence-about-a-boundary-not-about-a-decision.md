@@ -1537,7 +1537,7 @@ the far side. `R-GUI-012` is the other one, and its worth here is that the id
 arrived while the body did not.
 
 **Every cost is the same answer holding both halves of a join.**
-[`2026-08-28-001333`](../../feedback/2026-08-28-001333-declared-commands-and-the-declared-environment.md)
+[`2026-08-28-001333`](../../feedback/archive/2026-08-28-001333-declared-commands-and-the-declared-environment.md)
 states it outright — the answer knows the environment, knows the bound, and
 hands over an invocation that cannot run — and the session ran `composer cgl:ci`
 into Composer's platform check with `environment.via: ddev` and
@@ -1565,5 +1565,5 @@ same side twice in one debrief.
 
 Nothing is queued from here. Each of the four costs has a card of its own, and
 the invocation half is
-[`2026-08-28-001333`](../../feedback/2026-08-28-001333-declared-commands-and-the-declared-environment.md)'s
+[`2026-08-28-001333`](../../feedback/archive/2026-08-28-001333-declared-commands-and-the-declared-environment.md)'s
 to judge.

@@ -77,23 +77,9 @@ this repository's own — `D-DOC-006` has that run.
 
 ## Confirmed on 2026-08-02
 
-Both halves held in a project this repository did not make. The feedback of
-2026-07-31 is the same fault reported from outside, a day before it was fixed: a
-session auditing an extension in `/home/benji/projects/site-new` asked
-`typo3_label_lookup` for `printworks`. It read
-`syntax error near unexpected token '('` beside 33 labels, and filed the console
-path as broken. `E-SITE` is this repository's own installation, so a second
-project is what the measurement above could not have.
-
-The query was re-run there on 2026-08-02, through this branch's server over
-stdio. `Typo3Cli::resolve()` answers
-`ddev exec -- /var/www/html/vendor/bin/typo3` in that root, with no
-`TYPO3_DEV_COMPANION_CONSOLE` set and no caveat — the mount path,
-autodiscovered. `typo3_label_lookup` comes back `answeredBy: "installation"`
-with `matchCount: 53`, the labels of `printworks_sitepackage`, and the argument
-built unchanged as `--regex=/(printworks)/i`. DDEV v1.25.1, PHP 8.4 in the
-container.
-
-So the mount is reached in a second project, and a parenthesised regex now
-survives the container's shell where that report says it did not. The feedback
-is answered by this run and archived by the commit carrying it.
+Both halves held in a project this repository did not make. A session auditing
+an extension elsewhere had filed the console path as broken, reading a syntax
+error beside its labels. Re-run there on 2026-08-02, `Typo3Cli::resolve()`
+answers the mount path autodiscovered and with no caveat, and the lookup comes
+back `answeredBy: "installation"` with the labels and the parenthesised regex
+built unchanged. The feedback is answered by that run.

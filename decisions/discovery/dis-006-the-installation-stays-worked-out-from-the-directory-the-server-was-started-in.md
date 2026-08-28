@@ -18,7 +18,6 @@ a boundary to "informational guidance rather than an access-control mechanism",
 which the protocol does not enforce. Under the feature lifecycle policy it stays
 in the specification twelve months before it may be removed at all.
 
-
 [sep]: https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2577
 
 ## Assumed
@@ -50,23 +49,10 @@ in the specification twelve months before it may be removed at all.
 
 ## Since then
 
-The revision the foot of this section was waiting on has arrived. `mcp/sdk`
-v0.8.0 was released on 2026-08-24 and bundled here on 2026-08-27; it speaks
-`2026-07-28`, and with it the roots this entry declined: `ClientGateway` now
-exposes `listRoots()` and `supportsRoots()`, and `request()` is public. The
-third **Assumed** has fallen — the SDK can send that request now — and the
-decision stands on the first two, because the mechanism arrived carrying the
-deprecation it was written about. That revision goes further than deprecating
-it: `listRoots()` raises a `LogicException` there, so the call this would have
-rested on is missing from the newest thing the protocol offers.
-
-The other half of the **Wrong if** is the corpus, and it is silent. No feedback
-of the archive reports the server started anywhere but the session's directory,
-and none reports the root being worked out wrongly; `typo3_server_scope` reports
-the root and the walk either way, which is what would make such a session say
-so.
-
-What would settle the **Wrong if** is still an outside event: a revision that
-adds a mechanism not deprecated on arrival. `bin/cli todo:list` carries the
-recurring reading of what `mcp/sdk` has released, which is where such a revision
-arrives first.
+The revision arrived: `mcp/sdk` v0.8.0 exposes the roots this entry declined, so
+the third **Assumed** has fallen and the decision stands on the first two — the
+mechanism arrived carrying the deprecation it was written about, and
+`listRoots()` raises there. The other half of the **Wrong if** is the corpus and
+it is silent: no feedback reports the server started anywhere but the session's
+directory. What would settle it is still an outside event, a revision adding a
+mechanism not deprecated on arrival.

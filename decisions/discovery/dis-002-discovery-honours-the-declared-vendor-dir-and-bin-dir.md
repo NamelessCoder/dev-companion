@@ -39,27 +39,14 @@ extension checkout not being recognised as an installation at all.
 
 ## Revoked on 2026-08-01
 
-Both halves of the **Wrong if** were run, and the second **Assumed** is false.
-Measured on `syntax` (DDEV 1.25.1, TYPO3 14.3.0, docroot `.build/public`), with
-the container's working directory moved for the length of one call by
-`ddev exec -d` rather than by reconfiguring the project: the server never reads
-`working_dir` — it takes `status` and `php_version` out of `ddev describe -j`
-and then invokes `ddev exec -- <binary>` blind — so the two are the same state
-for the command that runs. From the project root the call answers
-`TYPO3 CMS 14.3.0`; from `/var/www/html/.build/public` it is
-`bash: .build/bin/typo3: No such file or directory`, exit 127. A relative path
-does not work inside DDEV as it does on the host. It works as long as nothing
-has moved the working directory, which is the default and not the guarantee the
-entry took it for. The absolute `bin-dir` half of the same **Wrong if** happened
-as written and the decision held there. Composer 2.9.5 accepts one and installs
-the binaries there — a fixture project declaring
-`"bin-dir": "<root>/.build/bin"` got its console at exactly that path — and this
-server then found no console at all and named only the two defaults. What was
-missing is that absolute is a spelling of the same directory. One below the root
-is now expressed relative to it, which is the form both DDEV and the host need,
-and `autoloader()` reads an absolute `vendor-dir` the same way. One outside the
-root still has no usable form and is named in the reason with
-`TYPO3_DEV_COMPANION_CONSOLE`. `R-DIS-003` holds both.
+Both halves of the **Wrong if** were run and the second **Assumed** is false: a
+relative path does not work inside DDEV as it does on the host. The server never
+reads `working_dir` and invokes `ddev exec` blind, so from a moved working
+directory the same call is exit 127. It worked as long as nothing had moved it,
+which is the default and not a guarantee. The absolute `bin-dir` half happened
+as written and the decision held there — what was missing is that absolute is a
+spelling of the same directory, so one below the root is expressed relative to
+it now, which is the form both DDEV and the host need. `R-DIS-003` holds both.
 
 ## Since then
 

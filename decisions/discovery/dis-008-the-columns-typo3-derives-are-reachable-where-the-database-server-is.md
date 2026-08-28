@@ -69,78 +69,32 @@ output". Whether that output can be had at all is what this settles.
 
 ## Confirmed on 2026-08-02
 
-Run rather than read. `site-new` was already up — TYPO3 14.3.5 under DDEV, a
-full container — and `DefaultTcaSchema::enrich()` answered there through
-`probe.php`: 26 TCA tables in, 27 out, `tt_content` with 72 derived columns and
-`pages` with 69, and the twenty-seventh is `sys_category_record_mm`, which the
-enrichment creates rather than enriches. So handing it one empty
-`Doctrine\DBAL\Schema\Table` per TCA table is what makes the derived set
-readable, and the database it needed was a server that answers rather than a
-schema in it.
-
-`typo3_schema_lookup` is that answer, bounded to the derived side. Its three
-paths were driven against the same installation — the named table, a name TCA
-does not have, and the call that names none — and its two unanswerable paths are
-in `ToolContractTest`. What no test here reaches is the filled one: nothing
-injects a runtime reading, which is the same limit `Icons` has, so the run above
-is the whole of the evidence for it.
-
-The one thing the reading did not predict: the answer names the relation tables
-as such. TYPO3 creates them, so no `ext_tables.sql` declares one at all, and a
-list that showed them beside the others would read as work somebody has to do.
+Run rather than read: `DefaultTcaSchema::enrich()` answered through `probe.php`
+with 26 TCA tables in and 27 out, `tt_content` carrying 72 derived columns. So
+handing it one empty `Table` per TCA table is what makes the derived set
+readable, and what it needed was a server that answers rather than a schema in
+it. What no test here reaches is the filled path, since nothing injects a
+runtime reading. The one thing the reading did not predict: the answer names the
+relation tables as such, because TYPO3 creates them and a list that showed them
+beside the others would read as work somebody has to do.
 
 ## Since then
 
-The condition is the driver's, not this answer's, and the statement above is a
-MySQL project generalised. `Connection::getDatabasePlatform()` builds a version
-provider — `StaticServerVersionProvider` where `serverVersion` sits in the
-connection parameters, the connection itself otherwise — and hands it to
-`Driver::getDatabasePlatform()`, which is where the server is asked for or is
-not. `AbstractSQLiteDriver` ignores the provider and returns a `SQLitePlatform`.
-`AbstractMySQLDriver` and `AbstractPostgreSQLDriver` open with
-`$versionProvider->getServerVersion()`, and that is `Connection::connect()`.
-Read in doctrine/dbal 4.4.4, which `.environments/e-site-13.4`, `e-site-14.3`
-and `e-site-main` install, and in 3.10.6, which `e-site-12.4` installs and where
-the same split is `VersionAwarePlatformDriver`: the SQLite driver does not
-implement it, so `detectDatabasePlatform()` never asks for a version either.
-
-Against the drivers TYPO3 has both a driver and a platform check for — `mysqli`,
-`pdo_mysql`, `pdo_pgsql` and `pdo_sqlite`, in `DatabaseCheck` on 12.4 and on
-14.3, and there is no mssql driver on either — that is: a MySQL, MariaDB or
-PostgreSQL installation loses this answer while its database server is down, a
-SQLite one never does, and even the first three keep it where the connection
-parameters state a `serverVersion`.
-
-Measured on 2026-08-04 against `.environments/e-site-14.3`: TYPO3 14.3.5 on
-`pdo_sqlite`, whose database file is a path inside the DDEV container. Driven
-with that installation's own console on this machine's PHP 8.3, whose PDO
-carries `mysql` and nothing else, `typo3_schema_lookup` answered `pages` with
-the same 69 derived columns the run above recorded through `ddev exec` with the
-project up. Nothing opened the database, and there was no driver to open it
-with.
-
-What holds is the rest: no schema, no SQL, no log, and an empty `Table` per TCA
-table is what makes the derived set readable. What is too broad is the third
-**Evidence** bullet — "one with no database at all does not" — and the first
-**Decided** bullet, which names a responding database server as the one
-condition the other runtime answers do not have. Where the platform really does
-need the server, the shape is the one that bullet promised: the enrichment
-throws, `probe.php` reports the topic `unavailable`, and `SchemaLookup` answers
-`unsupported` carrying the exception.
+The condition is the driver's rather than this answer's, and the statement above
+is a MySQL project generalised. `AbstractSQLiteDriver` ignores the version
+provider; `AbstractMySQLDriver` and `AbstractPostgreSQLDriver` open on it, which
+is the connection. Read in both DBAL versions the environments install. So a
+MySQL, MariaDB or PostgreSQL installation loses this answer while its server is
+down, a SQLite one never does, and even the first three keep it where the
+parameters state a `serverVersion` — measured on 2026-08-04 with no driver on
+the machine to open the database with. What holds is the rest: no schema, no
+SQL, and an empty `Table` per TCA table.
 
 ## Revoked on 2026-08-04
 
-By the reading above, once it was acted on. The title and the statement both
-name a responding database server as the condition this answer has, and that is
-what turned out to belong to the driver: a listing shows the title and the
-status, so `confirmed` beside this sentence reads as a claim that every
-installation pays it.
-
-What holds from here is
-[`D-DIS-012`](dis-012-the-driver-decides-whether-the-derived-columns-need-the-database-server.md),
-which names the split and drops the condition from `typo3_schema_lookup`'s
-description. The evidence and the confirmation above stay: the answer exists,
-needs no schema and no SQL, and the run of 2026-08-02 is what showed it. The
-successor's **Wrong if** is a different list — what can go wrong now is a driver
-that starts connecting or an installation running one nobody read — and this
-entry's first two could no longer be gone back to.
+By the reading above, once it was acted on: the title and the statement name a
+responding database server as this answer's condition, and that turned out to
+belong to the driver. A listing shows the title and the status, so `confirmed`
+beside this sentence reads as a claim that every installation pays it.
+`D-DIS-012` names the split. The evidence stays — the answer exists, needs no
+schema and no SQL — and the successor's **Wrong if** is a different list.

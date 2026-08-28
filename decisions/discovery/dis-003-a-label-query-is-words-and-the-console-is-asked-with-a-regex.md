@@ -55,44 +55,20 @@ enough to correct without knowing who produces the input.
 
 ## Revoked on 2026-08-01
 
-And the mechanism first written here was wrong, so it is written out. `--json`
-does share stdout with the `$io->title()` the same command prints ahead of it,
-and `Typo3Cli::decode()` does start at the first `{` or `[`. But neither carrier
-named for getting something onto that stream survived checking. Xdebug's "Could
-not connect to debugging client" goes through `xdebug_log_ex` → `xdebug_php_log`
-→ `php_log_err()`, which on CLI with `error_log` unset writes to **stderr** —
-measured — and `Typo3Cli::execute()` reads stderr on its own pipe. A PHP
-deprecation reaches stdout only with `display_errors=On` (measured; off in this
-machine's CLI ini), and inside a booted command not even then:
-`Bootstrap::initializeErrorHandling()` registers `ErrorHandler`, whose
-`handleError()` returns `ERROR_HANDLED = true` on every path that does not
-throw, so PHP prints nothing. `CommandApplication::run()` additionally discards
-what `ext_localconf.php` buffered. **No producer of stdout noise ahead of the
-payload is established.** What would settle it is whether `ddev exec` folds the
-container's stderr into its own stdout — DDEV is how this server reaches most
-consoles, and no project on this machine was running to ask.
+The mechanism first written here was wrong. `--json` does share stdout with the
+title the command prints ahead of it, but neither carrier named for getting
+something onto that stream survived checking: Xdebug's connection message goes
+to stderr, which is read on its own pipe, and a deprecation reaches stdout only
+with `display_errors=On` and not even then inside a booted command. **No
+producer of stdout noise ahead of the payload is established.**
 
 ## Since then
 
 The exit code is not the signal, on the narrower ground that it never certified
-anything. `Typo3Cli::json()` hands back what was printed, only the warning above
-is read as "none", and every other exit-0-without-payload settles nothing and
-takes the route an unreachable console takes: the packages' XLF files, and
-`answeredBy: nothing` where they hold none either. Reading the warning rather
-than the exit code fails in the safe direction — were its wording to move, an
-empty result would read as nothing established, which costs a fallback rather
-than an answer that is wrong.
-
-The transport does not fold the two streams, and the reading is DDEV's own
-source rather than a run. `ddev exec` builds a `docker compose exec` and appends
-`-T` where stdin is not a terminal — `pkg/ddevapp/ddevapp.go`, unchanged in
-every release examined from v1.22.7 to v1.25.1 and in `main`, where the same
-condition decides the TTY the compose API is given. This server invokes it
-through `proc_open` with pipes, so stdin is never a terminal, no pseudo-TTY is
-allocated, and Docker keeps stdout and stderr demultiplexed; DDEV then writes
-them to its own two streams. A TTY would merge them, and that is the case a
-human at a terminal has, not this one. So no producer of stdout noise ahead of
-the payload is established from any side, and `decode()` keeps its two
-candidates. What a run would still add is the machine this one cannot read: the
-source says what DDEV does with the streams, not what a container that
-misbehaves puts on them.
+anything: only the warning is read as "none", and every other exit-0 without a
+payload takes the route an unreachable console takes. Reading the warning fails
+in the safe direction — a moved wording costs a fallback rather than a wrong
+answer. The transport does not fold the two streams either, read from DDEV's own
+source rather than from a run: `ddev exec` appends `-T` where stdin is not a
+terminal, so no pseudo-TTY is allocated and Docker keeps the streams apart. What
+a run would still add is what a misbehaving container puts on them.

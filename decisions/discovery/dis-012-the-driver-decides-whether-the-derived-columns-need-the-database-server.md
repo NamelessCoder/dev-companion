@@ -83,25 +83,11 @@ reach entirely.
 
 ## Since then
 
-Re-read on 2026-08-23 and the split still holds where it can be read. In
-doctrine/dbal 4.4.4, which `e-site-13.4`, `e-site-14.3` and `e-site-main`
-install, `AbstractSQLiteDriver::getDatabasePlatform()` takes the
-`ServerVersionProvider` and returns a `SQLitePlatform` without asking it, where
-`AbstractMySQLDriver` opens on `$versionProvider->getServerVersion()`;
-`e-site-12.4` is still on 3.10.6 and splits the same way. No covered branch
-overrides `getDatabasePlatform()` in `Core\Database\Connection` — 12.4, 13.4,
-14.3 and `main` declare it nowhere — so Doctrine's path is still the whole of
-it.
-
-The driver list is unchanged and reads more precisely than the third bullet.
-`DatabaseCheck::$databaseDriverCheckMap` carries the same four on 12.4, 14.3 and
-`main`, and it is what "has a check for" means; the wider `$driverMap` beside it
-names `pdo_oci`, `oci8` and `ibm_db2` as well, is `@todo`-marked for removal
-with the method that reads it, and no check is registered for any of the three.
-So a connection on one of those is in neither branch today and TYPO3 does not
-check it either.
-
-The second bullet is the one no environment here can produce: every one of them
-is `pdo_sqlite`, and `StaticServerVersionProvider` — which is what would answer
-before a connection where `serverVersion` sits in the parameters — is in both
-DBAL versions. It stays a real case rather than a settled one.
+Re-read on 2026-08-23 and the split holds where it can be read: the SQLite
+driver returns its platform without asking the version provider in both DBAL
+versions the environments install, and no covered branch overrides
+`getDatabasePlatform()`, so Doctrine's path is the whole of it. The driver list
+reads more precisely than the third bullet — the check map is what "has a check
+for" means, and the wider map beside it is marked for removal with no check
+registered for any of its three. The second bullet is the one no environment
+here can produce, since every one is `pdo_sqlite`.

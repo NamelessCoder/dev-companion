@@ -47,36 +47,19 @@ contrasted.
 
 ## Confirmed on 2026-08-02
 
-The first **Wrong if** has not happened, and it is now guarded rather than
-promised. At `bin/cli checkouts:update` state of 2026-08-01, 12.4 (`31f881a2`)
-and 13.4 (`1d104f3b`) carry no `TranslationDomain*` class anywhere below
-`typo3/sysext/`, while 14.3 (`faf60eea`) and main (`c71b2bdb`) both carry
-`TranslationDomainMapper` and `TranslationDomainResolver` in
-`core/Classes/Localization/`, and the feature is filed as
-`Changelog/14.0/Feature-93334-TranslationDomainMapping.rst`. Two readers hold
-the constant from here on. `bin/cli catalog:check` asks every covered checkout
-for the class and fails where the major it derives is not the constant — a
-backport is a release rather than an edit in this repository, so the checkouts
-are the only place one is visible. `VersionsTest` ties the constant to the
-majors `knowledge/versions.json` declares, so a covers list that stops carrying
-a major below it fails instead of leaving the withheld answer addressed to
-versions nothing covers. The constant is public for those two and is still one
-number in one place.
+The first **Wrong if** has not happened and is guarded rather than promised. The
+two older checkouts carry no `TranslationDomain*` class and the two newer ones
+do, filed as a 14.0 feature. Two readers hold the constant from here:
+`catalog:check` asks every covered checkout and fails where the major it derives
+is not the constant — a backport is a release rather than an edit here — and
+`VersionsTest` ties it to the majors `knowledge/versions.json` declares.
 
 ## Since then
 
-The second **Wrong if** is live, and reading for the first one is what showed
-it. `TranslationDomainLookup` asks `Instance::typo3Major()` directly and takes
-`path` alone, while `SystemExtensionLookup`, `TestRunGuide`, `SnapshotScope` and
-`DocumentationLookup` all take a `targetVersion` through `Versions::target()`.
-The feature that would close it is queued as
-`todo/360-let-the-translation-domain-answer-be-asked-for-a`.
-
-Closed on 2026-08-02. `typo3_translation_domain_lookup` takes a `targetVersion`
-and resolves it through `Versions::target()` like the four tools above, reports
-the major it was composed for, and says so in the answer that hands a domain
-over as well as in the one that withholds it — where nothing states a version
-and no installation was found, it names the version domains arrive in rather
-than answering as if that were settled. It stays one major: an extension
-declaring two has no single domain answer, and `Versions::targets()` would make
-this a different decision than the one taken here.
+The second **Wrong if** was live — this lookup asked for the major directly
+while four other tools took a `targetVersion` — and was closed on 2026-08-02.
+`typo3_translation_domain_lookup` resolves one through `Versions::target()` like
+the others, reports the major it was composed for, and where nothing states a
+version it names the version domains arrive in rather than answering as if that
+were settled. It stays one major: an extension declaring two has no single
+answer.

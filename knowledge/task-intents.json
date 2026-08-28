@@ -655,6 +655,7 @@
     "id": "patch-review",
     "title": "Judging one incoming change",
     "skill": "typo3-extension-patch-review",
+    "guide": "extension/compatibility/a-declared-major-that-is-not-installed",
     "changesNothing": true,
     "match": [
       "pull request",

@@ -7,6 +7,7 @@ caller for rather than guessing.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-GUI-024`][D-GUI-024] — The intent that states an obligation names the page discharging it · 2026-08-28
 - [`D-GUI-021`][D-GUI-021] — The subject a draft carries is the summary the caller wrote · 2026-08-27
 - [`D-GUI-022`][D-GUI-022] — The paths a brief is composed from name a subsystem rather than a diff · 2026-08-27
 - [`D-GUI-023`][D-GUI-023] — A checklist item names the call that can answer it · 2026-08-27
@@ -30,6 +31,7 @@ one is added.
 - [`D-GUI-008`][D-GUI-008] — Operating an installation is a change type of its own · 2026-08-03
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
+[D-GUI-024]: gui-024-the-intent-that-states-an-obligation-names-the-page-discharging-it.md
 [D-GUI-021]: gui-021-the-subject-a-draft-carries-is-the-summary-the-caller-wrote.md
 [D-GUI-022]: gui-022-the-paths-a-brief-is-composed-from-name-a-subsystem-rather-than-a-diff.md
 [D-GUI-023]: gui-023-a-checklist-item-names-the-call-that-can-answer-it.md

@@ -6285,6 +6285,7 @@ final class HintsTest extends TestCase
      */
     #[Requirement('R-GUI-013')]
     #[Decision('D-GUI-012')]
+    #[Decision('D-GUI-024')]
     #[Test]
     public function aBriefNamesTheGuideTheWorkIsWrittenUpIn(): void
     {
@@ -6338,6 +6339,27 @@ final class HintsTest extends TestCase
         ]);
 
         self::assertSame([], $review->data['guides']);
+
+        // And the obligation that had no page beside it. The patch-review
+        // intent states that a finding is judged on every declared major and
+        // owned no guide, so the brief created the duty and named nothing that
+        // discharges it — a session re-derived the procedure by hand with the
+        // page listed to it minutes earlier by typo3_project_describe
+        // (`D-GUI-024`).
+        $incoming = Registry::call('typo3_task_guide', [
+            'task' => 'Review an incoming pull request that changes an f:if condition in a Fluid partial',
+            'paths' => ['Resources/Private/Partials/ContentElements/Table/Columns.html'],
+            'changeType' => 'audit',
+        ]);
+
+        self::assertSame(
+            ['extension/compatibility/a-declared-major-that-is-not-installed'],
+            array_column($incoming->data['guides'], 'id'),
+        );
+        self::assertStringContainsString(
+            'every major the package\'s Composer constraint declares',
+            implode("\n", $incoming->data['checklist']),
+        );
     }
 
     /**

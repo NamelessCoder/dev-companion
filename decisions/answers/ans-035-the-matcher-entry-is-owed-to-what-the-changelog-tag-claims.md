@@ -114,7 +114,7 @@ about the matchers.
   was then not the gap and the wording is what to look at — step 4 of the
   `D-ANS-029` ladder.
 
-## Since then
+## Confirmed on 2026-08-03
 
 The rule reached a reviewer under five hours after it was written and the five
 rows were read as a closed list. The session was about to demand a matcher

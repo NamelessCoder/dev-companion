@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Tool;
 
 use TYPO3\DevCompanion\Feedback\Channel;
+use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Knowledge\Domains;
@@ -18,6 +19,7 @@ use TYPO3\DevCompanion\Result\Prose;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
 use TYPO3\DevCompanion\Result\VersionScope;
+use TYPO3\DevCompanion\Server\Installer;
 
 /**
  * A task checklist, enriched with the hints and core checks that
@@ -119,6 +121,18 @@ final class TaskGuide extends ReadOnlyTool
     public const SKILLS_IN_ORDER = 'Owned by: %s — in that order, because this task establishes what is there '
         . 'before it changes it. Load both where this project has them installed: each carries the working order '
         . 'for its half, and this brief is one call inside the first.';
+
+    /**
+     * Said where the skill is named, for the copy this project has of it
+     * (`D-SKL-086`).
+     *
+     * The same thing is said once at initialize, before a task is known, and a
+     * session read it there and worked four such skills anyway. This is the
+     * last moment this server controls: the load itself is a call it cannot
+     * see.
+     */
+    public const SKILLS_STALE = 'Behind what this server publishes, in this project: %s. Run '
+        . 'typo3-dev-companion update before loading %s, or say in any report which copy you read.';
 
     /**
      * The sweep a change owes, said in the brief that classified it
@@ -341,6 +355,7 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, or the intent is a core-only one and nothing in the task says this is core work. Either way it applies only under its condition.'],
                 'condition' => Schema::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
+            'staleSkills' => Schema::listOf(Schema::string(), 'Which of the skills above this project holds an older copy of, read from what is published there against what this server would write now. Empty where every named copy is current, where this server never installed into this project, and where no skill was named at all — so it is a subset of skills and never a statement that one is missing. What to do about it is one command, typo3-dev-companion update, and what it costs is a change to the caller\'s own checkout.'),
             'skills' => Schema::listOf(Schema::string(), 'The task skills that own the recognized work, named so that a caller who reached this server without one can load it. A skill is a file in your own project rather than something this server can see, so a name here is not a promise that it is installed. A review, a triage, a boot and a diagnosis name only the workflows that change nothing either: the kind of change under review is still recognized in intents, and the workflow for writing one is not the one you are in. Empty means no published skill owns what was recognized, which is not a statement that the work has no workflow.'),
             'guides' => Schema::listOf(Schema::guideReference(), 'The whole procedures the recognized work is written up in, the same corpus typo3_project_describe lists at orientation and this server serves as typo3://guides resources. Named rather than carried: a brief is one call inside a procedure, and the page is one typo3_rule_lookup call by documentId. Empty means no page here is the write-up of what was recognized, which is not a statement that none of them is worth reading — the whole list is in that orientation call.'),
             'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A hint declaring a different kind of repository from the paths given ranks below the ones that bind them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
@@ -368,7 +383,7 @@ final class TaskGuide extends ReadOnlyTool
                 'how' => Schema::string(),
             ], ['establish', 'how']), 'What this server cannot see and the agent has to establish itself.'),
             'nextTools' => Schema::listOf(Schema::nextTool()),
-        ], ['task', 'changeType', 'domains', 'skills', 'guides', 'hints', 'omittedHints', 'checks', 'checklist', 'nextTools']);
+        ], ['task', 'changeType', 'domains', 'skills', 'staleSkills', 'guides', 'hints', 'omittedHints', 'checks', 'checklist', 'nextTools']);
     }
 
     public static function answer(array $args): ToolResult
@@ -562,10 +577,18 @@ final class TaskGuide extends ReadOnlyTool
         // Above the payload rather than under it: a caller that is in the wrong
         // workflow is in it for the whole answer, and the line is worth nothing
         // once the reading has started.
+        $stale = Installer::behind(Instance::startedFrom() ?? '', $skills);
         if ($skills !== []) {
             $lines[] = sprintf(
                 $spansBoth && count($skills) > 1 ? self::SKILLS_IN_ORDER : self::SKILLS_OWNING,
                 implode(', ', $skills),
+            );
+        }
+        if ($stale !== []) {
+            $lines[] = sprintf(
+                self::SKILLS_STALE,
+                implode(', ', $stale),
+                count($stale) === 1 ? 'it' : 'them',
             );
         }
         // Under the skill and above the payload for the same reason, and two
@@ -862,6 +885,7 @@ final class TaskGuide extends ReadOnlyTool
                 'condition' => (string) $intent['condition'],
             ], $intents),
             'skills' => $skills,
+            'staleSkills' => $stale,
             'guides' => $guides,
             'hints' => MatchedHints::records($hints['matchedHints']),
             'omittedHints' => $omitted,

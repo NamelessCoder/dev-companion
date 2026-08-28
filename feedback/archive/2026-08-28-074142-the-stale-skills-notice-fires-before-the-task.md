@@ -1,7 +1,8 @@
 ---
 date: 2026-08-28T07:41:42+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-28
 model: claude-opus-5[1m]
 tool: typo3_server_scope, typo3_project_describe
 directory: /home/benji/projects/bootstrap_package

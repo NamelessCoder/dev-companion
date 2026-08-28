@@ -500,6 +500,73 @@ final class SkillTest extends TestCase
         );
     }
 
+    /**
+     * The copy a project has of a skill the brief names, said where the file is
+     * about to be loaded.
+     *
+     * The same thing is said once at initialize, before a task is known, and
+     * the session that reported this read it there and then worked four such
+     * skills — so it could not tell afterwards which of its findings were about
+     * a copy this server has moved past (`D-SKL-086`).
+     */
+    #[Decision('D-SKL-086')]
+    #[Test]
+    public function theBriefSaysWhichOfTheSkillsItNamesThisProjectIsBehindOn(): void
+    {
+        $project = sys_get_temp_dir() . '/typo3-dev-companion-stale-' . bin2hex(random_bytes(4));
+        $skill = 'typo3-extension-testing';
+        $published = $project . '/.agents/skills/' . $skill;
+        self::copyDirectory(Paths::root() . '/skills/' . $skill, $published);
+        file_put_contents($published . '/references/base.md', file_get_contents(Paths::root() . '/skills/base.md'));
+        @mkdir($project . '/.typo3-dev-companion', 0o777, true);
+        file_put_contents($project . '/.typo3-dev-companion/state.json', json_encode([
+            'version' => 1,
+            'agents' => ['generic'],
+            'skills' => [$skill],
+            'drafts' => [],
+            'digest' => Installer::digest(false),
+        ]));
+        Instance::discoverFrom($project);
+
+        $arguments = [
+            'task' => 'add functional tests for the parser',
+            'paths' => ['Classes/Parser/AbstractParser.php'],
+            'changeType' => 'test',
+        ];
+
+        // A copy of what this package publishes is not behind on anything, and
+        // the field is a subset of `skills` rather than a second list.
+        $current = Registry::call('typo3_task_guide', $arguments);
+        self::assertSame([$skill], $current->data['skills']);
+        self::assertSame([], $current->data['staleSkills']);
+
+        file_put_contents($published . '/SKILL.md', "\nwhat an older publication said\n", FILE_APPEND);
+        $stale = Registry::call('typo3_task_guide', $arguments);
+
+        self::assertSame([$skill], $stale->data['staleSkills']);
+        self::assertStringContainsString('typo3-dev-companion update', $stale->text);
+
+        self::removeDirectory($project);
+    }
+
+    private static function copyDirectory(string $source, string $target): void
+    {
+        @mkdir($target, 0o777, true);
+        foreach (Finder::create()->files()->in($source) as $file) {
+            $path = $target . '/' . $file->getRelativePathname();
+            @mkdir(dirname($path), 0o777, true);
+            copy($file->getPathname(), $path);
+        }
+    }
+
+    private static function removeDirectory(string $directory): void
+    {
+        foreach (Finder::create()->in($directory)->depth('< 100')->sortByName()->reverseSorting() as $entry) {
+            $entry->isDir() ? @rmdir($entry->getPathname()) : @unlink($entry->getPathname());
+        }
+        @rmdir($directory);
+    }
+
     /** Nothing after this reads the written installation, and nothing before it did. */
     #[After]
     public function forgetTheInstallation(): void
@@ -2987,6 +3054,12 @@ final class SkillTest extends TestCase
         foreach (Finder::create()->files()->in(Paths::root() . '/src/Tool')->name('*.php')->sortByName() as $file) {
             preg_match_all('/typo3-[a-z0-9]+(?:-[a-z0-9]+)+/', (string) $file->getContents(), $matches);
             foreach (array_unique($matches[0]) as $skill) {
+                // This package's own binary has the shape of a skill name and
+                // is not one: `typo3_task_guide` names the update command
+                // beside a stale copy (`D-SKL-086`).
+                if ($skill === 'typo3-dev-companion') {
+                    continue;
+                }
                 $named[] = [$file->getFilename(), $skill];
             }
         }

@@ -365,6 +365,103 @@ final class Installer
     }
 
     /**
+     * Which of the named skills a project holds an older copy of, in the order
+     * they were asked for.
+     *
+     * `outdated()` answers for the publication and is delivered once, before a
+     * task is known; a session is handed a skill name at the moment it is about
+     * to load the file, and that is the last thing this server controls
+     * (`D-SKL-086`). So this compares the copy rather than the record: what a
+     * project has on disk against what this package would write there now,
+     * which is the one reading that survives a record written by an older
+     * release.
+     *
+     * Silent where nothing was published, for `outdated()`'s reason — a project
+     * this package never installed into is not behind on anything.
+     *
+     * @param array<int, string> $skills
+     * @return array<int, string>
+     */
+    public static function behind(string $project, array $skills): array
+    {
+        $state = self::readState($project);
+        $published = [...$state['skills'], ...$state['drafts']];
+        if ($published === []) {
+            return [];
+        }
+
+        $paths = [];
+        foreach ($state['agents'] as $agent) {
+            $paths[] = self::definition($agent)['skills'];
+        }
+        $behind = [];
+        foreach ($skills as $skill) {
+            if (!in_array($skill, $published, true) || !is_dir(Paths::root() . '/skills/' . $skill)) {
+                continue;
+            }
+            foreach (array_unique($paths) as $path) {
+                $copy = $project . '/' . $path . '/' . $skill;
+                if (is_dir($copy) && self::publishedDigest($copy) !== self::skillDigest($skill)) {
+                    $behind[] = $skill;
+
+                    break;
+                }
+            }
+        }
+
+        return $behind;
+    }
+
+    /**
+     * What publishing one skill would write, as one string.
+     *
+     * The base is the copy's rather than the skill's own, because that is what
+     * lands there, and the `.gitignore` is left out of both sides: it is a
+     * constant of this class and moves only when this class does.
+     */
+    private static function skillDigest(string $skill): string
+    {
+        $digest = hash_init('sha256');
+        foreach (Finder::create()->files()->in(Paths::root() . '/skills/' . $skill)->sortByName() as $file) {
+            $name = $file->getRelativePathname();
+            if ($name === self::BASE) {
+                continue;
+            }
+            hash_update($digest, $name . "\0");
+            hash_update_file($digest, $file->getPathname());
+        }
+        hash_update($digest, self::BASE . "\0");
+        hash_update_file($digest, Paths::root() . '/skills/' . basename(self::BASE));
+
+        return hash_final($digest);
+    }
+
+    /** The same reading of a published copy, which carries a `.gitignore` the source has not. */
+    private static function publishedDigest(string $copy): string
+    {
+        $digest = hash_init('sha256');
+        $files = [];
+        foreach (Finder::create()->files()->ignoreDotFiles(false)->in($copy)->sortByName() as $file) {
+            if ($file->getRelativePathname() !== '.gitignore') {
+                $files[$file->getRelativePathname()] = $file->getPathname();
+            }
+        }
+        ksort($files);
+        $base = $files[self::BASE] ?? null;
+        unset($files[self::BASE]);
+        foreach ($files as $name => $path) {
+            hash_update($digest, $name . "\0");
+            hash_update_file($digest, $path);
+        }
+        hash_update($digest, self::BASE . "\0");
+        if ($base !== null) {
+            hash_update_file($digest, $base);
+        }
+
+        return hash_final($digest);
+    }
+
+    /**
      * The skills a run publishes, which is this package's own set and the
      * drafts where the run asked for them.
      *

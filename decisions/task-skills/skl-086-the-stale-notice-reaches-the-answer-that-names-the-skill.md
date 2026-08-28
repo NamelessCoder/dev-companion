@@ -3,6 +3,8 @@ id: D-SKL-086
 title: The stale notice reaches the answer that names the skill
 date: 2026-08-28
 status: open
+coveredBy:
+  - SkillTest::theBriefSaysWhichOfTheSkillsItNamesThisProjectIsBehindOn
 ---
 
 # D-SKL-086 — The stale notice reaches the answer that names the skill
@@ -20,7 +22,7 @@ past.
 
 - **The session.** `/home/benji/projects/bootstrap_package` on 2026-08-28,
   `claude-opus-5[1m]`,
-  [`feedback/2026-08-28-074142`](../../feedback/2026-08-28-074142-the-stale-skills-notice-fires-before-the-task.md).
+  [`feedback/2026-08-28-074142`](../../feedback/archive/2026-08-28-074142-the-stale-skills-notice-fires-before-the-task.md).
   It quotes the notice, names the four skills it then worked inside, and states
   the cost as one it cannot measure: every finding it filed about skill
   behaviour is unanchored, because it can name the text it read and not which
@@ -78,3 +80,17 @@ past.
   already one such reason.
 - The version line lands and no feedback ever quotes it, which would say the
   anchor was wanted by one session rather than by the corpus.
+
+## Since then
+
+Built the same day as `staleSkills`, a list beside `skills` and a line under the
+one that names them. It compares the copy rather than the record —
+`Installer::behind()` digests what a project has against what this package would
+write there now — so a record from an older release does not decide it, and a
+project this package never installed into stays silent.
+
+The provenance line is declined rather than queued, on a collision the reading
+found: a digest written into the published base is a byte the comparison would
+then have to ignore, and once ignored nothing points at the file, so only a
+session already suspecting staleness would open it. The field tells that session
+outright, which is the anchor the report asked for.

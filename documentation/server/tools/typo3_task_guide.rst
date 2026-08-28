@@ -106,6 +106,14 @@ Answers with
         confidence: string
         # When a weakly matched intent applies. Empty for a strong match.
         condition: string
+    # Which of the skills above this project holds an older copy of, read from what
+    # is published there against what this server would write now. Empty where every
+    # named copy is current, where this server never installed into this project,
+    # and where no skill was named at all — so it is a subset of skills and never
+    # a statement that one is missing. What to do about it is one command,
+    # typo3-dev-companion update, and what it costs is a change to the caller's own
+    # checkout.
+    staleSkills: [string]
     # The task skills that own the recognized work, named so that a caller who
     # reached this server without one can load it. A skill is a file in your own
     # project rather than something this server can see, so a name here is not a
@@ -504,6 +512,7 @@ Data:
         "skills": [
             "typo3-core-patch-development"
         ],
+        "staleSkills": [],
         "guides": [],
         "hints": [
             {
@@ -991,6 +1000,7 @@ Data:
             }
         ],
         "skills": [],
+        "staleSkills": [],
         "guides": [],
         "hints": [],
         "omittedHints": [],
@@ -1294,6 +1304,7 @@ Data:
         "skills": [
             "typo3-core-patch-development"
         ],
+        "staleSkills": [],
         "guides": [],
         "hints": [
             {

@@ -33,7 +33,6 @@ final class DecisionCheck
     public function __invoke(OutputInterface $output): int
     {
         $problems = [];
-        $overTheMeasure = [];
         $seen = [];
         $successors = [];
         $known = [...Decisions::FIELDS, ...Decisions::laterFields()];
@@ -133,7 +132,8 @@ final class DecisionCheck
             }
 
             foreach (Decisions::overTheMeasure($path) as $label => $count) {
-                $overTheMeasure[$id . ' — ' . $label] = $count;
+                $problems[] = $id . ' has a ' . $label . ' of ' . $count . ' lines, and a reading is '
+                    . Decisions::READING_MEASURE . ' — what does not fit is a finding rather than prose to trim';
             }
 
             foreach ($decision['readings'] as $reading) {
@@ -195,24 +195,6 @@ final class DecisionCheck
             if (!isset($seen[$id])) {
                 $problems[] = 'a test declares it holds ' . $id . ', which no decision has';
             }
-        }
-
-        // A report rather than a problem, until the sweep that compacts the
-        // corpus has run: a dated section says what the reading changed, and
-        // one that found nothing is a date in `readings:` — `D-DOC-066`. Every
-        // section over the measure is prose a reader pays for before reaching
-        // the decision.
-        if ($overTheMeasure !== []) {
-            arsort($overTheMeasure);
-            $output->writeln(sprintf(
-                '%d dated sections run past %d lines, the longest being:',
-                count($overTheMeasure),
-                Decisions::READING_MEASURE,
-            ));
-            foreach (array_slice($overTheMeasure, 0, 3, true) as $where => $count) {
-                $output->writeln(sprintf('  %-58s %4d lines', $where, $count));
-            }
-            $output->writeln('');
         }
 
         // The other report, and the one that says which entries can go stale

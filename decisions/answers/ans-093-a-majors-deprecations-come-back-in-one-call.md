@@ -107,20 +107,10 @@ without a tag.
 
 ## Since then
 
-The mechanism the todo weighed was settled on 2026-08-21 for the raised `limit`
-maximum, at 200, and against a ceiling that applies where a version and a type
-both narrow. The schema is what decides it: `mcp/sdk` validates the arguments
-against `inputSchema` in `CallToolHandler` before a tool runs, so a maximum that
-depends on the other fields is either undeclarable — and the call the ceiling
-exists for is refused before the tool sees it — or a clamp contradicting the
-number the schema states. 200 carries the largest set the covered majors put
-under a version and a type, which is 128, with room for a major still collecting
-entries. The 217 features of 12 and the 221 of 14 stay outside it, which is the
-set the second **Assumed** says no sweep asks for; the third **Wrong if** is
-what the raised parameter is falsified by, unchanged.
-
-Step 5 of `skills/base.md` changed with it: one call per declared major, the
-query omitted and the tags read off the entries the one answer returns. The two
-skills reasoning from the old cap changed too — `typo3-extension-upgrade` sweeps
-the breakings the same way, and `typo3-core-patch-review` raises `limit` on a
-major still collecting entries where it used to bound one by `tag`.
+The mechanism was settled for the raised maximum and against a ceiling that
+applies where two filters narrow. The schema is what decides it: the SDK
+validates the arguments before a tool runs, so a maximum that depends on the
+other fields is either undeclarable — and the call the ceiling exists for is
+refused before the tool sees it — or a clamp contradicting the number the schema
+states. The number carries the largest set the covered majors put under a
+version and a type, with room for a major still collecting entries.

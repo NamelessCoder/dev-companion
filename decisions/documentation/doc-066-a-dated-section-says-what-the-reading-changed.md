@@ -4,7 +4,7 @@ title: A dated section says what the reading changed
 date: 2026-08-28
 status: open
 coveredBy:
-  - DecisionsTest::aDatedSectionOverTheMeasureIsReadOut
+  - DecisionsTest::noDatedSectionRunsPastTheMeasure
 ---
 
 # D-DOC-066 — A dated section says what the reading changed
@@ -63,3 +63,16 @@ often became a journal of its own applications.
 - A date in `readings:` is written for a reading that did change something,
   because a date is cheaper than a sentence. That is the failure mode the twelve
   lines exist to make affordable.
+
+## Since then
+
+The sweep ended the same day it started, over 352 sections in thirteen groups,
+and `bin/cli decisions:check` fails on one now. `decisions/` went from 68 396
+lines to 57 120, of which 4 703 sit below a dated heading against 17 595 — a
+quarter of the corpus to eight per cent.
+
+Two things the sweep found. The measure is written to rather than met: nineteen
+compactions came out at 13 to 18 lines and were trimmed a sentence each. And
+`feedback/` was left out when the work was cut into cards, because its two
+journal entries had a card of their own and the group went with them — a card
+derived from a measurement inherits whatever the measurement grouped by.

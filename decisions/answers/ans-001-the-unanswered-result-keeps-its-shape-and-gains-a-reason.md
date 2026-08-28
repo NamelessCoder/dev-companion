@@ -52,21 +52,12 @@ than what a client reads off it. So the evidence needs a session in one of them.
 
 ## Revoked on 2026-08-02
 
-The shape was not worth keeping, and holding it was what forced the nulls. A
+The shape was not worth keeping, and holding it was what forced the nulls: a
 tool that cannot ask has to emit every field its schema requires, and those
 fields are the answer — a count, a flag, a list. Withholding what they said
 turned the counts and the flags nullable, which is a result shape kept by faking
-the numbers out of it. `D-ANS-005` replaces the result instead: `unsupported`
-with a cause and a reason, and beside it only the caller's own arguments.
-
-What this entry got right is in the successor unchanged — the reason belongs in
-the data, an empty answer and an unanswerable one are not the same thing, and
-`found: false` is a statement nobody may make without asking. What it got wrong
-is where that reasoning stops. It applied to one field of one tool, and the rule
-is about every field of all of them.
-
-The **Wrong if** never fired and was never observed; it is inherited rather than
-settled, and the session it needs is still `todo/waiting/`.
+the numbers out of it. The successor replaces the result instead, and what this
+entry got right is in it unchanged.
 
 ## Since then
 

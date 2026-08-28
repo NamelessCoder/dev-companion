@@ -79,20 +79,13 @@ what they were shown was the map of how this repository works on itself.
 
 ## Revoked on 2026-08-12
 
-By its own second **Wrong if**, read the other way round. It saw that one file
-serving two places would become a compromise, and expected the readme to grow
-the sections a site wants. What happened instead is that the site kept a landing
-page written for GitHub, and the manual had no page saying what the server is.
+By its own second **Wrong if**, read the other way round: it saw that one file
+serving two places would become a compromise and expected the readme to grow the
+sections a site wants, and what happened instead is that the site kept a landing
+page written for GitHub while the manual had no page saying what the server is.
 
 The ground it stood on was that a second entry page would duplicate the promise
-paragraphs. It would have — as a copy. Moving them costs nothing twice, and
-[`D-DOC-026`](doc-026-the-site-is-the-documentation-and-the-readme-stays-out-of-it.md)
-is that move: the front page is `documentation/readme.rst` again, carrying what
-this entry was right that it lacked.
-
-What outlives it is everything it found missing on the map, and the reading that
-put it there: a visitor of the site is a user before they are a contributor, so
-the four sections come last on the front page rather than first. Its rule for
-resolving a link — against the repository and named again from the published
-path — outlives it too, and is what makes a link to the readme a file on GitHub
-now.
+paragraphs. It would have, as a copy — moving them costs nothing twice, and
+`D-DOC-026` is that move. What outlives it is everything it found missing on the
+map, and the reading that put it there: a visitor is a user before they are a
+contributor. Its rule for resolving a link outlives it too.

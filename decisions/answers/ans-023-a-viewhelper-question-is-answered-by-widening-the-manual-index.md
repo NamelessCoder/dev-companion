@@ -109,18 +109,8 @@ nothing. The regressions asked for at the same time held.
 
 ## Revoked on 2026-08-02
 
-By the change this entry asked for. The statement under the title — three books,
-none documenting a ViewHelper — is what the lookup did until that afternoon and
-is not what it does now, and an entry a reader may still build on has to be one
-whose statement is true when they read it. The evidence and the confirmation
-above stay: the gap was real, the three **Wrong if** were measured and none
-held, and that reading is the reason the change looks the way it does.
-
-What holds from here is
-[`D-ANS-026`](ans-026-the-viewhelper-reference-is-indexed.md)
-— four manuals, each carrying the collection it is published in — and what must
-keep holding is
-[`R-DOC-003`](../../requirements/documentation/doc-003-a-viewhelper-question-is-answered-from-the-manual-that-documents-viewhelpers.md).
-The successor's **Wrong if** is written against what can go wrong now, which is
-a book that moves rather than a book that is missing; this one's could no longer
-fire and so could no longer be gone back to.
+By the change this entry asked for: the statement is what the lookup did until
+that afternoon, and an entry a reader may build on has to be one whose statement
+is true when they read it. The evidence and the confirmation stay — the gap was
+real, the three **Wrong if** were measured and none held, and that reading is
+why the change looks the way it does. `D-ANS-026` holds from here.

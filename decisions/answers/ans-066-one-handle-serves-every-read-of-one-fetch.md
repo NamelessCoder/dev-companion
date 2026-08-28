@@ -77,20 +77,12 @@ does the same thing, which is what this settles.
 
 ## Since then
 
-Read on 2026-08-23, and the two halves a reading can settle still hold.
-`Fetch::$handle` is a nullable instance property created on the first read and
-never static, `curl_setopt_array()` sets every option a read varies on each
-call, and `curl_reset()` appears nowhere — which is what keeps a header from
-surviving into the next read while the connection under it stays.
+Read on 2026-08-23, and the two halves a reading can settle still hold: the
+handle is a nullable instance property created on the first read and never
+static, every option a read varies on is set on each call, and nothing resets it
+— which is what keeps a header from surviving into the next read while the
+connection under it stays.
 
-The third **Wrong if** is what the lifetime says rather than a risk left open.
-`Manual\Documentation` builds its own `Fetch` in its constructor and
-`Tool\DocumentationLookup` builds a `Documentation` per call, so the handle is
-made for one lookup and goes with it; nothing here holds a connection to
-`docs.typo3.org` between two lookups.
-
-The second one is unchanged and is the one no reading answers: it needs the
-sixteen reads measured against the host again, which is a call outside this
-machine and not something a judging run makes. What would show it is a manual
-lookup no faster than one handle per read, and the numbers to compare against
-are above.
+The third **Wrong if** is what the lifetime says rather than a risk left open:
+the manual source builds its own reader per lookup, so the handle is made for
+one and dies with it.

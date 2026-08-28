@@ -114,23 +114,8 @@ ever going to write.
 
 ## Confirmed on 2026-08-23
 
-The split holds and none of the four **Wrong if** has been reported. A plugin
-still answers `kind: plugin` with `pluginSettings` beside it and an element
-answers with a `templateName`, and
-`ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate`
-holds both halves.
-
-The second is the one this entry could only answer in prose, and the prose is
-there: the plugin paragraph of the rendered answer says that before 14.0
-`configurePlugin()` could register a plugin under `list_type` rather than as its
-own CType, and that the call is in `ext_localconf.php`, which nothing here
-reads. So a `list_type` plugin on an older installation is named as the thing
-the answer cannot see rather than left to a reader to catch.
-
-Nothing in `feedback/` since this was written mentions `pluginSettings` or
-`plugin.tx_`. The two that do are `2026-07-29-234316` and `2026-07-31-193109`,
-both older than the entry, and the second is the audit it was written from.
-
-What a reading here cannot settle is the fourth: whether
-`plugin.tx_<identifier>.view` got a caller to the template file. Only a session
-that followed the pointer can say, and none has reported doing so.
+The split holds and none of the four **Wrong if** has been reported. The second
+is the one this entry could only answer in prose, and the prose is there: the
+plugin paragraph says that before the newest major a plugin could be registered
+under the old list type rather than as its own content type, and that the call
+is in a file nothing here reads.

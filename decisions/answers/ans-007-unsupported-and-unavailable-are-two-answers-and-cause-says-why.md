@@ -69,19 +69,8 @@ same case.
 ## Confirmed on 2026-08-22
 
 The third source arrived and fits, which is the second **Wrong if** read the
-right way round. `Source` names five kinds today — installation, packages,
-knowledge, network and checkout — and the two that were not here when this was
-written answer in the shape the line predicts: the TER lookup, the Forge and the
-Gerrit reads are reachable from anywhere or from nowhere, so they carry `status`
-with `answered`, `empty` and `unavailable`, and an `unavailable` object with a
-`cause`. None of them took `unsupported`, which stays what a question this
-server cannot be asked from where it stands answers with.
-
-The vocabulary grew by one value rather than by a second key.
-`source-not-parseable` stands beside `source-not-answering` — a host that
-answered with something that is not the document — and it is a remedy of its own
-in the same word, which is what the **Decided** asked of a new value.
-
-The first **Wrong if** is unreported. Nothing in the archive says a caller
-retried a `version-not-covered` answer or gave up on a `source-not-answering`
-one, and what would show it is a session's own account of what it did next.
+right way round: the two kinds that were not here when this was written answer
+in the shape the line predicts — reachable from anywhere or from nowhere, so
+they carry the status vocabulary and an unavailable object with a cause. None of
+them took the value that says a question cannot be asked from where the server
+stands.

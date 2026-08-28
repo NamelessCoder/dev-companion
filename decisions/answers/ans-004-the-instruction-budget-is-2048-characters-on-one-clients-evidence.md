@@ -44,17 +44,11 @@ states a limit, and no other client has been measured.
 
 ## Since then
 
-The number has become what blocks rather than what was spent. Measured on
-2026-08-21, the longest assembly stands at 2028 characters of the 2048, and
-`feedback/2026-08-19-090401` asks for a statement of the boundary that does not
-fit in the twenty left —
-[`D-AUD-011`](../audience/aud-011-the-instructions-index-the-question-each-tool-answers.md)
-is the reading, and the third card in a row to end at this constant.
+The number has become what blocks rather than what was spent: the longest
+assembly stands twenty characters under it, and a feedback asks for a statement
+of the boundary that does not fit in what is left — the third card in a row to
+end at this constant.
 
-Nothing has re-measured it. This entry took 2048 from one client's release runs
-on 2026-07-31, and the client reporting above is a different one that delivered
-the block whole and reports no truncation at all. So the case that has arrived
-is the direction the **Wrong if** is not written for: not a client that keeps
-less, but one that may keep more while the server writes to the smaller number.
-What would settle it is one session reporting the length of the `instructions`
-its client actually kept, which no session in this checkout can produce.
+Nothing has re-measured it. This entry took the number from one client's release
+runs, and the client reporting above is a different one that delivered the block
+whole and reports no truncation.

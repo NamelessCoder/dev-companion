@@ -111,17 +111,8 @@ half of the feedback is a curation task, and it is what is left of the feedback.
 
 ## Revoked on 2026-08-18
 
-By the change this entry asked for. The statement under the title is what the
-matcher did until that afternoon: the hint that explains the symptom is no
-longer gated out, so a reader who stops after the bold sentence would take it
-for a description of today. The evidence stays, because it is what the shape of
-the change was read off.
-
-What holds from here is
-[`D-ANS-084`](ans-084-a-curated-phrase-crosses-the-domain-gate.md)
-— the rule, the two wider ones it was measured against, and what each of those
-cost — and what must keep holding is
-[`R-ANS-031`](../../requirements/answers/ans-031-a-symptom-reaches-the-hint-that-explains-it.md).
-The successor's **Wrong if** is written against what can go wrong now, which is
-a hint crossing from a layer nobody asked about rather than one that cannot
-cross at all.
+By the change this entry asked for: the statement is what the matcher did until
+that afternoon, and the hint that explains the symptom is no longer gated out —
+so a reader who stops after the bold sentence would take it for a description of
+today. The evidence stays, because it is what the shape of the change was read
+off, and `D-ANS-084` holds from here.

@@ -66,22 +66,9 @@ it was written.
 
 ## Confirmed on 2026-08-28
 
-Both **Wrong if**s were read and neither has happened.
-
-The manual still renders what the reader takes. `typo3_documentation_lookup`
-asked `queries: ["site set"]` at `targetVersion 14.3` on 2026-08-28 answers
-`answered` with six pages, each carrying an excerpt of the article's own prose —
-the PSR-14 event page opens on what the event is fired after — rather than a
-navigation tree or half a page. That is the first **Wrong if** watching for the
-theme moving under `Manual\Documentation`, and the reading is a live one, which
-`DocumentationTest` is not.
-
-No second source without an API has arrived. The groups that reach a host are
-the same four: `Contribution\Forge`, `Contribution\Gerrit`, `Publication\Ter`
-through `Fetch::decode()`, and `Manual\` out of the rendered pages. So "the
-manual" is still an exception rather than an exception list, and the rule has
-not had to say what makes a page readable.
-
-What this does not read is the corpus for a session reporting a thin answer.
-That is the first **Wrong if**'s own stated route — "the first report of that
-would be a session's" — and it stays the thing to watch.
+Both **Wrong if** were read and neither has happened. The manual still renders
+what the reader takes: asked at a covered version, the answer carries six pages
+each with an excerpt of the article's own prose rather than a navigation tree —
+which is the first watching for the theme moving under the reader, and the
+reading is a live one, which the test is not. No second source without an API
+has arrived.

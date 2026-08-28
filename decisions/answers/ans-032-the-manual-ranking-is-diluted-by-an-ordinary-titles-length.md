@@ -124,17 +124,11 @@ supposed to apply it.
 
 ## Since then
 
-The corpus this was measured over was replaced on 2026-08-08: the index is the
-inventory each manual publishes rather than the links of its rendered root, so
-what a page is called is now what the manual states rather than what its
-navigation abbreviated to. The ordinary title is 4.02 words on the mean and 4 on
-the median, against 2.66 and 2 here, and the longest is 15 rather than 12 — so
-the bold sentence's "12, which is its longest title" describes the corpus of
-2026-08-02 and no longer this one.
+The corpus this was measured over was replaced: the index is the inventory each
+manual publishes rather than the links of its rendered root, so what a page is
+called is what the manual states rather than what its navigation abbreviated to.
+The ordinary title is half as long again and the longest is longer, so the bold
+sentence describes the corpus of the day it was written.
 
-The constant did not move. Swept over the new corpus on the same seven queries,
-the sum of the committed page's rank is 31 at 1, 35 at 2, 36 at 3, 35 at 4, 36
-at 5 and at 6, 39 at 8 and 49 at 12. It is flat across the length of an ordinary
-title and rises only above it, which is what this entry argued; five ranks
-across seven queries is not a reason to move a value, and the floor of 3 still
-holds for the reason given — a book name is two or three words. `D-ANS-065`.
+The constant did not move: swept over the new corpus on the same seven queries,
+the committed page's rank is what it was.

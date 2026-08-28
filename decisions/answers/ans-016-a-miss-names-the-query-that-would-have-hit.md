@@ -123,25 +123,13 @@ that axis.
 
 ## Since then
 
-A second corpus asks for it. `typo3_rule_lookup` reached its no-match answer
-only where the hints missed too, so a compound query that matched a hint was
-told a boundary emptied it —
-[`D-ANS-037`](ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers.md),
-built on 2026-08-03 — and the subsets are what that miss now offers instead.
+A second corpus asks for it: the rule lookup reached its no-match answer only
+where the hints missed too, so a compound query that matched a hint was told a
+boundary emptied it, and the subsets are what that miss now offers instead.
 
 What the second caller showed the two have in common is the pass and not the
-matching. `Search\Subsets` is the one pass, handed the corpus's own `carries()`:
-the labels match a substring and an identifier spelling, the prose matches at a
-word boundary, and a subset offered on the wrong rule names items the same call
-does not return. `LabelSearch::largestReachingSubsets()` is that call for the
-entries and keeps the field pair and the matcher this entry priced.
-
-*The count is exact* above holds for the changelog and not for the prose, which
-is a property of the gate rather than of the pass: a changelog entry is returned
-only where it carries every word, while `Documents::search()` keeps a section
-covering half the query's weight, so a subset naming one section returns that
-one and whatever else clears the floor. It is a floor there, computed the same
-way for every subset.
+matching: one pass, handed each corpus's own containment — the labels matching a
+substring and an identifier spelling, the prose at a word boundary.
 
 ## Since then
 

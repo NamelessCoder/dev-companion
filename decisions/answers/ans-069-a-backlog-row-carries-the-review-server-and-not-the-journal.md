@@ -94,22 +94,12 @@ enumeration answer has no journal in it.
 
 ## Since then
 
-Built on 2026-08-09, and the relations cost a call after all: a relation carried
-as a number and a word is what `R-ANS-029` forbids, so the rows go through the
-bulk read that already fills an issue's relations.
+Built on 2026-08-09, and the relations cost a call after all. Amended on
+2026-08-25, because the enumeration drops a status it is already holding — the
+sentence above was written about a field that costs a call rather than about
+this one. What does not move is the verdict: the session says an inline comment
+decided it, and that is one call per change.
 
-Amended on 2026-08-25, because the enumeration drops a status it is already
-holding — the sentence above was written about a field that costs a call rather
-than about this one. What does not move is the verdict: the reporting session
-says the status was not what decided it, an inline comment was, and that is one
-call per change.
-
-Read back on 2026-08-27 against the first session to hold the field. The third
-**Wrong if** did not fire and the first did, in the same run: the report calls
-the presence of an abandoned change most of what makes an old issue worth
-picking up, and says the review tool never had to be opened — which is what the
-wording was written to prevent. So the row names the change and the state it
-stands in, and names the argument under that state as the reading.
-
-A second task shape then worked the boundary as it was drawn: 25 rows in one
-call, then three journals read by number.
+Read back on 2026-08-27, the third **Wrong if** did not fire and the first did:
+a report calls an abandoned change most of what makes an old issue worth picking
+up, so the row names the change and the state it stands in.

@@ -125,18 +125,8 @@ anybody chose.
 
 ## Since then
 
-`feedback/2026-07-31-194825`, the strength this entry reads as the other side of
-the same property, was judged on 2026-08-02 and is not the confirmation it looks
-like. The four artifacts are the exception this entry names — the ones whose
-absence has no file to stumble over — and the exception holds for three of them.
-`ExtensionScope` renders `manual`, `readme` and `tests` present or absent in one
-`Ships:` line and renders the language files only where there are some, so an
-extension shipping no XLF is answered with `languageFiles: []` in the data and
-nothing at all in the text. `R-PRJ-006` requires the fourth as much as the other
-three, and the test holding it covers the absent case in the data alone.
-
-That is inside the artifacts section rather than at the boundary this entry
-draws, so nothing decided here moves. The readings and the ladder step are on
-[`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md),
-and the feedback is trimmed to that half and stays open behind the todo *Say the
-missing translation the way the missing manual is said*.
+The strength this entry reads as the other side of the same property is not the
+confirmation it looks like. The four artifacts are the exception this entry
+names — the ones whose absence has no file to stumble over — and the exception
+holds for three of them: three are rendered present or absent in one line, and
+the fourth is rendered only where there is something to render.

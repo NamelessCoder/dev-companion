@@ -169,25 +169,25 @@ final class DecisionsTest extends TestCase
      * date on it. This is the one field every entry owes the next reader.
      */
     /**
-     * A dated section over the measure is read out and never failed on.
+     * No dated section runs past the measure.
      *
-     * The corpus is being compacted onto the rule rather than held to it from
-     * one commit: a check that failed on the sections written before it would
-     * fail every branch until the sweep ends — `D-DOC-066`.
+     * It was a report while the corpus was being compacted onto the rule, and
+     * the sweep ended on 2026-08-28 — so the check fails on one now, which is
+     * what keeps the next reading from being written as an account again
+     * (`D-DOC-066`).
      */
     #[Decision('D-DOC-066')]
     #[Test]
-    public function aDatedSectionOverTheMeasureIsReadOut(): void
+    public function noDatedSectionRunsPastTheMeasure(): void
     {
         $over = [];
         foreach (Decisions::files() as $path) {
             foreach (Decisions::overTheMeasure($path) as $label => $count) {
-                self::assertGreaterThan(Decisions::READING_MEASURE, $count, $label);
-                $over[] = $count;
+                $over[] = basename($path) . ' — ' . $label . ': ' . $count;
             }
         }
 
-        self::assertNotSame([], $over, 'nothing runs past the measure, which the report would have to say instead');
+        self::assertSame([], $over, 'a reading is ' . Decisions::READING_MEASURE . ' lines');
     }
 
     /**

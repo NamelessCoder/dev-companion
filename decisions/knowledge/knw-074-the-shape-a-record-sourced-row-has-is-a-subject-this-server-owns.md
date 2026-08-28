@@ -92,41 +92,19 @@ permitted, so a hidden record renders and nothing throws.
 ## Confirmed on 2026-08-14
 
 Read across the three checkouts that have the API. The third **Wrong if** does
-not hold and could not have: `Domain/Record/SystemProperties.php` is the same
-file on `13.4`, `14.3` and `main`, `Domain/Record.php` differs between `13.4`
-and `main` in one spelling correction inside an exception message, and the ten
-system capabilities `RecordFactory` unsets by are the same list. So the key
-list, the types and the accessors are one statement bound with `since`, and the
-hint is what a caller holds rather than a table.
+not hold and could not have: the files are the same on all three but for a
+spelling correction, so the key list, the types and the accessors are one bound
+statement.
 
-The first **Wrong if** holds in one place and moves the boundary rather than the
-subject. Since 14 `RecordFactory` returns a `Page` for the `pages` table, and
-`Page::toArray(true)` does not add `_system` to the properties — it rebuilds the
-row from the raw record, so every selected column is there and `hidden` with
-them. On `13.4` `Page` is not a `Record` at all and the factory builds none. One
-statement carries it, bound `since: 14`, and `Page::toArray()` without the
-argument is the ordinary shape on both.
+The first holds in one place and moves the boundary rather than the subject: on
+the newest major one table's object rebuilds the row from the raw record, so
+every selected column is there. What the judgement did not have is the asymmetry
+in property access — the raw record is reached only where the record has no
+type, so the advice fails on exactly the tables the failure was reported from.
 
-What the judgement did not have and the reading found is the asymmetry in the
-property access: `Record::get()` reaches the raw record only where the record
-has no record type, so `$record->get('hidden')` answers on a table without a
-`typeField` and throws `RecordPropertyNotFoundException` on `tt_content` or
-`pages`. A caller told to ask the object instead of the array needs that, or the
-advice fails on exactly the tables the failure was reported from.
-
-The second **Assumed** was not settled and the hint no longer rests on it.
-FormEngine's `databaseRow` is the flat shape, and that half holds; the value
-formats in it are a data provider's, not the row's — `DatabaseRowDateTimeFields`
-makes every `type=datetime` column a `\DateTimeImmutable` on `main`, where the
-report had ISO strings. So the pairing is stated as the enable fields at top
-level against them under `_system`, and no value format is claimed for the
-second shape.
-
-The concrete case the report named is not reproducible in a covered checkout
-either. `LocalizationRepository::getPageTranslations()` returns `RawRecord`
-objects, whose `toArray()` carries every column, so
-`PageLayoutContext::getLocalizedPageRecord()` on `main` has `hidden` in it.
-`RecordIdentityRenderer` is still in none of the four.
+The second **Assumed** was not settled and the hint no longer rests on it: the
+value formats in the flat shape are a data provider's rather than the row's. The
+concrete case the report named is not reproducible in a covered checkout either.
 
 ## Since then
 

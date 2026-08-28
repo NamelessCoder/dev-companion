@@ -101,39 +101,17 @@ renders — and spent five of six container rounds on its own harness.
 
 ## Since then
 
-Built as `core/testing/proving-a-rendering`, and routed to from the
-scratch-probe paragraph of `typo3-core-patch-review` and the throwaway-test
-rules of `typo3-core-issue-triage`. The probe was run on all four covered lines
-with `-s functional -d sqlite`, and both **Assumed** were settled by running it.
+Built and routed to from two skills, and both **Assumed** were settled by
+running the probe on all four covered lines.
 
 The feedback's second trap does not exist as reported, and the reading replaced
-it with the one that does. `value = <figure …>` assigns the markup as text on
-every covered line. `value =<figure …>` is the reference operator, whose
-identifier stops at the first space, so the line becomes a reference to `figure`
-and the page renders `< figure` where the markup should be — a failure with no
-error in it, which is what a session sees as "unusable". What the multi-line
-`value ( … )` form is needed for is markup that spans lines, because a
-single-line assignment ends at the newline.
+it with the one that does: one operator assigns the markup and the other, a
+space away, makes the line a reference — a failure with no error in it. The
+sentinel assertion is the worse way to read rendered output, since the test body
+may simply print, so the first **Wrong if** did not hold. The third did not
+either, and one section pair carries what differs between the majors.
 
-The sentinel assertion is not the only way to read rendered output and is the
-worse one. `echo` from the test body prints whether the probe passes or fails,
-because the core's functional PHPUnit configuration sets no
-`beStrictAboutOutputDuringTests` on any covered line. No core helper prints
-rendered output, so the first **Wrong if** did not hold.
-
-The third did not hold either, and one section pair carries what differs: until
-12 `lib.parseFunc_RTE` is `fluid_styled_content`'s and needs both
-`$coreExtensionsToLoad` and the static include, either alone leaving
-`LogicException` 1641989097; since 13 the frontend registers it and the probe
-needs neither. The rest of the procedure holds on all four.
-
-The second **Wrong if** held on 2026-08-25. A review of Gerrit 91127 had the
-document installed, read the review skill's paragraph naming it, skipped it
-because the diff was PHP, and spent six container rounds on the harness. So the
-gap was the route, as that **Wrong if** predicted: what the page is filed under
-is the class of diff, and what needs it is the class of evidence.
-[`D-KNW-122`](knw-122-a-procedure-document-is-routed-by-the-evidence-a-task-needs.md)
-is that reading. The statement here stands — the procedure was the right shape
-and the page answered once it was opened — and the **Decided** bullet that
-turned out under-specified is the one granting that it is reached from where the
-probe is already granted.
+The second **Wrong if** held: a review had the document installed, read the
+paragraph naming it, skipped it because the diff was PHP, and spent six
+container rounds on the harness. So the gap was the route, which `D-KNW-122`
+reads.

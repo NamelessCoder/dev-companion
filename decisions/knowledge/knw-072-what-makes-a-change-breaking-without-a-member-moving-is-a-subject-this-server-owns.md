@@ -120,49 +120,16 @@ is answered by nothing.
 
 ## Confirmed on 2026-08-14
 
-The sweep the todo owed found the rule rather than two picks, and it found the
-`Important` boundary in a place nobody here had looked. Read in `.checkouts` at
-`main` `3a9f0b5e3c`, `14.3` `627949e9dd`, `13.4` `fccbd407d8` and `12.4`
-`31f881a212`.
+The sweep found the rule rather than two picks, and found the boundary in a
+place nobody here had looked. The core files a change with no member moved as
+breaking routinely — five entries on the development line, beside the TypoScript
+removals — and the first **Wrong if** does not hold: the definition is one word
+short as this entry read it, the source writing "may break or **affect**
+third-party code" and giving changed frontend output as its own example.
 
-The core files a change with no member moved as breaking routinely. In `main`
-the whole of `12.0`, `13.0`, `14.0` and `15.0` was read by title and the class
-was read whole: `Breaking-96831` enables HTML sanitization in
-`stdWrap.parseFunc` and moves nothing, `Breaking-107438` removes the default
-`parseFunc` configuration of EXT:fluid_styled_content and states that
-`<table class="contenttable">` is no longer emitted, `Breaking-106596` removes
-the legacy EXT:form frontend templates and the YAML option that selected them,
-`Breaking-108148` stops Fluid from dropping `<![CDATA[ ]]>`, and
-`Breaking-107944` stops the frontend minifying CSS. Beside them stand the
-TypoScript removals — `config.disableImgBorderAttr`, `config.doctypeSwitch`,
-`page.CSS_inlineStyle`, `TMENU.collapse` — and the seed the card named,
-`Breaking-98308`, is the weaker of the two picks: it removes
-`GraphicalFunctions->imgTag()` as well.
-
-The first **Wrong if** does not hold, and the definition is one word short as
-the entry read it. `Howto.rst` writes Breaking as functionality that "may break
-or **affect** third-party code", gives "Frontend output may change" as its own
-example of an Impact section, and points `Important` the other way: "a
-last-resort, if a patch cannot be related to any of the prior types".
-
-The second **Wrong if** holds, and it is where the boundary runs. No `10.4.x`,
-`11.5.x`, `12.4.x`, `13.4.x` or `14.3.x` directory carries a Breaking entry, and
-the last that did was `8.7.x` — where `Breaking-82093` changed an EXT:form
-partial and `Breaking-84843` changed the default YouTube domain to the no-cookie
-one, both of them exactly this class of change. `Howto.rst` admits it as a "rare
-exemption" rather than forbidding it, so `public-api-surface`'s flat sentence is
-close but not the source's. What the maintained lines take instead is the same
-change under the other type: `12.4.x/Important-103117` changed the class
-attribute of the EXT:form select fields from `form-control` to `form-select`,
-`12.4.x/Important-103496` changed the rendered date format, and
-`12.4.x/Important-101128` names the tag the RTE now emits. So the target branch
-decides between the two where the effect is the same, which is the half the
-reporting session needed and the half nothing here stated.
-
-Where `Important` is the right type on `main` as well is the addition that
-leaves existing output alone: `13.2/Important-103485` moved `lib.parseFunc` into
-EXT:frontend and states that every existing override keeps working.
-
-The placement came out as a split rather than a widening. `public-api-surface`
-is one question and stays it, and what holds from here is
-[`D-KNW-073`](knw-073-the-corpus-states-what-makes-a-change-breaking-with-no-member-moved.md).
+The second **Wrong if** holds and is where the boundary runs: no maintained
+line's directory carries a Breaking entry, and the last that did is four majors
+back. What those lines take instead is the same change under the other type, so
+the target branch decides between the two where the effect is the same — the
+half the reporting session needed and the half nothing here stated. The
+placement came out as a split rather than a widening.

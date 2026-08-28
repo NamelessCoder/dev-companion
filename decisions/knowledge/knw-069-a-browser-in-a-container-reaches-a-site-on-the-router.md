@@ -80,43 +80,15 @@ installation the report was written in.
 
 ## Since then
 
-`feedback/2026-08-10-182417` was judged against this entry on 2026-08-11. It is
-the session six hours after this document was written: a backend CSS patch on a
-core checkout, which held the page's id from `typo3_project_describe` and never
-opened it, and told its reader five times that it could not judge the change
-visually.
+The session six hours after this document was written held the page's id and
+never opened it, telling its reader five times that it could not judge the
+change visually. Re-run from its own paths, the suite guide names no page beside
+the two suites and the hint lookup selects a domain where this one is neither
+returned nor listed — the page is named where the query already says a browser
+is involved. So it delivers to a caller who has decided that, and the reviewer
+of a visual patch is the caller who has not: the second step of the ladder
+rather than the first.
 
-The hints chosen above were re-run from that session's own paths.
-`typo3_test_run_guide` returns `e2e-prepare` and `e2e-browser` for them and
-names no page beside the two suites — it names `core/testing/scripts` under
-`R-ANS-028` and stops there. `typo3_hint_lookup` with those paths selects the
-`css` domain, where `browser-tests` is neither returned nor listed in
-`availableHints`, so the `documents` block that carries this page comes back
-empty. The page is named where the query already says what it is looking for:
-"look at the change in a real browser" returns `browser-tests` with both
-documents under it.
-
-So `browser-tests` and `browser-tests-outside-core` deliver this page to a
-caller who has decided that a browser is involved, and the reviewer of a visual
-patch is the caller who has not. The page is here and did not reach the session,
-which is the judging ladder's second step rather than its first, and it is
-queued as
-`todo/open/2026-08-11-081914-name-the-browser-check-page-where-the-e2e-suites-are.md`.
-
-Two other placements were measured and not taken. Putting `css` on this hint's
-domains makes it listable by a CSS task and still not returned, so the
-`documents` block stays empty — which is why `D-KNW-017` put its crossing in the
-hint the question reaches rather than in the domains. A review surface in
-`typo3-core-patch-review` is the second, and it is the weaker first step: the
-session did call `typo3_test_run_guide` and took `e2e-prepare` out of that
-answer each time, so the answer it already read is the cheaper place to name the
-page.
-
-**Built on 2026-08-11.** `TestRunGuide` names the page under its suite blocks
-wherever one of them is an e2e suite, in the form `R-ANS-028` asks for: a
-`typo3_rule_lookup` call by `documentId`, with the styleguide instance's missing
-content and the screenshot path as what the page carries and the answer does
-not.
-`KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites`
-runs the CSS path the report was written from, and the functional case beside it
-holds the block to the suites it is about.
+Two other placements were measured and not taken, and the answer the session
+already read is the cheaper place. **Built on 2026-08-11**: the suite guide
+names the page under its blocks wherever one is an e2e suite.

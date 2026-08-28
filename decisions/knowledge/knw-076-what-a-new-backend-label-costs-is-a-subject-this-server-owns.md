@@ -98,40 +98,15 @@ and read the two producers out of the checkout itself.
 
 ## Confirmed on 2026-08-14
 
-The gap is filled: `javascript-labels` in `labels.json`, with `R-KNW-069`,
-`D-KNW-079` and two cases in `HintsTest`. The reading was `.checkouts/14.3` at
-`627949e9dd` and `main`, where every file named below is the same on both.
+The gap is filled. Neither **Wrong if** fired, and that is the finding: both of
+the report's steps are owed. The parsed-label cache keys on nothing that changes
+when a unit is added, and the asset identifier composes from the version, the
+project path and the package identifier — so no label file reaches either, and
+the URL under a year of `max-age` stays the one the page fetched. That is where
+this reading differs from `D-KNW-027`, whose cache keyed on the file's
+modification time.
 
-Neither **Wrong if** fired, and that is the finding: the report's two steps are
-both owed. `LocalizationFactory::getParsedData()` keys the `l10n` entry on
-`md5($domainName . $languageKey . serialize($allLanguageKeysAsOrderedFallback))`
-— no modification time, no content hash — so a new unit is invisible until the
-cache is cleared, and `l10n` is a `SimpleFileBackend` in group `system`. And
-`PackageDependentCacheIdentifier` composes the `cacheBustInfix` out of the TYPO3
-version, `Environment::getProjectPath()` and
-`PackageManager::getCacheIdentifier()`, which is the composer artifact's own
-identifier or `PackageStates.php`'s mtime and size. No label file reaches
-either, so the URL under `max-age=31536000` stays the one the page already
-fetched. This is where the reading differs from `D-KNW-027`: the Fluid cache
-keyed on `filemtime()` and turned that command into a correction, and this one
-keys on neither half.
-
-Both **Assumed** resolved. The session's account holds — the stub is generated
-from the XLF by `generate-types:labels`, which `grunt scripts` runs, and
-`Build/types/labels/` is gitignored down to a `.gitignore`, so the green build
-is a local artefact and not even a diff. And the answer is one statement per
-half rather than one for both, because the two caches are cleared by different
-people.
-
-Two findings the entry did not anticipate. The mechanism is not core-only:
-`Feature-108941` states in its **Impact** that extension developers may import
-labels this way, so the hint is unscoped and only the build statement is
-`scope: "core"`. And the label module is not merely exempt from the ordinary
-`?bust=` suffix — it is the one asset whose invalidation is a route parameter,
-which is why the year of `max-age` is safe for a release and wrong for the
-afternoon somebody adds a label.
-
-The todo's placement question came out on the third option it named. The hint is
-its own, in `labels.json` beside `translation-domain` rather than in
-`backend-ui.json` beside its twin, and both of the hints the report was given
-carry a pointer to it.
+Both **Assumed** resolved, and the answer is one statement per half because the
+two caches are cleared by different people. Two findings the entry did not
+anticipate: the mechanism is not core-only, and the label module is the one
+asset whose invalidation is a route parameter.

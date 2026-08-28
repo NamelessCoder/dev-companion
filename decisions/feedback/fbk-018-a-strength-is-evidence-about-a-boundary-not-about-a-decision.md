@@ -1567,3 +1567,33 @@ Nothing is queued from here. Each of the four costs has a card of its own, and
 the invocation half is
 [`2026-08-28-001333`](../../feedback/archive/2026-08-28-001333-declared-commands-and-the-declared-environment.md)'s
 to judge.
+
+## Confirmed on 2026-08-28
+
+**A field is used where the caller can act on it alone, and a list of documents
+is known rather than opened.**
+[`feedback/2026-08-28-074121`](../../feedback/archive/2026-08-28-074121-the-command-classification-and-php-relation.md)
+is the second strengths report out of this project in one day. It names four
+fields of one `typo3_project_describe` answer — `commands[].runs`, `phpRelation`
+beside `installedPhpBound`, `installedAgainstLock` and `environment` — as each
+used rather than skimmed, which is the section above read a second time. What it
+adds is two things that reading could not have.
+
+**The join it made cost it a failed call.** Its first render died in Composer's
+platform check, the caller's interpreter against `installedPhpBound`, and it
+then went to `ddev exec`, which the same answer named. So it did what
+`2026-08-28-001333` did not — one call later rather than not at all — and
+`commands[].invocation`, built here the same day, is that call removed
+(`D-ANS-126`).
+
+**The `guides` array is where the two strengths disagree, and both are right.**
+`2026-08-28-001409` credits it as the only reason it learned those documents
+exist, from a client that renders no resource list at all. This one calls it the
+part of the answer it did not use, and the same session filed the cost
+separately: twenty-one entries at equal weight, two of which it then re-derived
+by hand. Knowing a page exists and opening it are different acts, and the array
+delivers the first. What decides the second is a pointer where the obligation is
+stated, which is what `D-KNW-133` found one layer down — a `whenToUse`
+describing the page's method rather than its answer.
+
+Nothing is queued from here. The cost half has a card of its own.

@@ -188,7 +188,7 @@ the gate is what is left.
 
 **2026-08-28.** A fourth shape, and the first where the prescription skipped is
 `skills/base.md`'s deprecation sweep rather than a build step.
-[`feedback/2026-08-28-074058`](../../feedback/2026-08-28-074058-the-deprecation-sweep-exemption-has-no-second.md)
+[`feedback/2026-08-28-074058`](../../feedback/archive/2026-08-28-074058-the-deprecation-sweep-exemption-has-no-second.md)
 reports a review that took the sweep's exemption correctly, was then asked to
 make the change, re-entered through `typo3-extension-health` and worked its
 items without the sweep ever being run. It names why: the sentence closing the

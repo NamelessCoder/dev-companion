@@ -722,6 +722,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-SKL-083`][D-SKL-083] — A test file is on the sweep's side of the exemption · 2026-08-28
 - [`D-SKL-084`][D-SKL-084] — The presence check looks for the qualified tool name too · 2026-08-28
+- [`D-SKL-085`][D-SKL-085] — The crossing into a fix says the sweep is owed again · 2026-08-28
 - [`D-SKL-079`][D-SKL-079] — A widened request re-establishes what the patch is and what it owes · 2026-08-27
 - [`D-SKL-080`][D-SKL-080] — A path only the core has routes to the core's own workflow · 2026-08-27
 - [`D-SKL-081`][D-SKL-081] — A brief spanning triage and the patch it leads to carries both · 2026-08-27
@@ -803,6 +804,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-SKL-083]: task-skills/skl-083-a-test-file-is-on-the-sweeps-side-of-the-exemption.md
 [D-SKL-084]: task-skills/skl-084-the-presence-check-looks-for-the-qualified-tool-name-too.md
+[D-SKL-085]: task-skills/skl-085-the-crossing-into-a-fix-says-the-sweep-is-owed-again.md
 [D-SKL-079]: task-skills/skl-079-a-widened-request-re-establishes-what-the-patch-is-and-what-it-owes.md
 [D-SKL-080]: task-skills/skl-080-a-path-only-the-core-has-routes-to-the-cores-own-workflow.md
 [D-SKL-081]: task-skills/skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md

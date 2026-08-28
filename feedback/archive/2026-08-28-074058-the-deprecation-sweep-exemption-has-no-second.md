@@ -1,7 +1,8 @@
 ---
 date: 2026-08-28T07:40:58+00:00
 category: bug
-status: open
+status: closed
+closed: 2026-08-28
 model: claude-opus-5[1m]
 tool: typo3-extension-patch-review, typo3-extension-health, typo3-content-element-development, typo3-extension-testing
 directory: /home/benji/projects/bootstrap_package

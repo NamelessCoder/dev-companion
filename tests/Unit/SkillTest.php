@@ -870,6 +870,7 @@ final class SkillTest extends TestCase
 
     #[Requirement('R-SKL-005')]
     #[Decision('D-ANS-010')]
+    #[Decision('D-SKL-085')]
     #[Test]
     public function theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks(): void
     {
@@ -948,6 +949,15 @@ final class SkillTest extends TestCase
             Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );
         self::assertStringContainsString('does this still work here', $skill);
+        // And the one step of the base an audit legitimately skips, said where
+        // this workflow starts writing. A review that took the exemption
+        // re-entered here and worked every item without the sweep, because the
+        // sentence closing the exemption is in the paragraph granting it
+        // (`D-SKL-085`).
+        self::assertStringContainsString(
+            'was exempt while nothing was being written and is owed now',
+            self::flat($skill),
+        );
         self::assertStringNotContainsString('A changelog records change events', $skill);
         // The bound on the same routing is written in the same one place. The
         // conformance skill defers to the base for why the changelog cannot

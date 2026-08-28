@@ -215,7 +215,13 @@ it stood then.
 
 9. Take the items in the list's order, grouped by the workflow that owns them.
     One activation covering that owner's items costs less than one per finding,
-    and the owner is what decides how its own area is changed.
+    and the owner is what decides how its own area is changed. Where this list
+    came out of a review, the deprecation sweep of
+    [references/base.md](references/base.md) was exempt while nothing was being
+    written and is owed now, before the first item: one call per declared major,
+    over the paths the items name. It is the one step of that order an
+    audit skips, so re-entering here with the document already read is what
+    leaves it unrun.
 10. **Invoke the skill that owns them** and carry across only the scope and the
     verified behaviour it needs: the finding, the evidence under it, the paths.
     Stop before editing files another owner has — the crossing is the transition

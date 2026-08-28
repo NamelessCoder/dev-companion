@@ -75,43 +75,17 @@ task ended one step before a patch.
 
 ## Since then
 
-**2026-08-08.** The sentence is gone and what replaced it names the three: "Not
-every task ends in a patch: triaging the backlog, whether a report still
-reproduces, and what a fix would cost are answered here." It displaced rather
-than added, which `R-ANS-013` requires — the worst case measured 2004 of 2048
-characters before it and the replacement cost 34 of the 44 that were left.
+The sentence is gone and what replaced it names the three tasks that do not end
+in a patch, displacing rather than adding, which the budget requires.
+`typo3_test_run_guide` claims the earlier question in its first sentence now,
+and its answer was reordered to match: what a checkout needs before any suite
+runs opens the block where it was two of seven notes below every suite.
 
-`typo3_test_run_guide` claims the earlier question in its first sentence, and
-the answer was reordered to match: what a checkout needs before any suite runs
-is `preconditions` in the corpus now and the block the answer opens with, where
-it was two of seven notes below every suite. Both facts the reporting session
-needed were already in that answer and both were at the bottom of it.
-
-`typo3_task_guide`'s description names the three change types that get a brief
-of their own, which is the second half of the same claim: `triage` did not exist
-when this entry was written and is `D-GUI-011`.
-
-`typo3_server_scope` is untouched. `D-ANS-061` decided the lever is the tool a
-session does call, and `todo/open/2026-08-08-090300` is where the inventory
-question stands.
-
-### 2026-08-24 — the sentence was rewritten and the next session never loaded it
-
-`feedback/2026-08-24-122308` is a core patch review that ran `runTests.sh` with
-the path before `--`, lost a container cycle to it, and reports
-`typo3_test_run_guide` as a bare name in a deferred list whose schema it never
-fetched. Its ask is that first sentence again, for argument order this time,
-which would be the third question one description claims.
-
-That is this entry's first **Assumed** read from the other side. The session of
-2026-08-07 said the wording was what did it and this one never saw the wording
-at all, which bounds the lever rather than the rewrite: a description reaches
-the caller that reads one, and `D-AUD-003` already said that under deferral it
-is not a channel. Both sessions passed the tool over at the moment they were
-about to run something, which is what the **Decided** above claims that moment
-for and is unmoved.
-
-What the later feedback is judged on instead is the corpus:
-[`D-KNW-112`](../knowledge/knw-112-the-invocation-notes-say-where-runtests-sh-stops-reading-its-own-options.md)
-writes down where the script stops reading its own options, so a session that
-already ran the wrong form has something to search on.
+The first **Assumed** was then read from the other side. A session that lost a
+container cycle to an argument order reports the tool as a bare name in a
+deferred list whose schema it never fetched — so the earlier session's "the
+wording did it" and this one's "I never saw the wording" bound the lever rather
+than the rewrite, which `D-AUD-003` already said. Both passed the tool over at
+the moment they were about to run something, which is the moment **Decided**
+claims. That feedback is judged on the corpus instead: `D-KNW-112` writes down
+where the script stops reading its own options.

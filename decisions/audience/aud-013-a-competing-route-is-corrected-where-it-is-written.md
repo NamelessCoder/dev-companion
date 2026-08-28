@@ -85,57 +85,24 @@ Forge, and this server has a tool that answers the same question better.
 
 ## Since then
 
-**The commit-message bullet above is bounded**, by a session in the same
-checkout on the same day. `feedback/2026-08-25-105141` also wrote its core
-commit message out of that `AGENTS.md` without calling
-`typo3_commit_message_guide`, and the `Releases:` trailer it wrote that way was
-wrong. So the reading holds for the subject and body conventions the file states
-in full, and not for the branch set, which it states as a rule without the
-value.
+The commit-message bullet is bounded by a session in the same checkout: the
+reading holds for the conventions that file states in full, and not for the
+branch set, which it states as a rule without the value. That bounds the
+evidence rather than what was decided.
 
-That bounds the evidence rather than what was decided. The lever is still a
-patch in the other repository, and what this server says on its own surfaces is
-what its tool settles rather than what another file leaves out: the index entry
-[`D-AUD-011`](aud-011-the-instructions-index-the-question-each-tool-answers.md)
-bought now names the branches, in the characters the old wording gave back.
-
-**The first Wrong if is met** by a feedback standing on the board.
-`feedback/2026-08-25-114714` searched and read Forge with three `curl` calls
-while `typo3_forge_lookup` was offered to it, and names the documented recipe as
-the reason it never considered the tool. It carries its own card and the
-judgement is that card's; what is recorded here is that the event this entry
-watches for has happened.
-
-**That card was judged on 2026-08-27** and the reading is
-[`D-AUD-014`](aud-014-a-description-opens-with-what-the-callers-own-route-cannot-do.md):
-the ladder's step 4, and the lever is the opening sentence of
-`typo3_forge_lookup`'s description. So the bullet above saying none of the three
-surfaces changes is bounded to the day it was written — one of them failed, and
-the statement this entry declined to make is made there. The core patch waits as
-before, on the question it always waited on: that corrects the route where it is
-written, and the description says what this server's own route is worth.
+The first **Wrong if** is met — a session searched Forge with three `curl` calls
+while the tool was offered to it, naming the documented recipe as why it never
+considered one. Judged on 2026-08-27 as `D-AUD-014`: the ladder's step 4, and
+the lever is the tool description's opening sentence. So the bullet saying none
+of the three surfaces changes is bounded to the day it was written.
 
 ## Revoked on 2026-08-27
 
 **The maintainer answered that no core patch naming this server is to be
 proposed: a change to another repository's instruction file is out of scope for
-this one.** That is the third **Wrong if** verbatim, and it is the one that
-retires the entry rather than qualifying it — this decision says a competing
-route is corrected where it is written, and correcting it where it is written is
-what will not happen.
-
-The patch existed by then. It was written on 2026-08-27 and checked: five lines
-replacing the first two of the Context list's issue-tracker bullet, naming
-`typo3_forge_lookup` where the server is connected and keeping the `curl` recipe
-as the fallback, with a message `typo3_commit_message_guide` had passed for
-`workflow="core"`. What stopped it was neither its text nor Gerrit: this
-repository does not change another repository, and the question of who carries
-an outward claim was settled the other way.
-
-What is left is what this entry declined to make and
-[`D-AUD-014`](aud-014-a-description-opens-with-what-the-callers-own-route-cannot-do.md)
-made two days later: the statement on this server's own surfaces. The tool
-description now opens with what the caller's own recipe cannot do, which is the
-whole of the correction this route gets. The core's `AGENTS.md` keeps its
-paragraph, and a session that reads it and never calls the tool is a cost this
-server carries rather than one it can fix.
+this one.** That is the third **Wrong if** verbatim, and it retires the entry
+rather than qualifying it — correcting a competing route where it is written is
+what will not happen. The patch existed and was checked; what stopped it was
+neither its text nor Gerrit. What is left is `D-AUD-014`, the statement on this
+server's own surfaces, and a session that reads the other file and never calls
+the tool is a cost this server carries.

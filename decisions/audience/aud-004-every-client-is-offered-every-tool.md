@@ -78,24 +78,10 @@ the right one at all.
 ## Since then
 
 Both **Wrong if** have an instance and neither says the offer should be
-shortened.
-
-The first fired once, on 2026-08-18. `feedback/2026-08-18-070358` was answered
-with `runTests.sh` suites and `checkExtensionScannerRst` in an extension
-repository that has no `Build/Scripts/`, which is the failure this entry moved
-into the answer. What failed is not the answer saying who it obliges: the
-suppression `R-SCO-002` performs had nothing to fire on, because every path came
-back `uncertain`. `D-SCO-012` is the judgement and it places the work from the
-root manifest, so what this entry rests on was the input rather than the
-wording.
-
-The second has its client. `feedback/2026-08-18-113308` and
-`feedback/2026-08-18-080710` came from one that lists the tools by name and
-defers their schemas, so what a caller pays for a tool there is a name rather
-than a description — the shape this entry said would break the 2.4%. It does not
+shortened. The first fired once: an extension repository was answered with
+`runTests.sh` suites because every path came back `uncertain`, so what failed is
+the input rather than the wording, which `D-SCO-012` places from the root
+manifest. The second has its client — one that lists tools by name and defers
+their schemas, where a caller pays a name rather than a description. It does not
 bring the profile back: the cost is per tool at a size the exclusion list cannot
-change, and what those two sessions asked for is a line in the `instructions`
-naming which tool answers which question, which is `D-AUD-011`.
-
-So `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` is still the only thing that shortens the
-list, and the two readings moved the answer and the instructions instead.
+change, and what those sessions asked for is `D-AUD-011`.

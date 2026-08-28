@@ -80,17 +80,10 @@ do and one a sentence about a tool, and a run counted them eleven to one.
 
 ## Since then
 
-The last **Decided** bullet is settled the way it was left. The project answer
-does not name the guide, and the reason is no longer that this was the
-sentence's turn: the foot of that answer is where its guides listing already
-stands, and four sessions have now held that listing without it routing one of
-them.
-[`D-ANS-091`](../answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md)
-is the reading, with what would make the answer the lever after all — which is
-this entry's first **Wrong if**, still uncounted.
-
-On 2026-08-24 the sentence's second half became the acts to call again at, where
-it described what the call returns:
-[`D-SKL-062`](../task-skills/skl-062-the-workflow-question-is-asked-again-on-a-new-subject.md)
-has what that displaced and what it bought. The mood is untouched, so the first
-**Wrong if** is still what a second run of the counted shape answers.
+The last **Decided** bullet is settled the way it was left, and for a different
+reason: the project answer's guides listing already stands at its foot, and four
+sessions have held it without it routing one of them. `D-ANS-091` is the
+reading, with what would make the answer the lever after all. On 2026-08-24 the
+sentence's second half became the acts to call again at (`D-SKL-062`). The mood
+is untouched, so the first **Wrong if** still waits on a second run of the
+counted shape.

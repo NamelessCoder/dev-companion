@@ -60,91 +60,27 @@ that one fix would have been the wrong fix.
 
 ## Confirmed on 2026-07-31
 
-The second `REVIEW-01` run did not reach for Bash alone. It ran against
-`b85036b`, the commit that wrote this entry and applied it. The skill activated
-as the session's first action, `typo3_project_describe` was the second call, and
-`typo3_extension_describe` followed. Both channels this entry changed carried,
-so the wording was part of the obstacle after all. What the run did not do is
-follow the skill past step 2. Thirty-eight of its 45 calls were still Bash, and
-`typo3_task_guide`, `typo3_hint_lookup` and `typo3_documentation_lookup` were
-loaded through `ToolSearch` and never called. That is the order rather than the
+The second `REVIEW-01` run did not reach for Bash alone: it ran against the
+commit that applied this entry, activated the skill first and called
+`typo3_project_describe` second, so both channels carried and the wording was
+part of the obstacle. What it did not do is follow the skill past step 2 —
+thirty-eight of 45 calls were still Bash — which is the order rather than the
 entry point, and `D-SKL-001` owns it. The second suspicion falls with the first:
-run 4 called eight tools fifteen times and was judged `covered`, and the two
-findings three runs had missed came from those calls. A repository review
-therefore needs more of this server than the version, the registries and the
-component contract. The run stands in commit `021eac8`, the two runs after it
-having overwritten the file.
+run 4 called eight tools fifteen times and found the two things three runs had
+missed.
 
 ## Since then
 
-The same three channels failed again on a task that builds rather than reviews.
-A session in `site-new` wrote a custom backend preview for a TYPO3 14 content
-element and called nothing — no tool, no skill, the work done by reading vendor
-code
-(`feedback/2026-08-01-002926-debrief-of-a-typo3-14-backend-content-element.md`).
-It ran on 2026-08-01, a day after `b85036b` put `typo3_project_describe` — then
-spelled typo3_project_scope — at the head of the `instructions`, so the entry
-point this entry added was in the text and did not fire. That is not the **Wrong
-if**: it was a different client and a much smaller model — `opencode` with
-`deepseek-v4-flash-free` — and neither has been measured here.
+The same channels failed on a task that builds rather than reviews, in another
+client and a much smaller model, so it is not the **Wrong if**. What the
+sighting adds is a cause this entry did not name: a skill description that names
+one side of a domain it owns both sides of reads as somebody else's work. All
+seven were read for that shape, two carried it, and both were rewritten with
+`R-SKL-010` holding the pair. Half the sighting was later withdrawn by its own
+author — the session may have activated a skill after all — and the finding does
+not rest on it, because the descriptions were read off the files here.
 
-What the sighting adds is a cause this entry did not name. The skill
-descriptions arrived in full, as they did for `REVIEW-01`, and
-`typo3-content-element-development` opens "Build or refactor TYPO3 **frontend**
-content elements" with `previews` ninth of the eleven things it then lists. The
-task was a backend preview of a content element, which that skill covers in as
-many words — "Add a useful backend preview for a custom CType" — and which
-`knowledge/task-intents.json` has matched on `backend preview` since `51e5e5a`
-on 2026-07-30. So the description names one side of a domain the skill owns both
-sides of, and the other side reads as somebody else's work. That is narrower
-than "leads with the open request", and it is checkable against every skill
-here: `typo3-backend-module-development` promises "TYPO3 backend UI work" and
-means a module, so this task matched a word in each description and belonged
-wholly to the first. The rewrite is queued rather than made, because a
-description is installed into somebody else's project.
-
-That rewrite landed on 2026-08-02 with the check this entry proposed, and the
-check is the part worth keeping: all seven descriptions were read for the same
-shape, and two carry it. `typo3-content-element-development` now opens on
-content elements with neither side attached and names a custom backend preview
-in the page module second in its list rather than `previews` ninth of eleven;
-`typo3-backend-module-development` no longer claims the backend beyond the
-module it means, says that the preview is not one, and its crossing hands over a
-content element "or its backend preview" instead of a frontend one, because a
-body naming one side while the description names both is the file disagreeing
-with itself where nobody can correct it. The other five do not carry the shape:
-conformance, documentation and testing each name a domain by what is done to it
-and list surfaces from both ends, and the two that could have read as one-sided
-already state the second half — the upgrade skill names dropping an old major
-beside adding a new one, and the release skill names the publication step it
-stops before, deliberately. `R-SKL-010` is the demand, and
-`SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement` holds the
-pair. What none of it settles is whether the wording was what that model was
-missing: the words are what can be changed from here, and only a second run in
-the same client says whether they were the obstacle.
-
-The sighting's own author has since withdrawn half of it. A fourth feedback of
-that session, `feedback/2026-08-01-003736`, says its conversation begins at an
-anchored summary and that the user reports having seen a skill activate, so "no
-tool, no skill" is what one window showed rather than what the session did. The
-finding above does not rest on it: the description that named one side of a
-domain was read off the files here, and `R-SKL-010` is held by a test. What is
-withdrawn is the sentence about what that session called, and with it the
-reading that the entry point was in the text and did not fire — the entry point
-may have fired and gone unrecorded. `D-FBK-023` is the judgement of the
-correction and says what it moves in the two siblings beside this one.
-
-What that withdrawal left open, `REVIEW-03` answers on 2026-08-03. The delivery
-is no longer inferred: the transcript's own attachments carry the
-`mcp_instructions_delta` in full, opening with
-`Start every task with typo3_project_describe`, and the `skill_listing` with all
-seven descriptions, against 23 calls that are 22 `Bash` and one `Read`. Same
-client as the four `REVIEW-01` runs, `claude-opus-5`, one prompt and no
-steering. So the entry point was in the session's context, in the first sentence
-of the block, and no tool was called for 256 seconds. This is not the **Wrong
-if** above, which was about the second `REVIEW-01` run and held: it is the
-boundary of what this entry claims. An entry point carries a task where a skill
-is there to receive it; in `E-CORE` there is none, and
-`typo3-extension-conformance` — the skill whose description is the same review
-shape — is bounded to project, sitepackage and extension and correctly stayed
-out. `D-SKL-005` carries that half and the run that showed it.
+`REVIEW-03` settled the delivery on 2026-08-03: the instructions and all seven
+descriptions are in the transcript's own attachments, against 23 calls that are
+22 `Bash` and one `Read`. An entry point carries a task where a skill is there
+to receive it, and in `E-CORE` there is none. `D-SKL-005` carries that half.

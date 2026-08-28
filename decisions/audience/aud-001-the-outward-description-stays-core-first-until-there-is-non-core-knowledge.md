@@ -39,38 +39,12 @@ what it says about itself matches that: `knowledge/server-scope.json` opens with
 
 ## Confirmed on 2026-08-02
 
-It does not, and the combining stays. Both halves were measured against the same
-signal, defined as the claim states it: the marker is present and the answer is
-the core, or it is absent and the answer is not.
-
-On the recorded runs the signal answers what the combination answers, 38
-decisions out of 38. That is worth less than it reads. Every path handed to a
-deciding tool by `REVIEW-01` (`E-SITE`, server `66813e3`) and `REVIEW-02`
-(`E-EXT`, `b5555cb`) is outside-core work, and outside-core is what the marker
-check returns for every path that does not carry it — which is all of them. It
-agreed by defaulting, not by reading the same evidence: 27 of those decisions
-were carried by a path marker or the extension layout, 8 by the installation and
-one by the task text, and the marker check read none of the last nine. No
-forward run has ever been recorded in `E-CORE`, so the run corpus has one side
-of this question in it and cannot settle it either way.
-
-The checkout is where it separates. Of what `.checkouts/14.3` holds outside
-`typo3/sysext/` — its nine other root entries, plus `Build/Scripts/` and
-`Build/Sources/` — the signal calls all eleven outside the core, and all eleven
-are core work. `Build/Scripts/runTests.sh` is the sharpest: it is the script
-every suite in `typo3_test_run_guide` invokes, so the contributor standing in
-the repository that has it would be told those suites are not theirs to run.
-Three calls that name no path — a fix pushed for review, a state on a backend
-list row, a deprecation — go the same way, and that is the commoner shape,
-because a brief is asked for before there is a file to name.
-
-What carries those fourteen is not the combining in general but two of the
-members: the core's own `Build/` layout where the manifest allows the repository
-to be the core, and the installation. The third value is a second reason the
-signal cannot stand alone — it has two values, and `uncertain` is the one
-`R-AUD-002` asks for. The table is
-`ScopeTest::theSysextSignalAloneAnsweredEveryDecisionTheRecordedRunsMade` and
-`::theSysextSignalAloneAnsweredNothingACoreCheckoutDecides`, and collapsing
-`audienceOf` to the marker fails the second one fourteen times. What would
-reopen this is a recorded run in `E-CORE`: it is the one environment the
+The combining stays. On the recorded runs the marker alone answers what the
+combination answers, 38 of 38 — and it agreed by defaulting rather than by
+reading the same evidence, since every path in those runs is outside-core work
+and the marker read none of the nine decisions the installation and the task
+text carried. The checkout is where it separates: of what a core checkout holds
+outside `typo3/sysext/`, the marker calls eleven directories outside the core
+and all eleven are core work, `Build/Scripts/runTests.sh` most sharply. What
+would reopen this is a recorded run in `E-CORE`, the one environment the
 measurement had to reach for the checkouts instead.

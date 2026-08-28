@@ -106,138 +106,22 @@ schemas.
 
 ## Since then
 
-`feedback/2026-08-18-113357`, from the same debrief as the first feedback above,
-names an entry this one did not buy. The session wrote six commit messages for a
-sitepackage repository and derived their convention from
-`git log --oneline -15`, having read `typo3_commit_message_guide` as the core's
-Gerrit convention from its name alone. That is step 2 again: the sentence it
-needed stands in the tool's own `description` and in the `routing` entry
-*Writing or amending the commit message*, and under this client neither is a
-channel. So the third **Assumed** above is answered — the reported task shape it
-said the remaining lines would lack is on the same board, and
-`typo3_hint_lookup` is no longer the largest surface left out.
+The index is data in `knowledge/server-scope.json` since 2026-08-18, so
+`Coverage::offered()` drops the entry of a tool the caller excluded, and the
+room that freed bought the commit-message line the corpus had asked for twice.
+The tool's name is not the alternative lever: `typo3_` is on every tool here.
 
-The name is not the alternative lever the feedback offers beside it. `typo3_` is
-on every tool this server declares, so no name distinguishes core work from the
-rest, and a tool name is the one surface clients installed months ago have
-already written down — `AGENTS.md`.
+The first **Wrong if** fired twice, and neither is an index that was missing.
+One session had decided this server could not help and called nothing — an index
+answers a session looking for a tool, not one that has stopped looking, and what
+it asks for instead is the boundary. The other read the entry and made no call,
+because the checkout's own `AGENTS.md` carries the commit rules and a tool named
+for the same question read as redundant; it then wrote a `Releases:` trailer the
+guide would have corrected, so the entry names the branches now, in eighteen
+characters given back by the rest of the line.
 
-What blocks the line is the room. Re-measured on 2026-08-18, the instructions
-stand at 1912 characters with the stale-skills notice and nothing excluded, and
-at 2035 in the worst assembled case, against 2048; an index bullet is about
-seventy. Nothing a decision placed is left to displace, which is this entry's
-third **Wrong if**.
-
-The room is somewhere nobody placed. The index is prose inside the stored
-`instructions`, so it is not filtered by `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`: a
-caller that excluded everything it can is still told which four tools to call,
-which is both the case that binds the budget and what `Coverage::offered()`
-already refuses for `covers` and `routing`.
-
-That step was taken on 2026-08-18. The index is data in
-`knowledge/server-scope.json`, `Coverage::offered()` drops the entry of a tool
-the caller excluded, and the line the feedback asked for is the fifth entry: the
-commit message, in your own repository as much as in the core. The sentence
-under the entries names the three that fail at runtime rather than counting
-them, since which entry is first now depends on the caller. The heading and that
-sentence are rendered with the entries, so a caller left with none is handed no
-empty list.
-
-What it measures, the same day: the longest assembly is now the stale-skills
-notice with nothing excluded, at 2021 characters of the 2048. A caller that
-excluded every tool it can reads 2018, where the room freed is spent naming all
-23 rather than counting them, and 1598 where the notice pushes that prefix back
-onto the count. So the budget bought the entry and is no longer what blocks the
-next one — the third **Wrong if** above is what to argue with instead.
-
-**The first Wrong if fired**, on 2026-08-19. `feedback/2026-08-19-090401` is a
-JavaScript dependency update in `blog` under Claude Code's VSCode extension:
-every tool arrived as a bare name with its schema deferred, the block arrived
-whole, and the session counted the index inside it. It called nothing, and the
-block is what it names as the only thing it read from this server. Two feedback
-from the same debrief carry what that cost — a backend CSS class borrowed
-unverified (`feedback/2026-08-19-090231`) and a commit message derived from
-`git log` (`feedback/2026-08-19-090253`).
-
-The index was current. Its sixth entry, the call that reads a whole procedure,
-landed in `d8acbbf0` ten hours before the feedback was filed, and the session
-still reports finishing without learning the corpus can be enumerated. So the
-entry
-[`D-AUD-007`](aud-007-the-prose-documents-are-named-where-a-session-already-looks.md)
-bought was delivered and read and did not reach this one either.
-
-What separates it from the two feedback this entry was built on is that those
-sessions did not know what to call and this one had decided. Its own account: it
-was never unclear whether the server could answer, it was confident it could
-not, and confidence does not trigger a scope check. That confidence was right
-about the third-party library it was upgrading and wrong about the TYPO3 half of
-the same task, which is where both costs above came from.
-
-An index answers a session looking for a tool. Nothing in the block answers one
-that has stopped looking, and what the feedback asks for instead is the boundary
-— three lines of covered and not covered, so a session sure it is off-topic
-reads something that contradicts it.
-
-That is this entry's third **Wrong if** rather than the first's remedy. Measured
-on 2026-08-21, the longest assembly stands at 2028 characters of the 2048, so
-twenty are free against about seventy for one bullet and the 1153 `D-AUD-007`
-priced for naming the documents. And the lever this entry named as what is left
-to try is closed: `D-SKL-060`'s fetch line was put to the maintainer on
-2026-08-19 and the answer was not to.
-
-Two of the feedback's own suggestions are refused on their own ground rather
-than on the room. `typo3_reference_list` is not the document list — re-run on
-2026-08-21 it enumerates the core's worked examples, `theme_camino` and
-`styleguide` — so naming it would not have shown the session the shelf it
-wanted. The other is the name, which the paragraph above already answers; re-run
-with the session's own subject, `npm build scripts webpack in an extension`,
-`typo3_script_lookup` answers with the four topics of the core script notes and
-routes elsewhere, so the call the name cost would have returned nothing about
-the task.
-
-What goes up is the budget, because every lever left is instruction-block
-characters that do not exist. That is
-[`D-ANS-004`](../answers/ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md),
-which measured one client on 2026-07-31 and has not been re-measured; the client
-reporting here is another one, it delivered the block whole, and where it
-truncates only a session inside it can say. `todo/waiting/T-260819-dcaf.md`
-carries the question.
-
-**The first Wrong if fired again** on 2026-08-25, this time against the entry
-this one bought. `feedback/2026-08-25-105141` is a core commit message written
-in the TYPO3 CMS checkout under the same deferring client: the session read the
-block, read the fifth entry, and made no call in that turn. Its account of why
-is not that the line was missed — the checkout's own `AGENTS.md` carries the
-commit rules in full, so a tool named for the same question read as redundant.
-
-What that cost is on the record. The session wrote `Releases: main, 14.3, 13.4`
-off the branch dates `git for-each-ref` prints, and a `typo3_rule_lookup` on
-`core/contribution/gerrit-workflow` in the next turn corrected it to
-`main, 14.3`. The guide answers that without the second call: run on 2026-08-27
-for a core bugfix carrying no `releases`, it names the lines that can take a
-patch at all and says a bug fix goes to main and 14.3, an older line only where
-the severity earns it. So the entry named a tool that was right, and the file
-that was wrong won.
-
-The wording is the lever, which is step 4 rather than step 2 or 3: the block
-arrived, the entry was current, and the session read it. What the entry did not
-say is what the guide settles that a rules file cannot. The branch set is a
-project fact that changes and no checkout carries it, which is why
-`feedback/2026-08-26-223348` lost it too — a second session, at another task
-shape, guessing the set off `git branch -r` and reporting that nothing suggested
-this server would know it. That one is judged on its own card.
-
-The entry now reads *the commit message, yours as much as the core's, and its
-branches*, and it pays for itself.
-`in your own repository as much as in the core` is `yours as much as the core's`
-in eighteen characters fewer, which is what the branch clause costs to the
-character: measured on 2026-08-27 both assemblies are unchanged at 1948 and 2033
-against the 2048. The third **Wrong if** is therefore untouched, and the budget
-question stays where `D-ANS-004` has it.
-
-The feedback's other suggestion is refused rather than deferred. It asks that
-the three tools a core session opens with arrive with their schemas loaded, and
-nothing in the protocol lets a server ask a client for that. The fetch line
-[`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it.md)
-proposed was the last lever of that kind, and the maintainer answered not to on
-2026-08-19.
+Every lever left is instruction-block characters that do not exist — twenty free
+in the longest assembly — so what goes up is the budget itself, which
+`D-ANS-004` measured on one client and `todo/waiting/T-260819-dcaf.md` carries.
+Refused on their own ground: `typo3_reference_list` is not the document list,
+and no protocol lets a server ask a client to load a schema.

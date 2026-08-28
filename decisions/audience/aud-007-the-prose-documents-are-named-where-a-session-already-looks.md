@@ -69,26 +69,15 @@ tool list and finished without learning whether there was anything to read.
 
 ## Since then
 
-On 2026-08-05 the first **Wrong if** happened, five hours after that line
-shipped. A core session ran two skills end to end and finished without learning
-what `typo3://guides` holds (`feedback/2026-08-05-034022`). Its client offered
-`ListMcpResourcesTool` and `ReadMcpResourceTool` and rendered no list, and the
-clause naming the index was in a sentence about `typo3_server_scope`, which the
-session skipped deliberately: the skills gave it an order of calls, so it never
-needed orientation.
-
-That is the case this entry could not see from where it stood. A session
-arriving through a skill reads the skill, and the instructions reach it as
-background it has no reason to act on. The page it wanted was the Gerrit push
-procedure, which exists whole at
-`typo3://guides/core/contribution/gerrit-workflow`, and the skill sends it to
-`typo3_rule_lookup` for the same subject — so what it would have got is the
-section a search matched, with nothing saying the rest of the page is there.
-
-What follows is not a typo3_document_list. The session named the lever itself: a
-skill names the resource it expects read whole, at the step that needs it, and a
-lookup answer that is one section of a procedure says which procedure. Both are
-contracts.
+The first **Wrong if** happened five hours after the line shipped: a core
+session ran two skills end to end without learning what `typo3://guides` holds.
+Its client rendered no resource list, and the clause naming the index sat in a
+sentence about `typo3_server_scope`, which the session skipped deliberately
+because the skills gave it an order of calls. That is the case this entry could
+not see: a session arriving through a skill reads the skill, and the
+instructions reach it as background. The lever is not a document list — it is a
+skill naming the resource at the step that needs it, and a lookup answer saying
+which procedure its section came from.
 
 ## Since then
 
@@ -104,82 +93,35 @@ and the enumeration this entry decided against is still not what follows.
 
 ## Since then
 
-On 2026-08-14 a session held the naming and opened a page whole.
-`feedback/2026-08-13-214927` reviewed a Gerrit change in a client that rendered
-no resource list, and reports the guide ids in `typo3_project_describe` as the
-only place the corpus was named to it — enough that it never called
-`typo3_server_scope`, which is the route this entry could not rely on.
-`feedback/2026-08-13-214838` is the same session and carries the read:
-`typo3_rule_lookup` with `documentId` `core/contribution/gerrit-workflow`, which
-`typo3-core-patch-checkout` names at its fetch step. The paragraph it needed —
-that the change refs are on the review server and `remote.origin.pushurl` is
-what to fetch from — is one its own words would not have matched in a search.
-
-The assumption the session flags as unchecked holds. `ProjectDescribe::guides()`
-enumerates `Documents::documents()`, so the list it read is the whole corpus
-rather than a selection of it, and reading it as complete was correct.
-
-So the first **Wrong if** has an instance the other way for the first time. Only
-the enumeration is read here; which surface produced the read is the session's
-own account, and it names the skill's step rather than the listing — the listing
-said what exists, and the skill said to open one of them.
+On 2026-08-14 a session held the naming and opened a page whole, in a client
+that rendered no resource list: it reports the guide ids in
+`typo3_project_describe` as the only place the corpus was named to it, and read
+the page its skill named at the fetch step — a paragraph its own words would not
+have matched in a search. The assumption it flags as unchecked holds, since that
+listing enumerates the whole corpus. So the first **Wrong if** has an instance
+the other way, and what produced the read is the skill's step rather than the
+listing.
 
 ## Since then
 
-On 2026-08-19 the clause was displaced by the call it should have named.
-`feedback/2026-08-18-113425` is a sitepackage session under a client that lists
-the tools by name and defers their schemas. It quotes the clause back, called
-this server nothing at all, and finished without learning that any guide exists.
-It is the sixth feedback to quote that sentence, beside five in the archive from
-2026-08-05 and 2026-08-07.
-
-What was wrong is where the sentence pointed rather than that it named the
-index. Every other surface had moved to the call: `Result\Prose` closes with
-`typo3_rule_lookup` and a `documentId`, `typo3_test_run_guide` names its two
-pages that way, and `typo3_project_describe` has enumerated the corpus at the
-foot of its answer since 2026-08-08 — measured on 2026-08-19 against a checkout
-of the reporting session's own shape, an extension repository with nothing
-installed, which answers with every id and title. The one statement every client
-receives was the last place routing through a resource scheme, and it warned
-about the client instead of naming what works.
-
-So the clause is gone and the index gained what it paid for: *the whole
-procedure, not one fact out of it: typo3_rule_lookup with a documentId
-typo3_project_describe lists*. The index rather than the sentence, because
-`Coverage::offered()` drops an entry naming a tool the caller excluded
-([`D-AUD-011`](aud-011-the-instructions-index-the-question-each-tool-answers.md)),
-while a sentence in `then` naming `typo3_rule_lookup` would point at a tool that
-can be taken away. The longest assembly moves from 2021 characters to 2026 of
-the 2048
-[`R-ANS-013`](../../requirements/answers/ans-013-the-instructions-fit-what-a-client-keeps.md)
-holds, and `ScopeTest::theIndexNamesTheCallThatReadsAWholeProcedure` holds the
-entry and the exclusion.
-
-The feedback's own suggestion is refused on the same measurement. Naming the
-documents in the `instructions` cost 1153 characters on 2026-08-19, where 27
-were free, so this entry's second **Wrong if** is priced rather than argued.
-
-Neither **Wrong if** is satisfied by the session. The corpus has no document for
-what it wanted — reviewing an incoming pull request against an extension, and a
-project package's release and backport policy, each filed as its own feedback —
-so it is not a session that finished without opening a page that exists.
+On 2026-08-19 the clause was displaced by the call it should have named. A sixth
+feedback quoted the sentence back, called this server nothing, and finished
+without learning any guide exists. What was wrong is where it pointed: every
+other surface had moved to `typo3_rule_lookup` with a `documentId`, and the one
+statement every client receives was the last place routing through a resource
+scheme. So the clause is gone and the index gained the call instead — the index
+rather than a sentence, because an entry naming an excluded tool is dropped
+where a sentence would still point at it. The feedback's own suggestion, naming
+the documents there, is refused on the budget: it cost 1153 characters where 27
+were free.
 
 ## Since then
 
-Two readings carried out what this entry decided and established nothing beyond
-it, so each is a line here rather than a section of its own. Judged on
-2026-08-22.
-
-- 2026-08-04: the line is one clause rather than the paragraph this entry
-  imagined, because the `instructions` carry a budget —
-  `ScopeTest::theInstructionsFitWhatAClientKeeps` holds them to 2048 characters,
-  and a first draft naming four documents put the excluded-tools case over it by
-  75. What survived kept this entry's decision, the index rather than the
-  documents.
-- 2026-08-05: both contracts the first reading above named were built. Every
-  answer rendered by `Result\Prose` closes with the pages its excerpts were cut
-  from, and `typo3-core-patch-development` and `typo3-core-patch-checkout` name
-  `typo3://guides/core/contribution/gerrit-workflow` at the push and the fetch
-  step — the two places a step described a whole procedure and routed to a
-  search for it. `SkillTest::everyResourceASkillNamesIsOneTheServerServes` holds
-  every uri in a published skill to a document this server serves.
+Two readings carried this out and established nothing beyond it. The line is one
+clause rather than a paragraph, because the `instructions` carry a budget a
+first draft went over by 75 characters. And both contracts the first reading
+named were built: every answer rendered by `Result\Prose` closes with the pages
+its excerpts came from, and the two core patch skills name the workflow document
+at their push and fetch steps —
+`SkillTest::everyResourceASkillNamesIsOneTheServerServes` holds every uri in a
+published skill to a document this server serves.

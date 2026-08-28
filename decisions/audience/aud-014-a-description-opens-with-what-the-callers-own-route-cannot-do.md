@@ -84,43 +84,15 @@ both routes and taken the tool. Its first **Wrong if** has since happened.
 
 ## Since then
 
-### 2026-08-27 — the same file beats a second tool, and the tool is the entry point
+A second tool lost to the same file, and it is the one the `instructions` name
+second: a session held the core's `AGENTS.md` in context and never called
+`typo3_task_guide`, whose schema it had loaded. So this is not a single case,
+and what the two share is a file read into every session in a core checkout.
 
-[`feedback/2026-08-26-223325`](../../feedback/archive/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
-worked a core patch in the same checkout and never called `typo3_task_guide`,
-whose schema it had loaded in its first `ToolSearch` call. It names the reason
-in the same shape this entry was written from: the description opens "Build a
-task checklist enriched with matching hints and relevant core checks", it held
-the core's `AGENTS.md` with the test-first rule, the `runTests.sh` invocations
-and the commit conventions in context already, and a checklist was therefore not
-a gap it felt.
-
-The statement above transfers, and the tool it transfers to is the one the
-`instructions` name second. What the session then had to guess is what that file
-does not carry — the branches a `Releases:` trailer takes, and whether a bugfix
-of that shape owes a changelog entry — and neither is in the description's
-opening, which spends its first sentence on the artefact rather than on that.
-
-So `typo3_forge_lookup` is not a single case, and what the two share is a file
-read into every session in a core checkout. The rewrite is queued on
-`T-260826-4194`, beside the routing half
-[`D-SKL-081`](../task-skills/skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md).
-The **Assumed** above is unchanged and is now carried by two tools: neither
-session says how far into a description it read.
-
-### 2026-08-27 — the second opening is written, and one of the two guesses was answered nowhere
-
-`typo3_task_guide` now opens on what one change owes against a file that states
-its rules once for every task, and names the two the session guessed at: whether
-this fix owes a changelog entry, and the branches a `Releases:` trailer takes.
-
-The second was already answered here and the first was not. `.checkouts/main`'s
-`AGENTS.md` says bugfixes are backported to the maintained release branches and
-never which those are, and `typo3_commit_message_guide` names them with the rule
-for which of them a fix goes on — a call the brief has always routed to. The
-changelog obligation was in `knowledge/documents/core/contribution/changelog.md`
-and reached no bugfix brief: that document is not among `TaskIntents`' three
-rule documents, and a plain bugfix confirms no intent that would pull it. So the
-`bugfix` change type gained one item, stating the rule and naming the page it is
-read whole from. An opening that had claimed the answer without it would have
-been the lie this repository's own rule about outward surfaces names.
+The second opening is written. It names the two things that file does not carry
+and the session guessed at — whether the fix owes a changelog entry, and the
+branches a `Releases:` trailer takes. The second was already answered by
+`typo3_commit_message_guide`; the first was in a document no bugfix brief
+reached, so the `bugfix` change type gained the item that states the rule and
+names the page. An opening claiming the answer without it would have been the
+lie this repository's rule about outward surfaces names.

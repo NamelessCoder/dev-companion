@@ -99,63 +99,23 @@ nothing and the silence reads as a clean bill for the next major.
 
 ## Since then
 
-The wording landed on 2026-08-02, in `skills/base.md` step 5, `R-SKL-005`,
-`R-SKL-007`, `skills/typo3-extension-upgrade/SKILL.md` and the assertion that
-held the old sentence. The step now names three axes and no query: the type,
-each major the package declares, and a tag per call.
-
-Which tags a sitepackage names was the half the entry left open, and it was
-settled against the changelog in `.checkouts/14.3`, read with
-`Changelog::read()`'s own parser. The tags are dense enough to bound a sweep
-with: of the 75 deprecations of 14 every one carries at least one tag and one
-carries no `ext:` tag, and 12 and 13 are the same shape — 128 and 63
-deprecations, one without an `ext:` tag each. So a sweep composed of tags leaves
-one entry per major outside itself, and that is the gap the annotations source
-in `typo3-extension-upgrade` covers rather than a reason to widen.
-
-`ext:` alone is a weak bound for a sitepackage, which is why the step names the
-surface tags beside it. `printworks_sitepackage`, the package both feedback
-swept, requires core, fluid_styled_content, form, frontend, impexp and seo; of
-those, `ext:core` carries 30 of the 75 on its own and three of the six carry
-none, so the six calls it declares reach 34. What that package actually is
-reaches further and narrower: `TCA` 12, `Fluid` 5, `TypoScript` 3, `YAML` 3,
-`TSConfig` and `FlexForm` 1 each. It also renders through Fluid and configures
-the backend without requiring `typo3/cms-fluid` or `typo3/cms-backend`, whose 14
-deprecations are 5 and 19 — which is why the step says *requires, renders
-through or registers into* rather than reading the manifest.
-
-The tag is also what keeps the sweep readable, and that is stronger than the
-entry assumed. `limit` caps at 50 and defaults to 20, so the unbounded
-enumeration of one major cannot return all 75 in a call at all, and #109412 —
-the entry the word queries missed — sorts 39th. Omitting the query without the
-tag would have missed it a second way.
-
-Nothing was said about which tags exist, deliberately. One call carrying any tag
-returns every tag that version and type carry, so the vocabulary is read off the
-first answer; the step says that instead of listing a vocabulary this repository
-would then have to keep in step with the core.
-
-The wording generalised no further than the step it was written in.
-`feedback/2026-08-08-224429`, a core patch review on 2026-08-08, names the
-query-omitted mode, places it in this step, and says it did not apply it to
-`type: important` because that is where it was taught. So the mode is stated
-once, as a property of the sweep, and a task needing a listing for something
-else reads it as somebody else's step — `D-SKL-029`.
+The step names three axes and no query: the type, each declared major, and a tag
+per call. Which tags a sitepackage names was settled against the changelog
+itself — every deprecation of the three majors carries at least one tag and one
+per major carries no `ext:` tag, so a sweep composed of tags leaves one entry
+outside itself, which the annotations source covers. `ext:` alone is a weak
+bound for a sitepackage, which is why the surface tags stand beside it: the
+package both feedback swept reaches further through what it renders through than
+through what it requires. The tag is also what keeps the sweep readable, since
+the cap cannot return one major whole. Which tags exist is deliberately not
+listed: one call carrying any tag returns the vocabulary.
 
 ## Since then
 
-The second **Assumed** was measured in practice on 2026-08-21, and the
-composition costs more than the enumeration it replaces.
-`feedback/2026-08-19-094403` reports the step run over an extension declaring
-one major: eleven tags, eleven calls, four of them returning nothing the session
-used. Re-run against `.checkouts/14.3` those eleven reach 72 of the 75
-deprecations of 14 and cost 69,426 characters, where the same version and type
-with no tag matches all 75 in one call and would cost about 41,600 once the cap
-can carry them. The tags being dense enough to bound a sweep with — what this
-entry established — is also what makes a sweep composed of them converge on the
-major.
-
-The statement above stands: the axes a sweep is bounded by are still the
-changelog's own, and the version and the type are two of the three. What changes
-is the third, the "one call per declared major per tag" half of step 5, and
-`D-ANS-093` is where that is decided.
+The second **Assumed** was measured in practice and the composition costs more
+than the enumeration it replaces: eleven tags, eleven calls, four returning
+nothing the session used, against one call that matches every deprecation of
+that major for about half the characters. The tags being dense enough to bound a
+sweep with is also what makes a sweep composed of them converge on the major.
+The statement stands — the axes are the changelog's own — and what changes is
+the third, which `D-ANS-093` decides.

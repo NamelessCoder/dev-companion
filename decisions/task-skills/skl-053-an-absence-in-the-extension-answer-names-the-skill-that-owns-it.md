@@ -132,78 +132,8 @@ sentence of the skill it was following, and it says it read that sentence.
 
 ## Since then
 
-The crossing half is built. The three successors
-`typo3-content-element-development` named at once stand as three steps at three
-moments: `typo3-extension-testing` where the layer the element needs has no
-harness, `typo3-extension-documentation` where the verified element has to be
-written up, `typo3-extension-conformance` where the request turns from this
-element to the package. The last of those is the shape whose trigger is
-something the reader says, so it names the sentence that fires it and the
-question about the element that does not — `R-SKL-018`'s second half.
-
-The other six extension skills were read in the same pass, and each got the
-crossing its own workflow reaches. `typo3-backend-module-development` had two
-already standing at a moment and both are now instructions — the installation
-before the module is opened, the documentation once implementation is verified.
-`typo3-extension-cleanup` invokes the audit at step 2 and again at step 12,
-`typo3-extension-conformance` invokes the owner of a finding when the fixes are
-asked for, `typo3-extension-documentation` invokes the code's owner where a page
-would have to claim what the code does not do, `typo3-extension-testing` invokes
-it where a failing assertion is that code's defect, and
-`typo3-extension-upgrade` invokes it where the change in front of the session is
-not on the work list. Where the successor is decided per case none of them can
-name one skill, which is what the test reads for those five instead of a name.
-
-Every ownership paragraph stayed, and none of them carries an instruction any
-more: the test reads the last paragraph of every published skill for one, which
-is the position half the imperative alone did not hold. What was not written is
-a list of everything a workflow still owes — `D-SKL-049`'s gate is still waiting
-on the maintainer, and each crossing here stands at its own moment instead.
-
-The answering half landed first and in a commit of its own:
-`typo3_extension_describe` names `typo3-extension-documentation` where it
-reports no manual or no README and `typo3-extension-testing` where it reports no
-test layer. Two levers now stand against one report, which is what the third
-**Assumed** says a later session has to separate.
-
-**A second session then read a closing crossing and did not act on it.**
-`feedback/2026-08-18-074245`, `/home/benji/projects/blog`, a DDEV installation
-on 14.3.6, `claude-opus-5[1m]`. `typo3-development-installation` was active and
-carried the diagnosis; the session states it read "Where this stops" when the
-skill loaded, at which point it held a 404 and no test. Forty minutes and
-several user turns later it extended `Tests/Functional/` and built a second core
-installation, and invoked neither `typo3-extension-testing` nor
-`typo3-extension-upgrade`. That is the third **Assumed** arriving a second time
-— another project, another workflow, another task — and it is the position and
-not the imperative that is left: the paragraph names the successor, describes
-the crossing in both directions, and says to activate it.
-
-**What the pass left standing.** It read the seven extension workflows, and
-`typo3-development-installation` is not one of them. Its crossing into
-`typo3-extension-testing` is the last handover in `skills/` still written in the
-paragraph the workflow is being left in.
-
-**Both halves of the guard pass on it.** The `$crossings` map names
-`typo3-extension-conformance` for that skill and not `typo3-extension-testing`,
-so the imperative half never asks. The position half reads the last paragraph of
-every skill for `nvoke`, and this one says "activate it" — the verb this entry's
-own evidence was written to falsify. A crossing is held where somebody listed it
-and where its author happened to pick one of two words.
-
-The report is about this server rather than an older one: it was recorded at
-07:42 UTC, an hour after the pass, and quotes the paragraph as it still reads.
-Judged step 4 and queued at `normal` on the card that serves it, bounded to that
-one crossing — `typo3-extension-upgrade` staying shut in the same session is a
-description that reads from the maintainer's intent, and
-`feedback/2026-08-18-080630` carries it on a card of its own.
-
-**That crossing is now a step, and both halves of the guard reach it.**
-`typo3-development-installation` carries **When the task turns to a suite**: the
-moment the task grows a test, invoke `typo3-extension-testing`, before a test
-file is edited or the installation a suite boots is built. What fires it is
-named beside what does not — a sentence asking for proof against a question
-about what the site answers — because the report's trigger was a user turn. The
-ownership paragraph keeps both directions of the boundary and carries no
-instruction. In the guard, the `$crossings` map names that successor for this
-skill, and the position half now reads the last paragraph for `ctivate` as well
-as `nvoke`, which is the word "activate it" stood there under.
+A second session read a closing crossing and did not act on it, which is what
+the **Assumed** says a later session has to separate. The pass read the seven
+extension workflows and both halves of the guard pass on what it left standing:
+the crossings map names them, and the crossing that had been prose is a step
+now.

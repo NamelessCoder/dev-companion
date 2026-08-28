@@ -98,125 +98,43 @@ since 2026-08-01, unjudged.
 
 ## Since then
 
-Both clusters were read the same day, which settles the second assumption above:
-they do not merely report a gap, they contain the two orders. Neither had to be
-invented here.
+Both clusters were read the same day, which settles the second assumption: they
+contain the two orders rather than merely reporting a gap. The review order is
+written down twice by sessions that arrived at it independently, one from the
+chain that worked and one from finding no entry point at all, and what it has to
+force — enumerate what the diff removes, and require a matcher and an `.rst` per
+removal — is in two more, where two findings were under-stated for want of that
+step. The creation order is one session's whole task filed in nineteen parts and
+offered as a skill body.
 
-The review order is written down twice by sessions that arrived at it
-independently. `feedback/2026-08-01-115716` states the chain that worked —
-`typo3_changelog_lookup` for the precedent, `typo3_script_lookup` with
-`typo3_test_run_guide` for the exact `runTests.sh` suites, then
-`typo3_commit_message_guide` — and asks for it to be named. `2026-08-01-121847`
-reaches the same steps from the other end, by finding no entry point at all:
-`typo3_server_scope` routes "review, audit or assess" to
-`typo3_project_describe`, `typo3_task_guide` and `typo3_extension_describe`,
-which author changes and read extensions. What the order has to force is in
-`2026-08-01-115711` and `115525`: enumerate what the diff removes or renames,
-and require an ExtensionScanner matcher plus a Breaking or Deprecation `.rst`
-per removal, with method-level `@internal` waiving the `[!!!]` marker and
-nothing else. Two findings were under-stated until a user pushed back, both for
-want of that step. `2026-08-01-121852` carries the boundary the order sits on
-and calls it the most useful answer of the review: this server never reads the
-checkout, so the diff is read here and passed in.
-
-The creation order is one session's whole task, filed in nineteen parts on
-2026-08-02 and explicitly offered as a skill body in `2026-08-02-145315`. It
-runs: assess the Forge issue before believing the report (`145128`, `144800`,
-`145043` — the report was half stale and the maintainers' closure was product
-judgement rather than an API fact); reproduce against the target branch as a
-functional test, because a ViewHelper needs a rendering context (`144456`);
-implement; decide the changelog from its own tree, with the directory named for
-the upcoming version and the file `<Type>-<issue>-<CamelCaseSummary>.rst`
-(`145315`); run the suites through `Build/Scripts/runTests.sh`, which
-`typo3_project_describe` does not name (`144350`) and which needs its own
-dependencies inside a worktree (`144950`) and passes falsely there for `cglGit`
-(`144326`); then the delivery half — the asymmetric `origin`, the `Change-Id`
-hook, and the Gerrit REST query that says whether a patch already exists
-(`144848`, `145230`), reached over Anubis bot protection that answers a
-browser-like `curl` with HTTP 200 and a challenge page (`145217`).
-
-What the reading also shows is that the two orders share their middle and not
-their ends: both establish the change and run the checks through the same three
-tools, the review stops before anything is written, and the creation half is
-mostly what happens after the code is right. That is the boundary this entry
-assumed and it holds.
+What the reading also shows is that the two share their middle and not their
+ends: both establish the change and run the same three tools, the review stops
+before anything is written, and the creation half is mostly what happens after
+the code is right.
 
 ## Since then
 
-The review order above was read off `feedback/2026-08-01-115716`, and one of the
-four links it names does not hold. Re-run on 2026-08-03 through
-`bin/typo3-dev-companion` from `/home/benji/projects/typo3-cms`, the checkout it
-was written in: `typo3_changelog_lookup` reaches `13.0/Breaking-101955` from
-`image generation` and from `removed public methods`, which are the words the
-entry is titled in, and from nothing the diff carries. `GifBuilder` reaches four
-entries and not that one, `getTemporaryImageWithText` reaches none, and the
-session's own query `GifBuilder placeholder preview thumbnail` at version 15
-reaches none — the answer now names the version filter as what emptied it.
+One of the four links the review order was read off does not hold: re-run in the
+checkout it was written in, the changelog lookup reaches that entry from the
+words its title carries and from nothing the diff does. The session says so
+itself four seconds earlier — it found the entry by grepping the checkout — so
+the strength credits a tool for the finding its sibling records as that tool's
+miss, which is the third corpus where the credit is misplaced.
 
-The session says so itself. `feedback/2026-08-01-115112`, filed four seconds
-earlier by the same model in the same directory, reports that it found
-`Breaking-101955` by grepping `Documentation/Changelog` because the lookup could
-not reach it. So the strength credits a tool for the finding its sibling records
-as that tool's miss, which is the third corpus in which the credit is misplaced
-and the second time on this server's own matcher
-([`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)).
-
-That changes the order's first step rather than the decision above it. A
-reviewer holds what the diff removes — a class and a method name — and that is
-the one thing the matcher does not carry
-([`D-ANS-030`](../answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md),
-whose own example is this method). Until the two cards serving `115112` land,
-the review order reaches a precedent by the entry's own subject words or from
-the checkout's `Documentation/Changelog`, and it says which. An order that opens
-with a step that misses in the case the review needed it would ship that miss
-into somebody else's project.
-
-The other three links reproduce. `typo3_script_lookup` on functional tests
-returns the `runTests.sh` section with `CI=true` and the `--` passthrough;
-`typo3_test_run_guide` with the patch's four changed paths and
-`targetVersion: 15` narrows to the php domain and carries
-`checkExtensionScannerRst` with the sentence that names a removal as what it is
-for; `typo3_commit_message_guide` returns the patch's message corrected and
-warns that the 68-character summary is over 52, which `2026-08-01-115115`
-reports as well. One credit there is looser than the answer: the narrowing is to
-a domain and returns 13 suites, and the four the report calls "the exact
-`runTests.sh` suites" are the ones the session picked out of them.
-
-The feedback stays open behind the card this entry left for the review cluster,
-which nothing had written until now.
+That changes the order's first step rather than the decision: a reviewer holds
+what the diff removes, which is the one thing the matcher does not carry, so the
+step reaches a precedent by the entry's own subject words or from the checkout,
+and says which. The other three links reproduce, one credit looser than the
+answer.
 
 ## Since then
 
-Six readings held this decision and changed nothing in it, so each is a line
-here rather than a section of its own. All six judge one feedback of the
-creation cluster, and what each settled is in the skill, the requirement or the
-document its line names.
-
-- The step the reading above corrected is in `typo3-core-patch-review`, held by
-  `SkillTest::aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords`. What
-  it forbids is reading an empty changelog answer as "no precedent exists".
-  `feedback/2026-08-01-115716` is archived with it, both skills are published,
-  and what is left of this entry is its **Wrong if**.
-- `feedback/2026-08-02-144848` on 2026-08-03, the delivery half, judged 1a and
-  queued at `high`: the unlisted push, where a checkout pushes, whether the
-  refspec holds from a git worktree, and a change hanging off a closed Forge
-  issue. All four are in `knowledge/documents/typo3-gerrit-workflow.md` under
-  [`R-KNW-057`](../../requirements/knowledge/knw-057-the-push-a-session-cannot-take-back-is-answered-in-full.md),
-  three read at Gerrit's own documentation and one established in a scratch
-  clone. The last stays partly open, because Forge answers a fetch of the issue
-  with HTTP 403.
-- `feedback/2026-08-02-144800` on 2026-08-03, which wanted the assessment
-  guidance on `typo3_task_guide`. It went to `typo3-core-patch-development`
-  instead, which is this entry working as decided, and the feedback is trimmed
-  to the two readings a closure reason is worth.
-- `feedback/2026-08-02-144814` on 2026-08-03: a rule quoted from a tracker
-  comment is a claim to verify against the checkout, written into the assessment
-  step ahead of the reproduction. `R-SKL-015` and
-  `SkillTest::aRuleQuotedAtTheIssueIsVerifiedInTheCheckout` hold it.
-- `feedback/2026-08-02-145230` on 2026-08-03, the read direction of the task the
-  line above judges from the write side. `typo3_gerrit_lookup` answers it in one
-  call (`D-ANS-033`), and what was left is routing: has somebody already fixed
-  this was reachable from the order that judges a patch and not from the one
-  that writes it. Both judgements of that task asked for one step, which is the
-  evidence this decision was made on rather than a collision. `R-SKL-016` and
-  `SkillTest::theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer` hold it.
+Six readings held this decision and changed nothing in it, each judging one
+feedback of the creation cluster. What they settled sits in the skill, the
+requirement or the document each named: the precedent step that forbids reading
+an empty changelog answer as "no precedent exists"; the four delivery questions,
+written into the Gerrit document under `R-KNW-057` with one left partly open
+because the tracker answers a fetch with 403; the assessment guidance, which
+went to the patch skill rather than the guide; a rule quoted at the issue being
+a claim to verify in the checkout; and the read direction of the same task,
+which is routing rather than a gap.

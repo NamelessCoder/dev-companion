@@ -116,94 +116,12 @@ only one this server points at.
 
 ## Since then
 
-### 2026-08-18 — the placement is the brief, and the instructions are full
-
-**The sentence is a `nextTools` entry of `typo3_task_guide`, naming the tool
-again with the four acts as its `when`.** The three channels were weighed
-against what each costs and reaches today, and two of them lose:
-
-- The `instructions` are full. Measured in this worktree: 1830 characters plain,
-  2038 in the case `ScopeTest::theInstructionsFitWhatAClientKeeps` sizes them
-  against — a caller that excluded every tool, in a project whose skills are
-  stale — of the 2048 a client keeps. A sentence there costs a sentence that is
-  already there, which is the trade `R-DIS-025` was the last to make.
-- A `routing` entry reaches a session that called `typo3_server_scope`, and that
-  table is read at the opening if at all. `R-GUI-003` is the same finding from
-  the other side: the pointer to `typo3_commit_message_guide` stood in the
-  routing table, and the session wrote four commit messages hours later out of
-  the brief, which is why the brief carries it.
-
-**It is the same list the commit message pointer sits in**, unconditional and
-outside the core as readily as in it — the acts are the caller's own, so none of
-them is a step `Scope::isCoreOnly()` drops. What is not written is a second copy
-in the checklist: the checklist is the order of this task, and asking again is
-what happens when the task is no longer the one the brief was composed for.
-
-### 2026-08-24 — the acts were taken by a session the placement cannot reach
-
-[`feedback/2026-08-24-133515`](../../feedback/archive/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md)
-is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`: a core patch carried
-to green — two classes changed, a test added to an existing case, a new
-functional test case, unit, functional, cgl and phpstan all run — with zero
-calls to this server and no skill opened.
-
-Two of the four acts were taken. The new functional test case is the first file
-under a test directory, and `Build/Scripts/runTests.sh` is the first run of a
-check the repository declares. The sentence naming them sits in
-`TaskGuide::answer()`'s `nextTools` and reached nothing, because it rides on an
-answer and no answer was asked for.
-
-That is the placement's first recorded cost, and it is narrower than the
-**Decided** bullet reads. A session that calls once is served. A session that
-calls nothing is not, and it is the case `D-AUD-003` named as the reason the
-entry point sits in the `instructions` at all.
-
-None of the three **Wrong if** fires: each describes the re-ask arriving and not
-working, and here it did not arrive.
-
-The room was re-measured in this worktree on 2026-08-24 — 1943 characters plain,
-2028 in the case `ScopeTest::theInstructionsFitWhatAClientKeeps` sizes against,
-of the 2048 `R-ANS-013` holds. So the trade above stands as a trade: twenty
-characters is not a sentence. What nobody has weighed is binding the imperative
-already there to the acts as well as to the opening, which is a rewrite rather
-than an addition, and that is the queued step.
-
-The session named two acts of its own, and one of them is outside the four: the
-first edit to code the package ships. It is nameable without seeing the checkout
-the way the other four are, and whether it belongs beside them is part of the
-same step rather than something this reading settles.
-
-### 2026-08-24 — the imperative carries the acts, and the skill clause gives way
-
-**`instructions.start` now reads "Then call typo3_task_guide for the workflow
-the task belongs to, and again at the first test, check, commit or shipped file
-the task did not name."** The second half of that sentence was "it hands the
-parts that have their own workflow to the skill that owns them", and that is
-what gave way.
-
-The clause was a description of what the call returns, which is the mood
-`D-AUD-012` counted at one call against eleven. No test held it, and what it
-claims is delivered where a caller can act on it: `D-SKL-013` put the skill name
-into the guide's own answer. Its measured effect on this channel is nothing
-twice — the benchmark of `D-SKL-033` had it in context and opened no skill, and
-[`feedback/2026-08-24-163220`](../../feedback/archive/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)
-reports reading that sentence "as a tool to call, not as a reason to open a
-skill".
-
-**The room was 8 characters, not 20.** The largest assembly is the caller that
-excluded every tool in a project whose skills are stale, where the prefix naming
-the tools is longer than the index it replaces: 2040 characters of the 2048 on
-2026-08-24, where the reading above measured the notice alone. The rewrite is
-2045, and the acts are said in four words each because that is what fits.
-
-**The fifth act joins, merged with the fourth: the first edit to code or
-documentation the package ships.** It is the act the reporting session took
-first — before the test case, before `runTests.sh`, and before the wasted
-container run its feedback names. What keeps it from firing on every patch is
-the condition that already stood on the clause: a subject the task did not name.
-
-**One sentence in two places, against the Decided bullet above.** The two reach
-sessions that do not overlap — the brief a session that called once, the
-`instructions` one that called nothing — and this queued step exists because the
-second was left unserved. What that costs is one act list to keep true in two
-wordings, and they are as close as 8 characters allow.
+The placement is the brief rather than the instructions, which are full: the
+sentence is a `nextTools` entry, unconditional and in the list the commit
+message pointer already sits in. Then a session took the acts that the placement
+cannot reach — one that calls once is served, one that never calls again is not
+— so the imperative in `instructions.start` carries them, in the eight
+characters that were free rather than the twenty the reading assumed. The fifth
+act joined merged with the fourth. That is one sentence in two places against
+the **Decided** bullet above, and it is deliberate: the two reach different
+sessions.

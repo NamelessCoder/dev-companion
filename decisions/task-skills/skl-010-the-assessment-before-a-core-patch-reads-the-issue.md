@@ -112,25 +112,14 @@ the checkout the feedback was written in.
 
 ## Since then
 
-Written into `skills/typo3-core-patch-development/SKILL.md` the same day, and
-the question this entry left open is settled by the writing: the two calls are
-steps 3 and 4 of "Establish the issue before you believe it", and the three
-rungs are three paragraphs closing that section rather than a reference file
-beside it. A reference is what a task reads once and this is read in sequence,
-and the skill is one of the three that keep no checklist —
-`SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem` names it, because
-what it builds against is the issue and the review skill's findings rather than
-a rubric of its own. Both lookups were re-run against this branch's server
-before the section was written and answer as the evidence above records them.
+Written into the patch development skill the same day, and the open question is
+settled by the writing: the two calls are steps of the section that establishes
+the issue, and the three rungs are paragraphs closing it rather than a reference
+beside it — a reference is read once and this is read in sequence.
 
-Two of the seven steps left in the feedback are not in the change, and neither
-is a slip. Step 5, read the area's history before designing anything, is the
-skill's "Find out whether the area is moving before you build on it" and the
-sentence under it about a method that is gone by the time the patch is finished
-— it was already carried and the change adds nothing to it. Step 7, weigh who
-reported the issue, is not carried by any of the three rungs and is deliberately
-not a fourth: the **Wrong if** above says a skill that grows a sentence per
-feedback stops being an order, the rungs here already come from a single report,
-and what the tracker answer actually names is the author of each note rather
-than of the issue. A second session reporting an assessment formed on the
-reporter's standing is what would make it a rung.
+Two of the seven steps in the feedback are not in the change and neither is a
+slip. One was already carried in the skill's own words. The other is
+deliberately not a fourth rung: this **Wrong if** says a skill that grows a
+sentence per feedback stops being an order, and what the tracker answer names is
+the author of each note rather than of the issue. A second session reporting an
+assessment formed on the reporter's standing is what would make it one.

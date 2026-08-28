@@ -90,71 +90,7 @@ this repository has since given up.
 
 ## Since then
 
-### 2026-08-25 — the eight were read, and the third Wrong if did not fire
-
-Their section headings were read against their descriptions, the way the five
-trimmed ones were. Seven run one task to one deliverable: an element
-implemented, a distribution that comes up, a rebuilt output, a page, a verdict,
-a harness that runs, a package on the majors it declares. Four sections read as
-a second job at the heading and are steps of the one task once the section is
-open — the upgrade sweep's work list, which that section calls "the work" and
-which the change closes on; the content-element lookup on a symptom; the
-asset-build verification of a core surface before it is borrowed; and the
-distribution's seeding, which the export it feeds is named for.
-
-The eighth is the second case. `typo3-extension-health` hands a report over and
-stops until the list is agreed, which is a deliverable somebody asks for in
-words of its own — and its description names both halves, because `D-SKL-064`
-merged two skills and said so in as many words. So the shape holds for more than
-one skill and the rule is written on the page; what the reading did not turn up
-is a second description that misses one.
-
-The **Assumed** above is discharged by this and the entry stays `open`: what is
-left is the two **Wrong if** a session opening the changed description would
-answer.
-
-### 2026-08-27 — the first Wrong if fired, and the session names another clause
-
-[`feedback/2026-08-26-223325`](../../feedback/archive/2026-08-26-223325-the-stated-entry-point-and-both-fitting-skills.md)
-is the same checkout on `claude-opus-5[1m]` the day after `fa037c26` shipped the
-changed description, sent to "please find 1 old forge issue and fix it". It read
-the description, weighed it, and opened nothing. So the first **Wrong if** above
-has happened: naming the backlog job was not what was in the way.
-
-What it quotes settles that it read the changed one. Its fragment is "say what
-is still true about one issue", where the description `fa037c26` replaced opened
-"Say what is still true about an open issue on forge.typo3.org" — lowercase and
-"one issue" are both the new wording, past the clause this entry added.
-
-**The clause it names is the last sentence, which no reading here had weighed.**
-"Writing or reviewing a patch is other work" is what the session reports as
-having pushed it off, because its task ended in a patch and the sentence read as
-an exclusion of the whole of it. That is a boundary the description states about
-the successor skill, met by a brief that spans both — the same crossing
-[`D-SKL-022`](skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md)
-made an instruction in the body, standing in the description as a refusal.
-
-So the wording is still the rung, and the sentence to weigh is a different one.
-It is queued on `T-260826-4194` beside the route that would not have named the
-skill either, which is
-[`D-SKL-081`](skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md).
-The entry stays `open`, with the second **Wrong if** still unmet and the first
-answered.
-
-### 2026-08-27 — the sentence is a handover, and the description names where it goes
-
-The closing sentence now reads "A task that ends in a patch starts here; the
-patch is typo3-core-patch-development's", which says the same boundary as an
-offer rather than as a refusal: the front half is this skill's and the successor
-is named. It is what
-[`D-SKL-022`](skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md)
-already made an instruction in the body, brought into the one part a client
-reads before it chooses.
-
-What it cost is the review boundary. "Writing or reviewing a patch is other
-work" carried both, and the cap
-`SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` allows 360 characters
-where naming both successors takes 416 — so the review stays where it already
-stood, in the closing paragraph of the body. Nothing has reported a task about
-somebody else's patch reaching this skill, and a session that does is what would
-say the wrong half was dropped.
+The eight were read on 2026-08-25 and the third **Wrong if** did not fire. The
+first fired two days later, and the session names a clause no reading here had
+weighed — the last sentence of the description. It is a handover, so the
+description names where it goes rather than dropping it.

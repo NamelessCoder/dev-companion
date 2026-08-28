@@ -115,21 +115,11 @@ cheapest sentence in a review to write.
 
 ## Since then
 
-The dropped-candidate section was written for the core patch review and scoped
-there, on the reading that an audit of six surfaces would raise more candidates
-than a reader sits through. The two recorded conformance runs say otherwise, and
-they were counted before the scope was widened: `REVIEW-01` and `REVIEW-02` each
-carry four dismissals in prose, none of them asked for. `REVIEW-01` discounts
-the Content Security Policy and RTE-sanitizer settings as core defaults, puts
-the consent checkbox outside what this server answers, and clears the dotless
-translation domain against `LocalizationUtility:66`. `REVIEW-02` leaves the
-`ext_tables.sql` delta-only rule unraised for want of a schema-analyzer
-comparison — the open case, in the shape this entry asks for — keeps two
-v13-only registrations and a version branch as things the declared range
-requires, and reads two icon identifiers as an artifact of the tool that
-returned them. So `R-SKL-011` holds over both checklists and the conformance one
-gained the same section, with one boundary the patch review does not need: a
-subsystem the package does not ship is answered on the coverage list as not
-applicable and is not a dropped candidate. The volume argument stays worth
-watching in the direction it was raised for, and the **Wrong if** above already
-names what it would look like — dismissals with no line of code under them.
+The section was scoped to the core patch review on the reading that an audit
+would raise more candidates than a reader sits through. The two recorded
+conformance runs say otherwise: each carries four dismissals in prose, none of
+them asked for. So the requirement holds over both checklists and the
+conformance one gained the same section, with one boundary the patch review does
+not need — a subsystem the package does not ship is answered on the coverage
+list rather than as a dropped candidate. The volume argument stays worth
+watching in the direction it was raised for.

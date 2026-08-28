@@ -120,109 +120,12 @@ this entry.
 
 ## Since then
 
-The second **Wrong if** was the one that happened, and it is closed rather than
-observed: the matcher ends a curated needle where its word ends, so
-"testimonials" no longer matches the `tests` intent's `test` and the
-testimonials task names `typo3-content-element-development` alone —
-[`D-ANS-050`](../answers/ans-050-a-curated-needle-matches-the-word-it-is.md)
-has what the sweep found, including three more false intents on the same rule
-and one, `lit` reaching "Literals", a layer below the route where nothing acts
-on it. `HintsTest::aBriefNamesTheSkillThatOwnsTheWork` asserts the name alone
-from the same commit, because an assertion that the right skill is among them
-holds just as well while a whole workflow the task has nothing to do with is
-loaded first.
+The second **Wrong if** happened again by the other route: a needle naming a
+subject without naming the work routed a review to the workflow for writing the
+change. The first fired in another project under the same client, where the
+brief named the skill and the session went on without it. The third gained a row
+that was not invented — an intent of its own routing to a workflow already
+published, which is the opposite of a name in search of one.
 
-The first and third are where they were. No build session in `site-new` has been
-filed since — the three open feedbacks are from `ext-guidedtour` and
-`typo3-cms`, none of them newer than the day this was decided — and the mapping
-is still the same five intents.
-
-The third **Wrong if** holds and the numbers it was written with do not. Read in
-this checkout on 2026-08-04: `knowledge/task-intents.json` carries fifteen
-intents of which seven route, and one published skill —
-`typo3-extension-documentation` — is reached by no intent. Of the three the
-bullet named, `typo3-backend-module-development` is routed by the
-`backend-module` intent and the release skill no longer exists. What the bullet
-warns against is untouched by that: a name invented for a row nobody asked for
-is still a route into a workflow nobody asked for, and
-[`D-SKL-016`](skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md)
-is the entry that had to answer to it.
-
-### 2026-08-14 — the second Wrong if happened again, by the other route
-
-"Review core patch 95169 and say whether it is breaking" named
-`typo3-core-patch-development`, and no needle was false in doing it: `breaking`
-is the word the brief carries, and the intent behind it is the workflow for
-writing such a change rather than for reading one. The subject a needle names
-without naming the work is here the change under review, so the fix is not on
-the needle but on which intents may route at all — a brief that changes nothing
-routes only the workflows that change nothing, and `audit` gained the shapes a
-request naming its change by number arrives in.
-[`D-SKL-039`](skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md)
-has the measurement and what it left alone.
-
-### 2026-08-04 — publication is read off the skill, and the list is gone
-
-Installer::SKILLS was a list of published names beside the directory it
-described, which is one fact in two places. `Installer::skills()` is that
-directory minus every skill whose front matter says `status: draft`, and there
-is no list any more.
-
-The disagreement it removes runs one way in practice and is invisible from
-either end. A draft that was reviewed and added to the list with the marker
-still in its file was published and read as unfinished by whoever opened it; one
-dropped from the list while its file said nothing read as ready and could be
-loaded by nobody. Both are two edits where publishing should be one, and neither
-side reports the other.
-
-What it also buys is the reason it was asked for: a session opening a workflow
-in `skills/` can now see that nobody has reviewed it, without holding the
-directory against a constant in another file.
-`SkillTest::aDraftSaysSoInItsOwnFrontMatter` holds the derivation in both
-directions, and the three published-skill lists in
-`tests/Smoke/InstallerTest.php` are derived from the same call — the state
-file's list is the one kept literal, because what it asserts is what was
-written.
-
-`typo3-development-installation` and `typo3-extension-cleanup` were published in
-the same commit, which is what the paragraph above about `installation-setup`
-and `installation-operations` was waiting for. Both take `skill` and neither
-takes `skillCore`: setting a development installation up and putting a
-repository right are not core work.
-
-### 2026-08-19 — the first Wrong if, in another project and the same client
-
-The benchmark
-[`D-SKL-033`](skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md)
-records for that date carries one `typo3_task_guide` call among seventeen
-project tasks. It answered `skills: ["typo3-content-element-development"]` with
-the line this entry put above the payload, and the session went on through
-`typo3_schema_lookup`, `typo3_changelog_lookup` and Bash without a `Skill` call.
-
-That is this entry's first **Wrong if** in everything but the project: the same
-client and model, the line read, and no skill loaded. So the route is not the
-obstacle — the mapping is data, the intent matched, and the name arrived in the
-turn that asked for it. What is left to suspect is the channel, which the entry
-already said, and which `D-SKL-033` weighs on the same run.
-
-What is not established is the other half of the same bullet: whether a session
-that loaded the skill would have done the work differently. Nothing here has a
-run of that shape, and a route nobody follows and a route into the wrong
-workflow leave the same trace.
-
-### 2026-08-19 — the third Wrong if gained a row, and it was not invented
-
-`documentation` is an intent of its own, and it answers the bullet rather than
-being an exception to it. The workflow it routes to is published, describes this
-work in its own front matter and is what two written contract cases ask for; the
-row is the route to a workflow that was already there, which is the opposite of
-a name invented to fill the table.
-
-What the row corrected is the other direction of the same warning. The mapping
-did not grow to fill the table, it grew because one intent carried two kinds of
-work: `changelog` reached `typo3-extension-documentation` and stated the core's
-release artifact while doing it, so a request to document a package arrived at
-the right workflow behind the wrong checklist. `D-SKL-066` has the measurement,
-including what the eight needles cost the neighbouring intents, which is
-nothing.
-
+The published list is gone with the same reading: `Installer::skills()` is the
+directory minus every draft, where a list beside it was one fact in two places.

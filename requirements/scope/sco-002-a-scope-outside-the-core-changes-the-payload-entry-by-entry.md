@@ -6,6 +6,7 @@ heldBy:
   - ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite
   - ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas
   - ScopeTest::aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks
+  - ScopeTest::anExtensionTestBriefRoutesTheHarnessTheExtensionHas
   - ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests
   - ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart
 ---

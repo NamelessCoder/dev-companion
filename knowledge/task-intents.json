@@ -274,7 +274,7 @@
     ],
     "checks": [],
     "tools": [
-      "typo3_test_run_guide, for the targeted invocation form",
+      "typo3_test_run_guide, for the targeted runTests.sh invocation",
       "typo3_hint_lookup id=project-extension-tests, where the extension is not part of the core and the suite has to be assembled first"
     ]
   },

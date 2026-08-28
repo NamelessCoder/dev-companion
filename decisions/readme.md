@@ -616,6 +616,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### scope
 
+- [`D-SCO-015`][D-SCO-015] — An intent's routing line names the core artifact it needs · 2026-08-28
 - [`D-SCO-013`][D-SCO-013] — A declared command carries the interpreter it runs on · 2026-08-19
 - [`D-SCO-014`][D-SCO-014] — The npm manifest is read where the repository keeps it, `Build/` included · 2026-08-19
 - [`D-SCO-012`][D-SCO-012] — The root manifest places the work before the dependencies are installed · 2026-08-18
@@ -627,6 +628,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · confirmed
 - [`D-SCO-006`][D-SCO-006] — Every surface says who this server answers for · 2026-07-29 · confirmed
 
+[D-SCO-015]: scope/sco-015-an-intents-routing-line-names-the-core-artifact-it-needs.md
 [D-SCO-013]: scope/sco-013-a-declared-command-carries-the-interpreter-it-runs-on.md
 [D-SCO-014]: scope/sco-014-the-npm-manifest-is-read-where-the-repository-keeps-it-build-included.md
 [D-SCO-012]: scope/sco-012-the-root-manifest-places-the-work-before-the-dependencies-are-installed.md

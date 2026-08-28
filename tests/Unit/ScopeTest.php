@@ -1522,6 +1522,32 @@ final class ScopeTest extends TestCase
         self::assertSame(1, substr_count($result->text, 'runTests.sh'));
     }
 
+    #[Decision('D-SCO-015')]
+    #[Requirement('R-SCO-002')]
+    #[Test]
+    public function anExtensionTestBriefRoutesTheHarnessTheExtensionHas(): void
+    {
+        // The route is what the caller spends its next call on, so the first
+        // entry decides. typo3_test_run_guide declines for a path outside the
+        // core, and the intent's own line for it named no core artefact, so the
+        // check that drops core-only routing read nothing (`D-SCO-015`).
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Add functional regression tests for the SCSS parser',
+            'paths' => ['Classes/Parser/AbstractParser.php'],
+            'changeType' => 'test',
+        ]);
+
+        self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
+        $first = $result->data['nextTools'][0];
+        self::assertSame('typo3_hint_lookup', $first['tool']);
+        self::assertStringContainsString('project-extension-tests', $first['when']);
+        self::assertNotContains(
+            'typo3_test_run_guide',
+            array_column($result->data['nextTools'], 'tool'),
+            'the suites it answers with are core commands, so it has nothing for these paths'
+        );
+    }
+
     #[Requirement('R-SCO-002')]
     #[Test]
     public function noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests(): void

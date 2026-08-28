@@ -631,7 +631,7 @@ final class TaskGuide extends ReadOnlyTool
             $lines[] = '';
             $lines[] = 'Rules that apply to this task:';
             $lines[] = '';
-            $lines[] = Prose::sections($rules);
+            $lines[] = Prose::sections($rules, $outsideCore);
         }
 
         // The checks of a matched hint belong in the list as much

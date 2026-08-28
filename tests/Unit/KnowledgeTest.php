@@ -144,7 +144,7 @@ final class KnowledgeTest extends TestCase
         $both = Documents::search('phpunit configuration variant', [], 6, [13, 14]);
         self::assertCount(2, $both);
 
-        $rendered = Prose::sections($both);
+        $rendered = Prose::sections($both, false);
         self::assertStringContainsString('[TYPO3 v14 and newer]', $rendered);
         self::assertStringContainsString('[up to TYPO3 v13]', $rendered);
         self::assertSame(
@@ -1934,7 +1934,7 @@ final class KnowledgeTest extends TestCase
             'score' => 10,
             'coverage' => 1.0,
             'truncated' => false,
-        ], $headings));
+        ], $headings), false);
 
         self::assertStringContainsString(
             sprintf(

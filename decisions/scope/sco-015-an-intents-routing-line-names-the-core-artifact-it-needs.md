@@ -4,6 +4,7 @@ title: An intent's routing line names the core artifact it needs
 date: 2026-08-28
 status: open
 coveredBy:
+  - ScopeTest::aRuleSectionOutsideTheCoreSaysWhereAConventionIsBound
   - ScopeTest::anExtensionChangelogTaskIsRoutedAwayFromTheCoresOwnProcedure
   - ScopeTest::anExtensionDeprecationIsCommittedUnderItsOwnRepositorysConvention
   - ScopeTest::anExtensionTestBriefRoutesTheHarnessTheExtensionHas
@@ -95,7 +96,11 @@ deprecation brief is answered
 `typo3_commit_message_guide, before committing — its default is this repository's case`,
 where it was answered `with workflow="core" and isDeprecation=true` before.
 
-One more route of this shape is left and is not an intent's:
-`Result\Prose::BOUND_ELSEWHERE` is prepended to every rendered rule section by
-three tools and tells the caller to ask `typo3_test_run_guide` for a
-`runTests.sh` command, whatever the scope. `T-260828-d3f0` carries it.
+The last route of this shape was not an intent's. `Result\Prose` opens every
+rendered rule section with what a range is carried by elsewhere, and half of
+that line asked `typo3_test_run_guide` for a `runTests.sh` command whatever the
+scope — read by `typo3_rule_lookup`, `typo3_script_lookup` and
+`typo3_task_guide` alike. The renderer takes the scope its caller has already
+computed and says the convention half alone outside the core. An extension test
+brief named the script twice before that and names it once now, in the notice
+that says it does not apply.

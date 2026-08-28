@@ -1546,6 +1546,25 @@ final class ScopeTest extends TestCase
             array_column($result->data['nextTools'], 'tool'),
             'the suites it answers with are core commands, so it has nothing for these paths'
         );
+        // The rendered rules carry a route of their own, so the whole answer is
+        // read rather than the list.
+        self::assertStringNotContainsString('typo3_test_run_guide', $result->text);
+    }
+
+    #[Decision('D-SCO-015')]
+    #[Requirement('R-SCO-002')]
+    #[Test]
+    public function aRuleSectionOutsideTheCoreSaysWhereAConventionIsBound(): void
+    {
+        // Every rendered section opens with what a range is carried by where it
+        // is not the section's own, and half of that line was a core command.
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'how do I write tests for my site package extension',
+        ]);
+
+        self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
+        self::assertStringContainsString('typo3_hint_lookup with targetVersion for a convention.', $result->text);
+        self::assertStringNotContainsString('typo3_test_run_guide', $result->text);
     }
 
     #[Decision('D-SCO-015')]

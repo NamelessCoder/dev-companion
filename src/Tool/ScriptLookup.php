@@ -82,7 +82,7 @@ final class ScriptLookup extends ReadOnlyTool
         $results = Documents::search($task, [self::DOCUMENT], 6, $targets);
 
         if ($results !== []) {
-            $text = Prose::sections($results);
+            $text = Prose::sections($results, $scope->isOutsideTheCore());
             // Where nothing said which repository this is, the commands are
             // offered under their condition rather than stated as the answer.
             if (!Scope::isCoreWork([], $task)) {

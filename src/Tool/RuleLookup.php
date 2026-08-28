@@ -171,8 +171,8 @@ final class RuleLookup extends ReadOnlyTool
         $concentrated = self::oneDocument($results);
         $lines[] = match (true) {
             $results === [] => sprintf('No section that holds outside the core matched "%s".', $query),
-            $concentrated !== null => Prose::wholePage($concentrated, $results),
-            default => Prose::sections($results),
+            $concentrated !== null => Prose::wholePage($concentrated, $results, $outsideCore),
+            default => Prose::sections($results, $outsideCore),
         };
         // The offer to read the page whole is `Prose::sections()`'s own line
         // now, so every tool that renders this corpus carries it — a second

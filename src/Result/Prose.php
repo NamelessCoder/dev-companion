@@ -26,9 +26,16 @@ final class Prose
      * convention is bound to the statement in the hints — a 12.4 reader
      * following the wrong one of those finds nothing.
      */
-    public const BOUND_ELSEWHERE = 'A section carries the range it holds for where it has one. '
-        . 'What is bound elsewhere: call typo3_hint_lookup with targetVersion for a convention, and '
-        . 'typo3_test_run_guide with targetVersion for a runTests.sh command.';
+    private const BOUND_ELSEWHERE = 'A section carries the range it holds for where it has one. '
+        . 'What is bound elsewhere: call typo3_hint_lookup with targetVersion for a convention';
+
+    /**
+     * The half of that which is a core command.
+     *
+     * `runTests.sh` is the core repository's script, so outside the core this
+     * line sends the caller to a tool whose answer is a decline (`D-SCO-015`).
+     */
+    private const BOUND_TO_A_SUITE = ', and typo3_test_run_guide with targetVersion for a runTests.sh command';
 
     /**
      * Renders matched knowledge sections as coherent excerpts: the section
@@ -37,9 +44,16 @@ final class Prose
      *
      * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
      */
-    public static function sections(array $results): string
+    public static function sections(array $results, bool $outsideCore): string
     {
-        return self::BOUND_ELSEWHERE . "\n\n" . self::excerpts($results) . "\n\n" . self::readWhole($results);
+        return self::boundElsewhere($outsideCore) . "\n\n"
+            . self::excerpts($results) . "\n\n" . self::readWhole($results);
+    }
+
+    /** What a range that is not this corpus's own is carried by, in the scope the caller is in. */
+    private static function boundElsewhere(bool $outsideCore): string
+    {
+        return self::BOUND_ELSEWHERE . ($outsideCore ? '' : self::BOUND_TO_A_SUITE) . '.';
     }
 
     /**
@@ -60,11 +74,11 @@ final class Prose
      *
      * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
      */
-    public static function wholePage(string $documentId, array $results): string
+    public static function wholePage(string $documentId, array $results, bool $outsideCore): string
     {
         $headings = Documents::headings($documentId);
 
-        return self::BOUND_ELSEWHERE . "\n\n"
+        return self::boundElsewhere($outsideCore) . "\n\n"
             . sprintf(
                 'Every section this query matched is in one document, so this is the page rather than the '
                     . 'excerpts — %s (%s), %d headings, of which the query matched %s%s. It is the page as written, so '

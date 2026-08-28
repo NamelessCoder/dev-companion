@@ -1503,3 +1503,67 @@ enumeration carrying no comment to filter — rather than the sweep the session
 matched its own call against, and
 `ForgeTest::theCommentFilterInvitesTheReadingItNarrows` holds the wording. The
 other half is the first reading of the backlog block, at `D-ANS-069`.
+
+## Confirmed on 2026-08-28
+
+**A field the caller acts on alone is what carried this session, and every cost
+it filed beside it is a join between two fields of one answer.**
+`feedback/2026-08-28-001409` names eight things that worked and says of four
+that they changed what it did rather than what it knew. Read against the four
+costs the same session filed within 85 seconds, they are one boundary from both
+sides.
+
+The quotations are checked first, and the reporting checkout is another
+session's, so what could be read here was read here on 2026-08-28.
+`coreConstraint`, `commands[].runs` with its three values and `guides` are
+declared in `ProjectDescribe`'s output schema, and `artifacts` with `tests` and
+`manual` in `ExtensionDescribe`'s. `backport-syntax-floor` says what the session
+acted on — read the floor off the target branch's own `composer.json` rather
+than remembering it — and `summary-length-preferred` fires as reported: a
+63-character subject comes back as a `warning` naming the 56-character summary
+and the 7 the keyword prefix costs. Two claims cannot be re-run from here.
+`typo3_changelog_lookup` answers `unsupported` without an installation whose
+core package ships the changelog, and the `commands` and `environment` pair
+belongs to that repository.
+
+**The four load-bearing fields are the ones that need no second field.**
+`commands[].runs` decides what a review may run on its own; `omittedHints`
+naming ids is a fetch by id; the `guides` array is a `documentId` to call; the
+`artifacts` list answers whether a harness exists. The session's own words for
+the last two are that it would never have searched for that hint in words, and
+that the array is the only reason it knew the documents exist — from a client
+that renders no MCP resource list at all, which is `D-ANS-061`'s case met from
+the far side. `R-GUI-012` is the other one, and its worth here is that the id
+arrived while the body did not.
+
+**Every cost is the same answer holding both halves of a join.**
+[`2026-08-28-001333`](../../feedback/2026-08-28-001333-declared-commands-and-the-declared-environment.md)
+states it outright — the answer knows the environment, knows the bound, and
+hands over an invocation that cannot run — and the session ran `composer cgl:ci`
+into Composer's platform check with `environment.via: ddev` and
+`installedPhpBound` in the answer it had already read.
+[`2026-08-28-001428`](../../feedback/2026-08-28-001428-two-routes-this-server-offered-and-the-session.md)
+is the same shape one field over: `coreConstraint` named the gap between what
+the package declares and what is installed, which is what made the review's
+version claims honest, and closing that gap needed a source no answer here
+holds, so the session fetched 13.4's `GeneralUtility.php` over the network
+rather than calling the document the `guides` array had named to it.
+[`2026-08-28-001314`](../../feedback/2026-08-28-001314-project-extension-tests-omits-that-testbase.md)
+is the join a caller cannot make at all: the hint reached by id was read whole
+and was missing that `Testbase` chdirs into the instance path, and what a hint
+omits is what nothing in the answer names.
+
+**So the boundary is between naming a fact and composing two of them.** Naming
+is what this server is good at, and it is enough wherever the composition is the
+caller's own judgement — which commands a review may run, which hint to fetch,
+which document answers. It fails where the answer already holds both halves and
+hands them over as separate fields, because the caller then joins them from a
+reading rather than from the answer. That is a design, not an oversight: a
+composed invocation is a claim about a machine this server did not run anything
+on. What the corpus now says is which side of it costs sessions, and it is the
+same side twice in one debrief.
+
+Nothing is queued from here. Each of the four costs has a card of its own, and
+the invocation half is
+[`2026-08-28-001333`](../../feedback/2026-08-28-001333-declared-commands-and-the-declared-environment.md)'s
+to judge.

@@ -1,0 +1,80 @@
+---
+id: D-SKL-086
+title: The stale notice reaches the answer that names the skill
+date: 2026-08-28
+status: open
+---
+
+# D-SKL-086 — The stale notice reaches the answer that names the skill
+
+**`typo3_task_guide` says which of the skills it names are behind what this
+server publishes, because that answer is the last thing this server controls
+before the file is loaded.**
+
+The notice exists and is delivered once, at initialize, before any task is
+known. A session read it, worked four of the skills it was about, and could not
+tell afterwards which of its findings were about a copy this server has moved
+past.
+
+## Evidence
+
+- **The session.** `/home/benji/projects/bootstrap_package` on 2026-08-28,
+  `claude-opus-5[1m]`,
+  [`feedback/2026-08-28-074142`](../../feedback/2026-08-28-074142-the-stale-skills-notice-fires-before-the-task.md).
+  It quotes the notice, names the four skills it then worked inside, and states
+  the cost as one it cannot measure: every finding it filed about skill
+  behaviour is unanchored, because it can name the text it read and not which
+  release that text belongs to.
+- **The notice is computed once and never again.** `Server\Entrypoint` calls
+  `Installer::outdated()` with the directory the process was started in, writes
+  the line to stderr and prefixes it to the `instructions`. Nothing else in
+  `src/` reads it.
+- **The brief names the skills and says nothing about them.**
+  `TaskGuide::answer()` answers `skills` as a list of names, and its schema says
+  a name is not a promise that the skill is installed — which is the sentence
+  closest to this and stops one step short of it.
+- **What the check compares already exists.** `Installer::digest()` hashes the
+  base and every published skill file, and the record written into the project
+  carries it, so the staleness is a comparison rather than a date somebody
+  maintains.
+- **A published skill says nothing about its own provenance.**
+  `Installer::publishSkill()` copies the directory and writes the base into it,
+  and no line of the copy names what it was generated from.
+
+## Decided
+
+- **The brief carries it**, because a skill is loaded by a call this server
+  cannot see: the answer naming the skill is the last moment it controls, and
+  the initialize block is the first. Both are kept — the one reaches a session
+  before it has a task, the other one that has just been given a workflow.
+- **A field beside `skills` rather than objects in it.** `skills` is a list of
+  strings a caller reads today, and `AGENTS.md` asks for fields to be added
+  rather than renamed.
+- **The digest is what a published copy carries**, where anything is added to
+  it: it is what `outdated()` compares, so a session quoting it says the one
+  thing that can be checked. A date or a release number would be a second thing
+  to keep true, and this package publishes no release number.
+- **Queued rather than made here.** The first half is a declared schema and the
+  second is what every published skill file carries, which are the two things
+  `documentation/records/judging.rst` keeps off the spot.
+- **At `normal`.** One session, and the cost it reports is a report a maintainer
+  cannot check rather than work that was lost.
+
+## Assumed
+
+- That `Instance::startedIn()` is the directory the record is in, which is what
+  `Entrypoint` passes today.
+- That a session given the notice on the brief acts on it, where the same
+  session did not act on it at initialize. Nothing measures that, and it is what
+  the first **Wrong if** watches.
+
+## Wrong if
+
+- A session reports the notice on a brief and works the stale skill anyway. Then
+  the placement is not the lever either, and what is left is the client's — the
+  same boundary `D-SKL-033` stops at.
+- A project is told its skills are stale where they are not, because the digest
+  moved for a reason a reader cannot see — a draft published or withdrawn is
+  already one such reason.
+- The version line lands and no feedback ever quotes it, which would say the
+  anchor was wanted by one session rather than by the corpus.

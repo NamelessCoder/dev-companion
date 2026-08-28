@@ -124,39 +124,15 @@ claim paths belonging to somebody else.
 
 ## Since then
 
-On 2026-08-08, the shape turned up on a third subsystem and the fix this entry
-has been queuing turned out not to be warranted. Three core frontend `Classes/`
-paths drew `frontend-records` and `page-variables-and-processors`, both
-sitepackage authoring hints, on `record` matching `RecordAccessVoter.php` and
-`menu` matching `ContentObject/Menu/`.
+On 2026-08-08 the shape turned up on a third subsystem and the fix this entry
+had been queuing turned out not to be warranted: three core frontend paths drew
+two sitepackage authoring hints on two bare words matching inside a class name
+and a directory.
 
-The corpus prune was tried and the sweep disproved it, which is this entry's
-first **Wrong if** firing. Dropping the bare `record` and `records` costs
-`EXT-02` its only hint — "a record type for events ... listed in the frontend by
-a plugin" reaches `frontend-records` through that pattern at `keywords: 6`, and
-its score of 105 does not clear the coverage gate alone. `SITE-03` loses its
-only one the same way. Both patterns earn their keep on the task text; what they
-should not claim is a path, and no rule separates `record` in
-`RecordAccessVoter` from `thumbnail` in `ThumbnailViewHelper` — both are a whole
-CamelCase segment at the start of a basename.
-
-Weighing a hint's audience against the path's was measured too, and it changes
-no order. After the tier this entry's previous paragraph installed, both
-sitepackage hints already sit **below** the two that answer the query. They are
-not outranking anything; they are filling slots nothing better competes for. A
-scope-versus-path tier would be a mechanism with no measured effect.
-
-What the call was actually missing was a hint, which the reporting session said
-itself and called "the larger finding": nothing in the corpus covered inherited
-frontend access restriction. With `frontend-access-restriction` written, the
-same call leads with it.
-
-So what landed is the half the answer still owed. `frontend-records` and
-`page-variables-and-processors` declare `scope: extension` now, which is honest
-— a core patch never writes a TCA file of its own or configures `dataProcessing`
-on `PAGEVIEW` — and `MatchedHints::scopeNotice()` already turns that into "no
-condition of a patch" beside them. `bin/cli hints:coverage` is byte-identical
-before and after, so no hint became unreachable, and the order is unchanged.
+The corpus prune was tried and the sweep disproved it, which is the first
+**Wrong if** firing: dropping the bare words costs two contract cases their only
+hint, both earning their keep on the task text. What they should not claim is a
+path, and no rule separates one bare word inside a class name from another.
 
 ## Since then
 

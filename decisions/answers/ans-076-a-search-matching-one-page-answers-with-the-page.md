@@ -95,34 +95,12 @@ What is removed here is the round trip rather than the sentence about it.
 
 ## Since then
 
-The mechanism is untouched and which recorded call demonstrates it moved, on
-2026-08-18, when `project/installation/booting-a-clone` was added to the corpus
-— `D-KNW-095`. A term's weight is computed over the sections in front of the
-query, so eight more of them carried two sections of the first call over the
-coverage floor, one of them in a second page. The first call is the cut now and
-the second is the page, and the round trip is still saved: `Release Targets`,
-what the second search went for, is among the three sections the first answer
-returns.
+The mechanism is untouched and which recorded call demonstrates it moved, when a
+document was added to the corpus: a term's weight is computed over the sections
+in front of the query, so eight more of them carried two sections of the first
+call over the coverage floor. The first call is the cut now and the second is
+the page, and the round trip is still saved.
 
-This is the fourth **Wrong if** arriving from the other side. What it names is a
-document growing until a page stops being an answer; what happened is the corpus
-growing until a query stops being concentrated. Neither caps anything yet, and
-the count in **How often it fires** is what a further document moves.
-
-A judging run put the premise under **Decided** on 2026-08-24.
-`feedback/2026-08-24-110851` searched `signed-off-by` and was handed
-`any/testing/proving-a-condition` whole, on one section matching one term — the
-corpus carries a "signed in" and nothing about the trailer. "A search whose hits
-all sit in one page has established which page answers the task" was measured on
-searches with several hits and holds of them; a search with one hit satisfies
-the same condition and establishes nothing.
-[`D-ANS-101`](ans-101-a-concentrated-search-is-more-than-one-match.md) puts a
-floor under the count and leaves the rest of this entry standing.
-
-The floor is in since 2026-08-24, and the statement above holds of a search with
-more than one hit. What it costs was measured on the same corpus this entry
-counted: of 103 subjects, 25 reach one page and 12 of those reach one section,
-so a ninth of them is answered with the section and the offer. The reported pair
-is among them — its second call matches `Release Targets` and nothing else — so
-this entry's own founding calls are two cuts now, and the first answer naming
-what the second went looking for is what saves that round trip.
+This is the fourth **Wrong if** arriving from the other side: what it names is a
+document growing until a page stops being an answer, and what happened is the
+corpus growing until a query stops being concentrated.

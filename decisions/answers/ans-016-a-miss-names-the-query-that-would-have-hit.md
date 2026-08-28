@@ -99,37 +99,15 @@ the numbers and stops there.
 
 ## Since then
 
-Built on 2026-08-02 as `LabelSearch::largestReachingSubsets()`, and not as the
-peel this was priced as. A subset reaches an entry exactly when that entry
-carries every word of it, so the largest subsets that reach anything are the
-largest sets of words a single entry carries — one pass rather than 15 filter
-passes, and no depth to bound. 4 ms over the 3766 entries `.checkouts/14.3` now
-ships, against the 28 ms enumerating subsets costs and the 23 ms of the `tag`
-filter. The **Assumed** that two words is far enough to peel is therefore moot
-rather than confirmed: the pass has no depth, and one of the twelve queries it
-was run over recovered only at two of five words.
+Built on 2026-08-02, and not as the peel this was priced as: a subset reaches an
+entry exactly when that entry carries every word of it, so the largest subsets
+that reach anything are the largest sets of words a single entry carries — one
+pass rather than fifteen, and no depth to bound. Four milliseconds over the
+entries the checkout ships, against 28 for enumerating subsets.
 
-Every largest subset is named rather than the best of them, which the evidence
-above had already decided and the implementation made visible. On
-`form set yaml registration deprecated` there are two, they reach one entry
-each, and the narrower-first tie-break puts `form set yaml` first — that returns
-`10.2 Feature: Unify form setup YAML loading (#84203)`, not the deprecation.
-Both named, the caller reads `form yaml registration` beside it and gets #109412
-in one call. Re-queried against the same checkout: all four offered subsets
-return what the miss said they would.
-
-In `LabelSearch` rather than in `ChangelogLookup`, because it takes the items
-and the terms `carryingEvery()` and `perTermCounts()` take and answers with the
-same matcher, identifier spellings included. `typo3_label_lookup` does not call
-it; what decided the placement is which layer owns matching, not a second
-caller.
-
-Not offered where a `tag` was asked for. The peel reads file names and a tag is
-inside the file, so a subset counted without the tag would name entries the same
-call does not return. The sibling's sentence still ends the miss there, on the
-per-term counts — which is also where it lands when no two words of a query meet
-in one entry, because those counts are then the whole list of what can be asked
-for.
+The **Assumed** that two words is far enough to peel is therefore moot rather
+than confirmed, one of the twelve queries recovering only at two of five words.
+Every largest subset is named rather than the best of them.
 
 ## Since then
 
@@ -218,37 +196,15 @@ line here rather than a section of its own. Judged on 2026-08-22.
 
 ## Since then
 
-A third corpus asks for the filter half, and it is the label search. Judged on
-2026-08-27. `feedback/2026-08-24-225129` called `typo3_label_lookup` with
-`resource: "EXT:backend/Resources/Private/Language/Wizard.xlf"`, a path the
-session had guessed. Back came `matchCount: 0` with `error` at 0 and `title` at
-0, which the session read as "this resource holds no such label" before going to
-grep. There is no `Wizard.xlf`: `.checkouts/main` has
-`Resources/Private/Language/Wizards/general.xlf`, whose
-`wizard.step.error.title` is the "Error" that was being looked for.
+A third corpus asks for the filter half, and it is the label search: a session
+called with a resource path it had guessed, got no match with every word at
+zero, and read that as the resource holding no such label before going to grep.
+There is no such file, and the label it wanted is in the one beside it.
 
-`resource` narrows the labels the way `version` narrows the changelog, and
-`LabelLookup::answer()` counts the terms after it has filtered by it. A path
-naming nothing at all therefore reports every word at 0 — which is what
-`LabelSearch::perTermCounts()` reserves for a word that was misspelled or that
-nothing here is named after. The counts read as a fact about the labels and are
-a fact about the filter, which is this entry's second **Since then** one corpus
-over, and the label miss was given neither half of what the changelog miss got.
-
-Both halves already have a shape next door. `termCountsWithoutTheNarrowing` is
-the counts taken outside the filter, returned only where a word reaches there
-and nothing inside it. `tags` is the list of values that do exist, so that a tag
-matching nothing can be replaced by one that does — and that is the report's
-nearest-directory listing, on the axis that needs it most. A version matching
-nothing is still a version, while a guessed resource is one segment or one
-plural away from a file that is there.
-
-Step 4, wording, and queued rather than closed on the spot: it is `src/` and a
-declared output schema, which `D-FBK-052` left on the far side of the autonomous
-line. `T-260824-ea52` carries it at `normal`, because the rule is decided, held
-by `R-ANS-006` and built in the sibling — one session has reported the gap, and
-what raises the card is the distance between the two tools rather than the
-count.
+The resource narrows the labels the way the version narrows the changelog, and
+the counts are taken after that filter — so a path naming nothing at all reports
+every word at zero, which is what the count reserves for a word nothing here is
+named after. The counts read as a fact about the labels and are not.
 
 ## Since then
 

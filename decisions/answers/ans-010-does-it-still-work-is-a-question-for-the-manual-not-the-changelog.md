@@ -104,38 +104,14 @@ correct answer is "still supported".
 
 ## Since then
 
-The skill half landed on 2026-08-02, as a sentence on the sweep rather than as a
-step of its own. Two things settled that. The sweep can state its query set
-before a file is opened because step 2 derives it, and a version-behaviour
-question has none until the reading raises the pattern — so a sixth step would
-be a call every task pays for with nothing to put in it. And the failure was not
-that the question went unasked but that an empty changelog was read as its
-answer, which is a statement about what step 5 is worth and belongs on step 5.
-`skills/base.md` now carries it, which reaches every published skill through the
-copy the installer writes; `typo3-extension-conformance` had the narrower
-condition of the two — the manual "where an official API or configuration detail
-decides the finding" — and now names the question shape as well.
-
-The `Assumed` above got its second reading in the same run. Re-run from this
-checkout on 2026-08-02, `typo3_documentation_lookup` at `targetVersion: "14"`
-with `backend layout` still returns the two answering pages first and second,
-against 14.3. The query for the second instance, the `ext_localconf.php`
-content-rendering registration, returns TypoScript rendering objects and PSR-14
-events and nothing that answers it — so the assumption holds for one shape and
-not the other, and the wording says a miss in the manual is a finding rather
-than a licence to reconstruct the contract from the installed core.
-
-The boundary this entry draws was reported from the other side, and the first
-**Wrong if** is not what fired. `feedback/2026-08-01-003933` reports a session
-that guessed at a ViewHelper contract instead of reading the installed source,
-and its `003356` sibling reports the same session reading vendor source before
-the lookups. Neither followed the routing first, so neither is the case that
-**Wrong if** asks about. What the pair shows is that the wording above decides
-this only for a reviewing session: "the finding says the question could not be
-settled" is not a sentence a session building a template can write.
-[`D-SKL-004`](../task-skills/skl-004-a-question-no-lookup-settles-is-read-from-the-installed-source.md)
-carries that half, and holds the sentence it queues to the distinction this
-entry rests on — one installation's implementation is not what TYPO3 supports.
+The skill half landed as a sentence on the sweep rather than as a step of its
+own, and two things settled that: the sweep can state its query set before a
+file is opened while a version-behaviour question has none until the reading
+raises it, so a sixth step would be a call every task pays for with nothing to
+put in it — and the failure was not that the question went unasked but that an
+empty changelog was read as its answer, which belongs on the step that produced
+the silence. The base carries it, which reaches every published skill through
+the copy the installer writes.
 
 ## Since then
 

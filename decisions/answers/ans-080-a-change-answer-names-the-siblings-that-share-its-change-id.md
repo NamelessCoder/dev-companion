@@ -123,37 +123,13 @@ whether the answer names it.
 
 ## Since then
 
-Built on 2026-08-14. `changeId` is a field of each change entry, read from the
-`change_id` every response carries. The siblings are entries of `changes` rather
-than a structure beside them: a backport is a change with its own number, patch
-set, commit and fetch ref, and anything narrower would answer half of it. What
-labels the pair is the id the entries share, and the text half says once what
-sharing one means.
+Built on 2026-08-14 as a field of each change entry, read from what every
+response carries. The siblings are entries rather than a structure beside them:
+a backport is a change with its own number, patch set, commit and fetch ref, and
+anything narrower would answer half of it.
 
 A change named by its number costs the second query whether it has a sibling or
-not, because only the answer says. A change named by its Change-Id costs
-nothing: that query already answers the whole family, and it is skipped by
-comparing the id in the response with the handle that was passed.
-
-The third assumption is settled and is not what it said. `n` bounds the sibling
-query like any other, and Gerrit orders by last activity — measured on
-2026-08-14, `change:I4b0290760f14296feec6ab30ad49595899ca08f4&n=1` answers 93202
-on 13.4 and not the 95169 that was asked for. So the change the caller named is
-put first and `n` is applied after it: `limit: 1` answers one of a pair, and it
-is the one that was named.
-
-A second query that does not answer leaves the named change standing rather than
-replacing it with nothing. The answer then says nothing about siblings, which is
-what it said before this entry — a sibling that was not looked up is not a
-sibling that does not exist, and no field claims otherwise.
-
-The pair the report was about is not the only one. Recording the tool page on
-2026-08-14 answered `change: "89011"`, a phpunit raise from 2025, with 89012 on
-13.4 beside it — a second backport pair through the number handle, on a change
-nobody chose for this.
-
-The skills are unchanged. `typo3-core-patch-review` and
-`typo3-core-patch-checkout` name what the lookup answers in their own words, and
-what the pair is is stated by the answer itself; the review comments of
-`feedback/2026-08-13-214644` land in that same paragraph, and one card editing
-it is enough.
+not, because only the answer says; one named by the shared id costs nothing,
+that query already answering the whole family. The third assumption is settled
+and is not what it said: the bound applies like any other and the server orders
+by last activity.

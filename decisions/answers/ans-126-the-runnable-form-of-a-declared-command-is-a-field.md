@@ -77,38 +77,14 @@ the manifest declares it, and the environment as a separate object.
 
 ## Since then
 
-Built the same day as `commands[].invocation`, composed in
-`Project::invocation()` from the two things the answer already held: the
-environment, and whether the command is a composer script. It is the declared
-command unchanged where nothing can be put in front of it — no environment, a
-shell already inside one, and the `TYPO3_DEV_COMPANION_CONSOLE` override, whose
-command reaches this installation's console rather than an arbitrary script.
-
-Both sides of `entered` are asserted in
-`ProjectTest::theAnswerSaysWhatRunsTheProject`, where the prose half was already
+Built the same day as the field, composed from the two things the answer already
+held. It is the declared command unchanged where nothing can be put in front of
+it, and both sides of the flag are asserted where the prose half was already
 held.
 
-The report's second half is still open, and so is its feedback:
-`ddev composer <script>` and the stdout of a tool the script wraps needs a DDEV
-project to establish.
-
-The report's second half was measured rather than left to the card, in
-`.environments/e-site-14.3` against DDEV v1.25.3, with a composer script writing
-one line to each stream and exiting 8:
-
-| form                           | exit code the caller sees | stdout         | stderr                   |
-| ------------------------------ | ------------------------- | -------------- | ------------------------ |
-| `ddev composer <name>`, exit 0 | 0                         | passed through | passed through           |
-| `ddev composer <name>`, exit 8 | 1                         | dropped        | folded into ddev's error |
-| `ddev exec composer <name>`    | 8                         | passed through | passed through           |
-
-So the wrapper loses exactly the run whose output is the finding, which is what
-the session hit: a formatter's dry run exits non-zero and writes the diff to
-stdout.
-
-**`invocation` still composes `ddev composer <name>`.** It is DDEV's own command
-for a composer script and what a caller running an installing script needs;
-swapping the default to `ddev exec` for every command would trade a lost diff
-for a host tree the wrapper exists to keep in step, which is not measured here.
-The caveat is a statement in `project-build-and-scripts` instead, naming both
-forms and what each does with a failing script.
+The report's second half was measured rather than left to the card: on a failing
+script the wrapper hands the caller exit code 1 and no stdout at all, folding
+stderr into its own error line, while the exec form passes both streams and the
+script's own code through. So the wrapper loses exactly the run whose output is
+the finding, and the field keeps it all the same, because it is what a script
+writing the manifest needs.

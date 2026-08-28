@@ -77,45 +77,17 @@ server does not offer anywhere, and accepts whatever comes back.
 
 ## Confirmed on 2026-08-05
 
-The reading was done and the assumption held.
-`https://get.typo3.org/api/v1/major/` answers one entry per major with
-`maintained_until` and `elts_until`, which is what
-`knowledge/release-lines.json` now carries. It knows nothing about the
-development line — there is no entry for 15 — so `main` is stated in that file
-rather than read, and it is the one line whose end date nothing supplies.
+The reading was done and the assumption held: the API answers one entry per
+major with both dates, which is what the corpus now carries. It knows nothing
+about the development line, so that one is stated rather than read.
 
-Two more properties of that source decide what a re-read finds, and neither is
-visible without hitting it. Its `subtitle` is stale in the direction that
-matters: major 14 still reads "The upcoming LTS release (for new projects)"
-months after its `release_date` of 2026-04-21, while major 13 reads "The stable
-LTS release", so a reader taking the prose for the state gets the current LTS
-backwards — only the two dates are load-bearing. And `/api/v1/release/` carries
-version strings that are not versions, `7-snapshot-20170404` among them, so
-anything that sorts or parses that list filters first.
-
-The checkout confirms the API instead of replacing it. The public branch of a
-line stops receiving commits when regular support ends: `origin/12.4` last moved
-on 2026-04-14 against a `maintained_until` of 2026-04-30, `origin/11.5` on
-2024-10-16 against 2024-10-31, while `main`, `14.3` and `13.4` all carried a
-commit on 2026-08-04. So the three lines the reported session inferred from 40
-trailers were the right three, which is the outcome that makes the silence worth
-closing rather than the inference worth distrusting.
-
-What the two **Wrong if** about staleness bought is a design rather than a
-promise: the windows are stored and the state is derived on the day the question
-is asked, so a line moving into ELTS needs no re-read and cannot start failing a
-valid trailer. Only a branch created after the file was read is missing from it,
-and that case is a warning naming the source and the read date rather than an
-error.
-
-The third is settled and went the way it warned it might. Measured on the core
-checkout, `origin/main..origin/14.3` carries no `[FEATURE]` and no `[!!!]` at
-all, and `origin/main..origin/13.4` carries three `[FEATURE]` against 969
-`[BUGFIX]` — all of them explicit backports. A feature on a release line is
-therefore rare and permitted, which makes it the release managers' call and not
-a set the check can hold. It is written into
-`knowledge/documents/core/contribution/commit-messages.md` as prose, and the
-check still reports the branch alone.
+Two more properties decide what a re-read finds and neither is visible without
+hitting it. Its prose is stale in the direction that matters — a reader taking
+it for the state gets the current LTS backwards, so only the dates are
+load-bearing — and its release list carries strings that are not versions, so
+anything sorting that list filters first. The checkout confirms the API rather
+than replacing it: a line's public branch stops moving when regular support
+ends.
 
 ## Since then
 

@@ -112,43 +112,14 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
 
 ## Since then
 
-The first of the two candidates was taken: `tool` is declared `string`, the
-several are named in one string separated by commas, and the `items` beside the
-union is gone with it. Four readings decided it rather than a preference between
-them.
+The first of the two candidates was taken, and four readings decided it rather
+than a preference. The union really was on the wire and really was alone there:
+a client reading the schema was told both branches and one still could not
+produce the call. Walking every offered tool's input schema again finds no
+second union, and the unions in the output schemas are all nullable fields
+rather than an alternative a caller has to choose between — so nothing else in
+this package says the opposite about the shape.
 
-The union really was on the wire and really was alone there. `tools/list`, run
-over stdio from this worktree, carries `["string","array"]` with its `items`
-unaltered, so a client that reads the schema was told both branches and one
-still could not produce the call. Walking every offered tool's input schema
-again finds no second union, and the 91 unions in the output schemas are all
-`[X, "null"]` — a nullable field, not an alternative a caller has to choose
-between. So nothing else in this package now says the opposite about the shape,
-which is the reading that kept the keyword in
-[`D-ANS-012`](ans-012-an-oneof-alternative-is-stated-where-the-caller-composes-the-call.md)
-and does not apply here.
-
-The string branch gives a client nothing less. `Channel::toolNames()` splits on
-`[\s,;]+`, the description said so before this change and says so more plainly
-now, and `R-FBK-001` is held on the wire for the first time rather than only
-below it.
-
-The two failures are not the same kind. A client that cannot compose the call
-sends no argument at all: nothing is refused, nothing is said, the feedback
-lands unattributed, and the session wrote the report this entry answers. A
-client that sends a list now gets
-`Property '/tool': Invalid type. Expected `string`, but received `array`.`
-before the tool runs — the property, the type it wanted, the type it got. The
-first correction is one nobody receives; the second is one a caller can act on.
-That is the cost being accepted, and it is what `D-ANS-012` weighed the other
-way, where dropping the keyword would have bought a message this repository does
-not own.
-
-The **Wrong if** is what settles the order, as it did there. The first of the
-three only exists once `tool` is a plain string — a feedback from
-`opencode/mimo-v2.5-free` arriving without one is what would show the union was
-never the obstacle. The second falsifier is a wait on a client that has already
-stopped sending the argument, and waiting for it would have established nothing.
-The third stays as it stands: a union declared in a second tool would say a
-union costs no caller, and `ToolContractTest::noArgumentDeclaresMoreThanOneType`
-is where somebody who means to try one has to disagree in writing.
+The string branch gives a client nothing less: the splitting is on whitespace
+and punctuation, the description said so before and says so more plainly now,
+and the requirement is held on the wire for the first time.

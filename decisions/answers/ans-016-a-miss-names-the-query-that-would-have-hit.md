@@ -252,44 +252,14 @@ count.
 
 ## Since then
 
-Both halves are in `typo3_label_lookup`, built on 2026-08-27, and the reported
-call is what they were verified against. `.checkouts/main` read through the
-package files, `query: "error title"` and the guessed
-`resource: "EXT:backend/Resources/Private/Language/Wizard.xlf"`: the two words
-now come back at 96 and 145 in `termCountsWithoutTheNarrowing`, and `resources`
-names the six files that hold a label carrying both, `Wizards/general.xlf`
-first. Asked again with that resource, the same tool returns
-`backend.wizards.general:wizard.step.error.title` — the "Error" the session went
-to `grep` for — in one call. The whole miss costs 23 ms, and a hit never reaches
-either computation.
+Both halves are in the tool and the reported call is what they were verified
+against: the two words come back with their counts, the resources name the six
+files holding a label that carries both, and asking again with one of them
+returns the label the session went to `grep` for — in one call. The whole miss
+costs 23 ms, and a hit never reaches either computation.
 
-`resources` is the sibling's `tags` and not the report's directory listing,
-which the judgment above had already chosen and the implementation made cheap:
-it is the resources of the labels matching the query, taken before the resource
-narrowed them, exactly as `tags` is the tags of the entries matching before the
-tag narrowed them. Sorting them puts the near misses together for nothing —
-`Wizards/general.xlf` and `Wizards/localization.xlf` are adjacent because a path
-sorts by its directory.
-
-Withheld where the named resource holds a label that reaches the query at all.
-That resource exists, so a list of others is noise, and what stays is the
-sentence saying which side of the narrowing each count was taken on.
-
-The extension is the second narrowing and is not counted outside. It is the
-console's own `--extension`, so a count without it is a second TYPO3 boot rather
-than the second file scan the changelog pays 48 ms for. The answer names it
-instead: the counts outside the resource say they were taken inside the
-extension, and the re-query offered is that extension with no resource, which is
-a call returning exactly what the sentence promised.
-
-What that leaves in the general claim is a limit both tools now share. "That
-filter is what emptied this, not the words" is said wherever a word reaches
-outside the narrowing and nothing inside it, which does not establish that the
-whole query hits outside either. Here the line under it says whether it does; in
-the changelog the subsets do.
-
-The clause and the schema behind the counts moved while this was written:
-`Miss::reaching()` is the per-word reach both misses print, and
-`Schema::termCounts()` the shape both declare. The changelog said it two ways in
-one file — "reaches 1 entry" beside "reaches 1 entr(ies)" — and the label tool a
-third, "matches 1 label(s)". One spelling now, which is what `Miss` exists for.
+The resources are the sibling's tags rather than the report's directory listing,
+which the judgment had already chosen and the implementation made cheap: they
+are the resources of the labels matching before the resource narrowed them.
+Sorting them puts the near misses together for nothing, a path sorting by its
+directory.

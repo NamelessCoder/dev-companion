@@ -1548,7 +1548,7 @@ the package declares and what is installed, which is what made the review's
 version claims honest, and closing that gap needed a source no answer here
 holds, so the session fetched 13.4's `GeneralUtility.php` over the network
 rather than calling the document the `guides` array had named to it.
-[`2026-08-28-001314`](../../feedback/2026-08-28-001314-project-extension-tests-omits-that-testbase.md)
+[`2026-08-28-001314`](../../feedback/archive/2026-08-28-001314-project-extension-tests-omits-that-testbase.md)
 is the join a caller cannot make at all: the hint reached by id was read whole
 and was missing that `Testbase` chdirs into the instance path, and what a hint
 omits is what nothing in the answer names.

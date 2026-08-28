@@ -327,6 +327,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### knowledge
 
 - [`D-KNW-133`][D-KNW-133] — A guide's whenToUse names the answer it hands over · 2026-08-28
+- [`D-KNW-134`][D-KNW-134] — What the functional harness does to the working directory is stated · 2026-08-28
 - [`D-KNW-126`][D-KNW-126] — The syntax floor a core patch is bound by is a subject this server owns · 2026-08-27
 - [`D-KNW-127`][D-KNW-127] — How a backend web component surfaces a failed load is a subject this server owns · 2026-08-27
 - [`D-KNW-128`][D-KNW-128] — Building a link into the official documentation is a subject this server owns · 2026-08-27
@@ -452,6 +453,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
 [D-KNW-133]: knowledge/knw-133-a-guides-whentouse-names-the-answer-it-hands-over.md
+[D-KNW-134]: knowledge/knw-134-what-the-functional-harness-does-to-the-working-directory-is-stated.md
 [D-KNW-126]: knowledge/knw-126-the-syntax-floor-a-core-patch-is-bound-by-is-a-subject-this-server-owns.md
 [D-KNW-127]: knowledge/knw-127-how-a-backend-web-component-surfaces-a-failed-load-is-a-subject-this-server-owns.md
 [D-KNW-128]: knowledge/knw-128-building-a-link-into-the-official-documentation-is-a-subject-this-server-owns.md

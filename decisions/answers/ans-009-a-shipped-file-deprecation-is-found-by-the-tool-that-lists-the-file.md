@@ -100,7 +100,7 @@ major, read at both trigger sites and saying that a cached request raises
 nothing, and the removal bound to the next, where the class is gone and a
 registration left there is lost without a report.
 
-## Since then
+## Confirmed on 2026-08-03
 
 The statement holds, reported by a session that had never read this entry: it
 calls the finding one it could not have derived from a file listing, for the

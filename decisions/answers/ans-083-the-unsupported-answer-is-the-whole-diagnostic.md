@@ -105,28 +105,12 @@ the one field it was after.
 
 ## Since then
 
-`feedback/2026-08-18-080743` is the second session on record that called
-`typo3_server_scope`, from `/home/benji/projects/blog` and after its work rather
-than before it. It reports the answer as accurate and names no decision the
-answer changed: the exclusion it credits agreed with a choice already made, and
-the installation discovery matched what the session had read out of `.ddev` and
-`composer.json` by hand. That is the cost `2026-08-17-205904` measured, reported
-from the other side by a session that liked what it got. The judgement is on
-[`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md),
-where the boundary is the moment the answer is read.
+The second session on record to call this tool did so after its work rather than
+before it. It reports the answer as accurate and names no decision it changed:
+the exclusion it credits agreed with a choice already made, and the discovery
+matched what the session had read by hand. That is the cost the earlier
+measurement took, reported from the other side by a session that liked what it
+got.
 
-The third **Wrong if** fired on 2026-08-19:
-[`D-ANS-088`](ans-088-the-orientation-answer-is-asked-for-by-section.md)
-gave `typo3_server_scope` a `sections` argument, and
-`sections: ["installation"]` answers the binary question in 7,734 characters
-against 94,198. In its own words the step in `typo3-development-installation`
-goes back unconditional, and it does not, because the sentence was written
-against the wrong half of the reasoning. What discharged the step is the second
-**Decided** and the **Rejected** beside it: the answer that step asks for
-arrives in `typo3_project_describe`'s own payload, so a second call fetches what
-the caller is already holding, and a round trip is what
-[`D-FBK-027`](../feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md)
-measures a tool by whatever the answer weighs. The size was the reason the cost
-was noticed, not the reason the step was dropped. What would put it back is a
-session reporting the first **Wrong if** above — the two causes read as one —
-and that is still what to watch for.
+The third **Wrong if** fired two days later, when the answer gained an argument
+that asks for one section of it.

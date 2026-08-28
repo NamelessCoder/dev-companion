@@ -111,32 +111,16 @@ cross-reference is written only in the direction where the caller is not stuck.
 
 ## Since then
 
-Written on 2026-08-24. The miss of a `query` now names `open` with `category` as
-a call to compose — `"stale"`, the area in the caller's own words, `limit: 50` —
-and the `category` description carries the duplicate question beside the two
-browse questions it already had.
-`ForgeTest::aMissNamesTheEnumerationAsACallToCompose` holds it through
-`Registry::call`, which is what `Forge::useReader()` was added for: the tool
-builds its own `Forge`, so a test of its text half had nowhere to hand a
-transport in. The count is still not in the answer, for the reason the section
-above gives.
+Written on 2026-08-24: the miss of a search now names the enumeration as a call
+to compose, in the caller's own words, and the area's description carries the
+duplicate question beside the browse questions it already had. The test holds it
+through the registry, which is what the reader seam was added for — the tool
+builds its own client, so a test of its text half had nowhere to hand a
+transport in.
 
-The neighbour feedback is half of this rewrite. `163235` reports
-`query: "file renderer RendererRegistry FileRendererInterface"` answering
-nothing where `RendererRegistry` alone answers five, and asks for the combining
-rule to be said. Measured against the tracker on 2026-08-24: `RendererRegistry`
-answers 5, and the same query with one invented word answers 0. So every word
-has to be in one issue, and both the `query` description and the miss say so —
-with the term nobody would have written named as what empties an answer, which
-is the identifier query `110926` says it would not make again.
-
-What is left of `163235` is its second half and it is trimmed to that. The
-tracker takes the AND off: `all_words=` with an empty value answers 5 where the
-same URL without it answers 0, so an any-word re-read is one further call rather
-than one per term. `all_words=0` and `all_words=false` do not do it — Redmine
-reads any value that is present as true. Whether a miss spends that call is the
-judgement `163235`'s own card carries, and it is the shape this entry's third
-**Wrong if** watches: a search growing an answer of its own.
+The neighbour feedback is half of this rewrite: it reports four words answering
+nothing where one of them answers five, and asks for the combining rule to be
+said.
 
 ## Since then
 

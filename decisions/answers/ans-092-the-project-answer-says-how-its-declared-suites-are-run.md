@@ -113,31 +113,12 @@ is run, while the knowledge that would have answered it sits one lookup away.
 
 ## Since then
 
-The pointer was written, and the fourth **Wrong if** was taken off the table
-rather than left standing: `project-extension-tests` now opens on the suite that
-will not start — the credentials, the account, the interpreter — and the harness
-half follows it. What decided how much could be added there was the matcher and
-not the prose. The body had room for two statements and not three: at three, the
-dilution weight put *live database versus test database* below `MIN_COVERAGE`
-and the hint stopped answering a question it owns.
+The pointer was written and the fourth **Wrong if** taken off the table rather
+than left standing: the hint opens on the suite that will not start and the
+harness half follows it.
 
-The two facts the todo held back were measured on 2026-08-21 against DDEV
-v1.25.1, in a project started for it and deleted afterwards. `.ddev/config.yaml`
-is the one file DDEV writes that a repository tracks, so a `git worktree` names
-the same project at another approot and both `ddev exec` and `ddev describe`
-stop with *a project (web container) in running state already exists*. The
-`docker exec` the reporting session fell back to reaches the container, and what
-is mounted there is the original checkout — so it does not run the worktree's
-sources either, which that session did not find out. The way out is the
-published port: `ddev describe -j` carries it as `raw.dbinfo.published_port`,
-and over it the project's own database user answered *Access denied* on a create
-while root did not.
-
-The interpreter half was read rather than run. `vendor/phpunit/phpunit/phpunit`
-compares `PHP_VERSION` before the autoloader is reached, so the mismatch is
-PHPUnit's own message and `composer/platform_check.php` never gets to report it;
-`typo3/testing-framework` admits several PHPUnit majors at once, each with a
-higher PHP floor than the last, and Composer picks between them against the PHP
-it is itself run on. The hint carries the mechanism and no version numbers,
-which is what `HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch` asks of
-a statement whose numbers move.
+What decided how much could be added was the matcher and not the prose. The body
+had room for two statements and not three: at three the dilution put one
+statement below the coverage floor and the hint stopped answering a question it
+owns. The two facts the todo held back were measured in a project started for it
+and deleted afterwards.

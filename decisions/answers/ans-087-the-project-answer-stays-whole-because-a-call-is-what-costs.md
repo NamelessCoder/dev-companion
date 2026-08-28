@@ -71,33 +71,12 @@ recorded answers `bin/cli tools:measure` reads.
 
 ## Since then
 
-The weight question this entry moved to `typo3_server_scope` was settled on
-2026-08-19, and the evidence the card said did not exist was in the archive:
-`feedback/2026-08-17-205904` called that tool, measured it at roughly 11,000
-tokens and near 3% of the session's cost, and reports that it changed no
-decision the session took. So the answer here is not that a call is what costs
-and the bytes are free — it is that both are true at different sizes, and 94,000
-characters is where the second one starts to be paid.
+The weight question this entry moved was settled on 2026-08-19, and the evidence
+the card said did not exist was in the archive: a session measured that answer
+at roughly 11,000 tokens and near 3% of its cost and reports that it changed no
+decision. So the answer is not that a call is what costs and the bytes are free
+— both are true at different sizes, and 94,000 characters is where the second
+starts to be paid.
 
-What it did not change is the third **Decided** above. The orientation answer
-gained a selection under
-[`D-ANS-088`](ans-088-the-orientation-answer-is-asked-for-by-section.md)
-and the project answer stays whole, because what separates them is not their
-size: an orientation has parts a caller can name, and a caller that knows it
-wants the boundary is not choosing blind. The project answer is one repository
-described, at a fourteenth of the weight, and its parts are not questions
-anybody asks apart.
-
-### 2026-08-27 — the listing this entry kept has doubled
-
-**The guides half now carries a sentence per page, and the answer went from
-22,075 characters over two recorded calls to 41,701.** `D-GUI-012` was answered
-that way on 2026-08-27: an id and a title were what six sessions read from four
-surfaces before opening none of the pages, so each entry says what the caller
-has to be doing for it to be the one to read.
-
-That is this entry's own reasoning applied again rather than against it — bytes
-nobody is billed for, against the second context a fetch costs. What it does
-sharpen is the second **Wrong if**: the listing is now three quarters of the
-answer, and if the pages still go unopened, the question stops being how they
-are named.
+What it did not change is the third **Decided**: what separates the two answers
+is not their size, an orientation having parts a caller can name.

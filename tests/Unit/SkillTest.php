@@ -239,6 +239,7 @@ final class SkillTest extends TestCase
 
     #[Decision('D-SKL-001')]
     #[Decision('D-SKL-083')]
+    #[Decision('D-SKL-084')]
     #[Requirement('R-SKL-005')]
     #[Test]
     public function theBaseFixesTheOrderEveryTaskStartsIn(): void
@@ -302,6 +303,14 @@ final class SkillTest extends TestCase
         // — ten were offered in the first checkout, five in the second — and
         // said nothing about it, so findings read out of a CI file stood beside
         // findings with a verified path and line at the same confidence.
+        // What a client that defers tool schemas answers a search for the bare
+        // name with, which is what an absent server answers too — and the
+        // bullet under this one turns that into an absence (`D-SKL-084`).
+        self::assertStringContainsString(
+            'Look for the qualified form before reading an empty result as an answer about the server',
+            self::flat($base),
+        );
+
         // Which side of the sweep's exemption a test file falls on. The session
         // that wrote one calling FunctionalTestCase and GeneralUtility::writeFile
         // read itself as exempt and skipped in silence, which the rule already

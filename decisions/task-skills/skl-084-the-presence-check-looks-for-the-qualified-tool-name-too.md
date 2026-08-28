@@ -3,6 +3,8 @@ id: D-SKL-084
 title: The presence check looks for the qualified tool name too
 date: 2026-08-28
 status: open
+coveredBy:
+  - SkillTest::theBaseFixesTheOrderEveryTaskStartsIn
 ---
 
 # D-SKL-084 — The presence check looks for the qualified tool name too
@@ -19,7 +21,7 @@ bare name answers the same as a server that is not connected.
 
 - **The session.** `/home/benji/projects/bootstrap_package` on 2026-08-28,
   `claude-opus-5[1m]`,
-  [`feedback/2026-08-28-001303`](../../feedback/2026-08-28-001303-skills-and-server-instructions-name-tools.md).
+  [`feedback/2026-08-28-001303`](../../feedback/archive/2026-08-28-001303-skills-and-server-instructions-name-tools.md).
   `select:typo3_project_describe,…` returned "No matching deferred tools found";
   the same five with `mcp__typo3-dev-companion__` in front returned every
   schema. One round trip, and it guessed the prefix.
@@ -67,3 +69,11 @@ bare name answers the same as a server that is not connected.
 - A session reports stopping on the presence check with the initialize
   instructions in context. Then the instruction is not the lever and only the
   check's own wording is.
+
+## Since then
+
+The check carries it as of 2026-08-28, in the bullet above the one that stops
+the workflow: a client may carry this server's name in each tool's, so an empty
+search for the bare name is looked at again under the qualified form before it
+is read as an answer about the server.
+`SkillTest::theBaseFixesTheOrderEveryTaskStartsIn` holds the sentence.

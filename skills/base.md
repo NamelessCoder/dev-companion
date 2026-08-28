@@ -6,6 +6,10 @@ A skill is a file the installer left behind: it loads and reads the same whether
 the tools behind it are connected or not, and neither side notices. So the first
 call below is also the check.
 
+- A client may carry this server's name in each tool's —
+  `mcp__<server>__typo3_project_describe` — so a search for the bare name comes
+  back empty where the server is connected. Look for the qualified form before
+  reading an empty result as an answer about the server.
 - No `typo3_` tool in this session, or a first call that errors: stop, say this
   workflow needs the server and it is not there, and name what came back.
 - Do not fall back to general TYPO3 knowledge or start reading the checkout.

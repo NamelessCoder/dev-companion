@@ -105,70 +105,29 @@ wanted, and the maintainer answered it on 2026-08-04.
 
 ## Since then
 
-The fourth **Wrong if** fired on 2026-08-04, on the commit that implemented
-`D-SKL-014`. Step 3 said what a wrong skip costs in two halves: the hints and
-core checks the caller's paths match, and "the commit step with them, because
-the guide names `typo3_commit_message_guide` with `workflow="project"` for every
-task that changes a file and the skills that own extension work do not". The
-skills that own extension work now do, so that sentence is gone from
-`skills/base.md` and from `R-SKL-005`, which carries the same conditions in
-prose. The path-specific brief — the hints and the core checks — is the whole of
-what the condition rests on afterwards, which is what this entry said would
-happen.
+The fourth **Wrong if** fired on the commit that implemented `D-SKL-014`: step 3
+named the commit step as one of the two costs of a wrong skip, and the skills
+that own extension work now carry it themselves, so that half is gone from the
+base. The path-specific brief is the whole of what the condition rests on
+afterwards, which is what this entry said would happen.
 
-The condition itself is unchanged, and so is the first **Wrong if**: what makes
-step 3 already done is still the route rather than the coverage. What moved is
-one of the costs it named. `skills/base.md` now names the tools its own order is
-made of and no others, which is the shape a file copied into all nine skills has
-to have — the two core ones commit in the core, and a review-only one commits
-nothing at all (`R-GUI-006`).
-
-The third **Wrong if** is still the one to watch, and nothing has read it yet:
-no session has been observed skipping step 3 after matching a skill on its
-`description`.
-
-`typo3-extension-conformance` is the review-only case the paragraph above names
-rather than an exception to it — `D-SKL-014`, **Since then**. Nothing here
-changes with that: what the fourth **Wrong if** turned on is that the base is
-copied into every skill, review-only ones included, so the commit step is a
-body's and not this file's. The condition on step 3 is untouched, and the cost
-it names is the path-specific brief, which no skill carries.
-
-The third **Wrong if** has been read since, and it fired: a session that
-activated `typo3-core-patch-review` from its own `description` on 2026-08-10
-read `references/base.md` whole at its next call, loaded `typo3_task_guide`'s
-schema in the same `ToolSearch` batch as the four tools it went on to use, and
-never called it — in 143 calls, without saying it had passed the step over. That
-is the shape `feedback/2026-08-04-055715` reported of itself, arriving a second
-time from a second task and after the condition was published rather than before
-it, and the transcript is named in `D-SKL-033`.
-
-So the narrow wording did not survive publication, which this entry says leaves
-taking the condition off step 3 again. What that costs is stated here and
-unchanged — a session the guide named would be asked for an answer it already
-holds — and the reading that weighs the two is queued rather than made, because
-the base is installed in somebody else's project.
+The third **Wrong if** has since fired too: a session that activated a skill
+from its own description read the base whole, loaded the guide's schema in the
+same batch as four tools it went on to use, and never called it — in 143 calls,
+without saying it had passed the step over. So the narrow wording did not
+survive publication, and the reading that weighs taking the condition off is
+queued rather than made, because the base is installed in somebody else's
+project.
 
 ## Revoked on 2026-08-11
 
-The reading was made and the condition came off step 3. Half of the statement
-above is therefore not what `skills/base.md` says any more, and an entry a
-reader may build on has to be one whose statement is true when they read it.
+The reading was made and the condition came off step 3, so half the statement is
+no longer what the file says — and an entry a reader may build on has to be one
+whose statement is true when they read it.
 
-What the two sightings turned out to show is not the third **Wrong if**'s
-wording problem. Neither session cited the condition, weighed it or reported a
-skip: the 2026-08-10 transcript names `typo3_task_guide` twice in its whole
-length — once inside the `ToolSearch select:` batch that loaded its schema
-beside `typo3_project_describe`, `typo3_hint_lookup`, `typo3_forge_lookup` and
-`typo3_gerrit_lookup`, and once in the closing debrief — and no turn before the
-review was written mentions `base.md`, the order or its steps. What failed is
-the first **Assumed**, which said that nothing measures whether a session reads
-its own activation route off its history. Two sessions have now been measured
-and neither did.
-
-The step-5 half stands and moves with the reasoning that separates the two, so
-the entry that holds from here is
-[`D-SKL-034`](skl-034-a-step-is-skippable-on-what-the-session-holds.md).
-Its **Wrong if** is a different list: what can go wrong now is a step that is
-skipped with no condition to reach for, which would put the answer outside this
-file altogether.
+What the two sightings show is not the third **Wrong if**'s wording problem:
+neither session cited the condition, weighed it or reported a skip. What failed
+is the first **Assumed**, which said nothing measures whether a session reads
+its own activation route off its history. Two have now been measured and neither
+did. The step-5 half stands and moves with the reasoning, so `D-SKL-034` is what
+holds from here, with a different **Wrong if**.

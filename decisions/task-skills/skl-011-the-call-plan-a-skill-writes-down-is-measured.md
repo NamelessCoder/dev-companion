@@ -107,20 +107,10 @@ the ranker moved under it on the day it was followed.
 
 ## Revoked on 2026-08-14
 
-By its own second **Wrong if**. A review of Gerrit change 93319 followed the
-rewrite on 2026-08-13, asked `changelog entry testing review readiness` in one
-call and got nothing back — *length is the limit rather than the count* read as
-permission, which is the sentence this entry put in place of a count.
-
-The statement above is what is revoked, and the clause is the second one:
-*obligations that share a document are one call* is unbounded, and a sweep of
+By its own second **Wrong if**: a review asked one query and got nothing back,
+reading *length is the limit rather than the count* as permission — the sentence
+this entry put in place of a count. What is revoked is the second clause,
+*obligations that share a document are one call*, which is unbounded: a sweep of
 every triple of headings inside one document empties 34 of 351. The first clause
-holds and is carried into the successor, which states a count of two and what it
-was measured over —
-[`D-SKL-043`](skl-043-a-rule-query-carries-two-subjects.md).
-
-The evidence above stays. The pair it was measured on still answers in one call,
-the round trip it removed was real, and the two proposals it rejected — a
-session-level suppression and naming the sibling sections in the answer — were
-not what this feedback asked for either.
-
+is carried into `D-SKL-043`, which states a count of two and what it was
+measured over. The evidence stays, and so do the two proposals it rejected.

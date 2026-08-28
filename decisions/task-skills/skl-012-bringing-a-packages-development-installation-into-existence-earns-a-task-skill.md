@@ -140,19 +140,13 @@ answers the task with a core patch checklist.
 
 ## Since then
 
-The boundary this entry drew reached `doesNotCover` only on 2026-08-18.
-`R-KNW-072` landed the interpreter a covered line requires in the `php-versions`
-hint, which sits inside the environment file this entry placed on the covered
-side. The excluded topic was still sending that question to the TYPO3
-documentation, and `feedback/2026-08-17-211157` is the session that went there.
-The topic is unchanged otherwise: the operating around an installation stays
-outside, which is how `D-KNW-010` and `D-KNW-049` read it. What the entry now
-names is the one part of it that is answered here, held by
-`ScopeTest::theDeclaredInterpreterIsNotDeclined`.
+The boundary reached `doesNotCover` on 2026-08-18: the interpreter a covered
+line requires landed in a hint inside the environment file this entry placed on
+the covered side, while the excluded topic was still sending that question to
+the TYPO3 documentation. The topic is unchanged otherwise, and what the entry
+names now is the one part answered here.
 
-The third **Assumed** took its first counter-report on 2026-08-18. Booting and
+The third **Assumed** took its first counter-report the same day. Booting and
 creating are one domain, which is what it concluded, but they do not differ in
-the first step: `feedback/2026-08-18-070448` is a repository declaring an
-environment and no procedure, where the session ran both branches at once.
-`D-SKL-056` carries that judgement and re-cuts the discriminant the skill
-branches on.
+the first step: a repository declaring an environment and no procedure had the
+session running both branches at once. `D-SKL-056` re-cuts the discriminant.

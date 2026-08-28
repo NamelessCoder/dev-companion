@@ -88,184 +88,87 @@ it.**
 
 ## Confirmed on 2026-08-09
 
-One session held both forms of the crossing, twenty turns apart, and each
-behaved as this entry predicted. `feedback/2026-08-08-224450` reports invoking
-`typo3-core-patch-development` at the moment the triage verdict turned into a
-patch — the step written above — and names what came out of it, including the
-`breaking-not-assessed` line that caught a breaking API change in its draft. The
-same session then finished a push-ready patch, ran the project's checks and
-handed it over without ever invoking `typo3-core-patch-review`, whose crossing
-is the one still written as ownership: "it does not own judging its own". That
-settles the second **Assumed**, which said an explicit instruction fires where
-prose did not and that it was untested for a crossing between two skills. The
-two forms were distinguishable in one session, in one model, on one task.
+One session held both forms twenty turns apart and each behaved as predicted: it
+invoked the successor at the moment the verdict turned into a patch, and then
+finished a push-ready patch without ever invoking the review, whose crossing is
+written as ownership. That settles the second **Assumed** — the two forms were
+distinguishable in one session, on one task.
 
-The crossing it did not fire on is the one `R-SKL-018` was never applied to.
-Both skills that hand over *to* `typo3-core-patch-development` say to invoke it;
-that skill's own handoff, back to the review, is a sentence about who owns what.
-Read across `skills/` on 2026-08-09 it is the only one: every other crossing is
-already an act — `Activate typo3-extension-documentation`,
-`Activate typo3-extension-conformance`, hand the worked list back — or a routing
-boundary a session reads before it starts rather than a step it owes mid-work,
-which is what `typo3-core-patch-checkout`'s closing paragraph is. So the work is
-one skill and one name in
-`SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`, and the todo serving
-that feedback carries it.
-
-It also narrows the proxy `D-EVI-002` accepts as the only one available. That a
-successor is named is not what holds a crossing: this one was named, in a
-paragraph the session was holding, and nothing fired. What an assertion has to
-read is the imperative, which is what the two crossings that fired carry and
-what that test already matches on.
+The crossing it did not fire on is the one the requirement was never applied to,
+and reading across the skills it is the only sentence of its kind. It also
+narrows the proxy `D-EVI-002` accepts: that a successor is named is not what
+holds a crossing, since this one was named in a paragraph the session held. What
+an assertion has to read is the imperative.
 
 ## Since then
 
-On 2026-08-11 the review crossing fired on a sentence that commissioned nothing.
-`feedback/2026-08-11-055317`: the session had reported that the patch changes
-covered behaviour and adds no test, the reader answered "I think the tests
-should prove it", and it invoked `typo3-core-patch-development`. The reader had
-meant that the missing test was reason enough to reject the patch, since a test
-file for that class already exists. The session backed out, stayed in the review
-and re-ranked the finding, so the cost was one turn under the wrong skill's
-rules.
-
-That is the price of this entry rather than a case against it, and the same
-session reports the imperative working everywhere else in the skill. What it
-shows is which half of a crossing the imperative leaves undecided: the review
-crossing described its trigger as "a sentence in a conversation" and warned that
-the transition is invisible, which primed the switch and named nothing that
-distinguishes the two sentences. The triage crossing, written in the same
-commit, names the instruction instead — "you are asked to fix it" — and no
-session has reported it firing early.
+The review crossing then fired on a sentence that commissioned nothing: the
+reader meant that a missing test was reason to reject the patch, and the session
+switched, backed out and re-ranked the finding — one turn under the wrong
+skill's rules. That is the price of this entry rather than a case against it,
+and it shows which half an imperative leaves undecided: that crossing described
+its trigger as "a sentence in a conversation" and named nothing that
+distinguishes two of them, where the triage crossing names the instruction and
+has never fired early.
 
 So the crossing names the instruction that fires it and the remark that does
-not, where the trigger is something the reader says. A review reaffirming a
-finding and a reader commissioning work arrive in one register, and where the
-sentence could be either the session asks rather than switches: switching costs
-a turn under the wrong rules and asking costs one sentence. `R-SKL-018` carries
-that half; nothing holds it, because which sentences a trigger has to exclude is
-a reading of the workflow rather than a property of the file.
-
-What would satisfy this reading is the fourth **Wrong if** above, which it
-wrote.
-## Since then
-
-On 2026-08-14 the rule the crossing guards held under the pressure it was
-written for. `feedback/2026-08-13-214927` reviewed a Playwright diff and names
-four things it could have fixed on the way past — a missing `isReady()`, a
-discarded return value, a dropped assertion, trailing blank lines — and reports
-that what stopped it is the sentence saying a session crossing that line looks
-like nothing from the inside. That sentence is this entry's own reading of
-`feedback/2026-08-07-132559` written back into the skill, and the session's
-account is that it names the failure mode concretely enough to recognise while
-it is happening.
-
-Nobody asked that session for the change, so what it reports on is the rule
-rather than the trigger beside it, and a report is evidence about where the
-boundary runs rather than a confirmation — `D-FBK-018`. What it does settle is
-which half of the paragraph is doing the work: the concrete failure mode, not
-the ownership sentence above it.
+not, and where the sentence could be either the session asks rather than
+switches. Nothing holds that half, because which sentences a trigger excludes is
+a reading of the workflow.
 
 ## Since then
 
-On 2026-08-17 the imperative was read and nothing crossed.
-`feedback/2026-08-17-213027` followed `typo3-content-element-development` to
-completion on a six-element sitepackage and quotes that skill's closing
-sentence, which tells the session to activate `typo3-extension-testing`,
-`typo3-extension-documentation` and `typo3-extension-conformance`. None of the
-three fired: no test was written at all, three README files were written by
-hand, and the user reviewed the result himself and listed ten defects, seven of
-them inside the conformance skill's own stated scope.
+The rule the crossing guards held under the pressure it was written for: a
+review names four things it could have fixed on the way past and reports that
+what stopped it is the sentence saying a session crossing that line looks like
+nothing from the inside. Nobody asked it for the change, so it is evidence about
+where the boundary runs rather than a confirmation. What it settles is which
+half of the paragraph does the work: the concrete failure mode, not the
+ownership sentence above it.
 
-That is the reading of 2026-08-09 above, and this is what it got wrong. It read
-across `skills/` and counted `Activate typo3-extension-documentation` and
-`Activate typo3-extension-conformance` as already an act, so `R-SKL-018` was
-applied to three core crossings and to none of the extension ones. An imperative
-is what that pass could see in a file; what the two crossings that fired carry
-beside it is the moment — "the verdict is 'still happens' and a fix is asked
-for", "once the checks pass and the commit is written". The sentence that failed
-names three successors, no moment, and sits after the commit section, which is
-where a workflow is being left.
+## Since then
 
-`D-SKL-053` is the judgement and carries the card. What it does not license is
-writing the closing paragraph out as a list of everything the workflow still
-owes: that is `D-SKL-049`'s gate, which is proposed and waiting on an answer.
+The imperative was read and nothing crossed: a session followed a skill to
+completion, quoted its closing sentence naming three successors, and none of the
+three fired — no test written, three READMEs by hand, and ten defects the user
+listed himself. That is what the 2026-08-09 reading got wrong. It counted
+`Activate <skill>` as already an act, so the requirement was applied to three
+core crossings and none of the extension ones. What the two that fired carry
+beside the imperative is the moment; the sentence that failed names three
+successors, no moment, and sits where a workflow is being left. `D-SKL-053` is
+the judgement.
 
 ## Confirmed on 2026-08-22
 
-Two readings held this decision and changed nothing in it, so each is a line
-here rather than a section of its own. Both are the crossing being built, and
-the second sits after the 2026-08-09 reading that asked for it rather than
-before it.
-
-- 2026-08-07: `typo3-core-issue-triage` and `typo3-core-patch-review` each end
-  in a section saying to invoke `typo3-core-patch-development` at the point the
-  crossing happens, with the moment named, and both keep the ownership
-  paragraph. `R-SKL-018` holds it. The question the third **Decided** bullet
-  left open was put to the maintainer with both answers priced, and the answer
-  was both with a pointer: `typo3-core-patch-development` gains a
-  rebase-before-push step carrying the two parts a session worked out for itself
-  — a running `runTests.sh` suite reads the mounted tree, so it is stopped and
-  its containers cleared before rebasing, and the `Change-Id` is confirmed
-  afterwards because losing it opens a second change.
-  `typo3-core-patch-checkout` keeps its subject, a change fetched from review,
-  and its description now names where a commit of your own belongs.
-- 2026-08-09, the crossing running the other way: `typo3-core-patch-development`
-  ends in a section saying to invoke `typo3-core-patch-review` on the diff once
-  the checks pass and the commit is written, before the patch is pushed or
-  handed over, with the ownership paragraph beneath it.
-  `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor` reads a successor per
-  skill rather than one name for all of them.
+Two readings held this decision and changed nothing, both of them the crossing
+being built. The two skills that end at the patch say to invoke it at the point
+the crossing happens, with the moment named and the ownership paragraph kept;
+the question the third **Decided** bullet left open was answered *both, with a
+pointer*, which is where the rebase-before-push step and its two parts came
+from. And the crossing running the other way was written, which is why the test
+reads a successor per skill rather than one name for all of them.
 
 ## Since then
 
-On 2026-08-24 an extension-side crossing fired, and it is the first one reported
-since the three that did not.
-[`feedback/archive/2026-08-24-140120`](../../feedback/archive/2026-08-24-140120-four-skills-matched-the-opening-request-almost.md)
-ran `typo3-development-installation` in an extension checkout and loaded
-`typo3-extension-testing` before writing `Tests/Functional`, naming that skill's
-**When the task turns to a suite** section as what did it. The section opens
-"The moment this task grows a test, invoke `typo3-extension-testing` before
-editing a test file or building the installation a suite boots" — the imperative
-and the moment beside it, which is what the 2026-08-09 reading found the
-three-successor closing sentence of 2026-08-17 to be missing.
-
-Nobody asked that session about the crossing, so it is evidence about where the
-boundary runs rather than a confirmation — `D-FBK-018`. What it places is which
-of this server's two ways into a skill was working in that session: the crossing
-inside an active one fired, and the client's own listing reached the same
-session with four matching descriptions and opened none of them.
-[`D-SKL-033`](skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md)
-is where that half is read.
+An extension-side crossing fired, the first since the three that did not: a
+session loaded the testing skill before writing a functional test, naming the
+section that opens with the imperative and the moment beside it — which is what
+the three-successor closing sentence was missing. Nobody asked it about the
+crossing, so it is evidence about the boundary rather than a confirmation. What
+it places is which of the two ways into a skill was working: the crossing inside
+an active one fired, and the client's own listing reached the same session with
+four matching descriptions and opened none.
 
 ## Since then
 
-On 2026-08-26 a session met the crossing *into* `typo3-core-patch-checkout`
-three times and crossed it never. `feedback/2026-08-24-205158` fetched patches
-out of review into the user's own core checkout on three separate occasions —
-eight changes at once, then change 95392, then change 93079 onto a branch named
-`review/93079`. The third is that skill's own third way in, down to the branch
-name `D-SKL-041` fixed.
+A session met the crossing *into* the checkout skill three times and crossed it
+never, while holding one of the other two core skills for two of them — so the
+tool was reachable and what stayed shut was the third. Neither of the two tells
+a session to open it: one names it in a sentence about who owns what, the other
+not at all, and the session quotes that sentence as read and attributes it to
+the wrong skill.
 
-The session was holding a skill for two of them. `typo3-core-patch-review` ran
-for 95392 and `typo3-core-patch-development` for 93079, so the tool was
-reachable and in use, and what stayed shut was the third. Neither of the two
-tells a session to open it. `typo3-core-patch-development` names it in a
-sentence about who owns what, at the foot of its rebase section, and
-`typo3-core-patch-review` does not name it at all. The session quotes that
-sentence as read and attributes it to the review skill, which carries no such
-sentence.
-
-So the sweep of 2026-08-09 above missed an edge, and it missed it by direction.
-It read the crossings running *out of* the three core skills and counted
-`typo3-core-patch-checkout`'s closing paragraph among them, as a routing
-boundary somebody reads before starting rather than a step owed mid-work. The
-crossing running *into* that skill was never counted, and this is what the gap
-costs: the fetch arrived as a step inside two other workflows and never as the
-task, which is the only shape a description could have been chosen on.
-
-`SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor` holds a successor per
-skill and names `typo3-core-patch-checkout` in none of them, so nothing failed
-while the edge stood empty. What follows is `R-SKL-018` applied to it in both
-skills — the imperative and the moment it stands at — and the two entries in
-that map. The card serving the feedback carries them.
+So the 2026-08-09 sweep missed an edge by direction: it read the crossings
+running *out of* the three core skills and never the one running *into* this
+one. What that costs is the fetch arriving as a step inside two other workflows
+and never as the task, which is the only shape a description could be chosen on.

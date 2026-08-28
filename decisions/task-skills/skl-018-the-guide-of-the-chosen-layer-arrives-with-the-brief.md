@@ -67,30 +67,13 @@ which is the file that work is for.
 
 ## Since then
 
-On 2026-08-04, the intent was written and the brief was run.
-`knowledge/task-intents.json` carries `browser-tests` — matching "playwright",
-"e2e", "spec.ts" and their neighbours — whose checklist opens with
-`skills/typo3-extension-testing/references/playwright.md` by name and whose
-`tools` name the two hints that exist. Called over stdio with "add a Playwright
-spec that proves the backend preview of a content element" and a `spec.ts` path,
-the answer recognizes `browser-tests` beside `content-element` and returns the
-guide as its first checklist line.
+The intent was written and the brief run: it recognizes a browser task beside
+the element one and returns the guide as its first checklist line. That took
+data and no code, since a brief already renders an intent's checklist, so the
+narrower reading — a field beside `skill` — was not built. The match list
+deliberately avoids the bare word the other intent carries: a browser task
+matches both, which is correct, because what the layer adds is a guide and a
+served site rather than a different way of testing.
 
-What that took was data and no code: the brief already renders an intent's
-checklist, so naming a file there needs no field of its own, and
-`bin/cli links:check` holds the path like every other one this repository
-writes. The narrower reading of this entry — a `guide` field beside `skill` —
-was not built, because nothing needs to tell the two apart yet.
-
-The match list deliberately avoids the bare word "test", which `tests` already
-carries. A browser task matches both, which is correct: what the layer adds is a
-guide and a served site, not a different way of testing.
-
-### 2026-08-19 — the hint block was weighed against this reasoning and stands on another
-
-Whether a brief that names an owning skill should withhold the hints that
-skill's own steps fetch was asked as a possible amendment here. It is not one:
-this entry names a file where three competed and removes no content, while the
-hint block is a quoted selection carried under `D-GUI-007`.
-[`D-GUI-016`](../guides/gui-016-the-brief-carries-its-hints-whether-or-not-it-names-a-skill.md)
-is where that was settled, and it changes nothing about the brief.
+Whether a brief naming a skill should withhold the hints that skill fetches was
+asked as an amendment here and is not one; `D-GUI-016` settled it.

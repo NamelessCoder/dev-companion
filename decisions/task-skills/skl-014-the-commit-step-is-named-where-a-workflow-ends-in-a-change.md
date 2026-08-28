@@ -103,49 +103,19 @@ that came from those habits is not something this server may be credited with.
 
 ## Since then
 
-Implemented on 2026-08-04. Each body was read for where its own workflow ends,
-and the ones that end in files that are written take the step unconditionally:
-`typo3-backend-module-development` once the module opens,
-`typo3-content-element-development` after the element is verified,
-`typo3-extension-documentation` as the last thing it writes,
-`typo3-extension-testing` beside the commit split `references/static-quality.md`
-already prescribes, and `typo3-extension-upgrade` for the crossing its work list
-justified.
-
-`typo3-development-installation` is not published yet and is the draft
-`D-SKL-012` queued for review. Its step 5 decides what the install wrote into
-the repository and says the ignore rules are written "before the first commit",
-so its workflow ends in a change by its own account. It carries the step into
-that review rather than being published without it.
-
-The two core skills were left alone. Both already name
-`typo3_commit_message_guide`, both commit in the core, and `workflow="project"`
-in either of them would drop the rules a core patch is held to.
-`typo3-core-patch-review` is the review that the second **Wrong if** protects,
-and the assertion above holds it to naming the guide without the argument.
+Implemented on 2026-08-04: each body was read for where its own workflow ends,
+and the five that end in files take the step unconditionally. The unpublished
+draft carries it into its review, and the two core skills were left alone, since
+the project workflow in either would drop the rules a core patch is held to.
 
 The second **Wrong if** fired the same day: a skill that only reviews had gained
-the step. `typo3-extension-conformance` was read as more than a review because
-its own body carried an improvement branch, and the maintainer's answer is that
-the branch should not have been there — conformance is pure analysis, and that
-is the intent even where the text said otherwise. It said otherwise in three
-places, and the first is the one no body could have corrected: the `description`
-opened "Review, audit, or improve", which is the line a client selects on, so
-the skill was loaded for change requests whatever the body said. All three are
-gone and the file agrees with `R-GUI-006` rather than carrying an exception to
-it. What that opens — a task worded as a change reaching no skill at all — is
-answered by
-[`D-SKL-016`](skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md)
-rather than here: a task skill of its own, which starts from this skill's report
-and takes the changes it is forbidden from making. It was published as
-`typo3-extension-cleanup` on 2026-08-04, with a `cleanup` intent carrying the
-change words that reached nothing.
-
-`R-SKL-017` is what holds the placement from now on, the routing entry in
-`knowledge/server-scope.json` names the argument, and `skills/base.md` no longer
-does — `D-SKL-015`. The entry stays open on the first **Wrong if**: what it was
-written against is behaviour, and nothing has watched a session commit in an
-extension with these bodies in front of it. That run is what would answer it.
+the step, because its own body carried an improvement branch. The maintainer's
+answer is that the branch should not have been there, and the first of the three
+places was the one no body could have corrected — the `description` opened
+"Review, audit, or improve", which is the line a client selects on. What that
+opens is answered by a skill of its own (`D-SKL-016`) rather than here. The
+entry stays open on the first **Wrong if**, which is behaviour nobody has
+watched.
 
 ## Since then
 

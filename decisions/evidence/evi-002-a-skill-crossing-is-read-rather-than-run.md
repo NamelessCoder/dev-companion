@@ -52,22 +52,10 @@ cannot exist, and the feedback asking for it stayed open for that reason alone.
 
 ## Confirmed on 2026-08-02
 
-The **Wrong if** has not happened, and nothing that ran could have produced it.
-Read out of the client transcripts for the four checkouts that play `E-SITE` and
-`E-EXT`, 14 sessions have run there since the transition wording landed in
-`f9e9639` on 2026-07-30 at 17:35 UTC. Not one of the 14 edited a file: 11
-activated `typo3-extension-conformance` and nothing else, three activated no
-skill at all. `typo3-backend-module-development` has activated once in those
-checkouts ever, on 2026-07-30 at 16:20:17 in `site-new` — 75 minutes before the
-wording existed. That session edited the project-level `readme.md` at 16:40:29
-with no second skill activated, which is the run `R-SKL-003` was written
-**From** and not new evidence. What it settles is that the reading is cheap
-where there is something to read: the failing shape is a `Skill` call and an
-`Edit` path in one transcript with nothing between them. What is missing is a
-run. The sessions these environments now get are `REVIEW-01` and `REVIEW-02`,
-and a review neither edits — `D-EVI-003` — nor reaches this skill. So the
-**Wrong if** is out of a forward run's reach for the same reason the activation
-is, and what would produce it is an implementation prompt: `SKILL-07`, a
-contract case. The wording is at least where it would have to act. Re-read on
-2026-08-02 the skill still carries the transition in the order the test asserts,
-and the copy published into each of the four checkouts is identical to it.
+The **Wrong if** has not happened and nothing that ran could have produced it:
+of the sessions in the four checkouts since the wording landed, not one edited a
+file, and the single activation of the skill predates the wording by 75 minutes.
+What that settles is that the reading is cheap where there is something to read
+— the failing shape is a `Skill` call and an `Edit` path with nothing between
+them. What is missing is a run, and a review neither edits nor reaches this
+skill, so what would produce it is the contract case `SKILL-07`.

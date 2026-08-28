@@ -103,23 +103,9 @@ here for weeks while the session that needed it settled each entry by hand.
 
 ## Since then
 
-The wording landed in `skills/base.md`, in the deprecation sweep itself: "A
-package declaring more than one major asks a second question of every
-deprecation the sweep returns: whether the replacement is on the lower one. The
-entry's `issue` is a query of its own, and it reaches every entry filed under
-that number", with the compatibility document named for the case where no
-sibling exists. What it does not carry is the caveat the first **Wrong if**
-names — that the pair lands together, so the number says when the replacement
-arrived and never that the deprecated call still works beside it.
-
-Two of the four were re-measured on 2026-08-23 and neither fired. The sibling is
-not a coincidence of 14: counted by file name over each major's own
-deprecations, v13 pairs 25 of 63 and v12 32 of 128, against v14's 24 of 75 — the
-lower major is the higher rate. On the same `.checkouts/14.3` this entry
-measured, the denominator is unchanged at 75 and the pairs count 24 rather than
-28, so four of them were established by something other than the number in the
-file name.
-
-The short-number collision is still exactly one, on every covered branch. `7098`
-is the only number under six digits contained in another, across 2626 distinct
-numbers on 12.4, 2923 on 13.4, 3282 on 14.3 and 3309 on `main`.
+The wording landed in `skills/base.md`'s deprecation sweep, with the
+compatibility document named for the case where no sibling exists. What it does
+not carry is the caveat the first **Wrong if** names, that the pair lands
+together. Two of the four were re-measured on 2026-08-23 and neither fired: the
+sibling is not a coincidence of 14, the lower majors pair at a higher rate, and
+the short-number collision is still exactly one on every covered branch.

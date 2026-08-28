@@ -116,32 +116,12 @@ stays named in `todo/reference/`.
 
 ## Since then
 
-The second **Wrong if** arrived on 2026-08-02, on the second checkout to run the
-build, and by a route it did not anticipate. Nothing about DDEV or the
-distribution had changed: the build stopped reproducing because the *first* run
-had happened. A worktree that made an environment and was then removed leaves
-the project name registered against an approot DDEV reports as
-`project directory missing`, and the guard here refused in the name of a
-checkout nobody could visit. Behind it sat the database, a volume named after
-the project rather than the directory, which is what a second build under the
-same name met at the setup step as
-`The selected database contains already 42 tables.` — past `--force`, which
-reaches the settings file alone.
-
-Both are the same leftover and
-[`D-EVI-005`](evi-005-a-registration-nothing-can-reach-is-cleared-with-its-database.md)
-clears them together. What that says about this entry is narrower than the
-**Wrong if** reads: an environment made on demand and gitignored is not thereby
-free, because the part of it that is global to the machine outlives the checkout
-that asked for it. The decision to make it here stands, and the measured build
-was re-run whole under the fix — 32 seconds, frontend 200, the console
-answering.
-
-"The installation is TYPO3's own base distribution at the branch
-`knowledge/versions.json` marks stable" was one installation, and it is one per
-covered version that has a release since
-[`D-EVI-006`](evi-006-one-installation-per-covered-version-kept-and-started.md):
-a case naming another covered line was run on the stable one or not at all. That
-entry also carries the number this one weighed against `.checkouts/` and never
-measured — about 260 MB a line. The stable branch is still what a case that
-names no version is made of, and everything else here stands.
+The second **Wrong if** arrived by a route it did not anticipate: nothing about
+DDEV had changed, and the build stopped reproducing because the first run had
+happened. A removed worktree leaves the project name registered against a
+missing approot, and behind it a database volume named after the project, which
+a second build met past `--force`. `D-EVI-005` clears both. What that says is
+narrower than the **Wrong if** reads: an environment made on demand is not free,
+because the part of it that is global to the machine outlives the checkout. One
+installation is one per covered version since `D-EVI-006`, and everything else
+here stands.

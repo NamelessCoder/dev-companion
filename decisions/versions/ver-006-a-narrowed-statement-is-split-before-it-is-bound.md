@@ -62,35 +62,11 @@ both, and the caller reads the surviving half as removed.
 
 ## Confirmed on 2026-08-18
 
-The second **Wrong if** happened twice, and the rule absorbed both. All 44
-`until`-bound statements in `knowledge/hints/` were read against
-`.checkouts/12.4`, `13.4`, `14.3` and `main`, and two carried a claim that
-outlived the boundary the sentence was bound at. `css-color-surface-tokens` said
-at `until: 12` that there is no semantic layer **and** that the backend's
-properties are component-scoped over Bootstrap variables; the
-`--typo3-component-*` and `--typo3-input-*` families and the Bootstrap import in
-`Build/Sources/Sass/_minimal.scss` are on all four branches, so only the first
-half expired. `form-framework` said at `until: 13` that a setup path is
-registered under `plugin.tx_form.settings.yamlConfigurations` and
-`module.tx_form.settings.yamlConfigurations` **and** that the registration is
-deprecated; `Form\Mvc\Configuration\ConfigurationManager` on `14.3` still merges
-a path found under either key and raises `E_USER_DEPRECATED` over it, while
-`main` no longer reads the key at all — so the registration expires at 14 and
-the deprecation is what arrives there. Both were split the way the **Decided**
-section names.
-
-The other 42 are predecessor and successor pairs where what expired is the whole
-of what the sentence claimed, and where the surviving detail is carried by a
-statement on the other side: `fluid-templates` at `until: 13` describes the
-candidate chain that `since: 14` restates with the uppercase fallback in it, and
-`fluid-resource-uris` at `until: 13` says there is no resource object where
-`since: 14` says `f:uri.resource` still takes a plain path. Four looked like
-this defect and are not: `makeShortcutButton()`, `PageDoktypeRegistry::add()`,
-`addAllowedRecordTypes()` and the `event.listener` tag all survive their
-boundary as deprecated routes, and a caller who reads them as removed reaches
-the successor the neighbouring statement names, which is where they were being
-sent anyway.
-
-The first **Wrong if** is not measured and cannot be from here: whether a split
-leaves its unbound half too general shows up in a session acting on it, not in a
-checkout.
+The second **Wrong if** happened twice and the rule absorbed both: every
+`until`-bound statement was read against the four checkouts, and two carried a
+claim that outlived the boundary — `css-color-surface-tokens`, whose second half
+holds on all four branches, and `form-framework`, where the registration expires
+at 14 and the deprecation is what arrives there. Both were split. Four more
+looked like the defect and are not: they survive as deprecated routes, and the
+successor is where a caller reading them as removed is sent anyway. The first
+**Wrong if** shows up in a session acting on a split, not in a checkout.

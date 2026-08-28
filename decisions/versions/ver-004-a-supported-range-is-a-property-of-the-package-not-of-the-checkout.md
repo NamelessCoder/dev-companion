@@ -57,29 +57,11 @@ that file is for — was removed before the answer was composed.
 
 ## Confirmed on 2026-08-02
 
-The first half of **Wrong if** did not happen. Every range spelling the three
-checkouts that play `E-EXT` declare a TYPO3 major with — their root manifests
-and every `typo3/cms-*` requirement in the vendor trees they installed — answers
-for exactly the majors it serves: the two written by hand, `^13.4 || ^14.3` and
-`^12.4.37 || ^13.4.15`; the released `^13.4 || ^14.0 || 14.*.*@dev`;
-`^11.5 || ^12.4 || ^13.4 || ^14.0`; `typo3/testing-framework`'s bare
-`13.*.*@dev || 14.*.*@dev` and its older pair; and the exact `14.3.0` and
-`13.4.33` the core packages require each other with. Each answer was compared
-against composer/semver's own — the constraint parsed and intersected with
-`>=n <n+1` per major — rather than against a reading of the spelling, and the
-two agree on all eight. They are
-`VersionsTest::aSpellingFromTheWildAnswersForEveryMajorItServes`, one row per
-spelling, so a comparator changing meaning is a failing test rather than a
-missing statement.
-
-What the corpus did produce is a shape one step to the side: a space between an
-operator and its version, which Composer takes and this did not.
-`georgringer/news` writes its php requirement `>= 8.1 < 8.5` in the same
-manifest that declares the core range, and a core range spelled that way
-answered for no major at all — the fallback, so the answer would have been
-composed for the installed major alone and said nothing about the other. That is
-the failure this **Wrong if** describes, reached by a spelling habit rather than
-by a comparator, and `Versions` now collapses the space before splitting. One
-shape is still unread and stays that way: Composer's hyphen range,
-`12.4 - 14.3`. It occurs nowhere in the corpus — 0 of the 3179 constraints in
-those vendor trees, and none of the three roots — so nothing was built for it.
+The first half of the **Wrong if** did not happen: eight spellings from the wild
+answer for exactly the majors they serve, checked against composer/semver's own
+intersection rather than against a reading, and held row by row in
+`VersionsTest::aSpellingFromTheWildAnswersForEveryMajorItServes`. One shape to
+the side did fire — a space between operator and version, which Composer takes
+and this did not, so a range spelled that way answered for no major at all.
+`Versions` collapses the space now. Composer's hyphen range occurs nowhere in
+the corpus and nothing was built for it.

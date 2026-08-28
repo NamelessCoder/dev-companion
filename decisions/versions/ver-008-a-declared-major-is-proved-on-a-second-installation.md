@@ -121,28 +121,11 @@ would overwrite.
 
 ## Confirmed on `2026-08-18`
 
-The procedure was carried out rather than recalled, in an `E-SITE` on 14.3 on
-mariadb, against a package declaring `^13.4 || ^14.3` and installed into that
-installation through a path repository. The other major was resolved in
-`var/v13`, a Composer root of its own with the package symlinked in, and both of
-the package's suites ran there against `v13.4.34` while the installation kept
-`v14.3.6`. `composer.json` and `composer.lock` of the installation were
-byte-identical afterwards, its console answered the same version and its
-frontend answered 200.
-
-The first assumption holds with one correction: what the procedure recommends is
-a Composer root of its own rather than a second installation. The resolved tree
-is enough to run the suite, and it has no settings file, no site and nothing
-served — which is what the page now says a claim about rendering still costs.
-
-The second assumption is wrong. The database is the cheap half: a functional run
-uses a database derived per test class, so the live one is untouched and the
-second root needs none of its own. What the run turned up instead is that the
-two roots resolve differently — the second inherits no `config.platform.php`, so
-it resolves against the interpreter the container actually runs, and its dev
-tooling floats to the newest release its constraints admit.
-
-The third **Wrong if** stands unmeasured: nothing here pinned the other major
-inside the working project, so whether that is revertible in one command is
-still the reading nobody has done. The page recommends the root of its own on
-what was measured about it rather than on that comparison.
+Carried out rather than recalled, in an `E-SITE` on 14.3: the other major
+resolved in a Composer root of its own with the package symlinked in, both
+suites run there, and the installation byte-identical afterwards. The first
+assumption holds with one correction — a root of its own rather than a second
+installation, which is enough to run a suite and is why a claim about rendering
+still costs more. The second is wrong: the database is the cheap half, and what
+the run turned up instead is that the two roots resolve differently, the second
+inheriting no `config.platform.php`. The third **Wrong if** stands unmeasured.

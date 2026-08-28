@@ -43,17 +43,9 @@ everything that is not.
 
 ## Confirmed on 2026-08-02
 
-The **Wrong if** has not happened. All 110 bound statements were read against
-the four checkouts — 105 hints across 31 topics and 5 test suites — and every
-truth set is contiguous. Each predecessor and successor pair partitions the
-covered majors, leaving none of them out. The derived half says the same
-mechanically: `bin/cli catalog:check` recomputes each catalog range from the
-checkouts and names any entry it cannot express, and it reports none across 25
-components, 38 system extensions and 7 references. Nothing does that for the
-judged half and nothing can, because a hole is visible only to a reader holding
-the sentence against both sides — which is what this line stands in for. What
-the read did find is the failure a range does express: `extension-files` bound
-the `ext_emconf.php` fallback `since: 14` with no upper bound, while the
-statement beside it says the fallback is gone `since: 15`. That one gained its
-`until` in a commit of its own, which is the difference — a missing bound is
-corrected, a hole would have needed a second statement.
+The **Wrong if** has not happened: every bound statement was read against the
+four checkouts and each truth set is contiguous, which `bin/cli catalog:check`
+says mechanically for the derived half and no check can say for the judged one.
+What the reading found is the failure a range does express rather than a hole —
+`extension-files` bound a fallback with no upper bound while the statement
+beside it said it was gone, and that one gained its `until`.

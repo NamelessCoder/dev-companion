@@ -113,18 +113,8 @@ directory nobody can visit.
 
 ## Since then
 
-The first **Wrong if** is struck rather than answered, because what it is about
-went away. `Environments::DEFAULT_DRIVER` is `sqlite` and every environment
-below `.environments/` runs `omit_containers: [db]`, so the database is a file
-in the directory the approot names: clearing a registration nothing can reach
-takes a name and no data, and the ask this **Wrong if** asks for would be about
-nothing. `discard()` is still `ddev delete --omit-snapshot -y` for the case
-where a project was built on MySQL.
-
-The second is unfired and not testable here without taking a registration apart.
-DDEV is v1.25.1 on this machine, the version the entry measured against, and the
-five projects `bin/cli environment:status` reports all have their approot.
-
-The third is an outside event and stays open. TYPO3's setup gaining a way past a
-populated database is a release note rather than a reading, and where it lands
-is the failure message the create prints.
+The first **Wrong if** is struck rather than answered: every environment runs
+`omit_containers: [db]` on sqlite, so clearing a registration nothing can reach
+takes a name and no data. `discard()` still deletes the project for one built on
+MySQL. The second is unfired and not testable here without taking a registration
+apart. The third is an outside event and stays open.

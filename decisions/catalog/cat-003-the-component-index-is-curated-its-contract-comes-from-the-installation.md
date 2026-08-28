@@ -59,64 +59,25 @@ trusted the markup and classes it had already been given.
 
 ## Since then
 
-The second half happened, and the extractor was the wrong place to look for it.
-Run over all 25 entries against `.checkouts/14.3` and `.checkouts/main` on
-2026-08-02, five demos hand back scaffolding as the component's installed
-markup, and none of them does so by being sloppy about the root class:
-`Cards.fluid.html` opens with a card wrapped in a `<form>` of switches,
-`Input.fluid.html` and `Buttons.fluid.html` with the styleguide's own
-`example-container` grid, `StatusIndicators.fluid.html` with an
-`indicators-grid` looping `<f:for each="{states}">` over a variable only its
-controller sets, `Dropdown.fluid.html` with an inline-styled flex row. Every one
-of them carries the root class, correctly — the page is built out of the
-component. So there is nothing for an extractor to be stricter about, which is
-what the selector was predicted on and is now the reason it is the fix.
-`demoSelector` on an entry is that say, checked with the same `carries()` the
-root class is: `card` selects `card-title`, the sub-component its own curated
-markup spells and the settings form does not, and takes the canonical card on
-both checkouts. It narrows and never widens — a selector no example carries
-derives nothing, so the answer keeps the bundled markup and labels it a fallback
-rather than reverting to the scaffolding it was written against. `catalog:check`
-digests the selected examples for the same reason, and proved it by failing on
-`card` alone the moment the selection changed.
+The second half happened and the extractor was the wrong place to look: run over
+all entries against two checkouts, five demos hand back scaffolding as the
+installed markup and every one of them carries the root class correctly, so
+there is nothing to be stricter about. `demoSelector` is the entry's say
+instead, checked with the same `carries()` as the root class. It narrows and
+never widens — a selector no example carries derives nothing, and the answer
+keeps the bundled markup as a fallback rather than reverting to the scaffolding.
 
 ## Since then
 
-The four other scaffolding demos are read and left uncurated, because the
-selector cannot honestly fix them: `Input.fluid.html` and `Buttons.fluid.html`
-name the component nowhere except inside that grid, and
-`StatusIndicators.fluid.html` wraps every one of its nine examples in demo
-layout. There is no better example to select, so selecting one would only move
-which scaffolding is handed over. What they need is a way to say the demo shows
-the component nowhere copyable and keep the curated markup — the fallback this
-decision already **Assumed** for a template with no example at all, reached by a
-judgment rather than by the count being zero. That is a second field and it is
-not this one, so the queue carries it rather than `demoSelector` being stretched
-to mean two things. The first half of **Wrong if** — state that exists only at
-runtime — is untried either way.
-
-The field is `demoDerives`, and the four are curated. It is a second field
-rather than a `demoSelector` of `false`: one value that both picks an example
-and says there is none is two rules read off one place, and the entry stops
-saying which was meant. The permissive extractor is dismissed for the reason
-above — every one of these examples carries the root class correctly, so there
-is nothing to be strict about — and so is deriving nothing wherever a known
-scaffolding class appears, which is the same extractor wearing a blocklist and
-would decide by a pattern what the index decides by reading. An entry that
-derives nothing is not read at all rather than read and filtered, so the demo is
-not among its `sourceFiles`.
-
-`dropdown` was checked separately, and it is a suppression rather than a
-trimming question: its three examples on 14.3 and main are the popover dropdown
-inside an inline-styled flex row, a legacy `data-bs-toggle` variant, and a
-submenu in the same row — and the curated markup is already the first of them
-without the wrapper, so there is nothing a trimming rule would win. `button` is
-not one of the four and never was: `Buttons.fluid.html` opens with a bare
-`<button class="btn btn-default">Button title</button>`, which is the entry's
-own markup. The four are `button-group` — the `btn-group` half of that file —
-`dropdown`, `input` and `status-indicator`, confirmed by reading all 25 entries
-against both checkouts again. `catalog:check` digests the whole file for them,
-because what a rewrite can change there is whether the judgment still stands.
+Four of the five cannot be fixed by a selector: they name the component nowhere
+outside the demo layout, so selecting an example would only move which
+scaffolding is handed over. `demoDerives` is what says the demo shows the
+component nowhere copyable, and it is a second field rather than a
+`demoSelector` of `false`, which would be two rules read off one place. An entry
+that derives nothing is not read at all, so its demo is not among its
+`sourceFiles`. The permissive extractor and a scaffolding blocklist are both
+dismissed: they would decide by a pattern what the index decides by reading. The
+first half of the **Wrong if** is untried.
 
 ## Since then
 

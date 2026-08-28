@@ -58,56 +58,26 @@ read off one revision together, and a caller pastes them together.
 
 ## Since then
 
-The first half of **Wrong if** is closed by the command that derives the
-binding. Each entry records in `markupDigests` what its demo said on every
-covered checkout that has one, and `bin/cli catalog:check` re-reads them: the
-styleguide examples carrying the component, or the whole file where a demo wraps
-none — `Panels.fluid.html` and `RecordSearchBox.fluid.html` are pages about one
-component rather than galleries. A demo rewritten around identical class names
-passes the binding and fails the digest, which is the case this could not see.
-Nothing is written by the check, because the new digest is only true once
-somebody has reread the entry against that demo. Seven demos render the
-component through a ViewHelper and name it nowhere, and three entries name no
-demo at all: for those ten the digest holds the demo rather than the markup, and
-the command counts them so the number stays visible. The second half is
-untouched — no entry has a hole today, and `derivedSince()` answers such a range
-with its newest unbroken run rather than with nothing.
+The first half of the **Wrong if** is closed by `markupDigests`: each entry
+records what its demo said on every covered checkout and `bin/cli catalog:check`
+re-reads them, so a demo rewritten around identical class names passes the
+binding and fails the digest. Nothing is written by the check, because a new
+digest is only true once somebody has reread the entry. Ten entries name no demo
+or render the component through a ViewHelper; for those the digest holds the
+demo rather than the markup, and the command counts them. The second half is
+untouched.
 
 ## Since then
 
-`feedback/2026-08-19-090231` is a reader this entry did not have in view. A
-session migrating an extension's DataTables build re-attached the backend class
-`table-fit` and shipped the assumption unverified, and the call it names as the
-one it should have made is `typo3_component_lookup` for that class, bound to the
-majors the extension declares.
-
-Both halves were run on 2026-08-21. Unbound, the lookup answers: the `table`
-entry, matched in keywords, "Wrap in .table-fit for horizontal overflow", with
-the markup and the note that it is verified on v14 and newer. Bound to `12.4` it
-withholds the entry and reports the class as never verified there.
-
-`.table-fit` is written in `Build/Sources/Sass/component/_table.scss` on `12.4`,
-`13.4`, `14.3` and `main`, and carries `overflow-x: auto` on the oldest of them.
-So the class the caller asked about is present on its major and means what the
-session assumed. What bound the entry to v14 is `--typo3-table-border-radius`,
-absent from that partial on `12.4` and `13.4` and present on `14.3`.
-
-That is the design working rather than failing. One custom property in an
-eleven-name contract holds the whole entry back, which is what **Decided** chose
-so that a paste cannot carry a property that does not exist. The price is
-visible now: the reader this entry has in view wants to know whether it can
-paste the component, and this one had already pasted a single long-stable class
-out of a stylesheet it does not own, and wanted only to know whether it was
-still there.
-
-The question that raises — whether a class-shaped query may be answered below
-the entry's binding, and at what cost — was answered on 2026-08-21 by
-`D-CAT-006`: an entry carries a second derived range for its class list and
-answers a class the query names outright, while what is decided here holds for
-everything that is pasted. That did not reach the caller above. Over the class
-list alone the table entry binds at v13 rather than v12, because the core's own
-Sass does not spell out `table-striped`, `table-hover`, `table-sm` and
-`table-selected` on 12.4.
+`feedback/2026-08-19-090231` is a reader this entry did not have in view: a
+session pasted `.table-fit` out of a stylesheet it does not own and wanted only
+to know whether the class was still there. Run both ways on 2026-08-21, the
+lookup answers unbound and withholds the entry at `12.4` — while the class
+itself is in the core's Sass on every covered branch. What binds the entry to
+v14 is one custom property, which is the design working: an eleven-name contract
+is held back whole so that a paste cannot carry a property that does not exist.
+The price is what this reading makes visible, and `D-CAT-006` answered it on
+2026-08-21 with a second range over the class list.
 
 ## Confirmed on 2026-08-22
 

@@ -2,7 +2,7 @@
 description: >-
   How it is settled whether a class, a member or a signature is there on a TYPO3 major the package declares and the installation does not have.
 whenToUse: >-
-  When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It names the reading that settles the question; the shape itself is read from the branch, and no per-version list of identifiers is bundled anywhere here.
+  When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It hands over the invocation per symbol: one git call against the branch that is not installed, or that major's released package where no checkout is at hand. No per-version list of identifiers is bundled anywhere here, because the branch is what carries the shape.
 hints:
   - extension-repository-layout
 ---

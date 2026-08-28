@@ -1,7 +1,8 @@
 ---
 date: 2026-08-28T07:40:36+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-28
 model: claude-opus-5[1m]
 tool: typo3-extension-testing, typo3_extension_describe, typo3_hint_lookup
 directory: /home/benji/projects/bootstrap_package

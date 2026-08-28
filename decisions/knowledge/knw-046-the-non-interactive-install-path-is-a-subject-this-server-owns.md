@@ -103,48 +103,25 @@ report afterwards and left to find out what the command takes.
 
 ## Confirmed on 2026-08-03
 
-The reading this was queued for, on all four covered checkouts. The mechanics
-are one flat statement: `SetupCommand::$connectionLabels` keys the same six
-connection types on `12.4`, `13.4`, `14.3` and `main`, `getDriverOptions()` sets
-`sqliteManualConfigurationOptions` to `pdo_sqlite` and nothing else on all four,
-the sqlite path is calculated into `var/sqlite/` by the same lines, and the
-`1669747200` validator is unchanged. So the first **Wrong if** does not hold and
-the assumption the entry rests on is confirmed.
+The mechanics are one flat statement across all four checkouts — the same six
+connection types, the same driver options, the same calculated path and the same
+validator — so the first **Wrong if** does not hold and the assumption is
+confirmed.
 
-The two site options are the half that moved, which the entry did not expect.
-`12.4` and `13.4` have no `--distribution` option, no `$distributions['active']`
-check and no `setupExtensions()` call, so `--create-site` writes the root page
-and the site configuration there whatever else is installed.
-`installation-setup` carries that as `until: 13` against the `since: 14`
-statement about the inert options, and the same reading bound one statement of
-`sitepackage-initial-content` that was stated flat and is false on both LTS
-branches — that the setup command runs the extension setup as its last step.
+The two site options are the half that moved, which the entry did not expect:
+the older majors have neither the option nor the check behind it, so the site is
+written there whatever else is installed. That reading also bound one statement
+of a neighbouring hint that was stated flat and is false on both LTS branches.
 
-One imprecision stays and is worth naming. The option arrived inside the covered
-14 branch, in `926b9a7`, tagged first as `v14.3.0`, and `since` carries a major
-— so a caller on an earlier 14 is told about an option that release does not
-have. The corpus binds by major because `knowledge/versions.json` covers one
-branch per major, and expressing this would be a change to that model rather
+One imprecision stays: the option arrived inside the covered major, and the
+corpus binds by major, so expressing that would be a change to the model rather
 than to this entry.
-
-The third **Wrong if** was measured rather than assumed. `bin/cli hints:probe`
-on the feedback's own query now returns `installation-setup`, and
-`typo3_task_guide` with the feedback's own task carries the hint beside the
-intent it already recognised.
 
 ## Since then
 
-`feedback/2026-08-18-070423` was judged against this entry on 2026-08-18, and
-the third **Wrong if** holds no better from the other side. That session reached
-`installation-setup` and `environment-runtime-readers` from its own task and
-called both correct and useful, so the placement is not what cost it anything.
-What it paid for is one question further out: the line that carries those
-variables into the container the command runs in, which is
-[`D-KNW-094`](knw-094-how-a-variable-reaches-a-console-command-is-a-subject-this-server-owns.md).
-
-`feedback/2026-08-24-140130` was judged against this entry on 2026-08-24 and
-went to one of its own,
-[`D-KNW-116`](knw-116-the-page-object-typo3-setup-leaves-behind-is-a-subject-this-server-owns.md).
-The hint reached that session as this entry intended, and the `--create-site`
-statement stops one file short of what the command writes: a welcome page object
-that outranks the site's sets.
+Two sessions were judged against this entry. The first reached both hints from
+its own task and called them correct and useful, so the placement is not what
+cost it anything — what it paid for is one question further out, which
+`D-KNW-094` carries. The second reached the hint as this entry intended, and the
+statement stops one file short of what the command writes: a page object that
+outranks the site's sets, which is `D-KNW-116`.

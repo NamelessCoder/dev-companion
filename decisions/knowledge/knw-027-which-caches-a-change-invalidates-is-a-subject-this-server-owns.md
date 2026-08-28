@@ -99,47 +99,16 @@ instead.
 
 ## Confirmed on 2026-08-03
 
-The statement held and the gap is filled: `page-cache-flushing` in
-`page-rendering.json`, with `R-KNW-059` and two cases in `HintsTest`. The
-reading was `typo3fluid/fluid` at the three releases the branches pin —
-downloaded, because no checkout vendors it — plus the three checkouts at
-`31f881a212`, `1d104f3b95` and `faf60eea22`.
+The statement held and the gap is filled. The first **Wrong if** fired and the
+entry's own instruction for it was right: the template identifier is hashed with
+the file's modification time on all three engines, so a changed template is
+written under a new identifier and the stale entry is never read again — the
+deletion the feedback reported reached the one cache that was already correct.
+What answers with the old page is the page cache, whose identifier no template
+file enters. So the statement is a correction and a command.
 
-The first **Wrong if** fired, and the entry's own instruction for it was the
-right one. `TemplatePaths::createIdentifierForFile()` hashes the file path
-together with `filemtime()`, identically in 2.15.0, 4.6.1 and 5.3.1, and
-`sysext/fluid` overrides it on none of the three — so a changed template,
-partial or layout is written under a new identifier and the stale entry is
-simply never read again. The deletion the feedback reported reached the one
-cache that was already correct. What answers with the old page is the `pages`
-cache: `PrepareTypoScriptFrontendRendering` builds its identifier from the page
-id, type, user groups, site, language base, route arguments, `sys_template` rows
-and the TypoScript condition lists, and no template file enters it. So the
-statement is a correction *and* a command, and it sits beside the
-`sendCacheHeaders` one as this entry said it would.
-
-The second **Wrong if** was avoided rather than disproved. What the statement
-names is the group and the command, both of which survive a project overriding
-`cacheConfigurations`; which cache sits in which group is stated as the default
-it is.
-
-Both **Assumed** resolved. The answer is one hint and several statements rather
-than one sentence — a template change needs group `pages` for the rendered page
-and nothing for itself, TypoScript needs `pages` where it is a file and nothing
-where it is a record, TCA needs `system`. And `var/cache/code/fluid_template` is
-the path: `SimpleFileBackend::setCache()` picks `code` over `data` on the
-frontend being a `PhpFrontend`, which `FluidTemplateCache` is.
-
-Two findings the entry did not anticipate, both in the statement. `di` is not a
-cache group like the others — it has no `cacheConfigurations` entry at all,
-`Bootstrap::createCache()` synthesises it, and `CacheFlushCommand` flushes the
-container backend outside the event, for `system` and `all` as well. And on 14
-only, `fluid_component_definitions` keys a component on its namespace and view
-helper name and on nothing else, so a component whose compiled template clears
-itself keeps a stale argument and slot declaration until group `system` is
-flushed.
-
-The todo's own aim was off by a file and an entry: the `sendCacheHeaders`
-statement is `page-cache-headers` in `page-rendering.json`, not
-`frontend-page-rendering` in `fluid.json`. The neighbour it named is what
-decided the placement, so the new entry went beside it.
+The second was avoided rather than disproved: what it names is the group and the
+command, both of which survive a project overriding the configuration. Two
+findings the entry did not anticipate are in the statement — one group is
+synthesised rather than configured, and on the newest major a component cache
+keys on too little and keeps a stale declaration.

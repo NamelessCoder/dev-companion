@@ -136,20 +136,12 @@ files. What is actually missing is a statement in `knowledge/`.
 
 ## Since then
 
-Written on 2026-08-03 as `fal-processing`, and one sentence of the evidence
-above is off: `SYS/fal/processors` is not identical on all four covered majors.
-On `12.4` the `SvgImageProcessor` entry declares `before: [LocalImageProcessor]`
-alone, where `13.4`, `14.3` and `main` name `DeferredBackendImageProcessor`
-beside it. The resulting order is the same either way, because the deferred
-processor declares `after: [SvgImageProcessor]` on every branch — so the hint
-carries no range, and what was wrong was the reading of the declaration rather
-than the conclusion drawn from it. `processingTaskTypes` is identical.
+Written the same day, and one sentence of the evidence is off: the processor
+configuration is not identical on all four majors, one branch naming a second
+processor in its ordering. The resulting order is the same either way, so the
+hint carries no range — what was wrong was the reading of the declaration rather
+than the conclusion.
 
-The boundary this entry drew was reached from below on 2026-08-03. A session
-that had asserted twice that image processing requires a FAL object filed
-`feedback/2026-08-02-144902`, and the hint written here answers everything up to
-the processor and nothing after it — `LocalImageProcessor` unwraps to a local
-path and `GraphicalFunctions` takes path strings, neither of which the corpus
-says anywhere.
-[`D-KNW-042`](knw-042-what-the-image-pipeline-does-below-the-task-layer-is-a-subject-this-server-owns.md)
-takes that half on, and this entry keeps the dispatch it decided.
+The boundary was reached from below the same day: a session that had asserted
+twice that image processing requires a FAL object filed the case the new hint
+answers up to the processor and not after it. `D-KNW-042` takes that half on.

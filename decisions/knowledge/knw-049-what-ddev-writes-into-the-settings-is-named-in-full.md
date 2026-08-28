@@ -109,70 +109,40 @@ the ladder, on a hint that already exists, and it is queued as
 
 ## Confirmed on 2026-08-03
 
-Read in DDEV v1.25.1 itself, which is what the first and third **Wrong if**
-asked for: the template `pkg/ddevapp/typo3/AdditionalConfiguration.php` and the
-`createTypo3SettingsFile` and `writeTypo3SettingsFile` beside it, at the tag and
-in the binary installed on this machine. The `DB` block carries no condition.
-`DBHostname` is the literal `db`, `DBDriver` is `mysqli` unless the project's
-database type is Postgres, and `GetInternalPort` answers the constant 3306 or
-5432. Nothing on that path reads `omit_containers` or the driver the
-installation was set up with, and the only thing that stops the file being
-written at all is `disable_settings_management`. So DDEV does write the `DB`
-section for a database-less project, as the reporting session described, and the
-one generated file read for the entry was the template rather than a sample of
-it.
+Read in DDEV itself, which is what the first and third **Wrong if** asked for:
+the template and the two functions beside it, at the tag and in the binary
+installed here. The database block carries no condition, and nothing on that
+path reads the container list or the driver the installation was set up with. So
+DDEV does write it for a database-less project, as the session described, and
+the one generated file read for the entry was the template rather than a sample.
 
-One thing the rewrite states differently from `R-KNW-060` as it was queued. Both
-ways out end the collision — a file without the marker and a project with
-`disable_settings_management` are both left alone — so what the statement says
-is which of the two keeps `GFX`, `MAIL` and `SYS` as DDEV already wrote them,
-rather than that one of them is the only one left. The requirement was corrected
-to that in the same commit.
+One thing the rewrite states differently: both ways out end the collision, so
+what the statement says is which of the two keeps the rest of the file as DDEV
+wrote it.
 
 ## Since then
 
-On 2026-08-18 a session disputed one sentence of the reading above.
-`feedback/2026-08-17-205850` reports that DDEV writes the file only once it
-recognises an installation, so the first start of a clone with no `vendor/`
-writes nothing and the site answers 1396795884 until the project is started
-again after the dependencies are installed. That is a second thing stopping the
-file being written, where this entry's confirmation found only
-`disable_settings_management`. The reading was of the writer rather than of what
-calls it, and nothing here settles which of the two is right, so the statement
-of this entry stands and
-[`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-subject-this-server-owns.md)
-carries the question.
+A session disputed one sentence of the reading above: DDEV writes the file only
+once it recognises an installation, so the first start of a clone with no
+dependencies writes nothing. That is a second thing stopping the write, where
+this confirmation found one — the reading was of the writer rather than of what
+calls it.
 
-That entry has since been read against DDEV v1.25.1's own source and the
-reporting session was right. `disable_settings_management` is what stops the
-file being written for a project DDEV recognises; `setTypo3SiteSettingsPaths` is
-what decides whether it recognises one at all, and where it does not,
-`createTypo3SettingsFile` returns before anything is written. So the sentence
-above is the one that was too narrow, and the reading it came out of stopped one
-call short of the caller. The statement of this entry is untouched by that: what
-DDEV generates and what its generator cannot configure is what it settles, and
-when it generates it is `D-KNW-085`'s.
+It has since been read against DDEV's own source and the session was right: what
+this entry found is what stops the write for a project DDEV recognises, and
+whether it recognises one at all is decided a call earlier. `D-KNW-085` carries
+that. What this entry settles is untouched: what DDEV generates, and what its
+generator cannot configure.
 
 ## Since then
 
-Two readings held this entry and changed nothing in it, so each is a line here
-rather than a section of its own. Judged on 2026-08-22.
+Two readings held this entry and changed nothing in it. The two lifecycle
+findings the fifth **Decided** bullet left out landed, and neither in the hints:
+one is a checklist item re-read at the installed DDEV, and one is written as an
+observable rather than as DDEV's behaviour, because DDEV's own documentation
+says the opposite of the report.
 
-- The two lifecycle findings the fifth **Decided** bullet left out landed, and
-  neither in `knowledge/hints/`. `fail_on_hook_fail` defaulting to false is an
-  item of the `installation-operations` checklist `D-GUI-008` wrote, re-read at
-  DDEV v1.25.1 in its documentation and in the commented block DDEV generates.
-  The `ddev config` one is in `skills/typo3-development-installation/SKILL.md`
-  as an observable rather than as DDEV's behaviour, because DDEV's own
-  documentation says the opposite of the report and nothing here settles it. No
-  test names that checklist item, which is `D-GUI-008`'s to add, and
-  `feedback/2026-08-03-162858` is archived.
-- On 2026-08-04 the generated file was read in a repository of the other shape.
-  `/home/benji/projects/syntax` is an extension whose own `composer.json` is the
-  Composer root, with TYPO3 below `.build/vendor` and the docroot at
-  `.build/public`, and DDEV writes the same `#ddev-generated`
-  `config/system/additional.php` at the repository root, because
-  `typo3/cms-composer-installers` keeps the application directory at the
-  Composer root whatever the web directory is (`Plugin/Config.php:37`). So the
-  layout does not decide whether the file appears, and a card that claimed it
-  did was wrong when it was worked off.
+And the generated file was read in a repository of the other shape — an
+extension whose own manifest is the Composer root — where DDEV writes the same
+file at the repository root. So the layout does not decide whether it appears,
+and a card that claimed it did was wrong when it was worked off.

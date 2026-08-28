@@ -101,21 +101,12 @@ worktree starts without dependencies.
 
 ## Since then
 
-The third **Wrong if** is still the open one and it is stated against rather
-than left to the reader. `knowledge/documents/core/testing/scripts.md` says it
-in the words the bullet asks for — "this is a precondition and not a step: a
-checkout that already has `vendor/` needs it again only after `composer.json` or
-`composer.lock` changed" — and `typo3_test_run_guide` carries the same condition
-in its own note.
+The third **Wrong if** is stated against rather than left to the reader, in the
+document and in the tool's own note: the install is a precondition and not a
+step, needed again only after the manifest changed.
 
-What arrived beside it is the case on the other side of that sentence, and it
-came from a session rather than from this entry. `feedback/2026-08-07-130007`
-reports a `vendor/` that exists and predates a `composer.json` change, surfacing
-as a Symfony `InvalidArgumentException` naming a class that is plainly in its
-file; the document now carries that symptom and says the fix is
-`runTests.sh -s composer -- dumpautoload` rather than another install. So the
-expensive answer is named for the one case that needs it.
-
-Nothing reports the failure the bullet describes — a reader running the install
-in a checkout that already had one — and no reading here can produce it. The
-first two were checked when this was written and nothing has moved them.
+What arrived beside it came from a session rather than from this entry — a
+vendor directory that exists and predates a manifest change, surfacing as an
+exception naming a class that is plainly in its file. The document carries that
+symptom now and names the cheap command rather than another install. Nothing
+reports the failure the bullet describes.

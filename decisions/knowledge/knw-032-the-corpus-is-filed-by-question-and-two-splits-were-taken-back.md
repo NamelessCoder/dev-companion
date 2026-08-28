@@ -79,18 +79,11 @@ words to 126.
 
 ## Since then
 
-The second assumption above is about finding the family, and
-`feedback/2026-08-17-211306` is the first report that separates finding from
-taking. A session building a v14 demo site read the closing statements, saw the
-ids, and followed about half of them — so the naming worked and the branch was
-declined anyway. What it cost was five review findings from one dropped
-neighbour and an HTTP 500 from another.
+The second assumption is about finding the family, and the first report to
+separate finding from taking is a session that read the closing statements, saw
+the ids and followed about half of them — so the naming worked and the branch
+was declined anyway, at the cost of five review findings and an HTTP 500.
 
-That is not this entry's **Wrong if**: the entry hint did not outrank its family
-and the families did not crowd a limit. It bears on the assumption rather than
-on the decision, and it narrows it — naming the neighbours in prose is enough to
-find the family, and says nothing about a caller who has just got what it came
-for. `D-KNW-087` is the judgement, and it leaves the alternative this entry
-rejected still rejected: what it queues is a rewrite of six sentences, not a
-declared relation between hints.
-
+That is not this entry's **Wrong if**. It narrows the assumption instead: naming
+the neighbours in prose is enough to find the family, and says nothing about a
+caller who has just got what it came for.

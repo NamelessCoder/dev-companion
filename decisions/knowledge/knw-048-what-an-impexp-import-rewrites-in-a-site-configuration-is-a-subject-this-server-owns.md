@@ -124,27 +124,13 @@ here; read on the route the reporting session was on, it points the other way.
 
 ## Since then
 
-The statement was written and three of the four **Wrong if** were read on
-2026-08-23 without firing.
-
-The rewrite has gained nothing. `Import::processSiteConfigurations()` on
-`.checkouts/14.3` at `fdef40e2f8` and `main` at `3cbdea24dd` still assigns
-`rootPageId` and then `base = '/' . $targetIdentifier . '/'`, with the same
-`@TODO` under it and no event, option or hook beside it — which is what the
-written statement says: "There is no event and no option on that rewrite."
-
-The two corpus statements were about `Initialisation/Site/` and now say so.
-`initial-content-references` opens "The `Initialisation/Site/` route remaps the
-root page id", and `record-routing` says "of a site configuration shipped in
-`Initialisation/Site/` only rootPageId is remapped on import". So they were
-sentences a feature outgrew rather than plain errors, and each names its route.
+Three of the four **Wrong if** were read without firing. The rewrite has gained
+nothing: the same assignment, the same to-do under it, and no event or option
+beside it, which is what the written statement says. The two corpus statements
+were about one route and now say so, which makes them sentences a feature
+outgrew rather than plain errors.
 
 The sibling closed on its own the same day, and its point is stated where this
-entry expected the collision instead. `installation-setup` carries it: "In
-Composer mode every required package is active, so requiring such a package
-makes both inert: the command warns that they have no effect, writes no site
-configuration, and the installation has no way to be told its own URL." Two
-statements in two hints, one per route, rather than one gap under two cards.
-
-What is left is the second, and no reading produces it: a session that is handed
-the statement and still looks for the cause in the distribution package.
+entry expected the collision instead — two statements in two hints, one per
+route, rather than one gap under two cards. What is left is the second, and no
+reading produces it.

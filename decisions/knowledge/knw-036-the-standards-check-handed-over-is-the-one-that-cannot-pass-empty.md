@@ -92,75 +92,28 @@ that trusted it reported a standards check as passed having run none.
 
 ## Confirmed on 2026-08-24
 
-A core patch session in `/home/benji/projects/typo3-cms` reached for the direct
-invocation this entry rejected, and its user corrected it to the container
-twice. It filed four feedback in thirty-five minutes doing so —
-`2026-08-24-104546`, `-111637`, `-111728` and `-112010` — and the last one
-settles the thread on the reading this entry already held: `cglGit` is that
-script, so the container costs nothing and removes the host-PHP condition. None
-of the three **Wrong if** above had happened. The session had run `cglGit` in
-the review and still did not know the two were one command.
+A core session reached for the direct invocation this entry rejected and was
+corrected to the container twice, filing four feedback in thirty-five minutes.
+None of the three **Wrong if** had happened: it had run the suite in the review
+and still did not know the two were one command.
 
-What it took the session four round trips and two corrections to establish was
-the identity, which the corpus stated in
-`knowledge/documents/core/testing/scripts.md` and nowhere the task passed. The
-suite entry in `knowledge/test-suite-hints.json` carried the worktree condition
-and not this, against the rule `R-KNW-049` states in its own second paragraph:
-nothing carries a caller from the entry that offers a command to a sentence
-elsewhere in the corpus. The entry now says what the suite runs, in the sentence
-before the condition.
-
-The last feedback also asked for the direct script to be named for the two file
-lists the suite cannot pass, `-f cache` and `-f stdin`. That is refused: it puts
-the invocation back into the corpus carrying the host-PHP condition this entry
-was written to keep out, and neither is what the thread went wrong on.
-
-Naming the script moved one recorded answer, which is the price of saying it
-here. `typo3_task_guide` keeps the four best-scoring suites and matches a query
-term as a substring, so `cglFixMyCommit` scores on the "Fix" of "Fix the query
-that reads the events" and takes `composerInstall` out of that answer. The name
-is what the sentence is for, so it stays; what a matcher does with a script name
-is a finding about the matcher.
+What it took four round trips to establish was the identity, which the corpus
+stated in a document the task never passed — against the rule that nothing
+carries a caller from the entry offering a command to a sentence elsewhere. The
+entry says what the suite runs now. Naming the script for the two file lists the
+suite cannot pass is refused, because that puts the host-PHP condition back in.
 
 ## Since then
 
-On 2026-08-25 a core session established this entire finding again from scratch,
-and asked this server nothing while doing it. `feedback/2026-08-25-114910` is a
-session whose task was whether `-s cglGit` runs correctly in a git worktree of
-the core checkout. It reports the mount contract, the empty file list, and the
-SUCCESS on nothing as things it had to prove itself — with a worktree run
-against the main checkout, `"Found 0 of 5 files"` beside
-`fatal: not a git repository: (null)`, which is what this entry measured three
-weeks earlier. Its own "single answer that would have shortened this session
-most" is a paraphrase of the sentence the corpus already carried.
-
-That is not a gap and none of the three **Wrong if** above happened. Re-run here
-on 2026-08-27 with the session's own words, `typo3_script_lookup` answers
-"cglGit in a git worktree" and "runTests.sh container mount" with both sections,
-and `typo3_test_run_guide` states the mount contract in the preconditions block
-it prints before any suite and the false green in the `cglGit` entry. What the
-session says is that nothing was asked, which is the report beside it —
-`feedback/2026-08-25-114653`, on `typo3_script_lookup` never being called in a
-session about nothing but its subject — and that one is judged under its own
-card.
+A core session established this entire finding again from scratch and asked this
+server nothing while doing it — its own "single answer that would have shortened
+this session most" is a paraphrase of the sentence the corpus already carried.
+That is not a gap: re-run with the session's own words, both tools answer with
+the mount contract and the false green.
 
 What the re-run did find is a sentence of the corpus that was wrong in this
-entry's own area. The *Pre-Commit Hook* section named `-s cglGit` as what
-settles the hook's file-header error, and `cglGit` runs
-`Build/php-cs-fixer/config.php`, which carries no header rule: the header check
-is `-s cglHeader` over `Build/php-cs-fixer/header-comment.php`. Read in
-`.checkouts/main` on 2026-08-27, and the pair of scripts the hook runs is one
-per message. So the **Decided** above — `cglGit` stays where the entry has prose
-around it — held for the condition and not for the config: the prose named it
-for a check it does not perform.
-
-What kept the wrong sentence there is `R-KNW-024`: prose may name only a suite
-`knowledge/test-suite-hints.json` declares on every covered major, and neither
-header suite was declared at all. Both are entries from the same commit, and
-`bin/cli versions:check` reads them against `.checkouts/` on all four.
-
-`cglHeaderGit` carries its worktree condition beside the command, which is what
-`R-KNW-049` demanded of both suites and nothing held: the test read the
-documents for `cglGit` alone, and `cglHeaderGit` does not contain that string.
-It reads every suite of `GIT_DRIVEN_SUITES` now, which is the list it was
-already using on the JSON half.
+entry's area: the prose named one suite as what settles the hook's file-header
+error, and that suite runs a configuration carrying no header rule. What kept it
+there is the rule that prose may name only a declared suite, and neither header
+suite was declared. The worktree condition now stands beside every git-driven
+suite rather than the one the test happened to read.

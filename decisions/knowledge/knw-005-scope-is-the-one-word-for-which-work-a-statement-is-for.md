@@ -90,20 +90,12 @@ the three audiences of `R-AUD-001` outright is that value.
 
 ## Confirmed on 2026-08-22
 
-Five cases, and the case the second **Wrong if** names has arrived without
-asking for a sixth. `skills/typo3-distribution-content/` is published and a
-session has built a distribution extension carrying a site's content, which the
-enum answers as `extension` because that is what it is by structure. No fork
-maintained downstream has been reported.
+Five cases, and the case the second **Wrong if** names arrived without asking
+for a sixth: a session built a distribution extension carrying a site's content,
+which the enum answers as `extension` because that is what it is by structure.
 
-The first **Wrong if** is unreported in the shape it names. Nothing in the
-archive says a caller was handed extension advice for site-configuration work or
-the reverse. What did arrive is the other failure — `feedback/2026-08-18-070358`
-got `uncertain` for `.ddev/config.yaml`, `composer.json` and an extension key in
-a standalone extension repository, and core checks behind it. That is the
-signals failing to place the work rather than the vocabulary putting it in the
-wrong case, and the answer said `uncertain` where it could not tell, which is
-the case this entry added.
-
-`installation` has stayed gone as a value and `outsideCore` has not come back to
-any schema.
+The first is unreported in the shape it names. What did arrive is the other
+failure — `uncertain` for a standalone extension repository, with core checks
+behind it — which is the signals failing to place the work rather than the
+vocabulary putting it in the wrong case, and the answer said so where it could
+not tell.

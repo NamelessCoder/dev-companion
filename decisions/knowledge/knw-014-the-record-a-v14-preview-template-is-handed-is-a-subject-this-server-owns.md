@@ -81,20 +81,13 @@ nothing here says what that variable is or what comes back from a field on it.
 
 ## Confirmed on 2026-08-02
 
-The gap was real and the statements are on `content-elements` — `R-KNW-041`. The
-first **Wrong if** did not happen: Breaking-92434 says which variables changed,
-and neither how a path resolves on the record nor what a field comes back as is
-in it. The second one did, in the form the entry named. The branch a field takes
-in `RecordFieldTransformer` is chosen by the field type the schema built from
-its TCA, so the hint names the five that come back as records — `type=select`
-with a relation, `group`, `inline`, `category`, `file` — and says that a
-`type=select` without one stays values.
-
-Two of the statements are older than the major the feedback is about, which the
-checkouts settled rather than the changelog: 13.4 already assigns `record`
-beside the row's columns and already transforms a relation into a
-`LazyRecordCollection`, so the resolution and the relation halves carry
-`since: 13` and only the "one variable" half is `since: 14`.
+The gap was real and the statements landed. The first **Wrong if** did not
+happen: the changelog says which variables changed and neither how a path
+resolves nor what a field comes back as. The second did, in the form the entry
+named — the branch a field takes is chosen by the type the schema built from its
+TCA, so the hint names the five that come back as records and says which case
+stays values. Two of the statements are older than the major the feedback is
+about, which the checkouts settled rather than the changelog.
 
 ## Since then
 
@@ -109,18 +102,8 @@ a `since`, while the header/content split reads the same on 13.4 and 14.3.
 
 ## Revoked on 2026-08-02
 
-By the work this entry queued. The sentence at the head — what a v14 preview
-template reads off `{record}` is missing from this server — was true until the
-statements landed on `content-elements` the same day, and an entry a reader may
-still build on has to be one whose headline is true when they read it. The
-reading above stays under its **Confirmed on**: the gap was real, the first
-**Wrong if** did not hold and the second did, and that is why the statement
-names five field types rather than one rule for a relation.
-
-What holds from here is
-[`D-KNW-020`](knw-020-what-a-preview-template-is-handed-is-stated-on-both-majors.md)
-— the assignment stated per major, and a field resolving by its TCA type — and
-what must keep holding is `R-KNW-041`, which now rests on the successor. This
-entry's **Wrong if** were both about what the todo would find, so neither could
-be gone back to once it had found it; the successor's are written against a
-statement that is in and can go false.
+By the work this entry queued: its headline said the fact was missing from this
+server, and it landed the same day. An entry a reader may build on has to be one
+whose headline is true when they read it. The reading above stays where it is,
+and `D-KNW-020` holds from here — this entry's **Wrong if** were both about what
+the todo would find, so neither could be gone back to once it had found it.

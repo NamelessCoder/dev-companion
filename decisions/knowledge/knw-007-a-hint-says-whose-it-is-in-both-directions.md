@@ -70,22 +70,13 @@ a repository outside the core has to do" — it said nothing, which reads as
 
 ## Since then
 
-The seven that were left are read, and four of them declare an audience:
-`extension-documentation`, `extension-asset-build` and
-`extension-static-analysis` are `extension` — each already says in its own last
-statement that the core's counterpart is a different hint whose paths do not
-transfer — and `installation-upgrade` is `project`, being the repository around
-an installation rather than any package in it.
+The seven that were left are read, and four declare an audience: three are
+`extension`, each already saying that the core's counterpart is a different hint
+whose paths do not transfer, and one is `project`, being the repository around
+an installation rather than a package in it.
 
 The other three stay undeclared, and the checkouts settled that rather than the
-titles. `theme_camino` is a sitepackage **in the core repository** and it ships
-`Initialisation/data.xml`, so laying a sitepackage out and seeding it are
-obligations the core has too; a site set is how any extension ships TypoScript
-and `fluid_styled_content` is one. Declaring them `extension` would have told a
-contributor working on `theme_camino` that their own subject is somebody else's
-— which is the failure this whole field exists to prevent, arrived at from the
-other side.
-
-`HintsTest::aHintTheCoreIsAlsoObligedByDeclaresNoAudience` pins the three with
-the reason, and names what would change it: the theme leaving the core, which
-its own first statement says is announced.
+titles: a sitepackage ships **in the core repository** and seeds its own
+content, so laying one out is an obligation the core has too. Declaring them
+`extension` would have told a contributor working on it that their own subject
+is somebody else's, which is the failure this field exists to prevent.

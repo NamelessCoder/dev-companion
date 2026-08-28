@@ -64,46 +64,15 @@ hint in `php.json` was filtered out before anything was scored.
 
 ## Since then
 
-The sixth phrasing arrived, and it came out of this repository's own text.
-`typo3-extension-conformance`'s checklist writes its audit surfaces down, and
-the quality one reads "Quality: tests, the check layer, documentation,
-deprecations, and upgrade readiness". Its word for the surface is the bare
-`tests` this entry rejected. So an audit asking in the checklist's own wording
-reaches no PHP hint at all:
-`bin/cli hints:probe "audit the quality surface of an extension: tests, the check layer, deprecations and upgrade readiness"`
-resolves to the `docs` domain alone and returns `deprecated-apis` and
-`installation-upgrade`.
+The sixth phrasing arrived out of this repository's own text: a checklist wrote
+its audit surface down as the bare word this entry rejected, so an audit asking
+in that wording reaches no PHP hint at all. What it cost is on the record — a
+recommendation to use a package no covered line ships, where the corpus already
+held the answer.
 
-What that cost is on the record. The feedback of 2026-07-31 19:36 UTC reports a
-conformance audit whose recommendation 19 was to "Consider typo3/cms-
-compatibility package for cross-version testing". No covered line ships such a
-package — no `compatibility` sysext under `.checkouts/12.4` or `13.4`, and no
-occurrence of the name anywhere in the checkouts — and
-`typo3_system_extension_lookup` says so outright when asked. The corpus already
-holds what the audit should have said, in `extension-repository-layout`: a
-matrix that resolves per supported version, the lowest and the highest of each
-supported major.
-
-The hint half of **Decided** is the second place it did not reach, and this one
-is inside the PHP domain rather than in front of it. Testing vocabulary reaches
-`project-extension-tests`, whose `appliesTo` carries ten testing phrasings and
-whose statements say nothing about a supported range.
-`extension-repository-layout` carries the range and no testing phrasing, so it
-scores on body text or not at all. "does the test suite cover every supported
-TYPO3 version" ranks the harness hint first at `appliesTo(10) + text(173)`, over
-`text only(209)`; "test the extension on TYPO3 12 and 13" puts it seventh of
-ten. Asked through the tool the skill actually calls, the split is total:
-`typo3_hint_lookup` for an extension's quality surface returns
-`installation-upgrade`, `deprecated-apis` and `project-repository-layout` — the
-last of them `scope: project`, which is not even the unit under audit.
-
-Both reaches are settled in
-[`D-KNW-013`](knw-013-this-repositorys-own-sentence-is-reworded-rather-than-indexed.md),
-which repeated this measurement over the 107 texts the repository has to hand
-now. The sixth phrasing is not a keyword: the checklist sentence was reworded to
-name the test suite and the supported versions it runs on, and the hint half is
-two patterns on `extension-repository-layout` that name a version rather than a
-test. The bare word was measured again and rejected again, and a second copy of
-the range rule in `project-extension-tests` moved nothing. What this entry
-decided holds — the two vocabularies were widened together, and neither half
-reaches the rule without the other.
+The hint half is the second place it did not reach, and that one is inside the
+domain: the harness hint carries ten testing phrasings and says nothing about a
+supported range, while the hint carrying the range carries no testing phrasing.
+`D-KNW-013` settles both by rewording the sentence and adding two patterns that
+name a version rather than a test. The bare word was measured again and rejected
+again.

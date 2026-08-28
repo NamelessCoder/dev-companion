@@ -105,31 +105,17 @@ page says the opposite in the sentence it reads first.
 
 ## Since then
 
-The range was measured and there is no boundary. One throwaway directory per
-major with the engine required into it — `typo3fluid/fluid` 2.15.0, 4.6.1 and
-5.3.1, the three constraints `D-VER-003` reads off the covered checkouts — and
-ten markup cases rendered through a `TemplateView`, each once uncached and once
-off a `SimpleFileCache` that a prior render had filled. All three engines answer
-identically on all ten, so the statement is unbound: no `since` and no `until`.
+The range was measured and there is no boundary: three engines, ten markup
+cases, each rendered uncached and off a filled cache, and all three answer
+identically.
 
-What the measurement says is stronger than what this entry assumed, and the
-probe ViewHelper is what says it. Beside an `f:else` the body is not rendered
-and swallowed — it is never evaluated. A ViewHelper standing there records no
-call, on all three engines and on both the uncached and the compiled path, while
-the same ViewHelper inside an `f:then` and inside an `f:if` that has no else
-records one. Plain text in that position disappears the same way, so the
-feedback's reading — that ViewHelper output in particular is what gets lost — is
-narrower than the behaviour. The **Assumed** about `f:else if` holds: a body
-beside `<f:else if="1">` renders nothing exactly as one beside `<f:else>` does,
-and the false condition still reaches the right branch in both forms.
+What the measurement says is stronger than what this entry assumed. Beside an
+`f:else` the body is not rendered and swallowed — it is never evaluated, on
+every engine and both paths — and plain text disappears the same way, so the
+feedback's reading that ViewHelper output in particular is lost is narrower than
+the behaviour.
 
 The **Evidence** bullet saying routing is not what failed is wrong, and its own
-first bullet is what shows it. `fluid template conditional link` reaches
-`fluid-templates` because it carries the word Fluid; the feedback's own query
-carries no path, no extension and no such word, so `Domains::detect()` returned
-the PHP fallback and the whole Fluid category was gone before anything was
-scored. Writing the statement did not change that — the probe still matched
-nothing with the sentence in the corpus.
-[`D-KNW-024`](knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md)
-is the second lever this entry said there was no need for, and with it the
-feedback's own words reach the entry they were written onto.
+first bullet shows it: the feedback's query carries no word that reaches the
+Fluid domain, so the category was gone before anything was scored. `D-KNW-024`
+is the second lever this entry said there was no need for.

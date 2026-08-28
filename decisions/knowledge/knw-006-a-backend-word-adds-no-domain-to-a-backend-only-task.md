@@ -60,17 +60,11 @@ was not, so a task about one TCA field still had its brief opened with
 ## Confirmed on 2026-08-23
 
 Neither half of the **Wrong if** holds, and the second is measured rather than
-argued. Probed on 2026-08-23, "render a content element", "build a content
-element", "content element template" and "add a content element to my extension"
-all select fluid and typoscript — so the two domains are reachable for a content
-element without a text that says sitepackage or frontend.
+argued: four phrasings of a content element task all select fluid and
+typoscript, so the two domains are reachable without a text that says
+sitepackage or frontend.
 
 The first half is covered from a direction that did not exist when this was
-written. "content element backend preview" selects `php` alone, as this entry
-decided, and the first hint it returns is `content-element-preview`, which is a
-Fluid hint: a curated `appliesTo` phrase crosses the domain gate under
-`D-ANS-084`. So a backend task naming a preview is answered with the Fluid hint
-that is about it, without the domain being opened to everything Fluid.
-
-`HintsTest::aBackendTaskIsNotCalledFluidAndTypoScriptWork`
-holds both sides on five prompts, three of which are recorded scenario prompts.
+written: a backend preview selects `php` alone, as this entry decided, and the
+first hint it returns is a Fluid one, because a curated phrase crosses the
+domain gate under `D-ANS-084`.

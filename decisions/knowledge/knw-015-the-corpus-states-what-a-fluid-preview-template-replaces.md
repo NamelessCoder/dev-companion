@@ -113,60 +113,23 @@ is the first thing an editor sees.
 
 ## Confirmed on 2026-08-02
 
-The run that wrote the statement redid the reading on both checkouts, and the
-split holds as described. `GridColumnItem::getPreview()` calls
-`renderPageModulePreviewHeader()` before it dispatches
-`PageContentPreviewRenderingEvent` on 13.4 and on 14.3 alike, uses the
-listener's value as the content only, and hands both to
-`wrapPageModulePreview()`, which is unchanged between the two.
-`FluidBasedContentPreviewRenderer` calls `setPreviewContent()` and nothing else
-on both.
-
-The four header parts are the same four on both majors, built from different
-sources: 14.3 reads the label field off the schema's `Label` capability and
-passes date, label and subheader through `RecordFieldPreviewProcessor` —
-`prepareFieldWithLabel()` for the date, `prepareText()` plus `linkToEditForm()`
-for the other two — where 13.4 reads `ctrl.label` from `$GLOBALS['TCA']` and
-uses its own `renderText()` and `linkEditContent()`. Neither difference is
-visible to a template, so the statement carries no `since`.
+The reading was redone on both checkouts and the split holds: the header is
+rendered before the event is dispatched, the listener's value is the content
+only, and the wrap is unchanged between the majors. The four header parts are
+the same four, built from different sources, and neither difference is visible
+to a template — so the statement carries no `since`.
 
 The narrowness the second **Wrong if** names did not materialise for the table
-in play: `tt_content` declares `label` as `header` on both majors. The statement
-says "the record type's label field" and gives `header` as the `tt_content`
-case, so a preview registered for another table is covered by the phrasing
-rather than contradicted by it.
-
-The footer is stated with the header, because it is drawn by the same renderer
-and the same template cannot reach it: `renderPageModulePreviewFooter()` is
-called from `getFooterInfo()`, outside the `element-preview` wrap, and carries
-the start and end time, the frontend user group, the two spacing fields and the
-internal description.
-
-The probe this entry recorded the gap on still reached nothing once the
-statement was in, because `content-elements` carried no preview vocabulary at
-all — the subject was indexed under the registration, `mod.web_layout` and the
-CType. `backend preview` was added to its `appliesTo`, which is what the two
-symptom probes now reach it by, and no query in the sweep changed hint.
-
-What was not re-run is the manual: the third **Wrong if** was checked by the
-judging run on the same day, and the page is unchanged since.
+in play, and the statement is phrased so another table's preview is covered
+rather than contradicted. The footer is stated with the header, because the same
+template cannot reach it. The probe still reached nothing once the statement was
+in, because the hint carried no preview vocabulary at all.
 
 ## Revoked on 2026-08-02
 
-By the work this entry queued. Its statement ends "and nothing in this server
-says so", and what it asked for is on `content-elements` — the split, the four
-header parts by field, and the six footer fields. A reader of a listing has the
-title and the status and nothing else, so `confirmed` over a statement ending
-"nothing here says so" reads as a claim about a gap that is closed.
-
-The **Confirmed on** above stays as the reading: both majors were re-read, the
-statement carries no `since` because nothing between them is visible to a
-template, and `backend preview` had to be added to the hint's `appliesTo` before
-the symptom reached it at all.
-
-What holds from here is
-[`D-KNW-021`](knw-021-a-fluid-preview-template-replaces-the-content-half.md),
-and what must keep holding is `R-KNW-042`, which now rests on the successor. One
-of this entry's three **Wrong if** survives into it — the core moving the header
-behind the event — and it is a different failure there: a statement in the
-corpus that has gone false, rather than a statement nobody had written yet.
+By the work this entry queued: its statement ends "and nothing in this server
+says so", and what it asked for landed the same day. A reader of a listing has
+the title and the status, so `confirmed` over that sentence reads as a claim
+about a gap that is closed. `D-KNW-021` holds from here. One of the three
+**Wrong if** survives into it and is a different failure there: a statement in
+the corpus that has gone false, rather than one nobody had written.

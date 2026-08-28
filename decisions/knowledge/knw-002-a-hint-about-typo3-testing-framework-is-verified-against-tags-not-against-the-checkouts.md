@@ -43,19 +43,14 @@ with its own release cycle that `.checkouts/` does not contain.
 
 ## Since then
 
-The gap in **Wrong if** is closed by the command it names.
-`bin/cli checkouts:update` keeps the package beside the core checkouts, one
-worktree per pinned line at that line's newest tag, and `bin/cli catalog:check`
+The gap is closed by the command the **Wrong if** names: the package is kept
+beside the core checkouts, one worktree per pinned line, and `catalog:check`
 re-derives the pairing from the pins and reads the load-bearing half of the
-statements there: the four boilerplate files and the "copy it" line in their
-header, the five `typo3Database*` variables and the credentials message, the
-document-root-relative extension path, the package collection's missing
-dependency, and the `clear` flag `setUpFrontendRootPage()` writes. Nothing about
-the pairing is recorded, so a release inside a line arrives with the next update
-instead of with an entry somebody maintains, and one that changes nothing
-relevant passes without a word — which is what separates a guard from a reminder
-to go and look. What no needle covers stays unguarded, and the honest
-alternative above is still the answer if that is the half that moves.
+statements there. Nothing about the pairing is recorded, so a release inside a
+line arrives with the next update rather than with an entry somebody maintains,
+and one that changes nothing relevant passes without a word — which is what
+separates a guard from a reminder to go and look. What no needle covers stays
+unguarded.
 
 ## Revoked on 2026-08-01
 

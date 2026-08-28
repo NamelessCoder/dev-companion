@@ -104,20 +104,12 @@ primed, and the failure looks like a broken query rather than an empty table.
 
 ## Since then
 
-The statement landed the same day, in `6688aac9`, and that commit is where the
-first and third **Wrong if** were settled: the package was read at `8.3.3`,
-`9.6.1` and `main`, the premise holds on all three, and the two cases that would
-have made it too strong are carried into the sentence rather than left out —
-`$initializeDatabase = false` and `withDatabaseSnapshot()`. It is on
-`core-tests` and nowhere else, which is the third one: no other hint states it,
-and what `extension-test-site` says about the truncation is which caches outlive
-it. `R-KNW-043` is what keeps both halves together, held by
-`HintsTest::theFixtureRuleIsStatedWithTheEmptyDatabaseUnderIt`.
+The statement landed the same day, and that commit settled the first and third
+**Wrong if**: the package was read on all three release lines, the premise holds
+on each, and the two cases that would have made it too strong are carried into
+the sentence rather than left out. It is on one hint and nowhere else.
 
-The second one is the placement and is still open. Measured here on 2026-08-23:
-`typo3_hint_lookup` for "my functional test finds no records, the table looks
-empty" with `packages/my_ext/Tests/Functional/Domain/EventRepositoryTest.php`
-returns `core-tests` beside `project-extension-tests` and the answer carries the
-sentence. That is one call composed by somebody who knows what to look for; what
-would settle it is a session that reaches it without being told, which is a
-forward run rather than a reading.
+The second is the placement and is still open. Measured here, the call composed
+by somebody who knows what to look for returns it; what would settle it is a
+session that reaches it without being told, which is a forward run rather than a
+reading.

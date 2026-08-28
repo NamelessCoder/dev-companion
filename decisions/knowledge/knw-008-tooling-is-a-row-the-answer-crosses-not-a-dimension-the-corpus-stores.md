@@ -85,25 +85,11 @@ was asked is whether it should become a dimension crossing the audience one.
 
 ## Since then
 
-The ranking miss this entry queued is fixed. Re-run on 2026-08-22, "Set up tests
-for our site package extension" returns `project-extension-tests` first, where
-it came back with `sitepackage-layout` and `sitepackage-initial-content` when
-this was written.
+The ranking miss is fixed: the harness hint comes back first for the query that
+used to return two sitepackage hints. The row is fourteen cells now and every
+one is routed to — this section first said three were not, and the sweep behind
+that had excluded the one place a hint routes to another hint.
 
-The row is fourteen cells now rather than six, and every one of them is routed
-to. This section first said three were not — `extension-test-extensions`,
-`extension-test-site` and `extension-repository-tests` — and the sweep behind
-that had excluded `knowledge/hints/`, which is the one place a hint routes to
-another hint. Read again the same day: `project-extension-tests` closes on *what
-a functional test then needs from the installation around it is three more
-questions*, naming the first two and `extension-test-frontend-request`, and
-`extension-repository-layout` names the third where it stops at what a
-repository commits.
-
-So the first **Wrong if** has not fired, and the crossing is reached rather than
-only written: a caller asking which extensions a functional test loads gets
-`project-extension-tests` first, and that sentence is its last.
-
-The second **Wrong if** is unread. Whether two cells disagree about the same
-fact for the same audience is a comparison of fourteen bodies, and the sweep
-that would do it is not this one.
+So the first **Wrong if** has not fired and the crossing is reached rather than
+only written. The second is unread: whether two cells disagree about the same
+fact for the same audience is a comparison of fourteen bodies.

@@ -46,18 +46,8 @@ there.
 
 ## Confirmed on 2026-08-22
 
-The rule holds and the **Wrong if** has not fired. Four enums stand below `src/`
-and the smallest of them, `RequirementState`, is read by three files, so none is
-the backed enum used by exactly one class that would have asked for an allowed
-list. `StructureTest::everyFileDeclaresOneClass` runs over every `*.php` below
-`src/` and tokenises rather than greps, so `Foo::class` and an anonymous
-`new class` are not counted as declarations.
-
-One path in **Decided** is corrected here: the second exception is
-`src/Installation/probe.php` rather than `Runtime/probe.php`, and the test
-excludes it by base name. What it is excluded for is unchanged — it runs inside
-somebody else's installation and is never loaded here.
-
-The **Assumed** held both times it could have been tested. The renderer that
-prompted the entry is still one class, and the two enums added since are read
-from five and 22 files.
+The rule holds and the **Wrong if** has not fired: the smallest of the four
+enums below `src/` is read by three files, so none is the one-caller enum that
+would have asked for an allowed list. One path in **Decided** is corrected — the
+second exception is `src/Installation/probe.php`, which the test excludes by
+base name, for the reason already given.

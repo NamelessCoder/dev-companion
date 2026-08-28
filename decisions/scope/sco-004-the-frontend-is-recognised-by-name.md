@@ -41,28 +41,13 @@ are shaped exactly like core paths, and the second one is one.
 
 ## Revoked on `2026-08-02`
 
-The withholding held and the sentence about the escape did not. That contributor
-was asked, with a `typo3/sysext/fluid_styled_content/Resources/Public/Css/` path
-and a task naming the frontend rendering and both asset domains. Both sections
-go — `withheldCategories` comes back as `Backend TypeScript` and `Backend CSS`,
-and no hint in either category is in the answer. Being inside the core moves
-nothing, which is this decision working rather than failing, and reading the
-corpus back settles the loss the entry was worried about: `css-class-naming` is
-`.toolbar-item`, `.module-docheader` and `t3js-*`, `css-source-build-boundaries`
-is `Build/Sources/Sass/` and `lintScss`, `css-styleguide-demos` is a demo below
-`typo3/sysext/styleguide/`. None of those is advice about what
-`fluid_styled_content` renders, so the contributor loses nothing they wanted.
-
-What was wrong is the last line above. `styleguide` did work — it is a
-`BACKEND_MARKER`, so `Domains::namesTheFrontend` returns false on it and both
-sections come back — but it was named nowhere in the notice, and the other one
-was named as *"Name the backend in the task if you are styling a backend
-module"*. The contributor above styles no backend module, so the one escape they
-were shown read as addressed to somebody else and the one that would have fitted
-was invisible. The notice now names both, each with the case it is for. The
-assumption that failed is not the withholding but that a mechanism reachable by
-a word is an escape somebody can find: the word was in the marker list and in no
-answer this server writes.
+The withholding held and the sentence about the escape did not. Asked with a
+`fluid_styled_content` CSS path and a frontend task, both sections go and the
+corpus says the contributor loses nothing they wanted. What was wrong is that
+`styleguide` worked and was named nowhere, while the escape that was named
+addressed somebody styling a backend module. The notice names both now, each
+with the case it is for: a mechanism reachable by a word is no escape while the
+word appears in no answer this server writes.
 
 ## Since then
 

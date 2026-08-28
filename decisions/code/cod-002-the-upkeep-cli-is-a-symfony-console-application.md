@@ -57,32 +57,10 @@ passed nothing should be told.
 
 ## Since then
 
-A feedback asked for a `feedback:record` command here, so that an agent could
-report without "needing to invoke the PHP class directly" —
-`feedback/2026-07-31-183652-the-typo3-dev-companion-server-provides-a.md`,
-judged on 2026-08-02. What it runs into is the half-sentence under **Decided**.
-Composer exports `bin/cli` as no `bin`, so a project that requires this package
-has no such command to call at all. The session that asked was auditing a site
-package in another directory. What reaches it there is `typo3_feedback_record`,
-and a `tools/list` against this checkout on 2026-08-02 still offers it,
-twenty-third of twenty-four. Both it and any command would be gated on the same
-`Channel::isAvailable()` — a standalone checkout — so the command would answer
-only where the tool already answers.
-
-What that session actually hit is one file over in the same batch: none of this
-server's tools were callable in its client at all, which
-`feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md` says
-and which is still open. Its two feedback from 18:36 carry no `directory:` line,
-and the stdio entrypoint always supplies one, since it hands `getcwd()` to
-`Instance::discoverFrom()`. So they were written by reaching into this checkout
-rather than by calling the server the project was configured for. A session that
-reaches that far can start `bin/typo3-dev-companion` instead, which is what this
-one did twenty minutes later — and then every tool answers rather than one. A
-second way in is as undiscoverable as the first was, so it is not the lever that
-report names.
-
-The question went up on 2026-08-02 and came back no: the command is not added,
-because the feedback rests on a premise this checkout does not have. Nothing
-here asks an agent to invoke a PHP class, and the second way in would be as
-undiscoverable as the first. The feedback is archived by the commit that writes
-this paragraph.
+`feedback/2026-07-31-183652` asked for a `feedback:record` command so an agent
+could report without invoking a PHP class. The question went up on 2026-08-02
+and came back no. Composer exports `bin/cli` as no `bin`, so a project requiring
+this package has no such command to call, and a command would be gated on
+`Channel::isAvailable()` exactly as `typo3_feedback_record` already is. What
+that session actually hit is that none of this server's tools were callable in
+its client at all.

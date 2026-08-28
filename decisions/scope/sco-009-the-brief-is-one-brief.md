@@ -66,28 +66,10 @@ What it does not do is answer twice.
 
 ## Since then
 
-The second **Wrong if** has been reached, at the harmless end of what it
-describes. A core patch review passed five `typo3/sysext/` paths and the `area`
-`core Resource / extbase Service / fluid ViewHelpers` in one call, and reported
-the payload it got back: the area arrived as the sixth entry of `paths` and as
-`{"path": "core Resource / extbase Service / fluid ViewHelpers", "scope": "core"}`
-in `scopes` (`feedback/2026-08-03-144410`, 2026-08-03). The call was made again
-on this branch and reproduces both entries exactly.
-
-The two subjects agreed, which is the half of the bullet that did not happen.
-The area describes the same three subsystems the five paths are in, so it was
-scoped `core` as they were, and no step of the brief was filtered by a verdict
-about a string nobody named. What the reporter names is the other half: nothing
-downstream can read `scopes` as the files, because one of its entries is prose.
-
-The maintainer answered on 2026-08-03: `area` is removed rather than deprecated,
-because nothing needs it. So `typo3_task_guide` takes `task` and `paths`, and
-every entry of `scopes` is a path a caller named. What the parameter alone could
-still decide — the installation knowing a key as somebody's package rather than
-as a system extension — is now read off the path, so `paths: ["my_sitepackage"]`
-answers what `area: "my_sitepackage"` answered. That signal keeps its place in
-`R-SCO-001`'s order, and `Scope::of()` lost the third argument no caller had
-left.
-
-The deprecation step `AGENTS.md` implies for a schema is what was waived, and
-`todo/waiting/2026-08-03-171601` is closed by this.
+The second **Wrong if** was reached at its harmless end: a review passed five
+`typo3/sysext/` paths and an `area` in one call, and the area came back as a
+sixth entry of `paths` and of `scopes` (`feedback/2026-08-03-144410`). The two
+subjects agreed, so no step was filtered by a verdict about a string nobody
+named — what breaks is that `scopes` can no longer be read as the files. The
+maintainer answered the same day: `area` is removed rather than deprecated, and
+what it alone could decide is read off the path instead.

@@ -48,51 +48,14 @@ now consulted, and the installation this server was started in is one of them.
 
 ## Since then
 
-The second **Wrong if** was read on 2026-08-02 and it was happening. With
-`TYPO3_DEV_COMPANION_ROOT` set to a site installation and the server started
-inside
-`.checkouts/14.3`,
-`Scope::of('', 'Add a content element with a backend preview')` came back
-`project`, and so did `Build/Sources/Sass/theme.scss` — a path shape that exists
-nowhere but the core root. One value was answering two questions: which
-installation to read, and which repository the work is in.
-
-They are separated now. `Instance::startedIn()` is the second of them and walks
-up from the directory the server was started in; the variable keeps the first
-and moves nothing else. Where the walk-up reaches no installation the named one
-is the only evidence there is, so it still answers — which is the case
-`D-DIS-006` leaves it for, a client that starts this server away from the
-session's own directory.
-
-What that costs is one escape that worked by accident. A contributor in the
-first **Wrong if** — client run from a site installation, core checked out
-elsewhere — could name the core checkout in the variable and have the scope
-follow. Now only the reading follows, and the way out is the one this entry
-already states: say `typo3/sysext/` once.
-
-The first **Wrong if** was not settled. Its front half behaves as written and is
-pinned; its back half, paths passed relative to the system extension directory
-the contributor is standing in, is untried — a `Classes/` path is read as
-extension work by its shape before the checkout is consulted at all, and whether
-that is the wrong order here is a separate question.
-
-## Since then
-
-The back half is settled, and the answer is that the shape stops being evidence
-there. `Classes/`, `Configuration/` and `Resources/` are what a package is laid
-out as, and from the core root nothing is named that way — this entry's own
-second **Assumed** says so — so inside a core checkout such a path is one a
-contributor typed from the system extension directory they were standing in. The
-gate is the mirror of the one `Build/Sources/` already has: the core layout
-counts only where the session could be standing in the core, the package layout
-only where it is not standing in it, and where there is no installation at all
-both stand, being the only evidence in the call.
-
-It changes no order. `R-SCO-001` still reads the path before anything said about
-the call, and every marker above the shape — `typo3/sysext/`, `packages/`,
-`vendor/`, an area the installation knows — decides before it as before. What
-changed is that one signal is weighed by the checkout it is being read in, which
-is what the neighbouring rung already did.
+The second **Wrong if** was happening: one value answered two questions, which
+installation to read and which repository the work is in, so a core path came
+back `project`. They are separated — `Instance::startedIn()` walks up from where
+the server was started and the variable keeps the reading alone. Its back half
+is settled too: inside a core checkout a `Classes/` path is one a contributor
+typed from the system extension directory, so the package layout counts only
+where the session is not standing in the core, which is the mirror of the gate
+`Build/Sources/` already had. No order changed.
 
 ## Confirmed on 2026-08-22
 

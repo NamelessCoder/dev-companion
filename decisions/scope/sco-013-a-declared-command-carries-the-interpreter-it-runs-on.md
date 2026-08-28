@@ -101,37 +101,12 @@ command list says none of it.
 
 ## Since then
 
-Built on 2026-08-19 as `R-PRJ-013`, and the two questions the card left open
-were settled here rather than in it.
-
-**Nothing a workflow leaves to something else is resolved.** A `node-version` is
-read where it names a version outright — `24`, `24.19.0`, `v24`, and a trailing
-`.x` that means any release of what stands before it — and handed back as the
-workflow writes it otherwise: a `${{ }}` expression, a matrix entry, an `lts`
-alias, a `>=20` that installs whatever is newest. A `node-version-file` is named
-and not followed, which is the same rule one step further out: the file it names
-need not be the `.nvmrc` this answer already read, and following it would state
-a number nothing in the answer distinguishes from a read one. The third **Wrong
-if** is what decided all of it, and the cost is one `Read` for a caller who
-wants the resolution — the workflow, which is the file that has it.
-
-**The numbers stand in a `node` object of their own rather than inside
-`phpRelation`.** They are four numbers with a source list of their own, and the
-object is null where the repository has no npm surface at all — the one silence
-about Node that says something. `phpRelation` is null on a different condition,
-and putting the two in one object would have made each condition read as the
-other's.
-
-What they are held against is what the repository declares for itself: the
-`.nvmrc` pin where there is one, because that is what a version manager selects
-and therefore what a run is executed on, and the lowest version `engines.node`
-admits where there is none. Where the workflows name different versions the
-relation states none and the list carries each, because which one applies is the
-workflow's own condition.
-
-The first **Assumed** now has a shape rather than a number, and it is narrower
-than it looked: only the segments both sides spell are compared, so an `.nvmrc`
-saying `24` and a workflow saying `24.19.0` agree. The difference this feedback
-lost a session to — 24.16 against 24.19 — is therefore one no file states and
-this answer cannot state either. What it does state is that both exist and where
-they stand, which is what the session had nothing of.
+Built on 2026-08-19 as `R-PRJ-013`, with the two open questions settled in the
+building. **Nothing a workflow leaves to something else is resolved**: a version
+named outright is read, and an expression, a matrix entry, an `lts` alias or a
+`node-version-file` is handed back as written, which the third **Wrong if**
+decided. **The numbers stand in a `node` object of their own**, null where the
+repository has no npm surface at all, because `phpRelation` is null on a
+different condition and one object would have made each read as the other's.
+Only the segments both sides spell are compared, so the difference that cost the
+reporting session — a minor against a minor — is one no file states.

@@ -82,17 +82,9 @@ one signal that placed anything is the one the answer drops.
 
 ## Since then
 
-The second shape is what landed, on 2026-08-28.
-`Scope::everyPlacedPathIsOutsideTheCore()` states the rule once and both tools
-read it: `TaskGuide` for the call's verdict and for `$outsideCore`, and
-`TestRunGuide` for which paths a suite could run over. `Scope::placed()` is the
-half both of those are expressed in — a group that placed nothing neither
-decides the call nor vetoes what the rest of it placed.
-
-The third row of the table above now answers `scope: "extension"` with no check,
-no suite and `runTests.sh` named three times, all three of them boundary
-statements: the outside-core notice, and twice a hint saying that
-`typo3/testing-framework` ships its XML files for an extension to copy. The
-other three rows are unchanged, and the `core`-with-an-unplaced-path call is the
-one shape that moved without being reported — it answers `core` where it
-answered `uncertain`, which is the same rule read from the other side.
+The second shape landed the same day: `Scope::everyPlacedPathIsOutsideTheCore()`
+states the rule once and `TaskGuide` and `TestRunGuide` both read it. The third
+row of the table answers `extension` now, with no check and no suite, and the
+other three are unchanged. One shape moved without being reported — a core path
+beside an unplaced one answers `core` where it answered `uncertain`, which is
+the same rule read from the other side.

@@ -82,25 +82,12 @@ being the core's own call.
 
 ## Since then
 
-The queued half landed the same day. `TaskGuide::nextTools()` drops the
-core-only candidates before it keeps one entry per tool, rather than `answer()`
-filtering the deduplicated list afterwards, so a line the check recognises
-leaves the generic candidate for that tool standing. The four lines carry their
-artefact now: the two `typo3_commit_message_guide` ones name Gerrit, which is
-what `workflow="core"` is the convention of, and the two `changelog` ones name
-the directory below `typo3/sysext/` the procedure writes into and the core
-checkout the skeleton is read in.
+The queued half landed the same day: `TaskGuide::nextTools()` drops the
+core-only candidates before it keeps one entry per tool, so a line the check
+recognises leaves the generic candidate for that tool standing, and the four
+lines carry their artefact now. An extension deprecation brief is answered with
+the project wording where it was answered `workflow="core"` before.
 
-What that buys is the entry the drop used to take with it. An extension
-deprecation brief is answered
-`typo3_commit_message_guide, before committing — its default is this repository's case`,
-where it was answered `with workflow="core" and isDeprecation=true` before.
-
-The last route of this shape was not an intent's. `Result\Prose` opens every
-rendered rule section with what a range is carried by elsewhere, and half of
-that line asked `typo3_test_run_guide` for a `runTests.sh` command whatever the
-scope — read by `typo3_rule_lookup`, `typo3_script_lookup` and
-`typo3_task_guide` alike. The renderer takes the scope its caller has already
-computed and says the convention half alone outside the core. An extension test
-brief named the script twice before that and names it once now, in the notice
-that says it does not apply.
+One route of this shape was not an intent's: `Result\Prose` opened every
+rendered rule section with a line asking `typo3_test_run_guide` for a
+`runTests.sh` command whatever the scope. It takes the caller's scope now.

@@ -140,95 +140,13 @@ queries that entry offers as proof that *LoginProvider* is reachable at all.
 
 ## Since then
 
-The fourth **Wrong if** names what a floor would need before anybody sets one,
-and both halves of it were measured on 2026-08-04 — the same day, over the same
-live 14.3 index of 1419 pages, driving this lookup through a cached reader so
-the numbers are the ones a caller gets. The maintainer asked for the rank gap
-first and for the normalised share after it. Neither separates the six
-collisions from the pages that answer a three-word question, and the two
-failures have one cause.
+The rank gap was measured in three forms over eight queries, and the share the
+fourth **Wrong if** asks for was made concrete as the covered weight over the
+weight of the terms at least one page carries — a term no page carries being
+weight nobody could have covered.
 
-### The rank gap, in three forms
-
-Top-hit coverage against second-hit coverage over the eight queries above, as a
-difference and as a ratio. As a difference the answers span 0.024 to 0.458 and
-the collisions 0.020 to 0.294, so
-`FunctionalTestCase executeFrontendSubRequest CSV fixture TYPO3 14` is an answer
-lying below two of the three collisions. As a ratio the two bands sit on top of
-each other: 0.542 to 0.871 against 0.508 to 0.908. Measured in the ranking score
-instead of the coverage — which is what "one page well clear of the rest"
-actually means, and the ranking is by score — it is the same picture, 0.129 to
-0.457 against 0.093 to 0.327.
-
-The gap does worse than fail to separate: it orders the two queries that price
-the measure at the far collision end of both scales. `login screen layout` has
-three candidates on one score at the top and `login form template` has five, so
-both stand at a difference of 0.000 and a ratio of 1.000. Any threshold in
-either form empties those two before it touches a collision, and takes
-*LoginProvider* with them. A corpus of two- and three-word titles ties at the
-top whenever the query is short, which is the shape the gap was supposed to
-read.
-
-### The share against what a page could carry
-
-The measure this entry's fourth **Wrong if** asks for, made concrete as the
-covered weight over the weight of the terms at least one page carries — asked
-with `TermSearch::carries()` over the same searchable fields the score uses. A
-term no page carries is weighed `log(N)/2` by `TermSearch::weights()` and can
-never be covered by anybody, so today it lowers every page alike; here it leaves
-the denominator instead.
-
-It moves the numbers and it moves them the right way. `login screen layout`
-reaches 73% of its own weight because no page carries "screen",
-`TCA inline foreign_field foreign_sortby localization children` 62% because none
-carries "foreig" or "childr", and the `FunctionalTestCase` query 75% because
-none carries "sub", "csv" or "fixtur". So *Functional tests* goes from 0.186 to
-0.247, *IRRE / inline* from 0.430 to 0.690, and *LoginProvider* in
-`login screen layout` from 0.344 to 0.471.
-
-And it reorders exactly one pair. The best candidate of
-`layout root paths login screen override` moves only from 0.217 to 0.244, so the
-answer that stood below that collision now stands above it: a floor in the
-interval 0.244 to 0.247 empties that one query and keeps all five that must
-survive. Three thousandths wide, and it leaves the other two collisions where
-they were.
-
-Those two are what closes the family. A floor would have to sit above 0.598 and
-at or below 0.247, because *Multi-language Fluid templates* carries 0.598 of
-`fluid.html file extension templates` and *Naming* carries 0.458 of
-`Fluid template file naming convention v14`, while *Functional tests* carries
-0.247 of the query it answers first. Neither of those two is a measurement
-artefact that a better denominator repairs — both pages genuinely carry the
-words they were found by, and both answer a different question than the one that
-was asked.
-
-That is one finding across all three measures rather than three separate
-failures. What is indexed is a table of contents: what a page is called, where
-it sits, and which book it is in. Carrying a query's words and answering its
-question are not distinguishable in that, so no arithmetic over the coverage
-separates them, and the remaining lever is the index rather than the threshold.
-`D-ANS-046` is what stands in the way there for two of these three questions:
-TYPO3 Explained 14.3 writes `.fluid.html` in 49 code-example captions and states
-the convention in no sentence, so a corpus of page bodies does not carry the
-answer either.
-
-### The drop is closed out
-
-Put to the maintainer on 2026-08-04 with the two options priced — close it out,
-or keep the card open against a change of index that nothing has costed — and
-the answer was to close it out. So the floor is not deferred any more: nothing
-is left waiting on a measure, and building one would start from the reading
-above rather than from this entry's fourth **Wrong if**.
-
-`feedback/2026-08-03-164734` is archived with that, which supersedes the
-**Decided** bullet saying it is not. Its "at minimum" half shipped in this
-entry's change; its second sentence — return the fact that nothing clears a
-threshold, rather than the best six collisions — is what is now declined, on the
-grounds that no threshold over this index can tell the two cases apart. The card
-that carried it is deleted.
-
-What holds from here is what the change already ships: every result carries the
-share of the query it covers, and the answer says above the results where
-nothing covers half. The fourth **Wrong if** stays as it stands, because it is
-still what somebody setting a floor would have to satisfy — the difference is
-that it is now a bar rather than an errand.
+The drop was put to the maintainer on 2026-08-04 with the two options priced,
+and the answer was to close it out. So nothing is left waiting on a measure. The
+half of **Decided** that is now declined is returning the fact that nothing
+clears a threshold rather than the best collisions, on the grounds that no
+threshold over this index tells the two cases apart.

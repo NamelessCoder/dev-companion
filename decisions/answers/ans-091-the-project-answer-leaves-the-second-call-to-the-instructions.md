@@ -111,83 +111,9 @@ the sentence rather than the answer of the call that fired.
 
 ## Since then
 
-The imperative is where this left it. `Coverage::instructions()` still carries
-"Then call typo3_task_guide for the workflow the task belongs to; it hands the
-parts that have their own workflow to the skill that owns them", and
-`typo3_project_describe` has gained no imperative of its own.
+Asked for again by a session that made neither call, in its strongest form: that
+this answer name the task skills. A second zero opening followed, five turns of
+core work, and the position it moves is not this one.
 
-All three **Wrong if** need a run rather than a reading, and none has been
-recorded: `scenarios/runs/` holds the same three forward runs as before, none of
-them a second count of the two calls, and no feedback since 2026-08-21 reports
-either a tool called because the project answer named it or a session finishing
-that answer without knowing what to call next.
-
-### 2026-08-24 — asked for again, by a session that made neither call
-
-[`feedback/archive/2026-08-24-140120`](../../feedback/archive/2026-08-24-140120-four-skills-matched-the-opening-request-almost.md)
-proposes the sentence this entry declined, in its strongest form: that this
-answer name the task skills fitting the repository kind it has just described,
-because a skills list "costs one more field and lands in the very first call
-every workflow makes".
-
-That premise is what the session's own account takes back. It made no first
-call. `typo3_project_describe` was reached several turns into the task and from
-inside a skill that named it, so a skills field would have arrived after each of
-the four skills it would have named was already needed. The position this entry
-declines is one four sessions have passed over, and this is a fifth that would
-have read it late.
-
-No **Wrong if** is met. Nobody counted the two calls, because both were zero at
-the opening; the session did not finish this answer without knowing what to call
-next, because it did not begin with it; and no tool was called because this
-answer named one. What the zero opening is evidence about is the instruction
-channel rather than this answer, and it is read at
-[`D-SKL-033`](../task-skills/skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md).
-
-### 2026-08-27 — a second zero opening, and the position it moves is not this one
-
-[`feedback/archive/2026-08-25-114735`](../../feedback/archive/2026-08-25-114735-the-mandated-opening-calls-project-describe-and.md)
-is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`, five turns of core
-work ending in a patch and a commit, with neither opening call made. It is the
-strongest account yet of why: the session quotes the imperative back word for
-word, calls it right, and names its own harness prompt — do the work through
-`Bash` — as what the sentence lost to.
-
-The first **Wrong if** does not fire on it. That one counts the two calls with
-the imperative in place and asks whether the ratio moved; this is zero against
-zero, so there is no ratio, and the reading of the 2026-08-24 row above holds
-unchanged. Neither of the other two fires either: no tool was called because
-this answer named one, and the session did not finish this answer, having never
-begun with it.
-
-What it does carry is a position this entry does not decide about. The one
-answer the session did receive was `typo3_commit_message_guide`, in the turn the
-work became a core patch, and it named nothing onward — which is
-[`D-ANS-117`](ans-117-the-commit-draft-names-the-workflow-that-owns-the-commit.md).
-The distinction is the one the 2026-08-24 row already drew: this entry declines
-a sentence at the *opening*, and that one places a sentence at the *phase*, on
-an answer a session under momentum still asks for.
-
-### 2026-08-27 — the guides listing was read back into, which is more than the Wrong if asked
-
-[`feedback/2026-08-25-110726`](../../feedback/archive/2026-08-25-110726-what-worked-four-review-findings-the-server.md)
-is the first session that reports acting on a name in this answer, and the
-second **Wrong if** fires on it. What it acted on is the guides listing itself:
-it read `core/contribution/gerrit-workflow` whole off the array in the second
-half of the session, for the backport half of a core patch review, and says it
-would not have known the page existed otherwise.
-
-That is one step past what the **Wrong if** predicted. It expected a next step
-to be followed and a catalogue to fail; the catalogue is what was followed, and
-the two open reports of this same array going unread both name a moment when the
-work was already under way by hand. `D-ANS-061` carries that reading, where its
-second **Assumed** is met.
-
-Nothing decided here moves, and the reason is the ratio rather than the
-position. The **Decided** above declines a sentence at the *opening* of this
-answer, and this session read the array at neither the opening nor as a next
-step — it reached back into a list it had been holding for half a session. The
-first **Wrong if** is still what settles the entry, and no run has counted the
-two calls since `D-AUD-012`. What the four passing sessions weigh has changed by
-one: the position is not one nobody acts on, only one nobody acts on at the
-moment it arrives.
+Then the guides listing was read back into, which is more than the **Wrong if**
+asked: the first session to report acting on a name in this answer.

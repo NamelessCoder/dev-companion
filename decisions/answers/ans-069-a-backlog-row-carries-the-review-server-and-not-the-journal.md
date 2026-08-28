@@ -94,147 +94,22 @@ enumeration answer has no journal in it.
 
 ## Since then
 
-**Built on 2026-08-09**, and the relations cost a call after all. A relation
-carried as a number and a word is what `R-ANS-029` forbids, so the rows go
-through the bulk read that already fills an issue's relations — one
-`issues.json?issue_id=…` for the whole page, whatever the rows carry between
-them, which is the trade `D-ANS-064` made and this entry endorsed for the review
-query. So the page is the index call, that fill where any row has a relation,
-and one review query per twelve rows.
+Built on 2026-08-09, and the relations cost a call after all: a relation carried
+as a number and a word is what `R-ANS-029` forbids, so the rows go through the
+bulk read that already fills an issue's relations.
 
-Recorded live against forge.typo3.org and review.typo3.org the same day, in
-`documentation/server/tools/typo3_forge_lookup.rst`: the three oldest open
-issues came back with 8 relations, one file and 6 changes between them, `#15984`
-among them with the four relations and the three changes `D-ANS-064` was written
-from.
+Amended on 2026-08-25, because the enumeration drops a status it is already
+holding — the sentence above was written about a field that costs a call rather
+than about this one. What does not move is the verdict: the reporting session
+says the status was not what decided it, an inline comment was, and that is one
+call per change.
 
-**Amended on 2026-08-25**, because the enumeration drops a status it is already
-holding, and the sentence above was written about a field that costs a call
-rather than about this one.
+Read back on 2026-08-27 against the first session to hold the field. The third
+**Wrong if** did not fire and the first did, in the same run: the report calls
+the presence of an abandoned change most of what makes an old issue worth
+picking up, and says the review tool never had to be opened — which is what the
+wording was written to prevent. So the row names the change and the state it
+stands in, and names the argument under that state as the reading.
 
-The measurement here priced two things and refused both: the comment count, at
-one read per row, and the description, at 38.5 kB a page. `Forge::reviewed()`
-asks the review server the batched query the entry endorsed, and
-`Gerrit::change_()` hands it back `status`, `subject`, `patchSet` and `updated`
-per change. It keeps `number` and `url`. So carrying whether a change is merged,
-open or abandoned costs no further round trip on the enumeration path — the
-answer is in the payload and thrown away.
-
-The issue path is the other half and the decided line holds there unchanged.
-`Forge::issueOf()` lifts `reviews` out of the journal and asks the review server
-nothing, so a status on that answer is a Gerrit call the read does not make
-today.
-
-`feedback/2026-08-24-173151` is what raised it, from candidate selection: an
-issue whose only change was abandoned under a negative review is a different
-candidate from one nobody has attempted. `feedback/2026-08-24-183447` made the
-same jump on 85224 from a patch review, and `feedback/2026-08-24-173116` counted
-what the blind pick costs — one live issue in five candidates, each dead one
-paid for with a code read.
-
-**What does not move is the verdict.** The reporting session says the status was
-not what decided it: the inline comment was, `wrong approach :(` on
-`/PATCHSET_LEVEL`, and that is `/changes/<n>/comments`, one call per change. So
-the schema sentence *a handle and not a verdict* stays true of the half that did
-the work, and becomes false only of the status beside it. The first **Wrong if**
-above is what the wording has to answer when the field lands: a status is where
-the change stood when the row was read, and an `ABANDONED` is grounds to read
-the argument rather than to skip the issue — this feedback's own session fixed
-#35069 after reading one.
-
-Queued rather than made here: it is `src/` and `ForgeLookup::outputSchema()`.
-
-**Built on 2026-08-25**, on the enumeration path alone. `Forge::reviewed()`
-keeps the `status` the batched query answers, the schema carries it per entry,
-and the row prints it beside the change number — no further call, and the issue
-path stands as the decided line above leaves it.
-
-What the wording had to answer is the first **Wrong if**, so the schema says *a
-state and not a verdict* and what an `ABANDONED` is grounds for: reading the
-argument on the change, where the objection was written down and is regularly to
-the approach rather than to the defect. The rendered paragraph above the rows
-says the same thing, because a caller reads the text half and not the schema.
-
-Recorded live the same day, in
-`documentation/server/tools/typo3_forge_lookup.rst`: the three oldest open
-issues carry six changes between them, four of them `ABANDONED` and two
-`MERGED`, and none still open. That is six calls a triage no longer makes to
-learn that every attempt on those rows has stopped.
-
-**Read back on 2026-08-27**, against the first session to hold the field. The
-third **Wrong if** did not fire and the first one did, in the same run.
-
-`feedback/2026-08-26-223414` swept this backlog 33 hours after the status
-shipped, from a task that was to find one old issue and fix it. Its own call was
-re-run on 2026-08-27 through `bin/typo3-dev-companion` — `open="stale"`, tracker
-`Bug`, `updatedBefore="2020-01-01"`, limit 25 — and answers 25 of 71 rows
-carrying five changes between them: `#70921` change 44202, `#82228` 53819,
-`#72962` 46262 and `#52070` 27263 all `ABANDONED`, `#62727` 71094 `MERGED`. The
-report names the first four and calls them prior attempts that died.
-
-Those four were not read whole. The eight issues its sibling
-`feedback/2026-08-26-223257` lists by number are eight others, so the page did
-take the reading off the caller rather than being read past, which is what the
-third **Wrong if** asks about.
-
-**It took it off in the way the wording was written to prevent.** The report
-calls the presence of an abandoned change "most of what makes an old issue worth
-or not worth picking up" and says `typo3_gerrit_lookup` never had to be opened.
-The argument on the change is what an `ABANDONED` is grounds to read, and none
-of the four was read.
-
-The answer says both things, and the session acted on the second. The paragraph
-above the rows says a state and not a verdict; `ForgeLookup::workflow()` below
-them opens its ordered readings with "What has already happened to it, which
-`typo3_gerrit_lookup` answers by the number before the checkout is opened. An
-abandoned change is a verdict somebody wrote down", under an instruction to stop
-at the first that decides. That block was written when the state cost that call.
-The row now carries the state, so its first reading reads as answered by the
-page, and the call that would have supplied the argument is the one the reading
-was about. `skills/typo3-core-issue-triage/SKILL.md` states the same sentence at
-step 7 with the diff behind it; the block is the compressed copy, and what the
-compression dropped is the half that costs a call.
-
-Queued rather than made here: it is `src/`, and `D-SKL-038` owns the block.
-
-**Built on 2026-08-27**, in the block and not in a new claim. The first reading
-now says what the row carries — the change and the state it stands in — and
-names the argument under that state as the reading, which `typo3_gerrit_lookup`
-answers by the number. The half the compression dropped is back with it: an
-`ABANDONED` is grounds to read that argument rather than to pass the row over,
-which is the sentence the paragraph above the rows and step 7 of
-`typo3-core-issue-triage` already carried.
-
-The verdict sentence is gone rather than qualified. It stood for a state that
-cost a call, and beside a row that carries the state it read as the reading
-itself, which is what the session did with it.
-`ForgeTest::theFirstReadingNamesWhatTheRowLeavesToACall` holds the three halves,
-so a later compression of the block fails rather than drops one again.
-
-### 2026-08-27 — a second task shape works the boundary the way it was drawn
-
-**A session shortlisted 25 rows in one call and then read three journals, which
-is the split this entry decided.** `feedback/2026-08-27-145349` asked
-`open="stale"`, `tracker="Bug"`, `category="workspaces"`, `limit=25`, then read
-seven issues with `notes="people"`. Three candidates died on a comment rather
-than on a description: #92377 on a reporter saying it no longer reproduces,
-#42109 on a maintainer calling it architectural, #93286 on a relation to a
-closed streamlining. It names none of that as reachable from a row.
-
-That is the third **Wrong if** not firing, from a task shape this entry never
-saw — find any workspace bug worth fixing, rather than triage a named backlog.
-The comment count this entry declined to carry per row is what those three reads
-cost, and the session paid it three times out of twenty-five rather than
-twenty-five times.
-
-The first **Wrong if** is closer than it was and is not settled. Six rows
-carried an `ABANDONED` change and one of the six was read whole; the session
-names the flag as what told it those issues "had already defeated somebody,
-before I read any of them", and says nothing about why the other five went
-unread. An account that does not say why a row was passed over cannot tell the
-flag being read as a verdict from the flag ranking a shortlist, so this is
-evidence to hold rather than a firing.
-
-The lowercase `category` resolving to the project's own spelling, with
-`categoriesUsed` echoed back, is named as what kept the session from guessing —
-one more surface that costs nothing per row.
+A second task shape then worked the boundary as it was drawn: 25 rows in one
+call, then three journals read by number.

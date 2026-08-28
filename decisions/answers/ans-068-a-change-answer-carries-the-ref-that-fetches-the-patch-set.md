@@ -92,64 +92,13 @@ states.
 
 ## Since then
 
-Built on 2026-08-09 as a `fetch` field on each change entry, carrying `ref` and
-`remote` and null where the server named no patch set. The text half prints
-`Fetch: git fetch <remote> <ref>` under the patch set line, and says once per
-answer that the fetch goes to the review server rather than to `origin`.
+Built as a field on each change entry, carrying the ref and the remote and null
+where the server named no patch set, with the fetch command under the patch set
+line.
 
-Both assumptions the entry rested on are settled, and neither moved anything.
-The sharding is Gerrit's own rule: its access control reference states
-`refs/changes/<last two digits of change number>/<change number>/<patch set number>`
-under *Special references*, and `RefNames.shard()` is the `%02d` that writes
-those two digits. A change numbered under ten is therefore
-`refs/changes/04/4/1`, and that case cannot arise here — change numbers 1 to 10,
-50, 200, 500 and 1000 answer nothing on review.typo3.org, and 2000 is the lowest
-of the probed ones that answers. The padding is reached by every change whose
-number ends below ten anyway: `refs/changes/00/2000/2` resolves there and
-`refs/changes/0/2000/2` does not.
-
-The first **Wrong if** was measured rather than waited for. On 2026-08-09
-`git ls-remote https://review.typo3.org/Packages/TYPO3.CMS` resolved the three
-refs this answer now derives — `refs/changes/79/95179/1`,
-`refs/changes/40/95040/3` and `refs/changes/11/89011/4` — to the commits the
-same answers carry.
-
-### 2026-08-12 — two review sessions fetched what the answer named
-
-`feedback/2026-08-11-055157` reviewed change 94686 from a core checkout. The
-session read `patchSet`, `commit` and the ref out of one answer, saw that the
-checkout's `HEAD` was a different commit, and fetched `refs/changes/86/94686/3`
-before reading a line of the diff — its own account is that it would otherwise
-have reviewed `main` and reported nothing. `feedback/2026-08-12-092654` is
-another task shape a day later and the same use: change 95169 fetched at
-`refs/changes/69/95169/2` in one command, first try.
-
-Neither confirms this entry. A strength is a session's account of its own run,
-which `D-FBK-018` declines to read as a measurement. What the two do bear on is
-the third **Wrong if**, and from the other side: both fetched over the remote
-this answer names rather than over `origin`, which is the failure `D-SKL-021`
-measured before the field existed.
-
-Re-run on 2026-08-12: `change: "94686"` answers patch set 5 at
-`cac873e95dc59bc48bea0bc5dd396bf57a84d638`, with `fetch.ref`
-`refs/changes/86/94686/5` and the review server as `fetch.remote`. The change
-has merged since that review, so the ref follows the current patch set exactly
-as this entry says it does — and a session holding the old one has to read the
-number beside it.
-
-### 2026-08-26 — a triage fetched the shortlist because the ref was the only read offered
-
-`feedback/2026-08-24-195307` reports the other side of this boundary. The
-session was triaging eight open changes, needed no checkout for any of them, and
-fetched every one into the user's own working checkout — which the user stopped
-it over. The ref was not misread: it was the only thing in the answer that
-reaches what a patch is, so a session wanting to read a change reaches for the
-one field that puts it on disk.
-
-That is none of the three **Wrong if** above and it does not touch the
-derivation. What it bears on is the entry's reach rather than its claim: the ref
-answers "how do I get this patch" and was standing in for "what is in this
-patch", which nothing beside it answered.
-[`D-ANS-112`](ans-112-a-change-answer-establishes-the-patch-without-a-fetch.md)
-is what takes that half, and this entry keeps its own — a fetch is still what a
-suite run and a line-level reading need.
+Both assumptions are settled and neither moved anything. The sharding is
+Gerrit's own documented rule, and the case a shorter number would raise cannot
+arise here — the low change numbers answer nothing on that server. The first
+**Wrong if** was measured rather than waited for: the three refs this answer
+derives resolve on the review server to the commits the same answers carry. Two
+review sessions have since fetched what the answer named.

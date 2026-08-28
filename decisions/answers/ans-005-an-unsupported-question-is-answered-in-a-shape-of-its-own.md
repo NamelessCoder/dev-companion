@@ -66,69 +66,14 @@ The shape was never the thing worth keeping.
 
 ## Since then
 
-A client met the shape on 2026-08-04, which is what `D-ANS-001` inherited this
-entry and never had. `META-02` ran in the `E-NONE` this checkout now makes
-itself — `bin/cli environment:create E-NONE` — as a session driven with the
-case's prompt and nothing besides. `typo3_icon_lookup` and `typo3_label_lookup`
-both answered `unsupported` with `cause: no-installation`, the reason, and the
-seven directories discovery walked from that directory to the root.
+A client met the shape on 2026-08-04, which is what the entry this inherited
+never had: both installation-backed tools answered `unsupported` with the cause,
+the reason and the directories discovery walked.
 
 Neither **Wrong if** about a client reading the answer happened. The session
-told the user the installation could not be asked, named
-`TYPO3_DEV_COMPANION_ROOT` and `TYPO3_DEV_COMPANION_CONSOLE` as the way out, and
-wrote that an identifier recalled from memory is the answer it would not give —
-it branched on the key rather than reading the fields under it, and it surfaced
-a non-error answer rather than swallowing it. The third was not exercised: the
-client read `structuredContent` and validated nothing, so a validator that
-cannot read `oneOf` is still a client nobody here has met.
-
-That leaves the `instructions` lever `D-ANS-001` named unspent, and there is
-nothing left asking for it. The sentence it would have added — that a miss and
-an unanswerable answer are two things — is what the client did without being
-told, and `R-ANS-013` holds those instructions to a budget it would have had to
-displace something to enter.
-
-The other half of `META-02` never reached this shape at all. Its `E-STOPPED` run
-asks the same prompt of a site project whose DDEV is stopped, and both lookups
-it reaches read the package files where the console cannot (`R-ANS-008`), so the
-session was answered rather than told nothing could be asked. What `todo/`
-carries from that is where the case now stands, and one defect the run found on
-the way.
-
-That last sentence held for `.environments/e-site-main`, where no interpreter on
-this machine satisfies what the installation pins. It does not hold for the
-three released lines, and the run that settled it was made on 2026-08-04 in
-`.environments/e-site-14.3`: `bin/typo3-dev-companion` over stdio, one process
-throughout, the project stopped when the session opened, five calls, a real
-`ddev start` — 18.2s, exit 0 — and then the same five.
-
-**Four of the five answers are byte-identical across the start**,
-`structuredContent` included. The whole of what moves is inside
-`typo3_server_scope`, and inside that it is one object: `installation.console`
-goes from `via: php` on PHP 8.3.23 with the caveat naming `ddev start` and the
-root, to `via: ddev` on PHP 8.4 with `caveat: null`. The call itself falls from
-0.951s to 0.054s. `typo3_project_describe` answers `packages` in both halves and
-names neither the stopped project nor the command that would start it.
-
-**Both of the prompt's own lookups answer `answeredBy: installation` in both
-halves, and neither carries a caveat.** The label query returns the same four
-labels from `EXT:core` and `EXT:frontend` before and after; the icon query for
-`publish` returns nothing in both, because `publish` is not an icon name, and
-the `workspace` query returns the same nine.
-
-That closes what the 13.4 run could not decide. On that branch
-`typo3/cms-lowlevel` ships no `TranslationDomainSearchCommand`, so the label
-lookup falls back to the package files whatever DDEV is doing. 14.3 ships the
-command, and the command turns out to need no database at all: run straight
-against the stopped project on host PHP 8.3 — which carries `pdo_mysql` and no
-`pdo_sqlite`, while every covered installation is configured for `pdo_sqlite` —
-`language:domain:search` answers exit 0 with its payload.
-
-So on every covered line a stopped project answers this prompt exactly as a
-running one does, and what the declared runtime brings is not reached by the
-prompt at all. `META-02`'s criteria are rewritten to that: the two states are
-told apart by `typo3_server_scope` and by nothing the prompt asks. What would
-still separate them is a lookup whose answer needs the database, because that is
-the one service host PHP cannot reach here — the missing driver is what 13.4's
-stopped half reported in its caveat. Naming one is what giving the case a second
-prompt would take, and no tool has been measured for it.
+told the user the installation could not be asked, named both variables as the
+way out, and wrote that an identifier recalled from memory is the answer it
+would not give — it branched on the key rather than reading the fields under it.
+The third was not exercised, so a validator that cannot read the schema is still
+a client nobody here has met. That leaves the instructions lever unspent, and
+what it would have said is what the client did without being told.

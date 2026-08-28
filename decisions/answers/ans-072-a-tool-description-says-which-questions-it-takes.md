@@ -65,75 +65,13 @@ other tool had already answered, and grepped a 1400-line script instead.
 
 ## Since then
 
-The description says both halves today, read on 2026-08-23. It opens on what the
-tool holds — how `Build/Scripts/runTests.sh` is started and what it needs first,
-what an argument after `--` reaches, the commands per subject, the pre-commit
-hook — and hands the rest over by name: "Which suite a change actually needs,
-and what one of them does when it runs — what it provisions, what it passes
-through, which environment variables change it — is `typo3_test_run_guide`."
+The description says both halves today: it opens on what the tool holds and
+hands the rest over by name. No session reports skipping it for the reason this
+entry names — the one feedback since is a client that delivered every tool as a
+bare name, which is a cause on the client's side.
 
-No session reports skipping it for the reason this entry names. The one open
-feedback that names the tool since, `2026-08-19-090401`, reports a client that
-delivered every tool as a bare name with no schema and a session that called
-none of them — a cause on the client's side, which `D-AUD-011` owns, rather than
-the word "script" misrouting a session that read the description.
-
-The pattern recurred one pair over, on 2026-08-24. `feedback/2026-08-24-133651`
-reports a session that could not tell whether "what is this codebase's idiom for
-X" goes to `typo3_hint_lookup` or to `typo3_rule_lookup`, and read both
-descriptions after the fact to find out. Neither names the other: the first
-opens "Return hints for TYPO3 core paths or task topics, grouped by section",
-the second "Search the TYPO3 rules and procedures this server carries, by
-topic", and both plausibly take the question. So this entry's **Decided** — two
-adjacent tools that only their descriptions can tell apart — holds on the pair
-that carries most of the corpus, where it was written for `typo3_script_lookup`.
-
-What it is not is this entry's **Wrong if**. Nothing in that report says the
-word "hint" or the word "rule" misrouted it; the session called neither tool and
-grepped its checkout instead, which is what `feedback/2026-08-24-133515` reports
-for the whole of the same session. The lever is a clause in each description
-naming what the other takes, and it touches `src/`, so it is queued on the card
-serving that feedback rather than made here. The routing block of
-`knowledge/server-scope.json` already splits the two for a core patch — hints by
-the paths being changed, rules for the Gerrit workflow — and a session that
-calls nothing never reaches it.
-
-That clause landed on 2026-08-24. `typo3_hint_lookup` now says what a hint is —
-a convention at the code itself — and hands the procedures to
-`typo3_rule_lookup` by name; `typo3_rule_lookup` hands back what the code has to
-look like. `ScopeTest` holds both halves, so a description that drops the other
-name fails rather than misroutes.
-
-The **Wrong if** has its first candidate, and it is not taken as satisfied.
-`feedback/2026-08-25-114653` is a five-turn session in
-`/home/benji/projects/typo3-cms` whose every changed file was in
-`Build/Scripts/`, and it names the word in its own account: "script" read to it
-as CLI or console scripts rather than as the `runTests.sh` dispatcher. What
-disqualifies it is what it reports beside that. It made no call at all — no
-`typo3_project_describe`, no `typo3_task_guide`, no skill
-([`D-SKL-080`](../task-skills/skl-080-a-path-only-the-core-has-routes-to-the-cores-own-workflow.md),
-which is its sibling report from the same session sixty-nine seconds later) —
-and it lists the name third, after its harness prompt telling it to prefer Bash
-and the tool list reading to it as documentation lookups. This entry's **Wrong
-if** is about a session choosing between tools and passing this one over, which
-is the same ground `feedback/2026-08-19-090401` was disqualified on above.
-
-The answer was there when it was filed, which is the other half of why. Read on
-2026-08-27 at `071aefe1`, the commit before the report: the document already
-carried the mount contract, the fresh-clone and worktree case, and the sentence
-that `-s cglGit` reports SUCCESS having read no file from a worktree, and
-`test-suite-hints.json` carried it per suite. Called here with
-`task="run cglGit in a git worktree"`, the tool returns *The Pre-Commit Hook*
-and *Common Commands*, which is the whole of what the session spent five grep
-and sed round trips establishing.
-
-What was missing is the surface no test asks for. `typo3_script_lookup` had no
-`routing` entry: counted here on 2026-08-27, 25 of the 28 registered tools were
-named in one, and the other two that were not are `typo3_server_scope` and
-`typo3_feedback_list`.
-`ScopeTest::everyToolIsReachableThroughTheScope` reads `covers` alone, so the
-hole survived. The entry added on 2026-08-27 names the moment this session was
-in — getting the script to run in the checkout in front of you — and hands the
-run-shape half to `typo3_test_run_guide`, which is this entry's **Decided** on
-the surface that outlives a description. The next report that names the word
-after calling something is decisive, because nothing cheaper is left to pull.
+The pattern recurred one pair over: a session could not tell whether "what is
+this codebase's idiom for X" goes to the hint lookup or the rule lookup, and
+read both descriptions after the fact. Neither names the other and both
+plausibly take the question, so **Decided** holds on the pair that carries most
+of the corpus.

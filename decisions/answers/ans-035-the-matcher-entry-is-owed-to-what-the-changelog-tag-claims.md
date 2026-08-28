@@ -114,67 +114,15 @@ about the matchers.
   was then not the gap and the wording is what to look at — step 4 of the
   `D-ANS-029` ladder.
 
-## Confirmed on 2026-08-03
+## Since then
 
-The rule reached a reviewer four hours and forty-seven minutes after it was
-written, and the five rows were read as a closed list. `62ccdba` wrote them at
-09:56; `feedback/2026-08-03-144316` quotes them back at 14:43, from a review of
-`9f6c6eb9093` (#110359) in `/home/benji/projects/typo3-cms`. That patch removes
-a protected method, `ImageService::getImageFromSourceString()`, from a class
-that is neither final nor `@internal`. The session was about to demand a matcher
-entry. It read the list, found no row for a protected method, and reported
-instead that the matcher **cannot** exist for one, so the entry would be
-`NotScanned` or `PartiallyScanned`. It filed that as the single call that
-corrected it before it acted, and asked that the enumeration be kept verbatim
-because "its value was in what it does NOT list".
+The rule reached a reviewer under five hours after it was written and the five
+rows were read as a closed list. The session was about to demand a matcher
+entry, found no row for a protected method, and reported instead that the
+matcher cannot exist for one — filing that as the single call that corrected it
+before it acted.
 
-The conclusion is false, and the rule's own routing sentence already said so.
-
-- `MethodCallMatcher` documents itself as "a 'weak' match since we're just
-  testing for method name but not connected class". Its `enterNode()` matches
-  any `MethodCall` node whose `name` is an `Identifier` in the flattened
-  definitions, and compares the argument count. It reads no declaration, so no
-  visibility is available to it at all.
-- The precedent is one minor version away from the patch under review.
-  `Breaking-110277-FileRendererRegistrationAndInterfaceChanged` turns
-  `RendererRegistry::getRendererInstances()` from public to protected, and
-  `MethodCallMatcher.php:6998` carries
-  `TYPO3\CMS\Core\Resource\Rendering\RendererRegistry->getRendererInstances`
-  with that file as its `restFiles` entry. A method the core made protected is
-  entered where a public one is.
-- The list omits a row because none is needed, not because a case is excluded.
-  Core ships 23 matcher files and the rule names five; read as closed over
-  visibilities it also has no row for a private property or a trait, and nobody
-  has drawn that conclusion because nothing invited it.
-- What invited this one is the shape of the two property rows. Three of the five
-  are routed by how the member is written — instance, static, class — and two
-  name a visibility. So the list teaches that visibility is a discriminator, and
-  then has no row for the method case it just taught the reader to look for.
-- The session held both readings inside one debrief.
-  `feedback/2026-08-03-144432`, seventy-six seconds later, says a removed public
-  **or protected** member "makes it breaking, and then the subject needs
-  `[!!!]`, a Breaking changelog entry and an extension scanner matcher".
-
-Step 4, wording. Not 1a, because the fact was in the section already — "how the
-removed member is written where it is used decides the file" is the whole
-answer, one line above the list that contradicted it. Not step 2, because it was
-delivered: the query was `typo3_rule_lookup "breaking change"`, and re-run on
-2026-08-03 it returns `## Breaking Changes` at 100% with the five rows verbatim.
-
-The section now says that visibility routes a property and never a method, why
-the method matchers cannot see one, the `getRendererInstances` precedent, and
-that the missing row says nothing about whether an entry is owed. The last
-clause is what the keep-request asked for the opposite of, so it is written
-rather than left to the reader.
-
-One draft was thrown away for the reason this entry already records. It said
-"the name at the call site", and
-`aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt` failed at once: "how do I
-push a patch for review from my site package" matched the new prose on `site`.
-The word is still carried by nothing else in the corpus, so the evidence bullet
-above holds a second time, and the sentence uses "where it is used" — the
-vocabulary the bullet above it already spends.
-
-The first **Wrong if** is untouched. The third is what this bears on, from an
-angle it did not name: the removal was reviewed *with* the matcher rule
-delivered. The wording is what to look at, which is the step it says to take.
+The conclusion is false and the rule's own routing sentence already said so: the
+matcher documents itself as weak, matching a method name and an argument count
+and reading no declaration, so no visibility is available to it. The precedent
+is one minor version away from the patch under review.

@@ -97,59 +97,20 @@ handed the asset pipeline.
 
 ## Confirmed on 2026-08-24
 
-The reading the judgement left open was carried out against all four covered
-checkouts, and the boundary generalises. The first **Wrong if** was what it
-looked for and it does not hold. Two subsystems besides `ext:form` submit an
-intent and resolve the resource behind it on the server, and both were read on
-12.4, 13.4, 14.3 and `main`. `<typo3-backend-icon identifier="actions-close">`
-names an icon and never a file, `IconController::getIcon()` resolving the
-identifier through `IconFactory`, and the client's own fallback for one that
-does not resolve is another identifier, `default-not-found`. The element browser
-is opened with a `mode` and `ElementBrowserRegistry::getElementBrowser()`
-resolves the class, throwing exception 1647241086 where nothing is registered
-under it. A third is the install tool, whose upgrade wizards submit
-`install[identifier]` and are resolved by the service behind it; that one is
-named here rather than in the hint, because it was read on `main` alone and the
-class holding it is not where 14.3 has it.
+The boundary generalises and the first **Wrong if** does not hold: two more
+subsystems submit an intent and resolve the resource behind it on the server,
+read on all four checkouts, .
 
-The second **Wrong if** is settled the other way round from how it was written.
-It asked whether the core would move towards the client resolving a resource;
-what the checkouts show is the core moving away from it, and inside this very
-subsystem. `form-manager/view-model.ts:200` sets the blank mode's `templatePath`
-to a literal `EXT:form/…/NewForms/BlankForm.yaml` on 12.4 and 13.4, and it is
-the only literal `EXT:` resource path in the whole backend TypeScript tree on
-either. On 14.3 and `main` it is gone: the wizard rewrite dropped the constant
-rather than moving it into the payload the module is handed, and the two `EXT:`
-occurrences left in the tree are a docblock and an `LLL:` label key. That is the
-statement's boundary and both sides of it were read.
+The second is settled the other way round from how it was written. It asked
+whether the core would move towards the client resolving a resource; the
+checkouts show it moving away, inside this very subsystem — the one literal
+`EXT:` resource path in the backend TypeScript tree is gone on the two newer
+lines, dropped rather than moved into the payload.
 
-So the feedback's own rule is corrected rather than copied, which is what
-**Decided** asked the reading to settle. "Backend TypeScript must not hold an
-`EXT:` path" is contradicted by `form-manager.ts:117`, whose select carries
-every `newFormTemplates` path the server put in the module's initial data, and
-`create-form-submission-service.ts:31` submits one back. Carrying a value the
-server gave it is what the core does; working one out is what the core removed.
-`FormManagerController::createAction()` matching the submitted `templatePath`
-against that same configuration is why the client repeating the decision buys
-nothing.
-
-One bullet of the feedback's suggestion is left out, and the reading is why. It
-asks the hint to state that an absent or empty argument is a legitimate way for
-the client to say the editor made no choice, which the controller then resolves
-a default from. No covered checkout does that: `createAction()` runs
-`isValidTemplatePath()` against whatever arrives and an empty `templatePath`
-matches no configured entry, so on `main` the blank mode is rejected rather than
-defaulted. It is a good design and it is the session's own, not something the
-core demonstrates, and a hint stating it would be this repository's preference
-wearing a TYPO3 fact's clothes.
-
-The **Assumed** about arrival was tested and cost the hint one pattern.
-`Build/Sources/TypeScript/` reaches the TypeScript half, and claiming the whole
-tree put this hint above `javascript-unit-tests` in the ranking `D-ANS-075`
-holds — a hint about the seam is not a hint about every file in the tree. The
-pattern that carries the arrival is `Classes/Controller/`, which is the half
-`backend-typescript` never covered and the half the reporting session had open.
-`bin/cli hints:probe` on the words that session needed — "what backend
-TypeScript may hold and what belongs in PHP" — now reaches
-`backend-client-server-boundary` first at `text only(175)`, against the
-`icon-usage` and `console-commands` this entry recorded before it landed.
+So the feedback's own rule is corrected rather than copied: carrying a value the
+server gave it is what the core does, and working one out is what it removed.
+One bullet is left out because no checkout does it — an empty argument is
+rejected rather than defaulted — and a hint stating it would be this
+repository's preference wearing a TYPO3 fact's clothes. The **Assumed** about
+arrival cost the hint one pattern: a hint about the seam is not a hint about
+every file in the tree.

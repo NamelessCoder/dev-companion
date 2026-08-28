@@ -75,89 +75,21 @@ corrections before the developer asked whether it had actually looked.
 
 ## Since then
 
-2026-08-14. Two feedback from one session reviewing a Playwright-only change
-land on this entry's `whenToUse` rather than on the suite it added.
-`feedback/2026-08-13-214708` read the clause "which is how a single spec or
-project is selected" as the sanctioned way to narrow a run, went to a local
-Playwright invocation, and got no evidence out of it at all;
-`feedback/2026-08-13-214729` reports that the suite blocks on a read from
-`/dev/tty`, so a session without a controlling terminal loses the instance and
-is told SUCCESS.
+Two feedback from one session land on the `whenToUse` rather than on the suite.
+The **Assumed** is the half that failed: the local route has a precondition this
+entry never names, and the session hit it as a browser build that was not on the
+host. The statement holds and the clause is true — every e2e case builds its
+command from the project alone and reaches no passthrough — which makes it the
+wrong sentence to hang a route on, because a Playwright-only diff costs the
+whole suite.
 
-The **Assumed** is the half that failed. The commands the script prints are
-`npm --prefix=Build run playwright:run -- --project e2e` and its `:open`
-counterpart, `Build/package.json` carries `playwright:install` as a script of
-its own, and the container path runs `IMAGE_PLAYWRIGHT` instead — so the local
-route has a precondition this entry never names, and the reporting session hit
-it as a browser build that was not on the host. The first **Wrong if** did not
-fire as written: what stopped that session was the route the entry offered, not
-the instance.
+The second feedback is step 1a and the first **Wrong if** firing as written: the
+suite blocks on a read from `/dev/tty`, so a headless session loses the instance
+and is told SUCCESS. The condition and the false green sit in the entry that
+offers the command.
 
-The statement holds and the clause is true. Every e2e case builds `COMMAND` from
-`PLAYWRIGHT_PROJECT` alone and reaches no `"$@"` on `.checkouts/main`, `14.3`
-and `13.4`, where `-s unit`, `-s functional`, `-s npm`, `-s composer` and
-`-s phpstan` all do. That makes it the wrong sentence to hang a route on: a
-Playwright-only diff costs the whole suite, and the price is what belongs beside
-the command. `todo/open/2026-08-14-002523` carries the rewrite.
-
-2026-08-14, the rewrite. Both entries now state the price, and the local
-commands keep their place carrying what they need: `Build/package.json` has
-`playwright:install` as a script of its own beside `playwright:run` on all three
-branches, and the containerised path runs `IMAGE_PLAYWRIGHT` instead — so the
-browsers the host needs are read on every branch that has the suites rather than
-on `main` alone, and nothing about the precondition is bound.
-[`R-KNW-067`](../../requirements/knowledge/knw-067-the-e2e-answer-states-the-price-of-a-playwright-only-change.md)
-is what the entries hold to. `browser-tests` loses the clause offering the same
-route, which leaves it saying what the suite is for and nothing about what it
-prints — which is what this entry decided in the first place.
-
-2026-08-14, the second feedback, judged here rather than in an entry of its own,
-because it is the other half of the **Assumed** above.
-`feedback/2026-08-13-214729` is step 1a: the read from `/dev/tty` is in
-`runPlaywright()` on all three branches, and nothing here said so. It is also
-the first **Wrong if** firing as written — that session ran the suite and still
-could not look at its change — and the gap was the instance, taken down by the
-failing redirect while the banner reported SUCCESS. The condition and the false
-green now sit in the entry that offers the command, and the pty that reaches the
-suite without a terminal sits in the invocation notes, held by
-[`R-KNW-068`](../../requirements/knowledge/knw-068-a-suite-that-waits-for-a-keypress-says-it-needs-a-terminal.md).
-The decision stands: the suite is still the answer to "look at this in a real
-browser", and what was missing was what it costs to reach it.
-
-That feedback's third question is answered and needs nothing built.
-`e2e-install-prepare` and `e2e-install-browser` end in the same read, on the
-branches that have them — but no entry offers them, so there is nothing here to
-qualify. They earn one when the corpus lists them.
-
-The pty is the one thing here nobody in this repository ran: it is the reporting
-session's own, and it is written as util-linux `script` because that is what it
-used. A session reporting that the form does not work on its host is what would
-show it wrong.
-
-2026-08-27. `feedback/2026-08-24-225044` is the report that paragraph asked for,
-and it does not show the pty wrong. A headless session ran the prepare suite
-under `script` with a fifo, got exit code 0 and a log ending after the composer
-install, and then found `ac-web-<suffix>` and `ac-phpfpm-<suffix>` still up and
-answering 200 on the published port. It nearly reported the instance gone,
-because this entry's sentence says a run without a terminal removes it.
-
-Step 4, wording, and the reading is in the script. The banner is printed before
-the `read` loop, so a log without the banner is a run that never reached the
-prompt — the terminal is not what ended it. `cleanUp()` runs at the end of every
-run and kills the containers on that run's network, so a run that ended before
-it leaves them standing; that is why the containers were there at all, and it is
-the one thing the entry stated as an outcome rather than as a mechanism. What
-ends a run between the container start and the banner is `waitFor` failing,
-which sends `SIGINT` to the process group where `CI=true` has removed the trap.
-
-So the entries now name the cleanup rather than the removal, and the invocation
-notes carry the way back: `docker ps` for what is running,
-`docker port ac-web-<suffix> 80/tcp` for the random high port on 127.0.0.1 that
-only `-s e2e-prepare` and `-s e2e-browser` publish, `docker rm -f` to end it.
-Read in `runTests.sh` on `.checkouts/main`, `14.3` and `13.4`; 13.4 has the same
-cleanup inline instead of in a `printSummary()`, and all three print the random
-suffix beside the result.
-
-The decision stands. What a headless caller needed was not a reason to leave the
-suite alone but the two commands that turn its half-finished run into a working
-instance, and the entry that offers the command is where they belong.
+A later headless run corrected the mechanism rather than the outcome: the banner
+is printed before the read loop, so a log without it never reached the prompt,
+and what leaves containers standing is the cleanup a run ended before. The
+entries name the cleanup now and carry the two commands that turn a
+half-finished run into a working instance.

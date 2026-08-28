@@ -123,70 +123,16 @@ the hint that prescribes the command is where the discriminator belongs.
 
 The sweep ran and the first **Wrong if** did not hold: three more commands
 answer success having done nothing, so the rule is a property of the domain
-rather than two instances, and `R-KNW-074` states it.
+rather than two instances, and `R-KNW-074` states it. Of eleven prescribed
+commands read on every covered checkout, five report their own failures, one
+needs no sentence because its hint already ends on the rendered page, and five
+are unconditional.
 
-Eleven distinct `typo3 <subject>:<verb>` commands are prescribed below
-`knowledge/hints/`, and each one's success path was read on `.checkouts/12.4`,
-`13.4`, `14.3` and `main`, where that version has it — `upgrade:mark:undone`
-ships from 13.4 on, which is the binding `installation-upgrade` already carries.
-Five report their own failures and take nothing: `configuration:set` errors on
-an unwritable settings file and on a path the manager refuses,
-`upgrade:mark:undone` errors on a wizard that was never run, `cache:flush` and
-`cache:warmup` return `FAILURE` on the flush and warmup events' own errors, and
-`upgrade:list` is a reading command that reports what it found. `cache:warmup`
-was the close call: it can warm a cache the web process cannot read, because the
-dependency injection cache identifier is hashed with the PHP version from 13.4.x
-on, but the command's exit is conditional and the core states the mismatch in
-its own `--help`, so the boundary this card drew holds.
-
-`cache:flushtags` is the sixth and the one exception to that reading: it returns
-`SUCCESS` and prints nothing whatever its tags matched. It takes no sentence
-because its hint already ends on the check — `page-cache-flushing` closes by
-sending the page that is still wrong after every one of these to
-`page-cache-headers`, so the rendered page is already named as what says a flush
-worked.
-
-Five are unconditional. `impexp:export` and `extension:setup` already carried
-their sentence. The three the sweep found are new, and each is one class deep as
-this card assumed:
-
-- `language:update` sets `$status = Command::SUCCESS` and moves it only under
-  `--fail-on-warnings`; a download the server answered with nothing is a
-  `<comment>` printed under `--no-progress` alone, so the default run hides it
-  behind the progress bar. `site-label-language` now names the labels directory,
-  because a pack that never arrived leaves the English labels and looks exactly
-  like the `typo3Language` mismatch that hint opens on. The command is
-  `Install\Command\LanguagePackCommand` up to 13.4 and
-  `Core\Command\UpdateLanguagePackCommand` from 14.3, and the status handling is
-  identical in both, so the statement is unbound.
-- `backend:user:create` returns `SUCCESS` unconditionally and prints nothing at
-  all: `createUser()` hands the row to `DataHandler` and reads neither its
-  `errorLog` nor its result. The username and the password are validated before
-  that and throw, which is why `installation-boot` already described those two;
-  what it did not say is that the step past them reports nothing.
-- `upgrade:run` marks a wizard as done where that wizard's own
-  `updateNecessary()` returned false and it does not implement
-  `RepeatableInterface` — `getWizard()` on all four checkouts. Naming the wizard
-  as an argument prints that as a note; `runAllWizards()` catches the same
-  exception as a NOOP, so a run over all of them is silent. That also corrects
-  `upgrade-wizards`, which said a wizard is marked done after one successful
-  run.
-
-`installation-boot` taking one does not reopen what **Decided** says it takes
-nothing of. That bullet is about `extension:setup` and the warm TCA cache, which
-`D-KNW-089` settled: the procedure that hint describes invalidates the entry on
-its own. `backend:user:create` is a different command and a different reading,
-and the hint already devotes a statement to it.
-
-The last one is the only sentence that went into two hints. `upgrade-wizards`
-owns `updateNecessary()` and its reader is the author whose wizard was marked
-done without running; `installation-upgrade` is the procedure that prescribes
-the command and points at neither. Neither reader would reach the other, which
-is the test `D-KNW-087` sets for a pointer.
-
-The `ddev`, `composer` and `runTests.sh` commands the corpus prescribes are
-outside what `.checkouts/` can settle, and this card's own instruction was to
-start where the evidence is. `R-KNW-049` already holds the one case a session
-measured — `cglGit` reporting SUCCESS having inspected nothing — and the rest
-would be a guess written with a verified entry's authority, which is the third
-**Wrong if** above.
+The three the sweep found are each one class deep: a language update that moves
+its status only under a flag, so a download the server answered with nothing
+hides behind the progress bar; a backend user creation that reads neither the
+error log nor the result of the write; and an upgrade run that marks a wizard
+done where its own check returned false, which also corrects the hint that said
+a wizard is marked done after a successful run. The `ddev`, `composer` and
+`runTests.sh` commands are outside what the checkouts settle, and guessing them
+is this entry's third **Wrong if**.

@@ -150,9 +150,8 @@ receiving installation answered 404 on all of them; a NEW id is split on its
 last underscore and read as a table name, so a relation wrote three rows with no
 parent and logged nothing; and the site configuration route copies the whole
 directory, so shipping the yaml alone produced a site that resolved and answered
-500. Two claims of the corpus held as written.
+500.
 
 What the reading could not settle is what publication owes: the published
 descriptions stand three characters under the ceiling, which is the fourth
-**Wrong if** arriving as a wall rather than as a displaced skill. So the skill
-is published as a draft and the baseline run is the publishing card's.
+**Wrong if** arriving as a wall rather than as a displaced skill.

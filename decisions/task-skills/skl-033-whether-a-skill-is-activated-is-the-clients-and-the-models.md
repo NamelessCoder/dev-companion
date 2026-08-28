@@ -96,14 +96,12 @@ Ten sessions of the counted shape are on record and none of them moves
 **Decided**. What the readings weighed and did not take is the project's own
 agent instruction file as a channel; what moved instead is the mood of one
 sentence, which `D-AUD-012` carries, because the position is the base's own
-order. A benchmark outside this repository read on 2026-08-19 is the third
-**Wrong if**: eighty-two runs with all twelve skills listed beside the connected
-server and `skills_used` empty on every row.
+order. A benchmark of eighty-two runs, every skill listed beside the connected
+server and none used, is the third **Wrong if**.
 
 The rows since then bound it rather than widen it. The shape arrives outside a
 core checkout too, and it arrives in German, where one word of the brief is the
 whole of the match. One row names its own cause and is read off the session's
 account rather than off a silence, and what it names is outside anything this
 server publishes — a description competes for the model's attention with
-everything else in the context, and nothing here reaches that. One report that
-reads as this shape is judged as something else.
+everything else in the context, and nothing here reaches that.

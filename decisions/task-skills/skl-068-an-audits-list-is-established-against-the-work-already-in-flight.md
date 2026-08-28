@@ -112,5 +112,4 @@ The restricted diff is symmetric, so a branch whose fix is already in the base
 and one of whose files the base edited afterwards produces exactly the diff an
 outstanding branch produces. So the skill states the empty reading as the
 mechanical half and sends the non-empty one back to the finding. `gh` is not
-assumed: it is a separate installation needing authentication against one forge,
-so the git half is the floor and the rest is asked of the maintainer.
+assumed, so the git half is the floor.

@@ -89,60 +89,17 @@ two questions are a member that moved and a member that did not.
 
 ## Since then
 
-`feedback/2026-08-24-100635` is the fourth **Wrong if** happening, and it took
-the first **Assumed** with it. A session reviewing and then reworking Gerrit
-95375 — the "Create new form" wizard's Blank mode stops reading
-`formManager.selectablePrototypesConfiguration.*.newFormTemplates` — reached
-`## Changelog Files` and `## Documentation`, judged the obligation itself, and
-concluded that no entry was owed and that `Releases: main, 14.3` stood. Its own
-account of the reading is that the two poles it was given left its case between
-them.
+The fourth **Wrong if** happened and took the first **Assumed** with it: a
+session reached both poles, judged the obligation itself and concluded no entry
+was owed. The hint answers that case — its second statement names a removed
+configuration option — so what failed is the assumption that a reviewer arrives
+with the vocabulary of the effect. This one arrived with the vocabulary of the
+obligation, and its case was configuration rather than markup.
 
-The hint answers that case. Its second statement names a removed configuration
-option, and the sweep behind it read `Breaking-106596`, which removes the legacy
-EXT:form frontend templates and the YAML option that selected them. So the
-assumption that a reviewer arrives with the vocabulary of the effect is what
-failed: this one arrived with the vocabulary of the obligation, and its case was
-configuration rather than markup.
-
-Re-run on 2026-08-24, which is the judging evidence rather than a second reading
-of TYPO3.
-`typo3_rule_lookup(query="changelog entry review readiness", targetVersion="15")`
-returns what the feedback quotes, word for word.
-`bin/cli hints:probe "does this bugfix owe a changelog entry"` reached
-`documentation-changelog` alone — the skeleton, not the test — and
-`"integrator loses a configuration option changelog"` reached nothing. The
-feedback reports the hint id arriving in `alsoInHints`; it does not, and that
-field carries `documentation-changelog` alone. The hint's only delivery into the
-question was one in-body sentence about `Breaking`, which is the word the reader
-had already ruled out.
-
-Judged step 4 on the ladder and closed on the spot, since nothing about TYPO3
-had to be looked up. The casual-bugfix bullet refused the demand on the
-condition "removes nothing public", which is what a fix that stops reading a
-configured option passes while owing an entry all the same. It now names what
-such a fix has to change nothing of — what an installation renders, is
-configured by, or has documented — and the bullet directly above it is the one
-carrying the hint, so a reader who fails a test has the route one line up.
-`appliesTo` gained the obligation question and the configuration case, so
-`bin/cli hints:probe "does this bugfix owe a changelog entry"` reaches the hint
-first and `documentation-changelog` beside it.
-
-The section's lead is untouched, and that is a decision rather than an omission.
-`feedback/2026-08-08-224455` and `-224426` both name "A `BUGFIX` owes none" as
-what stopped an `Important-*.rst` being written to be safe, and `KnowledgeTest`
-has held the sentence since. Two sessions saved by the flat exemption against
-one misled by it is not a case for removing it, so what changed is the condition
-on the refusal below it, which was wrong rather than merely flat.
-
-The section is capped at 2400 bytes by `Documents::MAX_SECTION_LENGTH` and now
-weighs 2360. A first draft carrying both tests in full ran to 2731 and was
-returned truncated, losing the `documentation-changelog` pointer off the end —
-one delivery failure traded for another. What fits is the shorter clause, which
-is also the one that does not repeat the bullet above it.
-
-What this does not settle is the third pole the session named — a manual that
-gains a paragraph it never had. On the reading above it is subsumed, because
-text describing changed behaviour means the second test already fired, and text
-filling a gap means nothing changed. Nothing here verified that against the
-core, so it is written nowhere and stays what a later reading owes.
+ The casual-bugfix bullet refused the demand on "removes nothing public", which
+ a fix that stops reading a configured option passes while owing an entry; it
+ names what such a fix has to change nothing of now, with the hint one line
+ above it. The section's lead is untouched deliberately: two sessions were saved
+ by the flat exemption against one misled by it. The section is capped, and a
+ first draft carrying both tests in full came back truncated — one delivery
+ failure traded for another.

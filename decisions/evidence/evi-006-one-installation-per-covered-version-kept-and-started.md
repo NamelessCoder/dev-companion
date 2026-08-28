@@ -117,16 +117,14 @@ covered line would be answered was shown by nothing.
 
 The development line is made after all, decided by the person who queued the
 card: these environments exist to develop this server, so a daily-moving
-installation is a development cost. It takes PHP 8.5 and the distribution's
-`dev-main`, and the build unsets the `config.platform.php` the distribution
-pinned at 8.2 against its own `php ^8.5` — which no file said and only a build
-found.
+installation is a development cost. The build unsets the platform PHP the
+distribution pinned against its own requirement, which no file said and only a
+build found.
 
 Building found the other thing reading could not: `setup` could not finish
-against MySQL or MariaDB on three branches, which was first written up here as a
-DBAL bump on `main` and is Forge #110258's introspection change, filed by
-somebody else as #110381 and fixed on 2026-08-06. A checkout is evidence about
-the day it was fetched, which is what produced the wrong account.
+against MySQL or MariaDB on three branches, first written up here as a DBAL bump
+and actually Forge #110258's introspection change, filed by somebody else and
+fixed.
 
 sqlite is the default on every line for reasons of its own — no container, no
 volume, and `rm -rf` takes an environment away — and the database is the third

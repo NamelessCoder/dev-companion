@@ -48,19 +48,15 @@ the task text. This one does not.
 The **Wrong if** is two claims. The second was settled on 2026-08-02: with the
 argument left out in an extension repository the hard error is the answer, so
 the draft is not one anybody can commit there. Whether agents leave it out is
-about behaviour, and the four channels that could tell them were read instead —
-the description and the input schema arrive at the moment of use, the routing
-entry did not name the argument, the brief named it in the checklist and left it
-out of the follow-up calls, and none of the seven published skills named the
-tool at all.
+about behaviour, and the four channels that could tell them were read instead :
+two arrive at the moment of use, the routing entry did not name the argument,
+and no published skill named the tool at all.
 
 The run that would settle the first claim happened on 2026-08-04 and answers it
 in a way this **Wrong if** did not anticipate: the session made 37 tool calls,
-all of them Bash, Read, Edit or Write, and called none of the 26. So the
-argument was left out and the hard error never appeared, because the tool was
-never called — the route decides this before the default does. That is judged as
-a delivery failure rather than a wrong default, and `D-SKL-014` is where the
-placement went.
+all of them Bash, Read, Edit or Write, and called none of the 26. So the route
+decides this before the default does. That is judged as a delivery failure
+rather than a wrong default, and `D-SKL-014` is where the placement went.
 
 ## Revoked on 2026-08-04
 

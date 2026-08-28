@@ -85,7 +85,5 @@ The first **Assumed** was then read from the other side. A session that lost a
 container cycle to an argument order reports the tool as a bare name in a
 deferred list whose schema it never fetched — so the earlier session's "the
 wording did it" and this one's "I never saw the wording" bound the lever rather
-than the rewrite, which `D-AUD-003` already said. Both passed the tool over at
-the moment they were about to run something, which is the moment **Decided**
-claims. That feedback is judged on the corpus instead: `D-KNW-112` writes down
-where the script stops reading its own options.
+than the rewrite, which `D-AUD-003` already said. That feedback is judged on the
+corpus instead (`D-KNW-112`).

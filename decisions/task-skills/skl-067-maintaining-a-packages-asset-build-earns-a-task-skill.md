@@ -109,13 +109,10 @@ assumption was right. What **Decided** gives the workflow includes verifying
 such a class against the declared majors, and on this example that verification
 does not answer: the entry is withheld at the older major because one custom
 property in it arrived later and an entry is bound whole. So the instruction has
-a miss behind it on the case that produced it, and what a withholding means —
-"not in this snapshot", and the Sass path that settles it — is part of the
-writing rather than left to the reader.
+a miss behind it on the case that produced it, and what a withholding means is
+part of the writing.
 
 Read against the session call by call, the order reaches two of the three
-decisions it shipped unverified. The third is neither a class nor a registration
-— a core surface the output stops relying on — and the changelog restricted to a
-declared major owns it. The class bullet was written before `D-CAT-006` and is
-corrected with this reading: a class the query names outright is answered on a
-target its own entry is withheld for.
+decisions it shipped unverified. The class bullet was written before `D-CAT-006`
+and is corrected with this reading: a class the query names outright is answered
+on a target its own entry is withheld for.

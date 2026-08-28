@@ -103,11 +103,9 @@ spends is taken off the skill that gets listed by its name alone.
 
 The third **Wrong if** happened on one skill: the trim took out the requests a
 user's own words reach and put back the step clause that had been cut the same
-day, and a session then read the result as a branch-switching workflow. So the
-trade this entry says it did not make was made once — the sides survived the
-sweep and not the trim. Putting them back was affordable and was done the same
-day, which says the ratchet holds a total and not a wording: what a trim leaves
-behind is read against `R-SKL-010` and `D-SKL-024` by whoever writes it.
+day, and a session then read the result as a branch-switching workflow. The
+ratchet holds a total and not a wording, so what a trim leaves behind is read
+against `R-SKL-010` and `D-SKL-024` by whoever writes it.
 
 The first **Wrong if** fired on a transcript rather than a recorded run: a
 session received every description in full, byte-identical to this checkout's

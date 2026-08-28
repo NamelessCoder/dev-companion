@@ -117,9 +117,7 @@ routing is `R-SKL-022`.
 
 The same change came back and lost the same call before any surface was read: a
 session drafting the changelog entry deleted "as documented" because it did not
-know whether the reference states it, and shipped the weaker sentence. Its
-account of why is that it read the tool's name as the `Documentation/` folders
-inside the system extensions.
+know whether the reference states it, and shipped the weaker sentence.
 
 The first **Wrong if** did not fire — no skill activated at all — so the route
 stands where this entry put it and the session never reached it, which bounds

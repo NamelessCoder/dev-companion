@@ -109,19 +109,16 @@ schemas.
 The index is data in `knowledge/server-scope.json` since 2026-08-18, so
 `Coverage::offered()` drops the entry of a tool the caller excluded, and the
 room that freed bought the commit-message line the corpus had asked for twice.
-The tool's name is not the alternative lever: `typo3_` is on every tool here.
+
 
 The first **Wrong if** fired twice, and neither is an index that was missing.
 One session had decided this server could not help and called nothing — an index
 answers a session looking for a tool, not one that has stopped looking, and what
 it asks for instead is the boundary. The other read the entry and made no call,
 because the checkout's own `AGENTS.md` carries the commit rules and a tool named
-for the same question read as redundant; it then wrote a `Releases:` trailer the
-guide would have corrected, so the entry names the branches now, in eighteen
-characters given back by the rest of the line.
+for the same question read as redundant; the entry names the branches now.
 
 Every lever left is instruction-block characters that do not exist — twenty free
 in the longest assembly — so what goes up is the budget itself, which
 `D-ANS-004` measured on one client and `todo/waiting/T-260819-dcaf.md` carries.
-Refused on their own ground: `typo3_reference_list` is not the document list,
-and no protocol lets a server ask a client to load a schema.
+

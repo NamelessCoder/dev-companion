@@ -81,6 +81,4 @@ What none of them could have recalled is the footer, and the schema told one of
 them there was none: a `project` call passing `issue` returns a draft carrying
 `Resolves:` above a closing line saying the Forge issue does not apply. That is
 step 4, the wording disagreeing with the answer, and `D-GUI-017` carries the
-repair. The same feedback asked which keyword a mixed dependency update takes;
-nothing is built for it, because it chose correctly from the four the corpus
-lists.
+repair.

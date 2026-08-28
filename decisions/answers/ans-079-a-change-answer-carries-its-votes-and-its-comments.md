@@ -126,96 +126,28 @@ NoteDB meta ref as git history instead.
 
 ## Since then
 
-On 2026-08-24 a session reviewed change 95179 — the change the comments above
-were measured on — and reported the answer as having settled the whole review
-question in one call. `feedback/2026-08-24-122330` is that report, and the third
-**Wrong if** is what it bears on: it watches for a caller reading `unresolved`
-as "nobody answered" and reporting a comment somebody replied to.
+A session reviewed the change the comments above were measured on and reported
+the answer as having settled the whole review question in one call. The third
+**Wrong if** watches for a caller reading the flag as "nobody answered" and
+reporting a comment somebody replied to; that caller did not — it separated an
+unresolved request from one resolved by its own author, and read the owner's own
+reply as still open. The reply that stays unresolved is the case **Decided**
+refuses to judge, and handing over both fields was enough.
 
-That caller did not. It separated Mathias Brodala's unresolved request for an
-Important RST from Georg Ringer's, resolved by its own author, and it read the
-owner's own reply "sure! will check it later" as still open. The reply that
-stays unresolved is the case **Decided** refuses to judge, and handing over both
-fields was enough — the answer does not owe the thread.
-
-The first **Wrong if** did not fire either. The same session used the labels to
-see that the owner held Code-Review-1 on their own change, which is a procedural
-reading rather than a verdict borrowed from a vote.
-
-The second **Assumed** gains a third change. `feedback/2026-08-24-173151` read
-change 76606, abandoned, whose one inline comment is Benni Mack's "wrong
-approach :(" on `/PATCHSET_LEVEL` — and that comment is what stopped the session
-writing a patch in the shape already rejected. The count is now none on 93319,
-three on 95179 and one on 76606.
-
-Neither is a confirmation, so the entry stays open: an account of a run is not a
-recorded one (`D-FBK-018`). What they carry instead is which fields may not be
-quietly dropped (`D-ANS-059`), and both name the same three — the `unresolved`
-and reply pair, the per-voter labels, and the `messages: "people"` split that
-drops the pipeline reports. Two of the tests that hold them declared nothing:
-`GerritTest::aCommentCarriesItsThread` named this entry in its docblock alone,
-and `theReviewLogIsAskedForAndTheServiceUsersHalfIsSeparated` holds both the log
-call and the bot count. Both declare it now, so a failure prints the entry that
-rested on them.
-
-The judging run re-ran
-`typo3_gerrit_lookup(change: "95179", messages: "people")` against
-`review.typo3.org` the same day. Every named field came back: the query echoed
-as `change:I4a7557ccf3dc68bd6dc7dc40a5fa269bad0f6aa8`, the commit of patch set
-2, the two labels with their voters, `chain: []`, and four comments carrying
-`unresolved` and `inReplyTo`. The answer also carries issue 81619 with its
-tracker, status and subject, which `D-ANS-098` landed after the session ran — so
-the join is now in the change answer, and the tracker call the session made is
-still what carries the reporter's own framing.
+The first did not fire either: the same session used the labels to see that the
+owner held a negative vote on their own change, which is a procedural reading
+rather than a verdict borrowed from a vote.
 
 ## Confirmed on 2026-08-25
 
 **The third Wrong if fired, and this answer's own two counts of one thing are
-what settle it.**
-
-`feedback/2026-08-24-183447` reviewed change 91127 and reports ranking the
-comment threads itself, from "a top-level comment flagged unresolved with two
-resolved replies under it". It asks that the answer mark the threads that are
-unresolved **and** top-level. That is the reading **Decided** refuses to make,
-made by the caller instead, and it is wrong on both changes the report names.
-
-Re-run on 2026-08-25 through `bin/typo3-dev-companion`:
-
-- Change 91127 is MERGED at patch set 11 since 08:31 that morning, with the 14.3
-  backport 95409 beside it; the report read patch set 8. One of its seven
-  comments carries `unresolved: true` — Oliver Klee's "Is there any way this can
-  be covered with a functional test?" on patch set 4 — and it is the one the
-  report ranked. Torben Hansen answered it and Klee closed it with "Ack.", both
-  `false`, and the review server states `unresolved_comment_count: 0`.
-- Change 85224 prints both numbers, eight lines apart:
-  `2 unresolved of 12 comments` on the standing line,
-  `### Comments (12, 4 unresolved)` under it. The first is the review server's;
-  the second is `GerritLookup::comments()` tallying the per-comment flag.
-- The two threads the server counts there are Timo Webler's, top-level and never
-  answered, and Christian Weiske's reply under Benjamin Franzke's `-1 for now`.
-  The head of that second thread carries `unresolved: false`. So the pair the
-  report asks be marked selects a settled thread on 91127 and misses the open
-  one on 85224.
-
-**The flag is on the comment its own writer left it on, and the thread's state
-is the flag on the thread's last comment.** Reading the reply chains of both
-changes by that rule reproduces the review server's count exactly, 0 of 7 and 2
-of 12 — which is two changes and a derivation rather than a rule read off
-Gerrit's own documentation, and confirming it there is the card's first step.
-
-This answer states the thread's rule on the per-comment field. The schema calls
-`unresolved` "the flag on the thread, as whoever wrote or answered it last left
-it" and the paragraph under the comments says the same, so a caller doing what
-the words say reads each flag as its thread's state. `standing()` renders the
-count that is right and is silent at zero, which is why 91127 showed the wrong
-number alone.
-
-**Queued rather than closed**, because the count, the schema description and the
-paragraph are all `src/`. What the entry decided stands: this server does not
-judge whether a comment was answered. What moves is that the thread is no longer
-left to be derived — the reply relation and the order are already in the answer,
-and which shape states it is the todo's. The card carries the work at `normal`,
-which one session's misreading and a self-contradicting count set together.
+what settle it.** A review reports ranking the comment threads itself and asks
+that the answer mark the threads that are unresolved and top-level. That is the
+reading **Decided** refuses to make, made by the caller instead, and it is wrong
+on both changes the report names: on the first, the one comment carrying the
+flag is the one it ranked, its answer closed it, and the review server states
+none outstanding. On the second the answer prints both numbers eight lines
+apart, one the review server's and one its own count of the flag.
 
 ## Since then
 

@@ -146,47 +146,13 @@ not there. It did not say where they were.
 
 ## Since then
 
-Step 2 is delivered: the commands paragraph of a core-checkout answer now ends
-"The core's suites are run by Build/Scripts/runTests.sh, which no manifest here
-declares. typo3_test_run_guide names the ones a change needs, with the
-invocation." Only that branch — a composer project has no core suites to point
-at, and runTests.sh is not in its repository. It is on the `kind` rather than on
-the commands being non-empty, because what a core checkout happens to declare is
-not what makes the pointer true.
+Step 2 is delivered: the commands paragraph of a core-checkout answer ends by
+naming the script no manifest declares and the tool that names the suites. Only
+that branch — a composer project has no core suites to point at — and it is on
+the checkout's kind rather than on the commands being non-empty, because what a
+core checkout happens to declare is not what makes the pointer true.
 
-`typo3_test_run_guide` alone, and not the pair `115716` credits. Both were
-called through `bin/typo3-dev-companion` from `/home/benji/projects/typo3-cms`
-on 2026-08-03 with a test question. `typo3_test_run_guide` answered `unit`,
-`functional` and `e2e` as `CI=true ./Build/Scripts/runTests.sh` commands,
-narrowed to the php domain by the changed path, with a targeted form beside each
-and the option list. `typo3_script_lookup` answered with the same *Invoking
-runTests.sh* section and no suites — its own subject is the core's scripts by
-task, so on this one step it is the second answer to a question the first has
-already answered. Naming both here would spend the sentence twice.
-
-The pointer is prose and not data. `R-ANS-002` is about the reason a question
-could not be answered, and this question was answered — so it does not bind, and
-the **Assumed** entry above stands as an open cost rather than as a gap this
-commit left.
-
-`R-GUI-003` does not widen. It is one directory over in the literal sense: the
-demand belongs to `answers/`, "what a caller may conclude from one", and
-widening it in place would leave a requirement about answers filed under
-`guides/` for good, since a group follows the id and an id is never reused.
-Renaming the file is what a merge forbids — the generated listing links it, and
-a branch may not touch that block. So `R-ANS-018` carries the project answer,
-and it is the narrower demand: an answer that names an absence names the tool
-that has it, which is not the same as a brief pointing at the step it ends with.
-
-Both feedback are archived, and the todo is deleted rather than trimmed. What
-the second one asks for beyond the clause — the `-s` cases read out of the
-script, so the suite list follows the branch — is already delivered by another
-mechanism. `bin/cli catalog:check` reads the `-s` block out of
-`Build/Scripts/runTests.sh` in each covered checkout and holds every suite hint
-to the versions that offer it; the run of 2026-08-03 reported 67 suites against
-`12.4`, `13.4`, `14.3` and `main`, 25 of them curated, all holding. The bundled
-list is the file-read answer, taken once at upkeep time rather than on every
-call, and `knowledge/test-suite-hints.json` carries no acceptance suite for
-`main` to be wrong about. Archiving `2026-08-01-114807` is what this entry left
-undecided: the half no sibling owned is the one delivered here, and the mapping
-above is what says the others are owned elsewhere.
+One tool rather than the pair the feedback credits. Both were called with a test
+question: one answered the suites with their invocations, and the other answered
+with the same invoking section and no suites, its own subject being the scripts
+by task. Naming both would spend the sentence twice.

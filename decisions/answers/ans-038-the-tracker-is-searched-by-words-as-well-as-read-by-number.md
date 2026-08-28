@@ -125,46 +125,15 @@ its own.
 
 ## Since then
 
-The empty search sends the caller back into the loop it is already in, and
-`feedback/2026-08-24-110926` is what shows it. A session establishing whether an
-impexp defect was already on the tracker spent eight `query` calls on eight
-wordings: two matched nothing, six returned issues about something else, and the
-one relevant issue arrived as a relation of a hit rather than as a hit. What
-settled it was the ninth call — `open: "stale"`, `category: "import export"`,
-`limit: 50` — which answered all 26 open Import/Export issues at once.
+The empty search sends the caller back into the loop it is already in: a session
+establishing whether a defect was on the tracker spent eight wordings, two
+matching nothing and six returning something else, and the one relevant issue
+arrived as a relation of a hit. What settled it was the ninth call, an
+enumeration that answered all 26 open issues of that area at once.
 
-Re-run on 2026-08-24 against the tracker.
-`query: "writePagesOrder importNewIdPids"` still answers empty and offers two
-things to do next: ask again in the reporter's words, or pass a person as
-`reportedBy` or `assignedTo`. Neither is the enumeration. The same enumeration
-the session ended on answers 26 of 26 in one read, and it carries the pointer
-the other way — "query the words as well where the question is about a subject"
-— so the cross-reference between the two ways in is written only in the
-direction where the caller is not stuck. Two of the feedback's own wordings no
-longer reproduce, because the session filed
-#110524 afterwards and the tracker now matches them.
-
-That is `R-ANS-006` not reaching this tool. A miss says what there would have
-been to find and what it names can be asked for outright; the hints, the labels,
-the changelog and the prose corpus all hold that, and what this miss names is a
-rewording, which is not a call. The first **Wrong if** above covers the other
-half and held — the session never read the empty answer as nobody having
-reported it. It went round eight times instead. What moved is the second
-**Assumed**: the caller's question here was which issue is the duplicate rather
-than which issues mention it, and `query` is not what answered it. `D-ANS-054`'s
-first **Wrong if** is this order reversed and did not fire — the enumeration was
-reached last rather than first, and its filters carried the question once they
-were asked.
-
-Step 4 of the ladder, wording, and queued rather than closed on the spot,
-because the sentence is in `src/` and the `category` description is a declared
-schema. What the wording owes is the route and not the count the feedback asks
-for: naming "Import/Export (T3D) has 26 open issues" is a second read of the
-tracker on every miss, while naming `open` with `category` is a call the caller
-can compose from what it already holds. `feedback/2026-08-24-163235` is the
-unjudged neighbour on the same three sentences, reporting a multi-term `query`
-that answers nothing where one of its terms answers five; whether the two are
-one rewrite is that judgement's to make.
+Re-run, the empty query offers two things to do next and neither is the
+enumeration, while the enumeration carries the pointer the other way — so the
+cross-reference is written only in the direction where the caller is not stuck.
 
 ## Since then
 

@@ -92,38 +92,11 @@ it was filed, so what it reports is not that the answer is missing.
 
 ## Since then
 
-The placement is the answer text of `typo3_label_lookup`, and what settled it is
-which of the three the reporting sessions were standing in front of. Both wrote
-German into a source XLF and both had called that tool: this feedback names it
-in its own front matter, and `feedback/archive/2026-07-30-185539` says the
-session called it beside `typo3_translation_domain_lookup`. Neither called
-`typo3_task_guide`, which is the only route to the `labels` intent, and
-`feedback/archive/2026-08-01-002926` reports a third content-element session
-where it "was never called" either. Neither asked for a hint, so the
-`content-elements` line would have been written for a reader that never arrived.
+The placement is the answer text of the label lookup, and what settled it is
+which of the three the reporting sessions were standing in front of: both had
+called that tool, neither called the one that is the only route to the intent,
+and a third session reports the same. Neither asked for a hint, so the line
+would have been written for a reader that never arrived.
 
 That the tool is the route is also what this repository already tells its
-clients: `skills/typo3-content-element-development` sends a session to
-`typo3_label_lookup` before adding a label, and `skills/base.md` lists it among
-the lookups a task starts with.
-
-The other two were rejected on what they would have had to become rather than on
-where they sit. A hint line belongs to one subject, so the rule would be owed to
-every hint whose work ends in a label — content elements, backend modules,
-plugins, forms — and be wrong in none of them and complete in no set of them.
-Widening the `labels` match words is the same list phrased as vocabulary, and it
-lands the XLF checklist and the XLIFF checks on every task that says "content
-element" while touching no label at all.
-
-`AGENTS.md` keeps what a tool answers from below `knowledge/`, and this answer
-states a rule in `src/` instead. The precedent is in the same method: the reuse
-boundary of `R-KNW-036` and the domain reference form are already stated there,
-because both decide what the caller does with the result it is holding. The
-source language is the third of that kind. What the answer does not carry is the
-correction's shape — it names `typo3_hint_lookup` with `id=language-files` for
-that, which is `R-ANS-018`.
-
-`R-ANS-015` is held by
-`LabelSearchTest::aCallerAboutToWriteAUnitIsToldItsSourceLanguage`, on both
-branches a caller about to author a unit arrives on. The **Wrong if** above is
-unchanged and its second clause is now the live one.
+clients, in a skill and in the base's own list of lookups a task starts with.

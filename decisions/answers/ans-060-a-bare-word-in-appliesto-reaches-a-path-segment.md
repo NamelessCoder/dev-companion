@@ -87,40 +87,15 @@ named FAL hints returned for Extbase persistence paths.
 
 ## Since then
 
-On 2026-08-07, the third **Wrong if** fired within the hour, and two things
-above are corrected in place.
+The third **Wrong if** fired within the hour and two things are corrected in
+place. The false positive was never one hint: another outranked the FAL hint on
+a path fragment, and its own words answered the query no better — so what claims
+another subsystem's path is any short pattern, punctuated or not.
 
-The first is that the false positive was never one hint. `datahandler-basics`
-outranked the FAL hint at `keywords: 24`, on `/Persistence/` and `persistence`,
-and its own words answered the query no better — `score: 0` for the pattern
-half. It is a path fragment rather than a bare word, so `appliesTo` is not
-innocent and neither is the shape this entry named: what claims another
-subsystem's path is any short pattern, punctuated or not.
-
-The second correction is the one that matters more, and it disproves the
-**Decided** above rather than refining it. This entry took the reporting
-session's word that `persistence-reading` and `extbase-domain-mapping` are "the
-hints that are about the subsystem". Reading both bodies says otherwise.
-`persistence-reading` is the core `QueryBuilder`, the restriction containers and
-`PageRepository`'s overlays; `extbase-domain-mapping` is the model, its table
-and its orderings. Neither covers `Typo3DbQueryParser`, `ColumnMap` or
-`Backend::insertObject()`, which is the whole of what the paths named. Their
-titles read as though they do, and that is what misled the session and this
-entry after it.
-
-So the absence is a corpus gap and not a ranking failure. Removing the two
-patterns is what landed, measured on both sides: the three FAL queries that
-reached `fal-storages-drivers` through the bare `storage` each still rank it
-first on their text, the DataHandler path still reaches `datahandler-basics` at
-`keywords: 25` without `/Persistence/`, and the `ThumbnailViewHelper.php` case
-`D-ANS-050` exists for is untouched. `R-ANS-026` is held by two cases in
-`HintsTest` and now demands silence over a wrong subsystem rather than a named
-hint, because there is no right one to name.
-
-What is queued is the half this cannot reach. A pattern that counts only for its
-own subsystem is the principled fix and it is a change to the matcher, which
-this run measured for but did not make; the Extbase persistence hint that does
-not exist needs a core checkout, and all four are missing here.
+The second correction disproves **Decided** rather than refining it. This entry
+took the reporting session's word for which hints are about the subsystem, and
+reading both bodies says otherwise: one is the core query builder and its
+restrictions, the other the model and its mapping.
 
 ## Since then
 
@@ -197,4 +172,3 @@ that binds there.
 So "filling slots nothing better competes for" holds where the answer lists
 everything it matched and not where it carries the strongest few. `D-ANS-097` is
 what carries the question from here.
-

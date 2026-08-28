@@ -141,39 +141,15 @@ judgement `163235`'s own card carries, and it is the shape this entry's third
 ## Since then
 
 **A miss asks each of the caller's words on its own; the any-word re-read the
-section above proposed was measured and answers something else.**
+section above proposed was measured and answers something else.** That
+measurement was taken on a query one of whose two words nobody had written. On
+the four words of the reporting session it does not hold: the union answers
+14673 where the same URL without it answers none, ordered by issue number, so
+its first page is the newest issues carrying the commonest word and none of the
+five the caller was after is in it.
 
-That measurement was taken on a query one of whose two words nobody had written,
-where the union of the two is the one that reaches. On `163235`'s own four words
-it does not hold. Measured on 2026-08-25 against the tracker:
-`file renderer RendererRegistry FileRendererInterface` with `all_words=` answers
-**14673** where the same URL without it answers 0. The union is ordered by issue
-number, so its first page is the newest issues carrying `file` — #110525,
-#110524, #110522 — and none of the five the caller was after is in it. The size
-is the commonest word's: `file` alone reaches 13944. So the call is spent and
-the question is not answered, and `all_words=0` and `all_words=false` still do
-nothing.
-
-One read per word is what answers it, which is what `163235` asked for in the
-first place. The same four words asked one at a time: `file` 13944, `renderer`
-1173, `RendererRegistry` 5, `FileRendererInterface` 0. That names the word that
-emptied the query and the word to ask alone, and it is the half of a miss no
-advice on this side can supply — the miss already says an identifier empties an
-answer, and both of those are class names. Read as advice it would have thrown
-away `RendererRegistry`, which is the term that reaches.
-
-Bounded at both ends, because the cost is a read of about two and a half seconds
-apiece on the path that answered nothing. One word is not asked — its count is
-the zero the caller is holding — and a query of more than a few words is not
-asked either, because the answer to that one is to pass fewer words, which the
-miss says without reading anything. Each probe is held like any other read, so a
-session rewording around one term pays for it once.
-
-A hit spends nothing. `163235`'s second case is the test of that: six common
-words answering one irrelevant issue, and asked one at a time they reach between
-337 and 4661 apiece, which names no better call. What that case wants is the
-enumeration, and the miss already names it — the case never reaches the miss,
-because one hit is not a miss.
+So the call is spent and the question is not answered. One read per word is what
+answers it, which is what the feedback asked for in the first place.
 
 ## Since then
 

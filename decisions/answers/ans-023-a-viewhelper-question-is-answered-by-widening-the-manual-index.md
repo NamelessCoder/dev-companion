@@ -98,40 +98,14 @@ reference is, and the lookup does not carry it.
 
 ## Confirmed on 2026-08-02
 
-The book is indexed. `DOCUMENTS` now carries the collection each manual is
-published in, `/m/` for the three of the core and `/other/` for this one, and
+The book is indexed: each manual carries the collection it is published in, and
 one method builds every base from it.
 
-None of the three **Wrong if** held. The root at
-`/other/typo3/view-helper-reference/14.3/en-us/` is a table of contents:
-Documentation::links() reads 189 pages out of it, `Global/If.html` among them.
-The excerpts are prose — the If page opens with "This ViewHelper implements an
-if/else condition", the Then page is 184 characters and still says what it is
-for. And a Fluid question is not outranked:
-`Fluid template layout partial section` still puts Multi-language Fluid
-templates first, with the `section` and `layout` ViewHelper pages second and
-fifth. Weighing `manual` at 2 does not do what the entry feared, because all 189
-pages of the book carry "Fluid" there and a term everything carries separates
-nothing. The regressions asked for at the same time held: the TCA, TypoScript
-and functional-testing queries keep the pages they had.
-
-What the change does not reach is the query this entry opens with.
-`f:if f:then f:else condition ViewHelper` now answers with `Global/Else.html`
-first — "Only has an effect inside of f:if. See the f:if ViewHelper for
-documentation." — which is the right family and a route to the page. The page
-itself is unreachable, and by any query naming `f:if`: `TermSearch::terms()`
-drops every word under three characters and `then` is a stopword, so
-`f:if f:then` leaves nothing to search for. `IfViewHelper` reduces to view and
-helper, which the whole book carries in its `manual` field, so it ranks that
-book's front pages. Neither the index title `if` nor the page heading
-`If ViewHelper <f:if>` survives the tokenizer. The lever is `TermSearch`, which
-the hint and prose corpora go through as well, so it is queued as a todo of its
-own rather than settled here.
-
-Found while measuring and not acted on: every manual root links
-`singlehtml/Index.html`, the whole book as one page, and `isDocumentPage()` lets
-it into the index as an ordinary candidate. For this book that page is 2.9 MB.
-It has been a candidate in the three manuals under `/m/` all along.
+None of the three **Wrong if** held. The root is a table of contents and 189
+pages are read out of it; the excerpts are prose, the shortest of them still
+saying what its page is for; and a Fluid question is not outranked, because
+every page of the book carries the word and a term everything carries separates
+nothing. The regressions asked for at the same time held.
 
 ## Revoked on 2026-08-02
 

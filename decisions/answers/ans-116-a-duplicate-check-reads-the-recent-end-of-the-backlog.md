@@ -102,34 +102,13 @@ fifty as the set it was promised.
 
 ## Since then
 
-Built on 2026-08-27, as one ordering and one filter on the enumeration that was
-already there. `open` takes `newest`, which is `sort=created_on:desc`, and
-`createdSince` is the day to count from — both verified against forge.typo3.org
-that day through `Http\Fetch`, together with the range form
-`created_on=><2026-08-01|2026-08-20`, which is how both ends of that field reach
-the tracker as one filter rather than as a second one replacing the first.
+Built on 2026-08-27 as one ordering and one filter on the enumeration that was
+already there, both verified against the tracker that day together with the
+range form — which is how both ends of that field reach it as one filter rather
+than as a second replacing the first.
 
-The window is what carries the coverage bullet rather than the area. A caller
-who narrows only by `category` is answered that an issue filed under no Category
-is in no area at all and that the call to make instead drops it, which is the
-route surviving #110533 rather than a note about it.
-
-What the page cannot hold is answered at the end it was asked about. The
-enumeration's standing sentence sends a caller past a page with an earlier date,
-which points away from this end, so `newest` says instead that what was left out
-is older than its last row and that a later `createdSince` is what closes the
-gap — until `total` and the rows agree, which is when the subjects are the whole
-of what was filed since that day. `D-ANS-038`'s miss names that call and no
-longer promises that reading the subjects settles it outright.
-
-**Touched lately is not built.** The boundary above names it beside filed
-lately, and nothing measured asks for it: what a duplicate check reads is when a
-report arrived, and an ordering by `updated_on:desc` would answer which issues
-somebody has been on lately, which is a triage question the two neglected
-orderings already have an end for. It earns the parameter when a session brings
-the case.
-
-The triage tail is the one thing this end drops. `ForgeLookup::workflow()` opens
-on handing the page over rather than choosing from it, and choosing is exactly
-what a duplicate check cannot delegate — `D-SKL-038` carries the reading, and
-the two orderings it was written for keep it.
+The window is what carries the coverage bullet rather than the area: a caller
+who narrows only by area is answered that an issue filed under none is in no
+area at all, and told the call that drops it. What the page cannot hold is
+answered at the end it was asked about, the standing sentence pointing the other
+way.

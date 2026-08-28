@@ -88,33 +88,12 @@ two disagree.
 
 ## Since then
 
-`feedback/2026-07-31-193109` was judged on 2026-08-02 and is a second sighting
-of the same pairing from the same directory 25 minutes later. Its fourth cost
-credits `typo3_project_describe` with `^8.4` and reports 8.3.23 as read by bash,
-so what it compares is a declaration against an effective runtime rather than
-two declarations — which is where the third **Wrong if** expects the other
-feedback to land, arrived at independently. Nothing here changed: the runtime
-half stays with `feedback/2026-07-31-193611`, and answering it from this reading
-would be the copy-down that entry already declines. The rest of that feedback is
-[`D-ANS-015`](ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary.md).
+A second sighting of the same pairing from the same directory 25 minutes later
+credits the orientation answer with the declared constraint and reports the
+effective runtime as read by bash — so what it compares is a declaration against
+a runtime rather than two declarations, arrived at independently. Nothing here
+changed: answering it from this reading would be the copy-down that entry
+already declines.
 
-The first **Wrong if** arrived on 2026-08-17. `feedback/2026-08-17-211157` is a
-session holding the numbers and not taking them, which is what it describes. It
-read `^8.3`, `^8.2` and 8.4 out of one `typo3_project_describe` answer, and a
-reviewer rather than the session asked why they diverged.
-
-[`D-ANS-082`](ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md)
-moves the boundary this entry drew, and moves it only as far as that evidence
-reaches. The line is **one answer, not two**. Comparing what two calls returned
-is still the caller's audit and no tool here does it — this entry's subject was
-`typo3_project_describe` against `typo3_extension_describe`, two manifests read
-by two calls, and that stands. What changed is the case where one tool already
-read every number, already printed them side by side, and already described each
-one against the other two: there the relation is arithmetic on values the answer
-holds, and withholding it makes the caller pay a round trip to compare numbers
-it was just handed (`D-FBK-020`).
-
-What that does not license is the verdict this entry refused. The answer states
-where one number sits against another and what nothing here executed; whether
-the project should change is still the audit's, and `validate` is still not one
-of the verbs in [AGENTS.md](../../AGENTS.md).
+The first **Wrong if** arrived later: a session holding the numbers and not
+taking them, which is what it describes.

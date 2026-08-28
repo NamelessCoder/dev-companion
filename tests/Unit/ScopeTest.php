@@ -1548,6 +1548,47 @@ final class ScopeTest extends TestCase
         );
     }
 
+    #[Decision('D-SCO-015')]
+    #[Requirement('R-SCO-002')]
+    #[Test]
+    public function anExtensionDeprecationIsCommittedUnderItsOwnRepositorysConvention(): void
+    {
+        // The core workflow demands a Forge issue and a Releases: trailer, and
+        // the deprecation intent routed it by name. Dropping that line has to
+        // leave the tool behind rather than take it: what carries the caller is
+        // the generic candidate for the same tool, in the project wording.
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Deprecate the old renderer method and keep a fallback',
+            'paths' => ['Classes/Parser/AbstractParser.php'],
+            'changeType' => 'feature',
+        ]);
+
+        $when = array_column($result->data['nextTools'], 'when', 'tool');
+        self::assertArrayHasKey('typo3_commit_message_guide', $when);
+        self::assertStringNotContainsString('workflow="core"', $when['typo3_commit_message_guide']);
+    }
+
+    #[Decision('D-SCO-015')]
+    #[Requirement('R-SCO-002')]
+    #[Test]
+    public function anExtensionChangelogTaskIsRoutedAwayFromTheCoresOwnProcedure(): void
+    {
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Write a changelog entry for the feature I just added',
+            'paths' => ['Classes/Parser/AbstractParser.php'],
+            'changeType' => 'feature',
+        ]);
+
+        self::assertSame(['typo3-extension-documentation'], $result->data['skills']);
+
+        // Both of its routing lines are the core's: the procedure below
+        // typo3/sysext/core/Documentation/Changelog/ and the hint whose own
+        // declared scope is core.
+        $when = array_column($result->data['nextTools'], 'when', 'tool');
+        self::assertStringNotContainsString('core/contribution/changelog', $when['typo3_rule_lookup'] ?? '');
+        self::assertStringNotContainsString('documentation-changelog', $when['typo3_hint_lookup'] ?? '');
+    }
+
     #[Requirement('R-SCO-002')]
     #[Test]
     public function noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests(): void

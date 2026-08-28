@@ -4,6 +4,8 @@ title: An intent's routing line names the core artifact it needs
 date: 2026-08-28
 status: open
 coveredBy:
+  - ScopeTest::anExtensionChangelogTaskIsRoutedAwayFromTheCoresOwnProcedure
+  - ScopeTest::anExtensionDeprecationIsCommittedUnderItsOwnRepositorysConvention
   - ScopeTest::anExtensionTestBriefRoutesTheHarnessTheExtensionHas
 ---
 
@@ -76,3 +78,24 @@ being the core's own call.
   its own, and the drop takes the one call that would have answered for it.
 - A fifth intent line arrives core-only and unmarked. The test added here
   asserts one route, so the population is still held by rereading.
+
+## Since then
+
+The queued half landed the same day. `TaskGuide::nextTools()` drops the
+core-only candidates before it keeps one entry per tool, rather than `answer()`
+filtering the deduplicated list afterwards, so a line the check recognises
+leaves the generic candidate for that tool standing. The four lines carry their
+artefact now: the two `typo3_commit_message_guide` ones name Gerrit, which is
+what `workflow="core"` is the convention of, and the two `changelog` ones name
+the directory below `typo3/sysext/` the procedure writes into and the core
+checkout the skeleton is read in.
+
+What that buys is the entry the drop used to take with it. An extension
+deprecation brief is answered
+`typo3_commit_message_guide, before committing — its default is this repository's case`,
+where it was answered `with workflow="core" and isDeprecation=true` before.
+
+One more route of this shape is left and is not an intent's:
+`Result\Prose::BOUND_ELSEWHERE` is prepended to every rendered rule section by
+three tools and tells the caller to ask `typo3_test_run_guide` for a
+`runTests.sh` command, whatever the scope. `T-260828-d3f0` carries it.

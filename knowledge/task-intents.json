@@ -23,7 +23,7 @@
       "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
     ],
     "tools": [
-      "typo3_commit_message_guide with workflow=\"core\" and isDeprecation=true, to get the keyword and prefix rules checked"
+      "typo3_commit_message_guide with workflow=\"core\" and isDeprecation=true, for the keyword and prefix rules a message pushed to Gerrit is held to"
     ]
   },
   {
@@ -55,7 +55,7 @@
       "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
     ],
     "tools": [
-      "typo3_commit_message_guide with workflow=\"core\" and isBreaking=true"
+      "typo3_commit_message_guide with workflow=\"core\" and isBreaking=true, for the message a change pushed to Gerrit is held to"
     ]
   },
   {
@@ -119,8 +119,8 @@
       "CI=true ./Build/Scripts/runTests.sh -s checkRst"
     ],
     "tools": [
-      "typo3_rule_lookup with documentId=core/contribution/changelog, for the whole procedure: the type, the directory, the name and the checks",
-      "typo3_hint_lookup with id=documentation-changelog, for that skeleton and the tags the file ends on"
+      "typo3_rule_lookup with documentId=core/contribution/changelog, for the whole procedure: the type, the name and the checks of a file below typo3/sysext/core/Documentation/Changelog/",
+      "typo3_hint_lookup with id=documentation-changelog, for the skeleton such a file is written from in a core checkout, and the tags it ends on"
     ]
   },
   {

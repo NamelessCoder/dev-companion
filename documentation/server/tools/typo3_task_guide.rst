@@ -454,7 +454,7 @@ Text:
       Identify the XLF resource already used at the consuming code, then ask typo3_label_lookup with that resource. It applies the installation's resource overrides, but a match from another module or package is not reusable in this context. Where the console cannot be reached it reads the installed package's XLF file instead and says so; only where there is no installation at all is there nothing to ask.
 
     Next lookups for this task:
-    - typo3_commit_message_guide — with workflow="core" and isDeprecation=true, to get the keyword and prefix rules checked
+    - typo3_commit_message_guide — with workflow="core" and isDeprecation=true, for the keyword and prefix rules a message pushed to Gerrit is held to
     - typo3_project_describe — for what the repository is before anything in it is changed
     - typo3_extension_describe — for what each extension in scope registers
     - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
@@ -836,7 +836,7 @@ Data:
         "nextTools": [
             {
                 "tool": "typo3_commit_message_guide",
-                "when": "with workflow=\"core\" and isDeprecation=true, to get the keyword and prefix rules checked"
+                "when": "with workflow=\"core\" and isDeprecation=true, for the keyword and prefix rules a message pushed to Gerrit is held to"
             },
             {
                 "tool": "typo3_project_describe",

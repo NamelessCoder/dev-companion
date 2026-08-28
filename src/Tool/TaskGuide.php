@@ -836,12 +836,6 @@ final class TaskGuide extends ReadOnlyTool
             $outsideCore,
             $changesNothing
         );
-        if ($outsideCore) {
-            $nextTools = array_values(array_filter(
-                $nextTools,
-                static fn(array $suggestion): bool => !Scope::isCoreOnly($suggestion['tool'] . ' ' . $suggestion['when'])
-            ));
-        }
         $lines[] = '';
         $lines[] = 'Next lookups for this task:';
         foreach ($nextTools as $suggestion) {
@@ -1068,6 +1062,17 @@ final class TaskGuide extends ReadOnlyTool
             . 'branch or commit, the first edit to code or documentation the package ships';
         if (Channel::isAvailable()) {
             $candidates[] = 'typo3_feedback_record, when one of these answers was wrong or incomplete';
+        }
+
+        // What only the core has goes before that, not after it: an intent's
+        // own wording is what the check reads, and the generic candidate for
+        // the same tool — which does name the artefact — is what would be left
+        // to carry the caller outside the core (`D-SCO-015`).
+        if ($outsideCore) {
+            $candidates = array_filter(
+                $candidates,
+                static fn(string $candidate): bool => !Scope::isCoreOnly($candidate)
+            );
         }
 
         // One entry per tool: an intent that already suggested a tool keeps its

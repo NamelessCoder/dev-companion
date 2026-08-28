@@ -184,9 +184,10 @@ final class ProjectDescribe extends ReadOnlyTool
             'commands' => Schema::listOf(Schema::object([
                 'command' => Schema::string('As this repository declares it, run from the project root. Where environment is not null, it is run inside that environment rather than in the caller\'s shell. An npm script declared below the root carries the --prefix that points npm at the manifest declaring it, so two manifests with a build script are two commands you can tell apart.'),
                 'source' => Schema::string('The manifest declaring it, relative to the project root: composer.json, package.json, or Build/package.json where the repository keeps its frontend build one directory down.'),
+                'invocation' => Schema::string('The same command as it is run from where you stand, which is what to paste. It is the declared command with DDEV in front of it — "ddev composer <name>" for a composer script, "ddev exec <command>" for the rest — where this repository configures a DDEV project and this server is not already inside it. It is the declared command unchanged everywhere else, including under TYPO3_DEV_COMPANION_CONSOLE, which reaches this installation\'s console rather than an arbitrary script.'),
                 'declares' => Schema::string('The body the manifest declares for it, lines joined with &&.'),
                 'runs' => ['type' => 'string', 'enum' => ['check', 'change', 'unknown'], 'description' => 'What running it does to the sources, read off the body rather than by running it. check: it reports and hands the code back as it was, so a task told not to change files can run it — it may still write a cache of its own. change: it rewrites something. unknown: the body does not say, which is what a test suite is, because it runs the project\'s own code.'],
-            ], ['command', 'source', 'declares', 'runs']), 'What this repository declares. A check that is not here does not exist here.'),
+            ], ['command', 'source', 'invocation', 'declares', 'runs']), 'What this repository declares. A check that is not here does not exist here.'),
             'patches' => Schema::listOf(Schema::object([
                 'package' => Schema::string('The dependency being patched.'),
                 'description' => Schema::string('What the patch is for, where composer.json says.'),

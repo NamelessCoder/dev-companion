@@ -309,6 +309,7 @@ final class ProjectTest extends TestCase
     #[Decision('D-ANS-013')]
     #[Requirement('R-PRJ-008')]
     #[Decision('D-KNW-055')]
+    #[Decision('D-ANS-126')]
     #[Test]
     public function theAnswerSaysWhatRunsTheProject(): void
     {
@@ -347,12 +348,28 @@ final class ProjectTest extends TestCase
             'providers' => [],
         ], $project['environment']);
 
+        // And the same thing where the payload is what is read: the sentence
+        // above the list is prose, and a caller acting on the field ran the
+        // declared command into Composer's platform check (`D-ANS-126`).
+        self::assertSame(
+            ['ddev composer test:unit'],
+            array_column($project['commands'], 'invocation'),
+        );
+
         $text = Registry::call('typo3_project_describe', [])->text;
         self::assertStringContainsString('PHP ^8.4 declared and 8.4 in DDEV', $text);
         // The command list is what a task is sent to run, and nothing beside
         // it said the shell it has is not where these run.
         self::assertStringContainsString('not in the shell you have', $text);
         self::assertStringContainsString('ddev composer', $text);
+
+        // Inside the container the shell is the environment, so a `ddev` in
+        // front of it would name a binary that is not there.
+        putenv('IS_DDEV_PROJECT=true');
+        self::assertSame(
+            ['composer test:unit'],
+            array_column(Project::describe()['commands'], 'invocation'),
+        );
     }
 
     #[Test]
@@ -900,6 +917,7 @@ final class ProjectTest extends TestCase
         // command carries the prefix that points it at this one.
         self::assertSame(
             [['command' => 'npm --prefix Build run build', 'source' => 'Build/package.json',
+                'invocation' => 'npm --prefix Build run build',
                 'declares' => 'grunt build', 'runs' => Project::RUNS_AS_CHANGE]],
             $project['commands'],
         );

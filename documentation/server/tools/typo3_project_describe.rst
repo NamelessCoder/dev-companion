@@ -381,6 +381,14 @@ Answers with
         # package.json, or Build/package.json where the repository keeps its
         # frontend build one directory down.
         source: string
+        # The same command as it is run from where you stand, which is what to
+        # paste. It is the declared command with DDEV in front of it — "ddev
+        # composer <name>" for a composer script, "ddev exec <command>" for the rest
+        # — where this repository configures a DDEV project and this server is not
+        # already inside it. It is the declared command unchanged everywhere else,
+        # including under TYPO3_DEV_COMPANION_CONSOLE, which reaches this
+        # installation's console rather than an arbitrary script.
+        invocation: string
         # The body the manifest declares for it, lines joined with &&.
         declares: string
         # One of: check, change, unknown. What running it does to the sources, read
@@ -462,7 +470,7 @@ The answer carries exactly one of these sets of fields: ``root``, ``installed``,
 Answered
 --------
 
-Recorded on 2026-08-27 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-28 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 15.0.0-dev, the main core checkout below .checkouts/, whose console could not
@@ -540,7 +548,7 @@ Text:
     - core/contribution/sources — TYPO3 Contribution Sources. When a question goes past what the bundled documents answer and the official guide has to be read.
     - core/testing/proving-a-rendering — Proving What a Rendering Change Renders. When a finding turns on what a rendering contains and nothing in the checkout produces it, so the value is the unknown rather than the expectation. A TypoScript change whose diff does not say what it renders is one case, and a PHP change to the frontend request pipeline, an error handler or a page renderer caller is the same one. Asserting a response whose expected value is already known is the frontend request hint instead.
     - core/testing/scripts — TYPO3 Core Script Help. When running a suite inside a core checkout. Which suite a change actually needs is typo3_test_run_guide, which filters them by version.
-    - extension/compatibility/a-declared-major-that-is-not-installed — Settling an API Question on a Declared Major That Is Not Installed. When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It names the reading that settles the question; the shape itself is read from the branch, and no per-version list of identifiers is bundled anywhere here.
+    - extension/compatibility/a-declared-major-that-is-not-installed — Settling an API Question on a Declared Major That Is Not Installed. When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It hands over the invocation per symbol: one git call against the branch that is not installed, or that major's released package where no checkout is at hand. No per-version list of identifiers is bundled anywhere here, because the branch is what carries the shape.
     - extension/compatibility/running-on-a-declared-major-that-is-not-installed — Running a Package on a Declared Major That Is Not Installed. When a change has to hold on more than one declared major and the installation supplies one of them — before the claim about the other one is written down. It says what CI already covers, where the second Composer root goes, what it costs the installation, and how to tell a cell that could have failed from one that could not.
     - extension/documentation/manual — Setting Up an Extension Manual. When an extension has no manual yet, or has one that predates guides.xml. What a manual is for and where it lives is the hint below; this is what goes in the directory.
     - extension/testing/phpunit — Setting Up PHPUnit in a TYPO3 Extension. When a package has no test harness yet, or its configuration has to be repaired. The conventions the tests themselves are written by are the hints below.
@@ -595,108 +603,126 @@ Data:
             {
                 "command": "composer gerrit:setup",
                 "source": "composer.json",
+                "invocation": "composer gerrit:setup",
                 "declares": "@gerrit:setup:commitMessageHook:enable && @gerrit:setup:preCommitHook:enable",
                 "runs": "unknown"
             },
             {
                 "command": "composer gerrit:setup:commitMessageHook:enable",
                 "source": "composer.json",
+                "invocation": "composer gerrit:setup:commitMessageHook:enable",
                 "declares": "TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::enableCommitMessageHook",
                 "runs": "unknown"
             },
             {
                 "command": "composer gerrit:setup:preCommitHook:enable",
                 "source": "composer.json",
+                "invocation": "composer gerrit:setup:preCommitHook:enable",
                 "declares": "TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::enablePreCommitHook",
                 "runs": "unknown"
             },
             {
                 "command": "composer gerrit:setup:preCommitHook:disable",
                 "source": "composer.json",
+                "invocation": "composer gerrit:setup:preCommitHook:disable",
                 "declares": "TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::disablePreCommitHook",
                 "runs": "unknown"
             },
             {
                 "command": "npm --prefix Build run build",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run build",
                 "declares": "./node_modules/.bin/grunt",
                 "runs": "change"
             },
             {
                 "command": "npm --prefix Build run build-css",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run build-css",
                 "declares": "./node_modules/.bin/grunt css",
                 "runs": "change"
             },
             {
                 "command": "npm --prefix Build run build-js",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run build-js",
                 "declares": "./node_modules/.bin/grunt scripts",
                 "runs": "change"
             },
             {
                 "command": "npm --prefix Build run build-flags",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run build-flags",
                 "declares": "./node_modules/.bin/grunt flags-build",
                 "runs": "change"
             },
             {
                 "command": "npm --prefix Build run build-fonts",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run build-fonts",
                 "declares": "./node_modules/.bin/grunt fonts",
                 "runs": "change"
             },
             {
                 "command": "npm --prefix Build run update",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run update",
                 "declares": "./node_modules/.bin/grunt update",
                 "runs": "change"
             },
             {
                 "command": "npm --prefix Build run lint",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run lint",
                 "declares": "./node_modules/.bin/grunt lint",
                 "runs": "change"
             },
             {
                 "command": "npm --prefix Build run test",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run test",
                 "declares": "wtr",
                 "runs": "unknown"
             },
             {
                 "command": "npm --prefix Build run playwright:install",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run playwright:install",
                 "declares": "playwright install",
                 "runs": "unknown"
             },
             {
                 "command": "npm --prefix Build run playwright:open",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run playwright:open",
                 "declares": "playwright test --ui",
                 "runs": "unknown"
             },
             {
                 "command": "npm --prefix Build run playwright:run",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run playwright:run",
                 "declares": "playwright test",
                 "runs": "unknown"
             },
             {
                 "command": "npm --prefix Build run playwright:codegen",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run playwright:codegen",
                 "declares": "playwright codegen --ignore-https-errors",
                 "runs": "unknown"
             },
             {
                 "command": "npm --prefix Build run watch:build",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run watch:build",
                 "declares": "grunt watch",
                 "runs": "change"
             },
             {
                 "command": "npm --prefix Build run watch:test",
                 "source": "Build/package.json",
+                "invocation": "npm --prefix Build run watch:test",
                 "declares": "wtr --watch",
                 "runs": "unknown"
             }
@@ -790,7 +816,7 @@ Data:
             {
                 "id": "extension/compatibility/a-declared-major-that-is-not-installed",
                 "title": "Settling an API Question on a Declared Major That Is Not Installed",
-                "when": "When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It names the reading that settles the question; the shape itself is read from the branch, and no per-version list of identifiers is bundled anywhere here.",
+                "when": "When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It hands over the invocation per symbol: one git call against the branch that is not installed, or that major's released package where no checkout is at hand. No per-version list of identifiers is bundled anywhere here, because the branch is what carries the shape.",
                 "tool": "typo3_rule_lookup"
             },
             {
@@ -871,7 +897,7 @@ Text:
     - core/contribution/sources — TYPO3 Contribution Sources. When a question goes past what the bundled documents answer and the official guide has to be read.
     - core/testing/proving-a-rendering — Proving What a Rendering Change Renders. When a finding turns on what a rendering contains and nothing in the checkout produces it, so the value is the unknown rather than the expectation. A TypoScript change whose diff does not say what it renders is one case, and a PHP change to the frontend request pipeline, an error handler or a page renderer caller is the same one. Asserting a response whose expected value is already known is the frontend request hint instead.
     - core/testing/scripts — TYPO3 Core Script Help. When running a suite inside a core checkout. Which suite a change actually needs is typo3_test_run_guide, which filters them by version.
-    - extension/compatibility/a-declared-major-that-is-not-installed — Settling an API Question on a Declared Major That Is Not Installed. When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It names the reading that settles the question; the shape itself is read from the branch, and no per-version list of identifiers is bundled anywhere here.
+    - extension/compatibility/a-declared-major-that-is-not-installed — Settling an API Question on a Declared Major That Is Not Installed. When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It hands over the invocation per symbol: one git call against the branch that is not installed, or that major's released package where no checkout is at hand. No per-version list of identifiers is bundled anywhere here, because the branch is what carries the shape.
     - extension/compatibility/running-on-a-declared-major-that-is-not-installed — Running a Package on a Declared Major That Is Not Installed. When a change has to hold on more than one declared major and the installation supplies one of them — before the claim about the other one is written down. It says what CI already covers, where the second Composer root goes, what it costs the installation, and how to tell a cell that could have failed from one that could not.
     - extension/documentation/manual — Setting Up an Extension Manual. When an extension has no manual yet, or has one that predates guides.xml. What a manual is for and where it lives is the hint below; this is what goes in the directory.
     - extension/testing/phpunit — Setting Up PHPUnit in a TYPO3 Extension. When a package has no test harness yet, or its configuration has to be repaired. The conventions the tests themselves are written by are the hints below.
@@ -938,18 +964,21 @@ Data:
             {
                 "command": "composer cgl",
                 "source": "composer.json",
+                "invocation": "composer cgl",
                 "declares": "php-cs-fixer fix",
                 "runs": "change"
             },
             {
                 "command": "composer cgl:ci",
                 "source": "composer.json",
+                "invocation": "composer cgl:ci",
                 "declares": "php-cs-fixer fix --dry-run --diff",
                 "runs": "check"
             },
             {
                 "command": "composer test",
                 "source": "composer.json",
+                "invocation": "composer test",
                 "declares": "phpunit -c Build/phpunit.xml",
                 "runs": "unknown"
             }
@@ -1043,7 +1072,7 @@ Data:
             {
                 "id": "extension/compatibility/a-declared-major-that-is-not-installed",
                 "title": "Settling an API Question on a Declared Major That Is Not Installed",
-                "when": "When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It names the reading that settles the question; the shape itself is read from the branch, and no per-version list of identifiers is bundled anywhere here.",
+                "when": "When the code has to run on more than one declared major and one of them is installed — before writing against an API the installed copy happens to have. It hands over the invocation per symbol: one git call against the branch that is not installed, or that major's released package where no checkout is at hand. No per-version list of identifiers is bundled anywhere here, because the branch is what carries the shape.",
                 "tool": "typo3_rule_lookup"
             },
             {

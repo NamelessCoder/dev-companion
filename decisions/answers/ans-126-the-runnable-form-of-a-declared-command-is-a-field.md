@@ -3,6 +3,8 @@ id: D-ANS-126
 title: The runnable form of a declared command is a field
 date: 2026-08-28
 status: open
+coveredBy:
+  - ProjectTest::theAnswerSaysWhatRunsTheProject
 ---
 
 # D-ANS-126 — The runnable form of a declared command is a field
@@ -72,3 +74,20 @@ the manifest declares it, and the environment as a separate object.
   carrying that ambiguity by being a sentence.
 - A client is reported acting on the prose, which would say the field pays for
   what was already delivered.
+
+## Since then
+
+Built the same day as `commands[].invocation`, composed in
+`Project::invocation()` from the two things the answer already held: the
+environment, and whether the command is a composer script. It is the declared
+command unchanged where nothing can be put in front of it — no environment, a
+shell already inside one, and the `TYPO3_DEV_COMPANION_CONSOLE` override, whose
+command reaches this installation's console rather than an arbitrary script.
+
+Both sides of `entered` are asserted in
+`ProjectTest::theAnswerSaysWhatRunsTheProject`, where the prose half was already
+held.
+
+The report's second half is still open, and so is its feedback:
+`ddev composer <script>` and the stdout of a tool the script wraps needs a DDEV
+project to establish.

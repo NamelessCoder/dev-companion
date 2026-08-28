@@ -149,7 +149,7 @@ final class Project
             'environment' => $environment,
             'extensions' => self::extensions($root),
             'sites' => self::sites($root),
-            'commands' => self::commands($root, $manifest),
+            'commands' => self::commands($root, $manifest, $environment),
             'patches' => self::patches($manifest),
         ];
     }
@@ -615,16 +615,19 @@ final class Project
      * point of asking.
      *
      * @param array<string, mixed> $manifest
-     * @return array<int, array{command: string, source: string, declares: string, runs: string}>
+     * @param array{via: string, entered: bool}|null $environment
+     * @return array<int, array{command: string, source: string, invocation: string, declares: string, runs: string}>
      */
-    private static function commands(string $root, array $manifest): array
+    private static function commands(string $root, array $manifest, ?array $environment): array
     {
         $commands = [];
         $scripts = is_array($manifest['scripts'] ?? null) ? $manifest['scripts'] : [];
         foreach ($scripts as $name => $declaration) {
+            $command = 'composer ' . $name;
             $commands[] = [
-                'command' => 'composer ' . $name,
+                'command' => $command,
                 'source' => 'composer.json',
+                'invocation' => self::invocation($command, $environment),
                 'declares' => self::declaration($declaration),
                 'runs' => self::runs($declaration, $scripts),
             ];
@@ -633,9 +636,11 @@ final class Project
         foreach (self::npmManifests($root) as $manifest) {
             $packageScripts = Data::json($root . '/' . $manifest)['scripts'] ?? [];
             foreach (is_array($packageScripts) ? $packageScripts : [] as $name => $declaration) {
+                $command = self::npm($manifest) . $name;
                 $commands[] = [
-                    'command' => self::npm($manifest) . $name,
+                    'command' => $command,
                     'source' => $manifest,
+                    'invocation' => self::invocation($command, $environment),
                     'declares' => self::declaration($declaration),
                     'runs' => self::runs($declaration, []),
                 ];
@@ -643,6 +648,36 @@ final class Project
         }
 
         return $commands;
+    }
+
+    /**
+     * The command as it is run from where the caller stands.
+     *
+     * The prose above the list has named both forms since 2026-08-04 and a
+     * session ran the declared one into Composer's platform check anyway,
+     * because the half it was reading was the payload — `D-ANS-126`. DDEV's own
+     * `composer` command is what carries a composer script in, and `ddev exec`
+     * the rest, which is what that sentence says.
+     *
+     * It is the command unchanged wherever nothing can be put in front of it:
+     * no environment, a shell that is already inside one, and an environment
+     * named by `TYPO3_DEV_COMPANION_CONSOLE`, which reaches this installation's
+     * console rather than an arbitrary script.
+     *
+     * @param array{via: string, entered: bool}|null $environment
+     */
+    private static function invocation(string $command, ?array $environment): string
+    {
+        if ($environment === null
+            || $environment['entered']
+            || $environment['via'] !== Typo3Cli::VIA_DDEV
+        ) {
+            return $command;
+        }
+
+        return str_starts_with($command, 'composer ')
+            ? 'ddev ' . $command
+            : 'ddev exec ' . $command;
     }
 
     /**

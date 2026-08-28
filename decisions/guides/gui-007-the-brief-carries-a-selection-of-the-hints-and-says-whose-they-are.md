@@ -76,28 +76,14 @@ judgement.
 
 ## Confirmed on 2026-08-03
 
-The call this was decided from was made again, against the server on this
-branch. The sentence is on the answer and rendered from `HINTS_PER_GROUP`, and
-the brief still carries `fluid-viewhelpers`, `system-extension-boundaries`,
-`core-tests` and `fal-basics`. `typo3_hint_lookup`, given the same five paths,
-the same task text and `targetVersion` `15.0`, answers those four and then
-`fal-reading` and `fal-processing` at its default, and `dependency-injection` at
-`limit=10`. That is what was measured at `99785b8`, unchanged.
+The call was made again against this branch and answers as measured: the
+sentence is rendered from `HINTS_PER_GROUP`, the four hints are the same, and
+the lookup given the same paths answers those four and three more. Neither
+**Wrong if** has been reached, since no run has been recorded since the sentence
+landed.
 
 What the reading adds is the rejected alternative priced by the session that
-proposed it. `feedback/2026-08-03-144410` is the same run's own debrief, written
-at 14:44 and fifteen minutes before this sentence landed in `e306b02`. It argues
-that the brief's four hints make the separate call a re-fetch, and then names
-what skipping it cost: no dependency-injection hint, and
-`#[Autowire(lazy: true)]` established instead by grepping three call sites out
-of the checkout. The hint it wanted is the seventh the lookup holds for its own
-paths.
-
-Neither **Wrong if** has been reached. No run has been recorded since the
-sentence landed, so nothing yet says whether it is read as attribution or as
-permission, and `HINTS_PER_GROUP` is still four.
-
-What the same feedback asks for beyond this entry is the subjects rather than
-the count: the brief says it carries four and never says which three it left, so
-the gap a caller would follow the pointer for is invisible until the call is
-made. That is `R-GUI-012`, and it does not disturb what is decided here.
+proposed it: it argues the separate call is a re-fetch, and then names what
+skipping it cost — the dependency-injection hint, established instead by
+grepping three call sites. What that session asks for beyond this entry is which
+three the brief left, which is `R-GUI-012`.

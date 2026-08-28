@@ -95,19 +95,12 @@ sits inside the step the reader has just exempted itself from.
 
 ## Since then
 
-**2026-08-18.** Both placements are written. `TaskGuide::DEPRECATION_SWEEP`
-stands in the checklist of every brief whose change type produces a change, at
-the majors that brief was answered for, and the line above a brief that changes
-nothing names the sweep beside the diff, the coverage and the commit message it
-already left out. Step 4 of `skills/base.md` names `omittedHints` as its own
-sentence in data. The entry stays open: each **Wrong if** is about what a
-session does with a line it is now holding, and none of them has been measured.
+Both placements are written: the sweep stands in the checklist of every brief
+whose change type produces a change, and a brief that changes nothing names it
+beside what it already leaves out. Each **Wrong if** is about what a session
+does with a line it is now holding.
 
-**2026-08-24.** A session skipped the sweep on a core patch and reported it, and
-the first **Wrong if** did not fire. `feedback/2026-08-24-100534` reviewed a
-Gerrit change and was then asked to rework it, and it states that it never
-re-ran `typo3_task_guide` with `changeType="bugfix"` — so the placement this
-entry made was never in the brief it was holding, because there was no second
-brief. What the report tests is the call rather than the line in it, and
-[`D-SKL-072`](../task-skills/skl-072-a-workflow-handover-names-the-calls-the-next-order-restarts-with.md)
-is where that went. Both **Wrong if** here are still unmeasured.
+On 2026-08-24 a session skipped the sweep on a core patch and reported it, and
+the first did not fire: it never re-ran the guide after being asked to rework
+the change, so the placement was never in a brief it held. That tests the call
+rather than the line, and `D-SKL-072` is where it went.

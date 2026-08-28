@@ -69,56 +69,18 @@ and the measurement it records is that the cost is the ordinary answer there.
 
 ## Since then
 
-On 2026-08-04, a session measured what the project workflow is worth over twelve
-commits. `feedback/2026-08-04-180133` called `typo3_commit_message_guide` once,
-for the first commit, and hand-wrote the other eleven: the answer was correct —
-a wrapped draft and a warning that the summary ran to 68 characters against the
-preferred 52 — and once the shape of an accepted message was in the session, the
-round trip stopped paying.
+Three sessions have now reported the default and none of them argues with it. A
+session that called the guide once over twelve commits and hand-wrote the rest
+is the default working: the core workflow carries a Forge issue and a trailer
+that cannot be recalled, the project workflow carries two widths and a wrap that
+can, so a usage curve that drops after the first call is a tool that taught. Two
+more never called it at all, one under a client that defers schemas, and that
+half is judged on `D-AUD-011`.
 
-That is the default working rather than failing. The core workflow carries the
-Forge issue and the Releases trailer, which cannot be recalled from the last
-commit; the project workflow carries two widths and a wrap, which can. Nothing
-is changed for it, and it is written here because a usage curve that drops after
-the first call reads as a tool nobody wants when it is a tool that taught.
-
-On 2026-08-18 a session that never called the guide reported the same default
-from the other side. `feedback/2026-08-18-113357` wrote six commit messages in a
-sitepackage repository by hand, read the schema at the debrief, and says nothing
-about the behaviour needs changing because the default was already the case it
-was in. What the **Assumed** above says of a core contributor holds for a
-project one too — the route has to name the tool — and under a client that
-defers tool schemas the name was all this session had. That half is judged on
-`D-AUD-011`.
-
-**On 2026-08-21** a third session was judged here, and it is the first to report
-the default from inside the audience it was chosen for.
-`feedback/2026-08-19-090253` wrote a fourteen-line `[TASK]` message in an
-extension repository without calling the guide, having read the routing line
-that names exactly that case. It lost on confidence rather than on placement,
-which is the curve the paragraph above already records: a keyword, two widths
-and a wrap are recallable once seen.
-
-What the session could not have recalled is the footer, and the schema told it
-there was none. `issue` and `relatedIssues` are described as Forge issue
-numbers, and the tool's own description says the Forge issue does not apply
-outside the core, while `CommitMessage::create()` writes `Resolves:` and
-`Related:` from both in either workflow. Re-measured on 2026-08-21: a `project`
-call passing `issue` returns a draft carrying `Resolves: #348` above the closing
-line saying the Forge issue does not apply. That is ladder step 4, and the
-wording disagrees with the answer rather than merely reading awkwardly.
-
-The behaviour is the half `R-AUD-003` leaves unstated. That requirement holds
-the guide to adding no trailer that means nothing outside the core, and says
-nothing about the one a caller passed on purpose. Which form an extension
-repository wants is a reading rather than a recall, so the repair is queued on
-the card serving that feedback rather than made here. That card was worked the
-same day: the form is `Resolves:` outside the core too, so what changed is the
-wording alone, and `D-GUI-017` carries what the reading found.
-
-The same feedback asked which keyword a dependency update takes that also
-migrates an API and regenerates committed build artefacts. Nothing is built for
-it. `[TASK]` is what a change that is neither a bug fix nor a feature already
-is, the session chose it correctly from the four the corpus lists, and one
-session wanting confirmation of an answer it got right is not evidence that a
-rule is missing.
+What none of them could have recalled is the footer, and the schema told one of
+them there was none: a `project` call passing `issue` returns a draft carrying
+`Resolves:` above a closing line saying the Forge issue does not apply. That is
+step 4, the wording disagreeing with the answer, and `D-GUI-017` carries the
+repair. The same feedback asked which keyword a mixed dependency update takes;
+nothing is built for it, because it chose correctly from the four the corpus
+lists.

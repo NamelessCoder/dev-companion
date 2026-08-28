@@ -110,36 +110,14 @@ second instance of the same property.
 
 ## Since then
 
-`D-GUI-006` filled `R-GUI-006` on 2026-08-03 with the `audit` change type and an
-intent of the same name, and the feedback's own call was re-run against it the
-same day. Two things came back.
+`D-GUI-006` filled `R-GUI-006` with the `audit` change type, and the second
+**Wrong if** had happened: the review shape arrives and names no removal,
+because the shape says how a finding is reported and not what to look for. So
+the surface is stated on the intent now, with the core's own rule from
+`D-ANS-035` rather than the feedback's — `@internal` waives nothing.
 
-The second **Wrong if** had happened. The review shape arrives — the patch
-checklist is gone and the audit intent's three items are there — and it names no
-removal, because the shape says how a finding is reported and not what to look
-for. So the surface this entry decided is stated is now stated: the `audit`
-intent carries the enumeration, and below it the matcher entry, the changelog
-file, the `[!!!]` prefix and the two `.rst` checks, which `Scope::isCoreOnly`
-drops outside the core. `R-GUI-010` is what holds it there, and the rule it
-states is the core's own from `D-ANS-035` rather than the feedback's:
-`@internal` does not waive the marker, it does not decide whether the removal is
-breaking at all.
-
-The feedback's own call does not reach any of it. It states `changeType`
-cleanup, and a stated type overrules the words of the task by `D-GUI-006`, so
-the `audit` intent is filtered out and what comes back is the full patch
-checklist with the Gerrit steps — the answer this feedback reported, unchanged.
-That is `D-GUI-006`'s **Assumed** meeting a counter-instance: the caller was
-reviewing and classified the patch under review rather than their own work.
-Whether a review that names a change type should be answered as one is a
-question about what is wanted rather than about this code, and the card that
-served this feedback carries it.
-
-Answered on 2026-08-04 by
-[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton.md),
-and this feedback's own call now reaches the surface. It is answered as both:
-the stated type keeps the patch skeleton and the words append the removal
-surface, because which of the two callers made the call cannot be read off it.
-The Gerrit steps are gone from it for a second reason — `review` was a needle of
-the `submission` intent, which is the workflow for pushing a patch rather than
-for reading one.
+The feedback's own call did not reach it, because a stated change type overruled
+the words: the caller was reviewing and had classified the patch under review
+rather than their own work. `D-GUI-009` answered that on 2026-08-04 — the
+skeleton stays and the words append the surface, since which of the two callers
+made the call cannot be read off it.

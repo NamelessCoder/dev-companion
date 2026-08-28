@@ -85,21 +85,11 @@ says nothing either way.
 
 ## Since then
 
-The `...:` lead-in heuristic was not built, and the report is the whole of the
-resolution. `wrapBody()` hands back the runs of caller-written lines it joined,
-`body-lines-reflowed` names each of them, and the check says that indenting is
-what keeps the breaks — so a caller who wanted the block has it in one edit,
-without this class guessing which lines a colon gathers. That guess is the
-second **Wrong if** above, and nothing was found that would make it safe: the
-same lead-in stands over a command block and over a sentence somebody broke at
-column 40, and only the caller can tell them apart. Indentation is a mark the
-caller wrote on purpose, which is why it stays the one thing block recognition
-reads.
-
-The width was measured against the hook again on 2026-08-26, from the other
-side: not a line the wrapping left too long, but one it produced at exactly the
-width. `checkForLineLength()` accepts 72 characters and refuses 73, so the
-threshold and the level this entry set are the hook's own, and the **Wrong if**
-about a caller shortening a line the hook then refuses anyway has not happened.
-What the reading found instead is that the answer never says so, which is
-`D-GUI-020`.
+The lead-in heuristic was not built and the report is the whole of the
+resolution: the check names each run of caller-written lines it joined and says
+that indenting keeps the breaks, so a caller who wanted the block has it in one
+edit. Nothing was found that would make the guess safe — the same lead-in stands
+over a command block and over a sentence broken at column 40. Measured against
+the hook again on 2026-08-26 from the other side: it accepts 72 characters and
+refuses 73, so the threshold is the hook's own. What the reading found instead
+is that the answer never says so, which is `D-GUI-020`.

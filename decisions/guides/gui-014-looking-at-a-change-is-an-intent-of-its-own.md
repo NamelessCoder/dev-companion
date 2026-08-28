@@ -97,38 +97,15 @@ nothing at all.
 
 ## Since then
 
-### 2026-08-24 — the assumption is measured, and the needles are the act in more words
+**The assumption does not hold: a session that is only looking says so in words
+these five needles do not reach.** Measured on 2026-08-24 — the reporting call
+reproduces, and the needle that missed is this entry's own title, because a
+needle is one word-bounded phrase and an adjective inside it breaks the match.
+Four more phrasings, each a filed session's own words, reach nothing, and across
+the 49 prompts in `scenarios/` the intent fires on none.
 
-**The assumption above does not hold: a session that is only looking says so in
-words these five needles do not reach.** It was recorded as unmeasured, and
-`feedback/2026-08-24-140239` is the measurement. Run in this worktree that day:
-
-- The reporting call reproduces. `typo3_task_guide` with the session's own
-  arguments — `changeType="operations"`, a `Tests/Functional` path — names
-  `project/installation/booting-a-clone` and no browser page, as filed.
-- The needle that missed is this entry's own title. "Verify the extension
-  rendering in a real browser" does not match `in a browser`, because a needle
-  is one word-bounded phrase and an adjective inside it breaks the match. The
-  page is called *Looking at a Change in a Real Browser*.
-- Four more phrasings reach nothing: verification named for the frontend, a
-  rendering named as correct, looking named as looking, and a site named as
-  opened. Each is a filed session's own words.
-- Across the 49 prompts in `scenarios/`, the intent fires on none. It is
-  recognized by the words this entry chose and by nothing sessions write.
-
-**Ten needles are added, and each is the act rather than the subject.**
-`browser` alone stays out for the reason above. What the widening had to survive
-is this entry's own first two **Wrong if**, and both were run rather than
-argued: no suite phrasing reaches it — Playwright, end-to-end, browser coverage,
-visual regression — and neither does the probe's, so
-`core/testing/proving-a-rendering` stays the page for what a snippet renders.
-The corpus false positives stay at none.
-`HintsTest::aBriefRecognizesLookingHoweverTheSessionPhrasedIt` and
-`::aWidenedNeedleReachesNeitherTheSuiteNorTheProbe` are the two halves.
-
-**The reported call is answered in English and not in German.** The session
-wrote its task in German, and the same sentence in English now names the browser
-page beside the boot page — the intent carries `changesNothing`, so it survives
-the `operations` brief. The German reaches nothing and correctly so: matching is
-lexical against an English corpus, which is why the server asks its callers to
-translate.
+Ten needles are added and each is the act rather than the subject; `browser`
+alone stays out. Both of the first two **Wrong if** were run rather than argued:
+no suite phrasing reaches it and neither does the probe's, so the proving page
+keeps what it owns. The reported call is answered in English and not in German,
+correctly — matching is lexical against an English corpus.

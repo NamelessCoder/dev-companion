@@ -35,59 +35,31 @@ warning, the way a missing issue has always produced `Resolves: #ISSUE_NUMBER`.
 
 ## Since then
 
-The half of that this repository can see was read: what the draft itself does.
-The markers are unmistakable — neither `RELEASE_TARGET` nor `#ISSUE_NUMBER` has
-the shape of a release target or a Forge issue, which is what `main` failed at
-and the reason the placeholder was chosen. The other path was not. A message
-carrying both, handed back to `typo3_commit_message_guide` for checking, was
-answered with "No commit message readiness issues found": `parse()` read each
-placeholder as the answer it stands in for, and the checks then had nothing to
-report. That is the last moment before a push at which anything here can speak,
-and it was the moment the guide called the message clean — the **Assumed** above
-held for the caller who never checks and failed for the one who did.
-`CommitMessage` now drops both placeholders before the checks run, so the field
-reports missing again and the corrected draft still carries the marker. The
-**Wrong if** itself stays unguarded: no pushed commit has been seen either way,
-and only a forward run against a real contribution would produce one
-(2026-08-02).
+The markers are unmistakable, and the other path was not: a message carrying
+both, handed back for checking, was answered "no readiness issues found" because
+`parse()` read each placeholder as the answer it stands in for. That is the last
+moment before a push at which anything here can speak, and the guide called the
+message clean — the **Assumed** held for the caller who never checks and failed
+for the one who did. `CommitMessage` drops both placeholders before the checks
+run now. The **Wrong if** stays unguarded.
 
 ## Since then
 
-A third field of the same kind was found, and the mechanism above does not reach
-it. `isBreaking` is something the guide cannot know either: it is an input, and
-the tool never sees the diff. A core patch review passed the whole message of
-`9f6c6eb9093` with no `isBreaking` argument. The answer was `no-issues-found`
-and nothing else. That patch removes a protected method from a class that is
-neither `final` nor `@internal`, so whether the subject owed `[!!!]` was the
-open question of the review — and a caller who had not yet classified the change
-is the one most likely to ask (`feedback/2026-08-03-144432`). A placeholder
-cannot carry this field. The answer's place in the subject is the *absence* of a
-marker, so there is nothing to write `RELEASE_TARGET` into, and the statement
-has to move out of the draft and into the checks. Re-run on 2026-08-03 against
-the code as it stands: that same message now returns five `body-lines-reflowed`
-infos and no `no-issues-found` at all, and a short-bodied core message still
-returns `no-issues-found` alone — so the silence about the classification
-survives both answers and is not what the clearance wording is doing.
-`R-GUI-011` is what must hold; the judgement queued it rather than making it,
-because the change is in `src/` and adds a check code.
+A third field of the same kind does not fit the mechanism. `isBreaking` is an
+input the tool never sees the diff for, so a review that passed a whole message
+without it was answered with nothing at all — and the caller who has not yet
+classified the change is the one most likely to ask. A placeholder cannot carry
+it, because the answer's place in the subject is the absence of a marker, so the
+statement has to move into the checks. `R-GUI-011` is what must hold, queued
+rather than made because it adds a check code in `src/`.
 
 ## Since then
 
-Two readings carried this entry out and established nothing beyond it, so each
-is a line here rather than a section of its own. Judged on 2026-08-22.
-
-- 2026-08-03: the check the reading above queued exists as
-  `breaking-not-assessed`, and building it took one thing the placeholder
-  mechanism never needed — a third value. `false` and "not supplied" had been
-  the same answer everywhere, so `isBreaking` is `?bool` and `null` all the way
-  through, which is the only form in which a caller who classified the change
-  can be told from one who never did. `default: false` came off the input schema
-  in the same move, because a client that materialises a declared default would
-  have sent the assumption back as an answer and silenced the check for exactly
-  the caller it is written for. `isDeprecation` shares the one check, since
-  nothing in a subject answers it either way.
-- 2026-08-22: re-read and nothing has moved. `CommitMessage` still drops both
-  placeholders out of the parsed input before the checks run, so a draft handed
-  back for checking reports its fields missing rather than clean. The **Wrong
-  if** needs a placeholder seen in a pushed commit, and only a forward run
-  against a real contribution would produce one.
+The check exists as `breaking-not-assessed`, and building it took one thing the
+placeholder mechanism never needed: a third value. `false` and "not supplied"
+had been the same answer everywhere, so `isBreaking` is `?bool` and `null`
+throughout, and the declared default came off the input schema — a client
+materialising it would have sent the assumption back as an answer and silenced
+the check for the caller it is written for. Re-read on 2026-08-22, the
+placeholders are still dropped before the checks; the **Wrong if** needs one
+seen in a pushed commit.

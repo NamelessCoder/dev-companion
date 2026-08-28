@@ -76,41 +76,14 @@ carries and paths a session would plausibly stand in.
 ## Since then
 
 All four were repaired on 2026-08-19, each measured on its own prompt and
-against the neighbours it could steal from.
+against the neighbours it could steal from: the bare gerund is gone from `audit`
+in favour of the forms that carry what is under review, and the other three
+gained the goal beside the mechanism. What the reading corrected here is that
+one of them names no skill either way, because its intent routes to none.
 
-- `audit` no longer sees a bare `reviewing`. The gerund is `reviewing the`,
-  `reviewing this` and `reviewing my`, so it reaches the intent only where the
-  thing under review follows the word, and `SKILL-07` confirms `backend-module`
-  alone. `review only` and `security review` went in with it, which is what
-  `SKILL-11` is written in.
-- `event-listener` gained the goal beside the mechanism — `without overriding`,
-  `instead of overriding`, `do not want to override` — and `EXT-08` confirms it
-  with no path passed.
-- `site-setting` gained `add a setting`, `add the setting` and `per site`, and
-  `SITE-09` confirms it rather than detecting it weakly.
-
-What the reading corrected in this entry: `SITE-09` names no skill either way,
-because `site-setting` routes to none. What confirming it buys is the checklist
-stated as fact rather than under a condition, and the same holds for `EXT-08`.
-
-The fourth **Decided** is spent. The needles are curated, so a test feeding each
-case's own prompt no longer fixes a miss into the suite, and
-`ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout` is what holds
-the arrival for all four.
-
-The half `SKILL-07` was not taken for was closed the same day. "Document the
-public workflow ... in the right place" reached no documentation intent because
-the only intent naming `typo3-extension-documentation` was `changelog`, and
-widening that one would have handed a manual the core's release artifact;
-`documentation` is an intent of its own since
-[`D-SKL-066`](../task-skills/skl-066-documenting-a-package-for-its-readers-is-an-intent-of-its-own.md),
-which carries the measurement. So the crossing is measured on both sides, and
-`ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout` holds one row
-per half.
-
-What that reading found beside it: `SKILL-03` reached the documentation skill
-all along and every checklist item it was handed was about
-`typo3/sysext/core/Documentation/Changelog/`. A brief naming the right workflow
-is not evidence that what it states is the right work, which is the same
-distinction this entry opens with.
-
+The fourth **Decided** is spent: the needles are curated, so a test feeding each
+case's own prompt no longer fixes a miss into the suite. The half one case was
+not taken for was closed the same day by an intent of its own (`D-SKL-066`),
+since widening the changelog intent would have handed a manual the core's
+release artifact. Found beside it: a brief naming the right workflow is not
+evidence that what it states is the right work.

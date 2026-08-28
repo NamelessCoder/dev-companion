@@ -70,31 +70,13 @@ kinds of change as well, so a review fell through to the patch checklist.
 
 ## Since then
 
-The statement holds and the enum turned out to be one value short of it. A task
-that changes nothing is not only a review: `feedback/2026-08-03-154508` booted a
-Composer project from a fresh clone — start the environment, import a database
-and files, build the assets, create a backend user — and had no value to state.
-`audit` asks for a review brief, so `unknown` was the honest choice, and
-`unknown` is this skeleton.
+The statement holds and the enum was one value short of it: a task that changes
+nothing is not only a review. A session booting a Composer project from a fresh
+clone had no value to state, and `unknown` gave it this skeleton — the patch
+checklist, reached from the other side. `D-GUI-008` is where that lands, taking
+the mechanism this entry established and keeping the skeletons apart, because
+"report what the review did not reach" is a step a boot does not take.
 
-Re-run on 2026-08-03 in this repository, the reported call still comes back with
-"Confirm the target TYPO3 core branch and issue context", "Keep the patch
-focused on the stated task", "Add or update the narrowest useful test coverage"
-and the commit-message step. Which is the same three items this entry was
-decided on, reached from the other side: not a review that fell through, but
-work that operates an installation and has no type at all.
-
-[`D-GUI-008`](gui-008-operating-an-installation-is-a-change-type-of-its-own.md)
-is where that lands. It takes the mechanism this entry established — a value on
-the enum and an intent of the same word, because the type is fed to the intent
-matcher — and it keeps the skeletons apart rather than sharing the review's:
-"report what the review did not reach" is a step a boot does not take either.
-
-The second **Assumed** met its instance on 2026-08-04 and is now half true. A
-caller who states a type and describes a review can also be a reviewer naming
-the type of the patch under review, which is what `feedback/2026-08-01-115711`
-was. What follows from that is
-[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton.md):
-the stated type still decides the skeleton, which is what this entry rests on,
-and the intent it used to filter out is appended instead of dropped, because
-nothing in a call tells the two callers apart.
+The second **Assumed** met its instance and is half true: a caller who states a
+type and describes a review can be a reviewer naming the type of the patch under
+review. `D-GUI-009` follows from that.

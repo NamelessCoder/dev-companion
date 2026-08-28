@@ -185,3 +185,19 @@ discharged rather than a form added, so the case against a fourth intervention
 stands. What it buys this entry is a measurement — a report that still names
 nothing with that line in front of it says the placement was not the lever, and
 the gate is what is left.
+
+**2026-08-28.** A fourth shape, and the first where the prescription skipped is
+`skills/base.md`'s deprecation sweep rather than a build step.
+[`feedback/2026-08-28-074058`](../../feedback/2026-08-28-074058-the-deprecation-sweep-exemption-has-no-second.md)
+reports a review that took the sweep's exemption correctly, was then asked to
+make the change, re-entered through `typo3-extension-health` and worked its
+items without the sweep ever being run. It names why: the sentence closing the
+exemption sits in the paragraph granting it, read minutes earlier, and a session
+re-entering with `base.md` already in context does not read it again.
+
+That is the second **Wrong if** for the fourth time, and it still arrives
+without the ask being open: the maintainer answered *wait* on 2026-08-27 with
+the newer sightings named. What this one adds is a point of use nobody has
+corrected yet — the crossing itself, which `typo3-extension-health` marks at its
+own step 10 — so it is taken as the three corrections before it were, at the
+step where the obligation applies, rather than as the gate this entry defers.

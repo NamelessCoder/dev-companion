@@ -126,7 +126,5 @@ against MySQL or MariaDB on three branches, first written up here as a DBAL bump
 and actually Forge #110258's introspection change, filed by somebody else and
 fixed.
 
-sqlite is the default on every line for reasons of its own — no container, no
-volume, and `rm -rf` takes an environment away — and the database is the third
-argument of `environment:create` since, with the values and versions of each
-driver measured rather than assumed.
+sqlite is the default on every line for reasons of its own, and the database is
+the third argument of `environment:create` since.

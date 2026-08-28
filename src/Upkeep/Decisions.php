@@ -66,6 +66,17 @@ final class Decisions
     public const FIELDS = ['Evidence', 'Decided', 'Assumed', 'Wrong if'];
 
     /**
+     * The lines a dated section runs to.
+     *
+     * What it is for is the finding: a **Wrong if** that fired, a statement
+     * that stopped describing this server, a boundary that moved. A reading
+     * that found none of those is a date in `readings:` and no section at all,
+     * which is what keeps an entry a decision rather than a journal of its own
+     * applications — `D-DOC-066`.
+     */
+    public const READING_MEASURE = 12;
+
+    /**
      * The labels a later session adds. The dated ones belong to
      * `DecisionStatus`, which is what says whether a reader may still build on
      * the entry; `Since then` carries what followed without a date of its own
@@ -94,6 +105,34 @@ final class Decisions
     }
 
     /**
+     * The dated sections of one entry that run past the measure, longest
+     * first.
+     *
+     * @return array<string, int>
+     */
+    public static function overTheMeasure(string $path): array
+    {
+        $lines = file($path, FILE_IGNORE_NEW_LINES) ?: [];
+        $pattern = '/^## (' . implode('|', self::laterFields()) . ')\b/';
+        $sections = [];
+        $label = '';
+        foreach ($lines as $line) {
+            if (preg_match($pattern, $line, $named) === 1) {
+                $label = trim(substr($line, 3));
+                $sections[$label] = 0;
+                continue;
+            }
+            if ($label !== '' && trim($line) !== '') {
+                ++$sections[$label];
+            }
+        }
+        $over = array_filter($sections, static fn(int $count): bool => $count > self::READING_MEASURE);
+        arsort($over);
+
+        return $over;
+    }
+
+    /**
      * The decisions a test holds, which is what a failing one prints.
      *
      * @return list<array{id: string, title: string, file: string}>
@@ -101,51 +140,6 @@ final class Decisions
     public static function restingOn(string $class, string $method): array
     {
         return Entry::restingOn(self::all(), 'decisions', $class, $method);
-    }
-
-    /**
-     * Entries a reader pays more for the history of than for the decision,
-     * longest history first.
-     *
-     * Not a defect and nothing fails on it: `Confirmed on` is what a reading
-     * that held leaves, and an entry stating a rule the repository applies
-     * often collects one per application. It is a reading cost, and it is
-     * concentrated — 85% of entries carry no dated section or one, and the
-     * ones measured here held 30% of every later-reading line in the corpus on
-     * 2026-08-22.
-     *
-     * @return array<int, array{id: string, entry: int, later: int, dated: int}>
-     */
-    public static function outgrown(): array
-    {
-        $outgrown = [];
-        foreach (self::all() as $decision) {
-            $lines = file(self::directory() . '/' . $decision['group'] . '/' . $decision['file']) ?: [];
-            $foot = count($lines);
-            foreach ($lines as $index => $line) {
-                if (preg_match('/^## (' . implode('|', self::laterFields()) . ')\b/', $line) === 1) {
-                    $foot = $index;
-                    break;
-                }
-            }
-            $later = count($lines) - $foot;
-            if ($later <= $foot) {
-                continue;
-            }
-            $outgrown[] = [
-                'id' => $decision['id'],
-                'entry' => $foot,
-                'later' => $later,
-                'dated' => count(array_filter(
-                    self::fields(implode('', $lines)),
-                    static fn(string $field): bool => in_array($field, self::laterFields(), true),
-                )),
-            ];
-        }
-
-        usort($outgrown, static fn(array $a, array $b): int => $b['later'] <=> $a['later']);
-
-        return $outgrown;
     }
 
     /**
@@ -371,7 +365,7 @@ final class Decisions
      * One file. Read on its own rather than through all(), which is keyed by
      * id and would hide the second file claiming one.
      *
-     * @return array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, revisited: bool, statement: string, fields: array<int, string>}
+     * @return array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, readings: list<string>, revisited: bool, statement: string, fields: array<int, string>}
      */
     public static function read(string $path): array
     {
@@ -393,6 +387,10 @@ final class Decisions
             // said it on four of them and nowhere a listing could see.
             'revokedBy' => Entry::value($matter, 'revokedBy'),
             'tests' => Entry::names($matter, 'coveredBy'),
+            // The dates of the readings that changed nothing. They are data
+            // rather than a section each, because what a reader needs from one
+            // is that it happened and when — `D-DOC-066`.
+            'readings' => Entry::names($matter, 'readings'),
             'revisited' => self::revisited($contents),
             'statement' => $head['statement'],
             'fields' => self::fields($contents),

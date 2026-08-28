@@ -167,6 +167,9 @@ What an entry holds
 * Each section holds one bullet per item. Half the entries decide more than one
   thing and a fifth rest on more than one assumption, which is why these are
   sections and not a bullet repeating its own label.
+* ``readings`` lists the days somebody went back to the entry and found nothing
+  to change, newest last. A reading that did change something is a dated section
+  instead, and the two are never both written for one day.
 * ``coveredBy`` lists the tests that would catch the **Wrong if** happening, and
   it is **generated**: the test declares ``#[Decision('D-DIS-004')]`` and
   ``bin/cli decisions:cover`` writes the front matter from every such attribute.
@@ -191,8 +194,25 @@ The dated sections
 
 A dated section at the foot and nothing else: **Confirmed on ``<date>``** where
 somebody went back and it held, **Revoked on ``<date>``** where it did not, and
-**Since then** for what followed without a date of its own. Those carry prose
-rather than bullets, because each is an account of one reading.
+**Since then** for what followed without a date of its own.
+
+**A dated section says what the reading changed**, in twelve lines or fewer: a
+**Wrong if** that fired, a statement that stopped describing this server, a
+boundary that moved. What does not fit is not prose to trim — it is a finding,
+and it belongs in **Decided**, in **Wrong if**, or in an entry of its own.
+
+**A reading that changed nothing is a date and no section.** It goes into
+``readings:`` in the front matter, newest last, because that is all such a
+reading says: the entry was gone back to, and when. Going ``confirmed`` or
+``revoked`` is a change and keeps its section; every later reading of the same
+entry is a date under it.
+
+``bin/cli decisions:check`` counts the sections over the measure and fails on
+none of them, because the corpus is being compacted onto the rule rather than
+held to it from one commit —
+`D-DOC-066 <../../decisions/documentation/doc-066-a-dated-section-says-what-the-reading-changed.md>`_,
+which measured what the form had cost: a quarter of ``decisions/`` sat below a
+dated heading, and two entries had become journals of their own applications.
 
 ``revokedBy`` is what a revoked entry owes its reader: where to go instead. It
 names one decision, only a revoked entry may carry it, and the generated listing

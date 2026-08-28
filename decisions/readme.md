@@ -968,6 +968,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### documentation
 
+- [`D-DOC-066`][D-DOC-066] — A dated section says what the reading changed · 2026-08-28
 - [`D-DOC-059`][D-DOC-059] — The recording report reads both its days in UTC · 2026-08-27
 - [`D-DOC-060`][D-DOC-060] — The worktree says a todo is in hand · 2026-08-27
 - [`D-DOC-061`][D-DOC-061] — A todo's id is derived rather than counted · 2026-08-27
@@ -992,7 +993,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
-- [`D-DOC-041`][D-DOC-041] — An entry outgrown by its own history is read out · 2026-08-22
 - [`D-DOC-042`][D-DOC-042] — A backticked name is a claim that the thing exists now · 2026-08-22
 - [`D-DOC-043`][D-DOC-043] — A test is what holds an entry to the code · 2026-08-22
 - [`D-DOC-034`][D-DOC-034] — A recording is answered from the checkout the command makes · 2026-08-18
@@ -1028,6 +1028,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01 · confirmed
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
+[D-DOC-066]: documentation/doc-066-a-dated-section-says-what-the-reading-changed.md
 [D-DOC-059]: documentation/doc-059-the-recording-report-reads-both-its-days-in-utc.md
 [D-DOC-060]: documentation/doc-060-the-worktree-says-a-todo-is-in-hand.md
 [D-DOC-061]: documentation/doc-061-a-todos-id-is-derived-rather-than-counted.md
@@ -1052,7 +1053,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-038]: documentation/doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: documentation/doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: documentation/doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md
-[D-DOC-041]: documentation/doc-041-an-entry-outgrown-by-its-own-history-is-read-out.md
 [D-DOC-042]: documentation/doc-042-a-backticked-name-is-a-claim-that-the-thing-exists-now.md
 [D-DOC-043]: documentation/doc-043-a-test-is-what-holds-an-entry-to-the-code.md
 [D-DOC-034]: documentation/doc-034-a-recording-is-answered-from-the-checkout-the-command-makes.md
@@ -1109,6 +1109,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-AUD-013`][D-AUD-013] — A competing route is corrected where it is written · 2026-08-25 → D-AUD-014
 - [`D-KNW-109`][D-KNW-109] — Whether a core commit owes a sign-off is a subject this server owns · 2026-08-24 → D-KNW-110
 - [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24 → D-KNW-125
+- [`D-DOC-041`][D-DOC-041] — An entry outgrown by its own history is read out · 2026-08-22 → D-DOC-066
 - [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says it is a file · 2026-08-14 → D-SKL-042
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme · 2026-08-09 → D-DOC-026
@@ -1151,6 +1152,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-AUD-013]: audience/aud-013-a-competing-route-is-corrected-where-it-is-written.md
 [D-KNW-109]: knowledge/knw-109-whether-a-core-commit-owes-a-sign-off-is-a-subject-this-server-owns.md
 [D-KNW-110]: knowledge/knw-110-a-core-commit-message-carries-three-trailers-and-the-hooks-change-id.md
+[D-DOC-041]: documentation/doc-041-an-entry-outgrown-by-its-own-history-is-read-out.md
 [D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-SKL-040]: task-skills/skl-040-a-skill-whose-product-is-a-report-says-it-is-a-file.md
 [D-DOC-018]: documentation/doc-018-the-site-opens-on-the-readme.md

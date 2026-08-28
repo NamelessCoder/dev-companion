@@ -8,6 +8,7 @@ What was assumed about how they are written belongs here.
 See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
+- [`D-DOC-066`][D-DOC-066] — A dated section says what the reading changed · 2026-08-28
 - [`D-DOC-059`][D-DOC-059] — The recording report reads both its days in UTC · 2026-08-27
 - [`D-DOC-060`][D-DOC-060] — The worktree says a todo is in hand · 2026-08-27
 - [`D-DOC-061`][D-DOC-061] — A todo's id is derived rather than counted · 2026-08-27
@@ -32,7 +33,6 @@ earns one.
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
-- [`D-DOC-041`][D-DOC-041] — An entry outgrown by its own history is read out · 2026-08-22
 - [`D-DOC-042`][D-DOC-042] — A backticked name is a claim that the thing exists now · 2026-08-22
 - [`D-DOC-043`][D-DOC-043] — A test is what holds an entry to the code · 2026-08-22
 - [`D-DOC-034`][D-DOC-034] — A recording is answered from the checkout the command makes · 2026-08-18
@@ -68,6 +68,7 @@ earns one.
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01 · confirmed
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
+[D-DOC-066]: doc-066-a-dated-section-says-what-the-reading-changed.md
 [D-DOC-059]: doc-059-the-recording-report-reads-both-its-days-in-utc.md
 [D-DOC-060]: doc-060-the-worktree-says-a-todo-is-in-hand.md
 [D-DOC-061]: doc-061-a-todos-id-is-derived-rather-than-counted.md
@@ -92,7 +93,6 @@ earns one.
 [D-DOC-038]: doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md
-[D-DOC-041]: doc-041-an-entry-outgrown-by-its-own-history-is-read-out.md
 [D-DOC-042]: doc-042-a-backticked-name-is-a-claim-that-the-thing-exists-now.md
 [D-DOC-043]: doc-043-a-test-is-what-holds-an-entry-to-the-code.md
 [D-DOC-034]: doc-034-a-recording-is-answered-from-the-checkout-the-command-makes.md
@@ -130,12 +130,14 @@ earns one.
 
 ### Revoked, and kept as the record
 
+- [`D-DOC-041`][D-DOC-041] — An entry outgrown by its own history is read out · 2026-08-22 → D-DOC-066
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme · 2026-08-09 → D-DOC-026
 - [`D-DOC-019`][D-DOC-019] — The site's stylesheet and script are built files · 2026-08-09 → D-DOC-024
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09 → D-DOC-028
 - [`D-DOC-021`][D-DOC-021] — The site is searched in a dialog opened with Ctrl-K · 2026-08-09 → D-DOC-024
 - [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09 → D-DOC-024
 
+[D-DOC-041]: doc-041-an-entry-outgrown-by-its-own-history-is-read-out.md
 [D-DOC-018]: doc-018-the-site-opens-on-the-readme.md
 [D-DOC-019]: doc-019-the-sites-stylesheet-and-script-are-built-files.md
 [D-DOC-020]: doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md

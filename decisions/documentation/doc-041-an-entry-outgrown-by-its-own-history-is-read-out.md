@@ -2,9 +2,8 @@
 id: D-DOC-041
 title: An entry outgrown by its own history is read out
 date: 2026-08-22
-status: open
-coveredBy:
-  - DecisionsTest::anEntryOutgrownByItsHistoryIsReadOut
+status: revoked
+revokedBy: D-DOC-066
 ---
 
 # D-DOC-041 — An entry outgrown by its own history is read out
@@ -42,10 +41,10 @@ Nothing about that is wrong, which is why nothing had counted it.
 ## Decided
 
 - A report in `bin/cli decisions:check`, beside the problems and not among them.
-  `Decisions::outgrown()` is the reading and
-  `DecisionsTest::anEntryOutgrownByItsHistoryIsReadOut` holds it. The command
-  still exits 0, because a long history is legitimate and a check that fails on
-  one would be answered by writing shorter accounts of the same readings.
+  A reading of its own carried it, held by a test of its own, both gone with the
+  revocation below. The command still exits 0, because a long history is
+  legitimate and a check that fails on one would be answered by writing shorter
+  accounts of the same readings.
 - The longest three are named and the rest counted, so the report does not
   become a list that grows with the corpus.
 - The measure is lines rather than sections. Nineteen short confirmations and
@@ -111,3 +110,11 @@ sections, so 60 lines of history stood inside **Wrong if** and counted as
 decision. The same conversion left thirty sections opening on a comma, and both
 were repaired here; eighteen entries it split the same way are a todo of their
 own.
+
+## Revoked on 2026-08-28
+
+The report is per dated section now rather than per entry, and the ratio this
+measured is gone with it. What the two counted is the same cost; what changed is
+that a reader can act on the new one, because it names the section to compact
+rather than the entry to feel bad about. `D-DOC-066` carries the measure and the
+rule under it.

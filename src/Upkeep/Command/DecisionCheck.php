@@ -33,6 +33,7 @@ final class DecisionCheck
     public function __invoke(OutputInterface $output): int
     {
         $problems = [];
+        $overTheMeasure = [];
         $seen = [];
         $successors = [];
         $known = [...Decisions::FIELDS, ...Decisions::laterFields()];
@@ -131,6 +132,16 @@ final class DecisionCheck
                     . ($decision['revokedBy'] === '' ? '' : ' — the attribute belongs on ' . $decision['revokedBy']);
             }
 
+            foreach (Decisions::overTheMeasure($path) as $label => $count) {
+                $overTheMeasure[$id . ' — ' . $label] = $count;
+            }
+
+            foreach ($decision['readings'] as $reading) {
+                if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $reading) !== 1) {
+                    $problems[] = $id . ' carries a reading that is not a date: ' . $reading;
+                }
+            }
+
             $dated = Decisions::datedLines($decision['fields']);
             $latest = $dated === [] ? '' : $dated[count($dated) - 1];
             $later = Decisions::fieldFor($decision['status']);
@@ -186,24 +197,20 @@ final class DecisionCheck
             }
         }
 
-        // A report rather than a problem: a rule the repository applies often
-        // collects a `Confirmed on` per application, and nothing about that is
-        // wrong. What it costs is a reader who pays more for the history than
-        // for the decision, and only the reading says which entries those are.
-        $outgrown = Decisions::outgrown();
-        if ($outgrown !== []) {
+        // A report rather than a problem, until the sweep that compacts the
+        // corpus has run: a dated section says what the reading changed, and
+        // one that found nothing is a date in `readings:` — `D-DOC-066`. Every
+        // section over the measure is prose a reader pays for before reaching
+        // the decision.
+        if ($overTheMeasure !== []) {
+            arsort($overTheMeasure);
             $output->writeln(sprintf(
-                '%d entries carry more later reading than decision, the longest being:',
-                count($outgrown),
+                '%d dated sections run past %d lines, the longest being:',
+                count($overTheMeasure),
+                Decisions::READING_MEASURE,
             ));
-            foreach (array_slice($outgrown, 0, 3) as $entry) {
-                $output->writeln(sprintf(
-                    '  %-11s %4d lines of entry, %4d of later reading in %d sections',
-                    $entry['id'],
-                    $entry['entry'],
-                    $entry['later'],
-                    $entry['dated'],
-                ));
+            foreach (array_slice($overTheMeasure, 0, 3, true) as $where => $count) {
+                $output->writeln(sprintf('  %-58s %4d lines', $where, $count));
             }
             $output->writeln('');
         }

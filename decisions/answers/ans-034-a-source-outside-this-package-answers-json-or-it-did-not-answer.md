@@ -71,21 +71,10 @@ out is the declared schema, so nothing downstream parses anything.
 ## Revoked on 2026-08-23
 
 Read on 2026-08-23, and the first **Wrong if** does not wait for its first case:
-one was here before this entry was. `Manual\Documentation` reads
-`docs.typo3.org`, which publishes no API, and it has parsed the rendered pages
-since `7d29c77a` on 2026-07-30 — three days earlier. So "no HTML is scraped"
-describes `Contribution/`, where both sources this was measured on live, rather
-than the lookups that reach a host as a class.
+one was here before this entry was. The manual source reads a host that
+publishes no API and has parsed rendered pages since three days earlier — so "no
+HTML is scraped" describes the two sources this was measured on rather than the
+lookups that reach a host as a class.
 
-The other half holds everywhere, the manual included. `status` is `answered`,
-`empty` or `unavailable` on all four sources that reach a host — the tracker,
-the review server, the manual and the registry — `Result\Unreachable` carries
-the cause vocabulary, and `D-ANS-007` is where the manual's `status` and `cause`
-were settled against the installation answer's.
-
-Put to the maintainer on 2026-08-23, and the answer was to revoke rather than
-leave a bold sentence a reader would take for today. What stands is carried by
-[`D-ANS-096`](ans-096-an-outside-source-is-read-in-the-form-it-publishes.md):
-the JSON reader, one per source with an API, and the rule that a parser is
-written only where the source publishes nothing else. `Fetch::decode()` is
-untouched by any of it — the manual never asks it.
+The other half holds everywhere, the manual included: the status vocabulary is
+the same on all four sources that reach a host.

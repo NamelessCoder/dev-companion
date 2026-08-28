@@ -129,21 +129,11 @@ a discovery that looks for installed packages.
 
 ## Since then
 
-Built on 2026-08-18, at the seam this entry drew. What identifies a root without
-an installed tree is `D-DIS-019` and `R-PRJ-011`, and the state is said in a new
-`installed` field rather than in `kind`, so a caller can still tell a site
-project from an extension repository while it is being installed. The
-`typo3-development-installation` skill states both entry conditions now: an
-answer describing a repository with nothing installed in it, and the
-`no-installation` one where there was no repository to describe. Nothing here
-has been read back from a session on a real clone, which is what the four
-**Wrong if** above are still waiting for.
+Built on 2026-08-18 at the seam this entry drew: what identifies a root without
+an installed tree is another entry's, and the state is said in a field of its
+own rather than in the kind, so a caller can still tell a site project from an
+extension repository while it is being installed. The skill states both entry
+conditions now.
 
-The last **Decided** — that this reaches `typo3_project_describe` and no other
-tool — has a session's cost against it since 2026-08-24.
-`feedback/2026-08-24-140259` hit the uninstalled state through
-`typo3_changelog_lookup`, read `cause: no-installation` as permanent, and
-answered the next two hours of API questions out of a core git checkout. The
-line still holds for what those tools answer about the installation, and what
-moves is the state of the repository they are refusing in:
-[`D-ANS-105`](ans-105-the-unsupported-answer-says-what-would-make-it-answerable.md).
+Nothing here has been read back from a session on a real clone, which is what
+the four **Wrong if** are waiting for.

@@ -137,21 +137,9 @@ of it on one question — does this identifier resolve, and what replaces this U
 
 ## Since then
 
-`typo3_permalink_lookup` was built on 2026-08-27 and the question this entry
-left open was settled first.
-[`D-ANS-120`](ans-120-a-manual-is-reached-by-a-listed-shortcode-or-by-a-core-package-name.md)
-is which manuals it answers for: twelve named ones in `knowledge/manuals.json`,
-every manual of a package the core ships derived from the package name, and no
-extension manual — that last one is this entry's third **Assumed** with a reason
-under it, since such a manual is versioned on the extension's own releases.
-[`D-ANS-119`](ans-119-a-permalink-identifier-is-every-inventory-name-that-is-not-a-page.md)
-is which names it resolves: every role of the inventory except `std:doc`, which
-is the complement of what the manual search reads.
-
-Two things this entry assumed were read against the host in that run. The
-inventory names and the identifiers the route accepts agree over one name of
-each of the fourteen non-page roles, and `std:doc` is the one role the route
-rejects. The version fallback is detectable without a second request: the
-inventory's own `# Version:` line says which branch answered, so the widening
-this entry demanded be reported is reported off the artefact rather than off the
-redirect.
+The tool was built on 2026-08-27 and the question this entry left open was
+settled first, in two entries of its own: which manuals it answers for — the
+named ones, every manual of a package the core ships derived from the package
+name, and no extension manual, which is this entry's third **Assumed** with a
+reason under it — and which names it resolves, every role of the inventory
+except the one that is a page.

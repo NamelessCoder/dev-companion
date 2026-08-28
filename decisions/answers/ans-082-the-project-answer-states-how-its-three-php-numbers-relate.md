@@ -95,22 +95,8 @@ executed, which is a claim nothing tests and every check passes.
 ## Since then
 
 Built on 2026-08-18, and the first **Assumed** holds, measured rather than
-carried over. The corpus is every `require.php` below
-`.checkouts/{12.4,13.4,14.3,main}` and the vendor trees they installed: 556
-constraints in 36 distinct spellings, each one asked of `Versions::floor()` and
-of composer/semver, the second by asking it for the lowest major.minor it admits
-any release of. All 36 agree, `>= 8.1 < 8.5` included — the spelling that broke
-`D-VER-004` one level up, and the reason the space-collapsing that entry added
-is shared here rather than written twice.
-
-Two shapes answer "no floor" instead of a number, and both are the second
-**Wrong if** being avoided rather than met. `*` names no floor to compare. So
-does Composer's hyphen range: `8.1 - 8.4` read as the comparators it splits into
-would answer 8.4, its ceiling, and `D-VER-004` found that shape in none of 3179
-constraints and left it unread. A spelling this will not claim to read costs the
-caller the whole `phpRelation` object, which is a sentence missing rather than a
-wrong relation carrying the answer's authority.
-
-The reading is `Versions::floor()`, one level below the `admits()` beside it and
-sharing its comparator pattern so the two cannot drift apart on a spelling. What
-it feeds is `R-PRJ-010`.
+carried over: 556 constraints in 36 distinct spellings, each asked of this side
+and of composer/semver, and all 36 agree — the spelling that broke the entry one
+level up included, which is why the space-collapsing is shared rather than
+written twice. Two shapes answer "no floor" instead of a number, and both are
+the second **Wrong if** being avoided rather than met.

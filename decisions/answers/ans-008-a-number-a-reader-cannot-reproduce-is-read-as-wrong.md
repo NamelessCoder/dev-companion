@@ -71,22 +71,11 @@ checked against the obvious command, disagreeing — and filed as a wrong answer
 
 ## Since then
 
-The first **Wrong if** above has been reached from beside it rather than head
-on. `feedback/2026-08-03-164651`, judged on 2026-08-03, disputes the same
-section again and not a number in it: `Classes/Utility/` is under no recognised
-kind, so it is in no line of the answer, and the caller who ran `find` over
-`Classes/` got three files where the answer accounted for two. The qualifier
-this entry asked for landed and holds; what could not be reproduced this time is
-the list of kinds, which is a property of Extension::CLASS_KINDS rather than of
-any count. That is
-[`D-ANS-045`](ans-045-the-classes-section-reports-every-directory-below-it.md),
-and nothing decided here moves.
+The first **Wrong if** has been reached from beside it rather than head on: a
+session disputes the same section again and not a number in it — a directory
+under no recognised kind is in no line of the answer, so a count over the tree
+found three files where the answer accounted for two.
 
-The question this entry left to the todo is settled: the count stays the deep
-one and both places say so. `Classes/Updates/Criteria/` is under no kind of its
-own, so a top-level count would drop its six files out of the answer rather than
-report them elsewhere, and the section describes what an extension's `Classes/`
-holds rather than what it registers. The rendered list now carries *Each count
-is every PHP file below that directory, its own subdirectories included*, the
-schema says the same of `files`, and `Extension::countPhpFiles()` says why the
-Finder has no `depth(0)`.
+The qualifier this entry asked for landed and holds. What could not be
+reproduced is the list of kinds, which is a property of that list rather than of
+any count, and nothing decided here moves.

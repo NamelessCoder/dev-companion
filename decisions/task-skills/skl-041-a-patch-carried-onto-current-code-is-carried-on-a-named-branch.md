@@ -93,22 +93,12 @@ giving it a name.
 
 ## Since then
 
-The two questions left to the reading were read on 2026-08-14 and both are
-answered. The contribution guide's cherry-pick page names no branch at all: it
-has the checkout cleaned with `git fetch --all && git reset --hard origin/main`
-and then runs the line Gerrit's Download menu copies, so the cherry-picked
-commit lands on `main` itself. That is worse than what this repository's skill
-prescribed rather than a source for the name, and it is why the document now
-says where the guide's command puts the commit. So `review/<change number>` is
-the maintainer's correction written down, upstream having nothing to say about
-it.
-
-The rebase path is folded into the new way in rather than left beside it. Every
-core patch is exactly one commit, which the same document states, so rebasing
-the fetched commit onto current code and cherry-picking it there replay one
-commit onto code it was not written on and produce the same thing. Keeping them
-apart would state the boundary this entry draws twice, and the copy that had
-already gone stale — "Put the checkout back" step 2 — was the rebase one. The
-skill's section is now "Carry it onto current code only where the work needs
-it", which keeps the old rule about when to move a patch at all and gains the
-branch, its deletion, and that the findings name the carried commit.
+Both questions were read and answered. The contribution guide's cherry-pick page
+names no branch at all — it cleans the checkout onto `main` and runs the line
+Gerrit's Download menu copies, so the commit lands there. That is worse than
+what the skill prescribed rather than a source for the name, so the branch name
+is the maintainer's correction written down. The rebase path is folded into the
+new way in rather than left beside it: every core patch is one commit, so
+rebasing it and cherry-picking it onto current code produce the same thing, and
+keeping them apart would state the boundary twice — the stale copy was the
+rebase one.

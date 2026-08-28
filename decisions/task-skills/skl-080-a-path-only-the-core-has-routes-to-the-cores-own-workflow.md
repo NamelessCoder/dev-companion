@@ -125,21 +125,12 @@ checklist marked core-only, and is routed to the workflow for extensions.
 
 ## Since then
 
-The repair is the second of the two shapes, and the first is what settled it.
+The repair is the second of the two shapes, and the first is what settled it:
 `Scope::isCoreWork()` reads each path through the layout the same class already
-applies in `Scope::of()`, guard included, rather than taking `build/scripts/`
-and `build/sources/` into `CORE_WORK`. Those markers are matched against the
-paths and the task text folded into one string, where two things the layout
-holds would go: the manifest at the root, which is what makes `Build/Scripts/`
-the core's rather than an extension's own build setup, and the path itself, so a
-sitepackage brief writing the directory in prose would clear the gate too. Both
-are asserted from the far side in
-`ScopeTest::aPathInTheCoresOwnBuildSetupRoutesTheCoresOwnWorkflow`.
-
-`Scope::CORE_ONLY_ARTIFACTS` is left as it is. It answers the other question —
-whether a line of advice can be followed outside the core — and its population
-is the checklist, the checkout discovery steps and the `nextTools` reasons, none
-of which names `Build/Sources/`: read on 2026-08-27, the one file in
-`knowledge/` that writes the directory is `test-suite-hints.json`, whose lines
-carry `runTests.sh` and the core checkout anyway. Adding the marker there would
-be one nothing matches.
+applies, guard included, rather than taking the two directories into the marker
+list. The markers are matched against the paths and the task text folded into
+one string, where the manifest at the root and the path itself both go — so a
+sitepackage brief writing the directory in prose clears the gate too.
+`CORE_ONLY_ARTIFACTS` is left as it is: it answers whether a line can be
+followed outside the core, and the one file that writes the directory carries
+the script and the core checkout anyway.

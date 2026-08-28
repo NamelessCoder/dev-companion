@@ -114,17 +114,10 @@ carries the activation states a premise the task does not meet.
 
 ## Since then
 
-The rewrite landed on 2026-08-18. The description opens on keeping a package
-working on the versions it declares **or** carrying it to another set, so the
-shapes after the colon are read under a premise a defect meets; the body opens
-on the same two cases, and its third step reads the declared range where nothing
-is being crossed rather than resolving one. `R-SKL-007` was widened with it, and
-what the skill says it owns is no longer the crossing alone.
-
-What the trade actually had to fit is smaller than this entry says. Measured the
-way `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` measures — which
-counts the description as the front matter writes it, quotes included — the
-listing stood at 3597 of the 3600 the ratchet allows before this change and at
-3595 after, and the upgrade description went from 269 characters to 266. So the
-room was 3 characters and not 28, and the next rewrite of any of the twelve
-reads the number off that test rather than off this entry.
+The rewrite landed: the description opens on keeping a package working on the
+versions it declares **or** carrying it to another set, so the shapes after the
+colon are read under a premise a defect meets, and the body opens on the same
+two cases. What the trade had to fit is smaller than this entry says — measured
+the way the test measures, the room was three characters and not 28, and the
+next rewrite of any of the twelve reads the number off that test rather than off
+here.

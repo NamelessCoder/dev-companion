@@ -106,29 +106,11 @@ Measured on 2026-08-25 in this branch, against `feedback/2026-08-24-162543`.
 
 ## Since then
 
-Written into `skills/typo3-core-patch-development/SKILL.md` on 2026-08-25, and
-the placement this entry left open is settled by the writing: both, one point
-each. The enumeration is a third act of step 3, beside the two the issue's notes
-already produce, because that is where the list is read and `D-SKL-010`'s
-**Wrong if** refuses a fourth rung. The other direction stands as one paragraph
-under "Keep the patch one change", because that sentence is what a session reads
-at the moment it decides to narrow, and
-[`D-SKL-002`](skl-002-a-focused-audit-narrows-what-is-assessed-not-the-list-it-closes-on.md)
-is the same shape settled once already: a permission stated earlier is outranked
-by the instruction at the point of the decision.
-
-The two reasons are split one to a place rather than repeated. Why the split
-cannot wait — each part needs a number, which the `Resolves:` trailer and the
-changelog file name both take — sits where the split is decided. What a dropped
-point costs — the trailer closes the issue on every point it names, and nobody
-reopens a closed one — sits where dropping it would happen.
-
-`R-SKL-027` is the requirement the todo asked about, and it is one: the demand
-holds while the file stating it is rewritten, which is what separates a
-requirement from the change that established it.
-`SkillTest::aPatchCoversEveryPointItsIssueLists` holds both, and reads the
-wording in both places and their order against the sections around them.
-
-What is still unmeasured is the first **Wrong if** above, which no run here can
-answer: whether a session with the wording in place still narrows to the
-convenient subset. Nothing else has changed, and the entry stays `open` on it.
+The placement is settled by the writing: both, one point each. The enumeration
+is a third act of the step where the list is read, because a fourth rung is
+refused; the other direction is one paragraph where a session decides to narrow,
+which is the shape `D-SKL-002` settled once already — a permission stated
+earlier is outranked by the instruction at the point of the decision. The two
+reasons are split one to a place rather than repeated. `R-SKL-027` is a
+requirement rather than the change: the demand holds while the file stating it
+is rewritten. What stays unmeasured is the first **Wrong if**.

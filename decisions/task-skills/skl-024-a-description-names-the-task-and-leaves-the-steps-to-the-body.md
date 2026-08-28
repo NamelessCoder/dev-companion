@@ -83,52 +83,27 @@ workflow itself.
 
 ## Confirmed on 2026-08-09
 
-A session asked to review change 95179 in a git worktree read patch checkout's
-description, took it for a branch-switching workflow, and did the fetch and the
-worktree by hand — with the review skill's own routing line naming the checkout
-skill in front of it
-(`feedback/2026-08-08-224413-typo3-core-patch-checkout-stayed-shut-on-a.md`).
-That is the **Assumed** above, measured here for the first time: the steps were
-read as the workflow rather than as a route into it.
+The **Assumed** was measured for the first time: a session asked to review a
+change in a git worktree read the checkout skill's description, took it for a
+branch-switching workflow, and did the fetch by hand — with the review skill's
+routing line naming it in front of it.
 
 What the sighting adds is the mechanism. A step clause does not only summarise
-the body, it **narrows what the description names**, because a list of steps
-describes one way of doing the job and reads as a refusal of every other. Every
-verb after the fetch in this one moves the branch the session is standing on,
-and a worktree review is the opposite operation — so the description read as
-actively not its case, which is a stronger failure than being skimmed.
-
-`a1b09af` cut the clause and `4b186b3`, the budget trim of the same day, wrote
-it back in exchange for the requests the description used to list. That trade is
-`D-SKL-026`'s third **Wrong if** rather than this entry's, and it was undone on
-2026-08-09: the clause is out, the requests and the worktree are back, and the
-body now carries the worktree path the description promises.
-`SkillTest::aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout` holds both halves,
-so the next trim cannot make the same trade unseen.
+the body, it **narrows what the description names**: every verb after the fetch
+moves the branch the session is standing on, so a worktree review read as
+actively not its case, which is a stronger failure than being skimmed. The
+clause was cut, traded back in by a budget trim the same day, and undone again —
+`SkillTest::aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout` holds both halves
+so the next trim cannot make the trade unseen.
 
 ## Since then
 
-### 2026-08-25 — the second Wrong if fired, on the clause cut from triage
-
-A session opened with "bitte suche forge issues im asset renderer bereich",
-searched the backlog six times, read four candidates and opened
-`typo3-core-issue-triage` at no point
-([`feedback/2026-08-24-163220`](../../feedback/archive/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)).
-The brief names the cut step — "find the candidates in the backlog" — and the
-skill it named stopped matching, which is the second **Wrong if** verbatim.
-
-The statement stands and what fired is narrower than it. "Find the candidates"
-was not a step of the task this description names: the body hands the backlog
-over as a deliverable of its own and says the two are different jobs, which
-`D-SKL-031` settled the day after the cut. So the clause was carrying a second
-task rather than summarising the first, and a cut that reads a job as a step
-removes what nothing else in the description says.
-[`D-SKL-076`](skl-076-a-description-names-both-jobs-a-skills-body-owns.md) is
-what that is decided as, and it is where the case is queued.
-
-The other five skills were read for the same thing on 2026-08-25, by their
-section headings against their descriptions. Each runs one task through to one
-deliverable — a pushed patch, a checkout in a stated state, a report, a module,
-a running installation — and where a body branches, as the installation skill
-does on whether a procedure is declared, both branches end at that same one. So
-triage is the case rather than the first of several.
+The second **Wrong if** fired on the clause cut from triage: a session searched
+the backlog six times, read four candidates, and never opened the skill whose
+description had stopped naming that step. What fired is narrower than the
+statement — "find the candidates" was not a step of the task the description
+names but a deliverable of its own, which `D-SKL-031` settled the day after the
+cut. So a cut that reads a job as a step removes what nothing else says, and
+`D-SKL-076` is what that is decided as. The other five skills were read for the
+same thing and each runs one task through to one deliverable, so triage is the
+case rather than the first of several.

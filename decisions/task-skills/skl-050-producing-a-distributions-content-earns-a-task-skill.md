@@ -142,52 +142,17 @@ activated by hand.
 
 ## Confirmed on 2026-08-18
 
-The producing side was run end to end and the first **Wrong if** did not fire:
-it is not four hints in an order and one verify command. Two installations on
-14.3.6 below this worktree, one on mariadb to produce the artifact and one on
-mysql to receive it, both built by `bin/cli environment:create`. A page tree of
-three pages under the root, two content elements, three images and one internal
-link, seeded through DataHandler; exported; placed in a package; installed on
-the second one from empty.
+The producing side was run end to end on two installations and the first **Wrong
+if** did not fire. Four of the steps carry a failure that reports success, and
+three were paid for in this session rather than read: a page takes the hidden
+default its TCA declares, so the first seed shipped three hidden pages and the
+receiving installation answered 404 on all of them; a NEW id is split on its
+last underscore and read as a table name, so a relation wrote three rows with no
+parent and logged nothing; and the site configuration route copies the whole
+directory, so shipping the yaml alone produced a site that resolved and answered
+500. Two claims of the corpus held as written.
 
-Four of the steps carry a failure that reports success, and three of them were
-paid for in this session rather than read:
-
-- A page takes the default its TCA declares, which is 1 for `pages.hidden`
-  against 0 in the schema — `Configuration/TCA/Overrides/pages.php` on 13.4,
-  14.3 and `main`, and the column itself on 12.4. The first seed wrote three
-  hidden pages, the export shipped them, and the receiving installation answered
-  404 on every page below its root while every command involved reported
-  success.
-- `processRemapStack()` splits a NEW id on its last underscore and reads what is
-  in front of it as a table name, on all four covered lines. `NEW_ref1` in a
-  relation field therefore substituted nothing: three `sys_file_reference` rows
-  were written with `uid_foreign` 0, the parent's field counted 0, and nothing
-  was logged. Renamed to `NEWref1` the same single datamap attached all three.
-- The site configuration route that keeps the base intact copies the whole
-  directory: `ImportSiteConfigurationsOnPackageInitialization` calls
-  `GeneralUtility::copyDirectory()`. Shipping only `config.yaml` produced a
-  receiving installation that resolved its site, found all four pages, and
-  answered 500 with "no TypoScript object of type PAGE" — because `typo3 setup`
-  had written `setup.typoscript` beside the yaml on the exporting installation
-  and it had not travelled. With that one file shipped as well, all four pages
-  answered 200, the images rendered, and the internal link resolved to the page
-  it was exported pointing at.
-- `--include-related=sys_file` is what admits the bytes, as `D-KNW-080`
-  recorded. `--table=_ALL --include-related=_ALL`, which the official page on
-  creating a distribution prescribes, added `sys_file_storage` to this tree and
-  nothing else.
-
-Two claims of the corpus held as written. `typo3 setup` on the receiving
-installation answered "The --distribution and --create-site commandline options
-have no effect, when distributions are already active" and let the shipped site
-configuration through, with `rootPageId` rewritten to the imported page and
-`base` untouched. The import was remembered as
-`site_distribution:Initialisation/dataImported`.
-
-What the reading could not settle here is what publication owes. The twelve
-published descriptions stand at 3597 characters against a ceiling of 3600, which
-is this entry's fourth **Wrong if** arriving as a wall rather than as a
-displaced skill — so the skill is published as a draft, the budget is counted
-over what a client reads (`D-SKL-054`), and the baseline run `D-SKL-035` buys
-and the review `writing-a-skill.rst` requires are the publishing card's.
+What the reading could not settle is what publication owes: the published
+descriptions stand three characters under the ceiling, which is the fourth
+**Wrong if** arriving as a wall rather than as a displaced skill. So the skill
+is published as a draft and the baseline run is the publishing card's.

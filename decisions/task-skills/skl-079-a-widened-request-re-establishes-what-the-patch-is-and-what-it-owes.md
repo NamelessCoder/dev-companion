@@ -109,24 +109,10 @@ Measured on 2026-08-27 in this branch, against `feedback/2026-08-24-225243`.
 
 ## Since then
 
-Written into `skills/typo3-core-patch-development/SKILL.md` on 2026-08-27, and
-the placement this entry left open is settled: under "Keep the patch one
-change", as the third paragraph of that cluster. A widening is a session
-deciding again what this patch is, which is what that sentence is read for, and
-the reporting session names it as the one that fired — "but only for the first
-split". The foot of "Make the change" is where a widening is met and not where
-anything is decided, so the paragraph would stand past the moment it is for.
-[`D-SKL-075`](skl-075-a-patch-narrows-the-work-not-the-list-of-points-it-closes-on.md)
-settled the same shape one paragraph earlier: the instruction at the point of
-the decision is what a session reads.
-
-The three are pointed at rather than restated — step 2, the blast radius, the
-changelog section — so a rewrite of any of them does not leave a second copy
-here. `R-SKL-028` is the demand, and it holds while this file is rewritten.
-`SkillTest::aWidenedRequestReEstablishesWhatThePatchIsAndWhatItOwes` reads the
-wording and its place between the narrowing paragraph and the rebase one.
-
-The first **Wrong if** is what stays unmeasured, and it is the same one
-`D-SKL-075` is open on: whether a session with the wording in place still ships
-the wrong characterisation. Nothing here can answer it, so the entry stays
-`open`.
+The placement is settled: the third paragraph of the narrowing cluster, because
+a widening is a session deciding again what this patch is, and the reporting
+session names that sentence as the one that fired. The foot of the making
+section is where a widening is met and not where anything is decided.
+`D-SKL-075` settled the same shape one paragraph earlier. The three are pointed
+at rather than restated, so a rewrite leaves no second copy here, and the first
+**Wrong if** stays unmeasured for the same reason that entry is open on it.

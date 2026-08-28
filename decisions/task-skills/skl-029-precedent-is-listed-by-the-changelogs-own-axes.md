@@ -105,34 +105,15 @@ query at all.
 
 ## Since then
 
-The wording landed on 2026-08-09, in the precedent bullet of
-`skills/typo3-core-patch-review`, and the assertion that held the old one is
-`SkillTest::aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords`. The
-step now names three sources in order — the listing by `type` and `version`, the
-title words, the checkout — and says which line to list: a released one the
-change is backported to, or a major before that, which is the same sentence as
-the old bullet's refusal of a filter set to the branch under review. The `tag`
-is owed on a major still collecting entries; the counts were read again in
-`.checkouts/14.3` on the day, where 14.0 through 14.3.x hold 99 breaking and 34
-important entries against a `limit` that caps at 50.
+The step now names three sources in order — the listing by type and version, the
+title words, the checkout — and says which line to list, which is the old
+bullet's refusal of a filter set to the branch under review.
 
-The assumption above does not hold, and the third **Wrong if** is what the step
-says instead. It was measured over 128 changelog entries of all four types,
-sampled from `13.4.x` and from 14.0 through 14.3, each read twice: the Forge
-tracker of its issue through `/issues.json`, and the keyword of the commit that
-added its file, from `git log --all --diff-filter=A` in the checkout the entry
-ships in. The two agree on 101 of the 128 — 20 of 26 important, 20 of 25
-breaking, 15 of 19 deprecation, 46 of 58 feature — and the disagreement runs in
-both directions. Issues #103140 and #105007 are filed as features and were added
-by `[BUGFIX]` commits, which is the shape of the review's own question, and the
-other way round is #105653, filed as a bug and added by a `[TASK]`. So the
-tracker answers what the issue was filed as, the commit answers what the change
-was, and a review arguing that an earlier bugfix of this kind owed an entry
-reads the second.
-
-The security entries are the case that has no tracker answer at all. #108604 and
-#109585 are important entries of security releases, and forge.typo3.org answers
-401 for both. `typo3_forge_lookup` reports that as `unavailable` with cause
-`source-not-answering`, which reads as an outage and is a permanent property of
-those issues, so a reviewer meeting it would either retry or drop the entry. The
-step says so in one sentence.
+The assumption does not hold, and the third **Wrong if** is what the step says
+instead. Measured over 128 changelog entries read twice, from the tracker and
+from the keyword of the commit that added the file, the two agree on 101 and the
+disagreement runs both ways. So the tracker answers what the issue was filed as,
+the commit answers what the change was, and a review arguing that an earlier fix
+of this kind owed an entry reads the second. The security entries have no
+tracker answer at all — the source returns 401, which reads as an outage and is
+permanent — and the step says so in one sentence.

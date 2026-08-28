@@ -101,45 +101,17 @@ spends is taken off the skill that gets listed by its name alone.
 
 ## Since then
 
-The third **Wrong if** happened, on `typo3-core-patch-checkout`. It went into
-the trim listing the requests it carries — trying out somebody's patch, checking
-whether one still applies, getting a checkout back onto an up-to-date main — and
-came out carrying the step clause `D-SKL-024` had cut the same day in their
-place. A session asked to review change 95179 in a git worktree then read the
-result as a branch-switching workflow and never activated it
-(`feedback/2026-08-08-224413-typo3-core-patch-checkout-stayed-shut-on-a.md`).
+The third **Wrong if** happened on one skill: the trim took out the requests a
+user's own words reach and put back the step clause that had been cut the same
+day, and a session then read the result as a branch-switching workflow. So the
+trade this entry says it did not make was made once — the sides survived the
+sweep and not the trim. Putting them back was affordable and was done the same
+day, which says the ratchet holds a total and not a wording: what a trim leaves
+behind is read against `R-SKL-010` and `D-SKL-024` by whoever writes it.
 
-So the trade this entry says it did not make was made once: the sides survived
-the sweep and not the trim, and what went out was the half a user's words reach.
-Putting them back is affordable — the twelve cost 3491 characters of the 3600
-the ratchet allows, measured on 2026-08-09, and the clause going out again frees
-more than the trigger needs.
-
-That is what was done the same day. The clause is out, the requests are back,
-and the worktree is named as one of the two ways in; the twelve cost 3562 of the
-3600 afterwards. What the repair says about this entry is that the ratchet holds
-a total and not a wording, so the description a trim leaves behind is read
-against `R-SKL-010` and `D-SKL-024` by whoever writes it and by nothing else.
-
-The first **Wrong if** fired on 2026-08-10, and it is a transcript rather than a
-recorded run. A session was asked "bitte review mir den patch [TASK] Keep the
-docheader navigation row sticky", received a `skill_listing` of 9500 characters
-with every entry described — `typo3-core-patch-review`'s byte-identical to this
-checkout's, opening on the request's own two words — and worked from the
-checkout for thirteen calls until the user asked why. So the budget was not the
-obstacle for that task, and the wording this entry hands the suspicion to is not
-one either. `D-SKL-033` is the judgement and says what was left untried.
-
-What the same reading does to the arithmetic above is smaller and worth the
-line. 9500 characters arrived in a `claude-opus-5` session, where this entry
-computes 6000 for a 200k one on that generation. Either the window was larger or
-a default has moved since 2026-08-08; nothing was established, and the
-measurement stands as one client on one day the way the original does.
-
-The ceiling moved on 2026-08-19, from 3600 to 3970. What moved it is that a
-thirteenth skill does not fit a ratchet set to what twelve cost, at any wording:
-two step clauses and one section list came out for 206 characters and the two
-skills published cost 558. `D-SKL-064` carries the arithmetic and what the merge
-of two of the twelve bought. The last bullet above is still the open one — which
-skills a session on 200k should be able to see — and it is what the next
-publication runs into again.
+The first **Wrong if** fired on a transcript rather than a recorded run: a
+session received every description in full, byte-identical to this checkout's
+and opening on the request's own two words, and worked from the checkout for
+thirteen calls. So neither the budget nor the wording was the obstacle
+(`D-SKL-033`). The ceiling moved on 2026-08-19, because a thirteenth skill does
+not fit a ratchet set to what twelve cost at any wording.

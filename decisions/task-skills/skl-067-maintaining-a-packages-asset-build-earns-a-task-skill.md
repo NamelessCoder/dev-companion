@@ -104,45 +104,18 @@ is here; nothing carries a word either session typed, so nothing fired.
 
 ## Since then
 
-The borrowed class this entry cites as its second piece of evidence was read on
-2026-08-21, judging `feedback/2026-08-19-090231`. `.table-fit` is written in
-`Build/Sources/Sass/component/_table.scss` on `12.4`, `13.4`, `14.3` and `main`,
-with `overflow-x: auto` on the oldest, so the session's unverified assumption
-was right and the comment it never checked was true.
+The borrowed class was read on 2026-08-21 and the session's unverified
+assumption was right. What **Decided** gives the workflow includes verifying
+such a class against the declared majors, and on this example that verification
+does not answer: the entry is withheld at the older major because one custom
+property in it arrived later and an entry is bound whole. So the instruction has
+a miss behind it on the case that produced it, and what a withholding means —
+"not in this snapshot", and the Sass path that settles it — is part of the
+writing rather than left to the reader.
 
-What **Decided** gives the workflow includes verifying such a class against the
-majors the package declares. On this example that verification does not answer.
-`typo3_component_lookup` bound to `12.4` withholds the `table` entry, because
-one custom property in it arrived in v14 and a catalog entry is bound whole —
-[`D-CAT-001`](../catalog/cat-001-a-catalog-entry-is-bound-whole-and-the-binding-is-derived.md),
-where the reading and the question it raised are written.
-
-So the instruction has a miss behind it on the case that produced it, and what
-the workflow says about a withholding is part of the writing rather than a
-detail left to the reader. A miss here means "not in this snapshot" and sends
-the caller to a Sass path in the core checkout, which is a step the workflow can
-name.
-
-The draft was then read against that session's account, call by call, on
-2026-08-21. Its description carries the two words the task arrived with — a
-dependency update and a Dependabot pull request — so the second **Wrong if**
-does not hold on the file as written, and whether a client fires on it is a run
-rather than a reading. The order reaches two of the three decisions the session
-shipped unverified: the declared majors arrive with the first step, and the
-bullet on what an extension may assume is already loaded is the dropped jQuery
-import.
-
-The third was not reached. The same session also deleted stylesheet rules
-because it believed the backend no longer ships the icon font they name, and a
-core surface the output stops relying on is neither a class the catalog holds
-nor an identifier the installation answers for. `typo3_changelog_lookup`
-restricted to a declared major owns that question, and the workflow now routes
-to it.
-
-What the class bullet said about a withholding was written before `D-CAT-006`
-and is corrected with this reading. A class the query names outright is now
-answered on a target its own entry is withheld for, so "comes back withheld" was
-the whole of the answer only until then. Read on 2026-08-21: `table-fit` at v13
-comes back under `coveredClasses` as the class, its range and its Sass file,
-with the entry withheld above it; at v12 the class list does not reach and the
-withholding names that file alone.
+Read against the session call by call, the order reaches two of the three
+decisions it shipped unverified. The third is neither a class nor a registration
+— a core surface the output stops relying on — and the changelog restricted to a
+declared major owns it. The class bullet was written before `D-CAT-006` and is
+corrected with this reading: a class the query names outright is answered on a
+target its own entry is withheld for.

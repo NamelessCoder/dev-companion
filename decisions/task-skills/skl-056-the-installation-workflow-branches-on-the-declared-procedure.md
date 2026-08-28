@@ -98,19 +98,11 @@ an environment and nothing else falls on the wrong side of each.
 
 ## Since then
 
-The third shape carries a second cost, found by reading the re-cut fork against
-`feedback/2026-08-18-071435` — the same reporting series, on the repository this
-entry was written from. What sends such a session into the create branch is also
-what skips its first two steps: they are the steps the repository already
-declares, and "change nothing that is declared" is the clause that passes over
-them. Step 1 is where `extension-repository-installation` is named, and the
-layout it answers for is what the session probed by hand. `D-SKL-058` routes the
-boot branch to that hint on what the repository is, which leaves the fork as
-this entry cut it.
-
-The last **Decided** was reversed on 2026-08-18. `074606` no longer keeps its
-own card: `D-SKL-059` decides the 1b question it asks — an installation that is
-up is `typo3-development-installation`'s own — and folds the card into the one
-that carries that work. The reason this entry gave still holds and is what
-changed: the card was kept so a rewrite would not hide the question, and it is
-folded into the card that answers it rather than into a rewrite.
+The third shape carries a second cost: what sends a session into the create
+branch is also what skips its first two steps, because "change nothing that is
+declared" passes over the steps the repository already declares — and step 1 is
+where the layout hint is named, which the session probed by hand. `D-SKL-058`
+routes the boot branch to that hint, which leaves the fork as this entry cut it.
+The last **Decided** was reversed the same day: the card is folded into the one
+that answers its question rather than into a rewrite, which is the reason it was
+kept.

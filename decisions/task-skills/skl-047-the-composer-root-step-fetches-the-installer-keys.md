@@ -107,24 +107,14 @@ manifest being written is there to install.
 
 ## Since then
 
-The routing landed and the manual half came out with the circular half, because
-the third **Wrong if** was measured rather than assumed. Asked at 14.3 on
-2026-08-18, `typo3_documentation_lookup` reproduces what the report describes:
-three queries about the installer's `extra` block return six page titles and the
-best carries 37% of the query's weight. The one page whose title does cover the
-question, *Installing TYPO3 with Composer* at 78%, teaches
-`composer create-project typo3/cms-base-distribution` and contains none of
-`web-dir`, `vendor-dir`, `bin-dir`, `app-dir` or `typo3/cms-cli` — it documents
-the project shape, not the package that is its own Composer root. Asking for the
-keys by name returns nothing at all, because that index is page titles and
-section paths and no page is titled after one. So the manual was not the working
-half of the sentence, and the third **Wrong if** does not hold.
+The manual half came out with the circular half, because the third **Wrong if**
+was measured rather than assumed: three queries about the installer's block
+return six page titles whose best carries 37% of the query's weight, and the one
+page whose title covers the question documents the project shape and contains
+none of the keys. Asking for them by name returns nothing, because that index is
+page titles and no page is titled after one.
 
-Two things were found beside the step and left where they were. The manual's
-*composer.json* page carries `extra.typo3/cms.extension-key`, `.version` and
-`.Package.providesPackages`, which this hint does not — those are the manifest's
-extension metadata rather than the installation's layout, and
-`extension-manifest` already owns them for a caller who asks about them. And the
-plugin allowance the step also names is Composer's own configuration, which
-nothing here covers, so the step now says so instead of pointing at a source
-that would not answer it.
+Two things were found beside the step and left alone: the manifest's extension
+metadata, which another hint owns, and Composer's own plugin configuration,
+which nothing here covers — so the step says so rather than pointing at a source
+that would not answer.

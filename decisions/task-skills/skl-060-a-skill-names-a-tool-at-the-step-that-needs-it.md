@@ -114,19 +114,11 @@ names were all delivered, in order, before the calls that needed them.
 
 ## Since then
 
-The candidate this entry named was taken up on the same day.
-`feedback/2026-08-18-113308` was judged as the ladder's step 2 and the
-`instructions` now index the question each tool answers, one entry of which is
-`typo3_changelog_lookup` — the line a second session says would have caught it.
-[`D-AUD-011`](../audience/aud-011-the-instructions-index-the-question-each-tool-answers.md)
-carries what it cost: a hard budget of 2048 characters that was at 2038, so one
-entry was bought by tightening the sentences around it and the rest of the list
-was not bought at all. That moves the first **Wrong if** above from something
-nobody could measure to something the next debrief under such a client answers.
-
-The question this entry recommended against was put to the maintainer on
-2026-08-19 — pay for the list at the top of every skill, or not — and the answer
-was not to. So no skill carries such a line, the feedback is archived, and what
-is left is the measurement rather than the choice: the first two **Wrong if**
-above are what would reopen it, and both are a debrief from a deferring client
-away.
+The candidate this entry named was taken up the same day: the `instructions`
+index the question each tool answers, one entry of which is the line a second
+session says would have caught it. What it cost is in `D-AUD-011` — one entry
+bought by tightening the sentences around it, the rest of the list not bought at
+all — and it moves the first **Wrong if** from something nobody could measure to
+something the next debrief under such a client answers. The question this entry
+recommended against was put to the maintainer and the answer was not to, so no
+skill carries such a line.

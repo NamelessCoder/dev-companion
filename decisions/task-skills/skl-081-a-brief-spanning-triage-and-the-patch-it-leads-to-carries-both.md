@@ -115,58 +115,14 @@ items, the commit message among them.
 
 ## Since then
 
-### 2026-08-27 — made, and what it cost the neighbouring briefs
+The three levers were built and measured over twenty-five briefs before and
+after. Four briefs that answered no skill now answer both, and the ones that did
+not move are the ones the entry predicted: the filing briefs keep their own
+intent, because the plural and the adjective separate taking an issue from
+writing one, and the review briefs answer exactly what they did.
 
-The three levers were built and measured over twenty-five briefs, before and
-after, in this worktree.
-
-**The route.** `triage` takes `old issue`, `old forge issue` and `forge issues`
-as strong needles, and `old issue` leaves `matchWeak`. A new `patch` intent
-recognizes the caller's own act of writing the change — `fix it`, `fix the`,
-`work it off`, `write the patch`, `implement what` and the rest — and names
-`typo3-core-patch-development` inside the core. `TaskGuide` reads that intent as
-what ends every shape that changes nothing, so the skeleton is the patch's, and
-`TaskIntents::owned()` returns what reads before what writes.
-
-What moved: "please find 1 old forge issue and fix it" and "find an old forge
-issue and fix it" go from `skills: []` and no recognized intent to both skills
-and sixteen items; "fetch another old issue from Forge, create a branch, work it
-off" goes from seven items to twelve and gains the second name; "search forge
-issues in the asset renderer area" — the second session's own brief — goes from
-nothing to the triage skill and eleven items; "implement what Forge 98765 asks
-for" gains `typo3-core-patch-development`.
-
-What did not move: the three filing briefs of `D-SKL-078`'s measurement keep
-`reporting` alone, because the plural and the adjective separate taking an issue
-from writing one; `D-SKL-039`'s review briefs answer exactly what they did,
-`fixes` being no match for a needle that ends in a space. "fix an old issue in
-the FormEngine" is the brief this entry declined `old issue` over, and it is a
-patch brief with twelve items: the needle and the fork together are what that
-bullet asked for.
-
-`typo3_task_guide` still answers no skill for "fix Forge 15984 in the
-FormEngine". No intent has ever named the patch workflow for a plain fix that
-carries none of the seven change-type words, and nothing here was widened to
-reach it.
-
-### 2026-08-27 — a third session, a fourth preposition, and what the needles cannot reach
-
-**"in forge" and "on forge" join the tracker needles, and the shape that
-survives them is a task worded as the defect rather than as the work.**
-`feedback/2026-08-27-145332` asked *please search for 1 workspace bug in forge
-and fix it* and got the patch skill alone: `forge` on its own is `matchWeak`,
-and the strong list carried `from forge` and `off forge` and not the two
-prepositions a third session used. It triaged seven issues by hand and reports
-that it never considered either skill.
-
-That is the second session in one day whose only obstacle was which preposition
-it wrote, so the list is the finding rather than the fix. What it cannot reach
-is measured beside it: with `changeType="bugfix"` and a core path, *add the
-missing language parameter to getMovedRecordsFromPages* and *workspaces service
-does not filter moved records by language* both answer `skills: []`, while *fix
-a bug in WorkspaceService* names the patch skill. A brief knows it is core work
-that changes something and still names no workflow, because only the sentence is
-read and the declared `changeType` is not.
-
-`D-SKL-082` decides that half. This entry keeps the route it built; what the
-route cannot be reached by is the other entry's.
+A third session then lost on a preposition — two of the four a session might
+write were in the strong list and two were not — so the list is the finding
+rather than the fix. What the needles cannot reach is measured beside it: a
+brief that knows it is core work and declares a change type still names no
+workflow, because only the sentence is read. `D-SKL-082` decides that half.

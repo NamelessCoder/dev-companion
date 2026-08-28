@@ -73,24 +73,12 @@ clear.
 
 ## Since then
 
-Read on 2026-08-23, and none of the three **Wrong if** has fired.
+None of the three **Wrong if** has fired. Nothing accumulates unrouted: every
+document below `knowledge/documents/` is named by a `covers` entry, and the two
+that share a subject are both reached by a plain query. The three directories
+are reached far more than the fourth — 216 decisions and 36 requirements against
+8 documents since — so prose is not what is being written instead.
 
-Nothing accumulates unrouted. All fifteen documents below `knowledge/documents/`
-are named by a `covers` entry of `knowledge/server-scope.json`, and the two that
-share a subject are both reached by a plain query: `typo3_rule_lookup` for
-"prove a change on a declared major the installation does not have" returns
-`extension/compatibility/a-declared-major-that-is-not-installed` and its
-`running-on-` sibling. Five carry no `hints:` of their own, `hints: []` among
-them, which is the crossing `D-KNW-057` settled and not a routing gap.
-
-The three directories are reached far more than the fourth. Since 2026-08-04
-this repository added 216 decisions and 36 requirements against 8 documents, so
-prose is not what is being written instead.
-
-The nearest thing to the first one is not a case of it. A document did state
-something about TYPO3 that was wrong — how far back a bugfix and a task are
-released, corrected in `206b6ee1` on 2026-08-10 across `commit-messages.md` and
-`gerrit-workflow.md` — but the sentence arrived on 2026-08-05 in a `[FEATURE]`
-commit building the release-lines check, and what settled it was the
-maintainer's word rather than a reading (`D-ANS-073`). No document has been
-written in a judging run and corrected afterwards.
+The nearest thing to the first is not a case of it: a document did state
+something wrong about TYPO3, and the sentence arrived in a feature commit rather
+than in a judging run.

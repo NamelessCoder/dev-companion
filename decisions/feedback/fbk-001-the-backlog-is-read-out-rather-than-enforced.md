@@ -66,16 +66,10 @@ nothing.
 
 ## Confirmed on 2026-08-02
 
-Neither half of the **Wrong if**. No id is reported with `no todo names it` at
-all — `bin/cli unresolved:list` says every requirement is met and guarded — so
-the first half currently has no subject to repeat, which is a weaker result than
-it looks: it says the requirement side is clean, not that a session acts on the
-line when it is not. The second half is the one with movement. The standing
-count fell from 42 to 38 of 52 that day before this entry's own status changed
-it to 37, across four back-checks — three from sessions run in parallel, the
-fourth from the session that merged them — so it does not only ever grow and the
-sorting is happening. Those four also speak to the second **Assumed**: all four
-came back `tested` rather than `corrected`, so the entries were standing because
-they were still true, and the summary was not hiding a queue. Four is a day
-rather than a trend, and the oldest standing entry is still older than this
-reading.
+Neither half of the **Wrong if**. No id is reported with `no todo names it`, so
+the first half has no subject to repeat — which says the requirement side is
+clean rather than that a session acts on the line. The standing count fell
+across four back-checks that day, so it does not only ever grow. All four came
+back `tested` rather than `corrected`, which speaks to the second **Assumed**:
+the entries were standing because they were still true. Four is a day rather
+than a trend.

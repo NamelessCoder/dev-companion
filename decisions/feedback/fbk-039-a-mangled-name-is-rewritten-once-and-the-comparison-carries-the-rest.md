@@ -67,35 +67,15 @@ name a grep finds.
 
 ## Since then
 
-On 2026-08-04, the second **Wrong if** happened. `feedback/2026-08-04-180241`
-recorded `ListMcpResourcesTool` beside two `typo3_*` names and read it back as
-`listmcpresourcestool`, in the joined string and in the split array alike.
-`Channel::toolNames()` keeps the separators the commit above restored and still
-lowercases what is left, so the mangling is a different one and the writer is
-where it lives — which is exactly what this entry named as the sign that
-rewriting the data had been the cheaper half.
-
-`Channel::comparable()` carries the other half of it: it strips everything
-outside `[a-z0-9]`, so a stored name in the spelling it was given in would lose
-its capitals rather than fold them, and the filter would not find the name it
-holds. Both are one repair and neither has been made yet.
-
-The report's second item is answered without a change. It asks whether
-`feedback/2026-08-04-175804` should be recategorised from `bug` to
-`missing-knowledge`; it should not, because the ladder is walked from the
-observation and never from the front matter, and that feedback was judged as
-`1a` regardless of what its category says — `D-KNW-061`.
-
-The repair was made the same day. `Channel::toolNames()` keeps the case it was
-given, `Channel::comparable()` folds it, and the corpus carried exactly one name
-the fold had damaged — `listmcpresourcestool` in `feedback/2026-08-04-180133`,
-rewritten to `ListMcpResourcesTool`, which is the spelling the session passed
-and which its client's transcript still holds. Every other stored name this
-server does not register is lower case as it was written, the wrapper
-`mcp_typo3cmsmcp_typo3_feedback_record` among them.
+The second **Wrong if** happened: a session recorded a tool name from outside
+this server and read it back folded, because the writer kept the separators and
+still lowercased what was left — which is what this entry named as the sign that
+rewriting the data had been the cheaper half. The comparison carried the other
+half of it, stripping everything outside the alphabet so a stored spelling would
+lose its capitals rather than fold them. Both were one repair and it was made
+the same day, the corpus carrying exactly one damaged name.
 
 What made this cheap to miss is worth naming: everything this server registers
 is lower case, so nothing in its own vocabulary could show the fold. The one
-kind of name that could is a name from outside it, which is also the kind a
-session writes down when it reached for something else instead — the report this
-channel is least able to afford losing.
+kind of name that could is a name from outside it, which is the kind a session
+writes down when it reached for something else instead.

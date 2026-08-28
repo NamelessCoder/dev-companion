@@ -123,17 +123,8 @@ nearly sent a fix to an unsupported line.
 ## Since then
 
 The fourth **Wrong if** happened in the harmless direction and the rule moved
-with the work. `typo3-extension-cleanup` no longer exists — `8a67338a` on
-2026-08-19 folded it and the audit into `typo3-extension-health` — and step 12
-of that skill is where the rule now stands: "Settle where the change lands
-before the first commit … That is the repository's own policy and nothing here
-reads it. It is asked of the maintainer, before a branch is pushed and before a
-pull request is opened. A branch listing and a tag scheme are not that answer:
-they say which branches exist, never which are still supported." So the
-placement changed name and the rule reaches the same task.
-
-The other three wait on a session. Nothing since 2026-08-19 reports a policy
-read out of a `CONTRIBUTING.md`, a push to a maintenance branch with the rule in
-hand, or a maintainer answering that it was written down after all; the one
-feedback that names a backport at all is about reading a Gerrit change beside
-its relations.
+with the work: the skill it named was folded into another, and step 12 of that
+one is where the rule now stands — the policy is asked of the maintainer before
+a branch is pushed, and a branch listing is not that answer. So the placement
+changed name and the rule reaches the same task. The other three wait on a
+session, and nothing since reports any of them.

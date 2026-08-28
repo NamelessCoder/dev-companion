@@ -87,22 +87,15 @@ queueing work at once cannot pick the same one.
 
 ## Since then
 
-The fourth thing a priority could say is gone, on the day it was written. Every
-todo in a stage carries one of the three words, a recurring one carries none,
-and a card written for a feedback starts at `low` — which is where absence put
-it, said in a word.
+The fourth thing a priority could say is gone, on the day it was written: a card
+written for a feedback starts at `low`, which is where absence put it, said in a
+word.
 
 What it bought was the check. While absence meant *nobody has judged this*, a
 priority somebody forgot and one deliberately left off were the same file, and
-nothing could name either: an optional field cannot be required, so `todo:check`
-had to stay silent about the one case it most wanted to report. Making it
-required cost nothing that was being used, because what a card is for is
-readable anyway — a judging card is the one that serves a `feedback/` file.
-
-The first **Wrong if** above still stands and is now the whole of the watch: if
-everything on the board is `high`, the rank has come back through the
-vocabulary. The second half of it — *nothing carries a priority at all* — is no
-longer a way this can go wrong, because a file like that is reported.
+an optional field cannot be required — so the check had to stay silent about the
+one case it most wanted to report. The first **Wrong if** is now the whole of
+the watch.
 
 ## Since then
 
@@ -112,4 +105,3 @@ rejected the number: an id read off what already exists is one two sessions both
 take, which is what happened to `D-ANS-114` on two branches cut from one `main`.
 The day still orders the queue below the three words, and nothing is renamed to
 move.
-

@@ -86,22 +86,12 @@ rather than how many are made at once.
 
 ## Since then
 
-The second half of the statement is gone with the command it names.
-`bin/cli feedback:next` and the feedback sighting that ran it were deleted on
-2026-08-02 by
-[`D-FBK-016`](fbk-016-a-feedback-waits-on-the-board-rather-than-behind-it.md),
-which gave every open feedback a card in the queue instead, and what writes that
-card became `typo3_feedback_record` itself on 2026-08-14 —
-[`D-FBK-045`](fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md). So a
-feedback is no longer reached through a sighting at all: it is queued when it
-arrives and judged in the order the queue has. The first **Wrong if** was
-answered by making it moot rather than by being measured.
+The second half of the statement is gone with the command it names: every open
+feedback got a card in the queue instead, and what writes that card became
+`typo3_feedback_record` itself. So a feedback is queued when it arrives and
+judged in the order the queue has, and the first **Wrong if** was answered by
+being made moot.
 
-The first half stands and is what this entry is still read for.
-`bin/cli todo:next` asks the three groups in that order, an appointment is due
-on a cadence in days and on its own command exiting nonzero, and the sightings
-are reached with the queue empty — one of them is left, and it runs
-`bin/cli unresolved:list`.
-[`D-EVI-007`](../evidence/evi-007-a-case-no-test-holds-says-so-with-its-exit-code.md)
-rests on that exit code, and what it cost to have a command answer 0 while work
-stood is written up there.
+The first half stands and is what this entry is still read for: `todo:next` asks
+the three groups in that order, and the sightings are reached with the queue
+empty.

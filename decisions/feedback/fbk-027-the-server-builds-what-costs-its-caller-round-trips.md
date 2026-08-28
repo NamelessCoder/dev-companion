@@ -64,21 +64,13 @@ follows for what gets built.
 
 ## Since then
 
-Read on 2026-08-23, and neither **Wrong if** has fired in a way that asks for a
-change.
+Neither **Wrong if** has fired in a way that asks for a change. The first has no
+field data and what stands in for it points the other way: the recorded answers
+carry sixteen `answered` across the five tools that reach a host against one
+`unavailable`, and that one is a version outside the covered set, refused before
+anything was asked. No feedback reports one of these tools answering that it
+could not answer.
 
-The first one has no field data and what stands in for it points the other way.
-The recorded answers under `documentation/server/tools/`, which
-`bin/cli tools:record` writes by calling every tool, carry sixteen `answered`
-across the five lookups that reach a host and one `unavailable` — and that one
-is `targetVersion: "999"`, a version outside the covered set, refused before
-anything was asked of `docs.typo3.org`. No feedback in either directory reports
-one of these tools answering that it could not answer.
-
-The second one is measured under
-[`D-FBK-026`](fbk-026-the-ladder-needs-an-outcome-that-builds-something.md),
-whose second **Wrong if** watches the same signal from the ladder's side: four
-takings-on since, two of them resting on one session each. Both of those two
-carry the count this bullet asks for — what the corpus and the skills do not
-cover, read rather than asserted — so what is missing is a second session and
-not the reading.
+The second is measured under `D-FBK-026`, whose second **Wrong if** watches the
+same signal from the ladder's side: what is missing is a second session and not
+the reading.

@@ -79,20 +79,10 @@ the priority does what the group boundary did.
 
 ## Since then
 
-The third assumption failed the same day it was written. Commit `8ef3bba`
-brought 20 feedback in and wrote no card for any of them, and the board said so
-only when the next session ran `bin/cli todo:check`. Nothing else about the
-entry moved: the cards were written by the sync as designed, and the count had
-not drowned anything. What was missing was the caller.
-[`D-FBK-022`](fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md)
-is that caller — a pre-commit hook that runs the sync where the commit touches
-`feedback/` — so the assumption is now held rather than made.
-
-On 2026-08-14 the caller became the recording itself, and the sync this entry
-names went with it:
-[`D-FBK-045`](fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md) has
-`typo3_feedback_record` write the card beside the feedback it stores. Everything
-this entry decided about the board stands — one card per open feedback, pointing
-rather than copying, carrying the same step at `low` — and only what writes it
-has moved. The third assumption is no longer made at all: there is no run to
+The third assumption failed the same day it was written: a commit brought twenty
+feedback in and wrote no card for any of them, and the board said so only when
+the next session ran the check. What was missing was the caller, which
+`D-FBK-022` made a pre-commit hook and `D-FBK-045` then made the recording
+itself. Everything decided about the board stands and only what writes it has
+moved, so the third assumption is no longer made at all: there is no run to
 forget.

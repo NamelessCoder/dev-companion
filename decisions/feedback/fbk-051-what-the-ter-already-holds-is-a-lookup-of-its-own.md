@@ -110,26 +110,15 @@ exactly like an unreleased one.
 
 ## Since then
 
-`typo3_ter_lookup` ships, and settling the wording half against the sources
-turned one of the two statements it was to be written with. This entry had it
-that the TER refuses a version it already holds. It does not: its own OpenAPI
-schema declares two success answers for `POST /extension/{key}/{version}` — HTTP
-201 for "the new version", HTTP 200 for "the updated version" — and
-`VersionService::upload()` in `ter_rest` takes the second branch whenever the
-version row already exists, replacing it. Tailor checks nothing before posting,
-so a second release of a number that is already out succeeds and silently
-replaces the artefact people are installing. Read on 2026-08-21 from
-`git.typo3.org/services/t3o-sites/extensions.typo3.org/ter`, on `main` and on
-`develop` alike, and from `github.com/TYPO3/tailor`. That makes the lookup more
-load-bearing rather than less: the registry is not a guard the release process
-falls back on, so it is what an audit asks before publishing. Both statements
-are in `extension-ter-release` as read rather than as this entry had them.
+The tool ships, and settling the wording against the sources turned one of the
+two statements it was to be written with. This entry had it that the TER refuses
+a version it already holds. It does not: the schema declares a second success
+answer for an updated version, and the upload takes that branch whenever the row
+exists, replacing it — and the release tool checks nothing before posting. That
+makes the lookup more load-bearing rather than less: the registry is not a guard
+the release process falls back on.
 
-Two of the **Wrong if** were measured while the tool was being built. The
-versions endpoint declares `security: []` and answers without a credential, and
-its `X-RateLimit-Limit` is 100 against a window that resets in 24 hours — with
-`X-RateLimit-Remaining` unmoved at 99 over four consecutive reads, so an
-anonymous read is not what the counter is for. The API's own shape carries one
-trap the entry did not know: the list arrives wrapped in an array of one, and it
-is ordered by version number rather than by upload date, so the most recent
-upload is regularly not the entry at the top.
+Two **Wrong if** were measured while it was built: the versions endpoint answers
+without a credential and its rate limit does not move for an anonymous read. The
+list arrives wrapped in an array of one and is ordered by version number rather
+than by upload date.

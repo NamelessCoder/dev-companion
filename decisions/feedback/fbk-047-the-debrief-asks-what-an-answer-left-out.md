@@ -71,29 +71,16 @@ actually turned on goes unmentioned.
 
 ## Since then
 
-`feedback/2026-08-18-071603` is the first measurement of this list from inside a
-session, and it names which question produced which finding across the ten
-reports it summarises. Five of the twelve bullets are named as having produced
-one, the round-trip and the resource bullets among them, so the list works where
-it was already read.
+The first measurement of this list from inside a session names which question
+produced which finding: five of the twelve bullets produced one, so the list
+works where it was already read.
 
-Two things it names are not in the list, and both are folded into bullets rather
-than added as bullets thirteen and fourteen, because what this entry rejected
-was the list growing and not the questions.
+Two things it names are folded into bullets rather than added as new ones,
+because what this entry rejected was the list growing. The round-trip bullet now
+asks for the walk and says what memory drops, a session re-walking its own calls
+having found five where two were remembered. And the bullet about an answer that
+stopped one step short now carries reading the answers a second time, because
+the session read past a strong-confidence answer while it was on the screen.
 
-- The round-trip bullet asked which calls the session would not make again, and
-  that is answered from the calls it remembers as notable: re-walking the actual
-  list found five checkout calls where two had been reported, two of them
-  returning nothing at all. It now asks for the walk and says what memory drops.
-- Nothing asked the session to read the answers it received a second time.
-  `typo3_task_guide` had returned two installation intents at strong confidence
-  and one skill, which is the gap `071526` reports, and the session read past it
-  while the answer was on the screen. The bullet about an answer that stopped
-  one step short now carries it, because both are findings about an answer that
-  was right.
-
-What the feedback also shows is the boundary of a written list. Three findings
-were left on the floor until the user asked three plain questions of their own,
-and one of them — "is documentation missing" — the session could only answer
-with nothing, having made no call it could report on. A prompt gets what it asks
-for; `D-FBK-048` is what makes the asking cheap enough to happen at all.
+What the feedback also shows is the boundary of a written list: three findings
+were left on the floor until the user asked three plain questions of their own.

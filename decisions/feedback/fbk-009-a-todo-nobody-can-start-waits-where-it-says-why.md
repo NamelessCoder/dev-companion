@@ -65,24 +65,13 @@ looking like the least important thing in the repository.
 
 ## Since then
 
-The first **Wrong if** fired on the number and is struck. `waiting/` holds six
-on 2026-08-22, dated from 2026-08-05 to 2026-08-19, where this entry named two
-or three as the point at which the directory has become where todos are
-forgotten. What the reading finds is that it has not.
+The first **Wrong if** fired on the number and is struck: `waiting/` holds six
+where this entry named two or three as the point at which the directory has
+become where todos are forgotten. It has not.
 
-Two of the six were put to the maintainer and answered — the gate on 2026-08-19
-and the instruction budget on 2026-08-21 — and both answers said to wait, so
-each carries a different question from the one it arrived with rather than a
-place back in the queue. That is a state this entry did not anticipate: a todo
-can be answered and still be waiting, and the seven-day reading is what asked
-both.
-
-One waits on nothing of its own. `2026-08-19-090231` says so in as many words:
-what it needs is the skill its sibling in the same directory is blocked on. A
-chain inside `waiting/` is the shape closest to the forgetting this **Wrong if**
-describes, because no answer addressed to anybody releases it — and it is one
-todo of six rather than the directory.
-
-So the number is a proxy for a corpus of four questions rather than six todos,
-and the two remaining clauses are what to read next time: the seven-day todo ran
-on 2026-08-19, and nothing has asked about the count in `next`.
+Two of the six were put to the maintainer and answered *wait*, so each carries a
+different question from the one it arrived with — a state this entry did not
+anticipate, and the seven-day reading is what asked both. One waits on nothing
+of its own and says so: what it needs is the skill its sibling is blocked on,
+which is the shape closest to forgetting, and it is one todo of six. So the
+number is a proxy for four questions rather than six todos.

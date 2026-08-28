@@ -64,18 +64,10 @@ outside it.
 
 ## Revoked on 2026-08-02
 
-The portion is one, not five. The order this entry is mostly about —
-appointments, then the queue, then the sightings — is untouched and is what the
-evidence above bought; what was wrong is the number beside it. Five was cut for
-a reader: somebody who did not make the judgements should be able to read them
-together and disagree before the commit. That reader was being asked to find
-them in a commit, which is the one place a judgement is not searchable, and the
-second **Wrong if** named exactly this outcome. What replaces the portion is
-where the judgement is written rather than how many are made at once: the
-decision it was judged against is updated, and where the judgement establishes
-something no entry says yet, a new one is created. So the reading survives the
-run instead of being a window onto five files, and `bin/cli feedback:next` hands
-over the oldest unjudged one and exits nonzero while any remain. What this gives
-up is the run that sees two feedback at once — one correcting three earlier
-ones, or the same gap reported by several sessions — and `decisions/` is where
-that has to become visible now.
+The portion is one, not five. The order is untouched and is what the evidence
+bought; what was wrong is the number beside it. Five was cut so a reader could
+disagree with the judgements together — and that reader was being asked to find
+them in a commit, which is the one place a judgement is not searchable. What
+replaces the portion is where the judgement is written: into the entry it was
+made against, or a new one. What it gives up is the run that sees two feedback
+at once, and `decisions/` is where that has to become visible now.

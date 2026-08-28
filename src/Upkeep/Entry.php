@@ -197,7 +197,19 @@ final class Entry
      */
     public static function value(array $matter, string $key): string
     {
-        $value = $matter[$key] ?? '';
+        return self::text($matter[$key] ?? '');
+    }
+
+    /**
+     * One entry of the front matter as it was written.
+     *
+     * A bare date is a `DateTimeImmutable` by the time the parser is done with
+     * it, and the value the file carries is the day — so it is rendered back
+     * rather than dropped, which is what a scalar test alone did to every
+     * `readings:` date (`D-DOC-066`).
+     */
+    private static function text(mixed $value): string
+    {
         if ($value instanceof \DateTimeInterface) {
             return $value->format('Y-m-d');
         }
@@ -218,9 +230,13 @@ final class Entry
             $value = [$value];
         }
 
-        return is_array($value)
-            ? array_values(array_map(static fn(mixed $name): string => trim((string) $name), array_filter($value, is_scalar(...))))
-            : [];
+        if (!is_array($value)) {
+            return [];
+        }
+
+        $names = array_map(self::text(...), $value);
+
+        return array_values(array_filter($names, static fn(string $name): bool => $name !== ''));
     }
 
     /**

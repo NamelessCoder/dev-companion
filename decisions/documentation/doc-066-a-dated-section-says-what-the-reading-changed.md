@@ -4,6 +4,7 @@ title: A dated section says what the reading changed
 date: 2026-08-28
 status: open
 coveredBy:
+  - DecisionsTest::everyReadingAnEntryRecordsIsReadAsADate
   - DecisionsTest::noDatedSectionRunsPastTheMeasure
 ---
 
@@ -45,6 +46,11 @@ often became a journal of its own applications.
   later reading of the same entry is a date.
 - **A strengths reading goes to the entry whose boundary it is about.**
   `D-FBK-018` keeps only what was learned about its own rule.
+- **Both forms count as having been back to the entry.**
+  `Decisions::revisited()` read the section alone, so a reading recorded the new
+  way left `bin/cli unresolved:list` naming the entry as unopened and sent the
+  next session to what had just been read. Found on 2026-08-28 by the first such
+  reading, `D-CAT-007`'s.
 - **Reported rather than failed on** until the sweep ends. 352 sections ran past
   the measure on the day it was written, and a check that failed on them would
   fail every branch until the last one is compacted.

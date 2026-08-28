@@ -75,15 +75,13 @@ reported as untouched.
 
 ## Since then
 
-The 51 bold labels were converted the same day and the corpus is on one
-spelling, so `revisited()` matches one pattern rather than two. Four of them
-were bullets, which the two-form match had not read either: one open entry was
-being reported as never read while carrying a **Since then** since 2026-08-02.
+The 51 bold labels were converted the same day, so `revisited()` matches one
+pattern rather than two. Four were bullets, which the two-form match had not
+read either. What kept the form alive is that no check could see it, and
+`Decisions::labelAsAParagraph()` fails on it now.
 
-What kept the form alive is that no check could see it. The field order is read
-off the `##` headings, so a bold label sat wherever it was written — twelve of
-them above the section they belonged under. `Decisions::labelAsAParagraph()` is
-what fails on it now, in `bin/cli decisions:check` and in
-`DecisionsTest::noDatedLabelIsWrittenAsABoldParagraph`, anchored to the start of
-a line because a **Since then** named inside a sentence is a reference to one
-rather than one.
+The flag reads a second form since 2026-08-28. `D-DOC-066` sends a reading that
+changed nothing to `readings:` in the front matter and leaves no section, so the
+entry read that way was reported as never opened — found on `D-CAT-007`, the
+first such reading. What this decides is unchanged: the flag is the file's own
+record of having been read, whichever of the two the reading wrote.

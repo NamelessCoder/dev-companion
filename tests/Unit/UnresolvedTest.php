@@ -99,9 +99,10 @@ final class UnresolvedTest extends TestCase
 
     /**
      * `open` is two states and the report separates them, so the flag that
-     * separates them has to be the file's own. A **Since then** is what a
-     * reading that settles the **Wrong if** neither way leaves behind, and half
-     * the open entries carry one — counted as unread, the pile reads as
+     * separates them has to be the file's own. A reading that settles the
+     * **Wrong if** neither way leaves a **Since then** where it changed
+     * something and a `readings:` date where it changed nothing, and half the
+     * open entries carry one of the two — counted as unread, the pile reads as
      * untouched and the oldest named is one somebody has already been back to.
      *
      * Both spellings counted while the corpus had two. It has one since
@@ -115,14 +116,16 @@ final class UnresolvedTest extends TestCase
         $decisions = Decisions::all();
 
         $revisited = array_filter($open, static fn(array $d): bool => $d['revisited']);
-        self::assertNotSame([], $revisited, 'no open decision carries a Since then, which the report would have to say instead');
+        self::assertNotSame([], $revisited, 'no open decision has been read again, which the report would have to say instead');
         self::assertNotSame($open, array_values($revisited), 'every open decision has been back-checked, which the report would have to say instead');
 
         foreach ($open as $decision) {
             $path = Decisions::directory() . '/' . $decisions[$decision['id']]['group']
                 . '/' . $decisions[$decision['id']]['file'];
+            $read = preg_match('/^(## |\*\*)Since then\b/m', (string) file_get_contents($path)) === 1
+                || $decisions[$decision['id']]['readings'] !== [];
             self::assertSame(
-                preg_match('/^(## |\*\*)Since then\b/m', (string) file_get_contents($path)) === 1,
+                $read,
                 $decision['revisited'],
                 $decision['id'] . ' is reported as ' . ($decision['revisited'] ? 'read' : 'unread') . ', and its file says otherwise',
             );

@@ -165,10 +165,6 @@ final class DecisionsTest extends TestCase
     }
 
     /**
-     * A decision that cannot say what would falsify it is an opinion with a
-     * date on it. This is the one field every entry owes the next reader.
-     */
-    /**
      * No dated section runs past the measure.
      *
      * It was a report while the corpus was being compacted onto the rule, and
@@ -188,6 +184,43 @@ final class DecisionsTest extends TestCase
         }
 
         self::assertSame([], $over, 'a reading is ' . Decisions::READING_MEASURE . ' lines');
+    }
+
+    /**
+     * Every reading a file records is read out of it as a date.
+     *
+     * A bare date is a `DateTimeImmutable` once the parser has been over it,
+     * and the reader kept only scalars — so the field `D-DOC-066` introduced
+     * was read as nothing, and an entry recorded the new way went on being
+     * reported as one nobody has opened.
+     */
+    #[Decision('D-DOC-066')]
+    #[Test]
+    public function everyReadingAnEntryRecordsIsReadAsADate(): void
+    {
+        $recorded = 0;
+        foreach (Decisions::all() as $id => $decision) {
+            $path = Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file'];
+            $written = preg_match_all(
+                '/^  - (\d{4}-\d{2}-\d{2})$/m',
+                self::frontMatter((string) file_get_contents($path)),
+                $dates,
+            );
+
+            self::assertSame($written, count($decision['readings']), $id . ' records ' . $written . ' readings and reports ' . count($decision['readings']));
+            self::assertSame($dates[1], $decision['readings'], $id . ' reports readings the file does not carry');
+            $recorded += $written;
+        }
+
+        self::assertGreaterThan(0, $recorded, 'no entry records a reading, which the corpus would have to say instead');
+    }
+
+    /**
+     * The front matter as it was typed, which is where a reading is written.
+     */
+    private static function frontMatter(string $contents): string
+    {
+        return (string) preg_replace('/\A---\R(.*?)\R---\R.*/s', '$1', $contents);
     }
 
     /**

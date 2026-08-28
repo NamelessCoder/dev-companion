@@ -55,9 +55,10 @@ are declared by a test.
 
 It covers two cases, and only one of them is work. A reading that settles the
 **Wrong if** changes the status; a reading that settles neither leaves it open
-and adds a **Since then**, which is the whole of what separates an entry
-somebody has been back to from one nobody has opened. So the listing counts them
-apart and names the oldest of the second kind.
+and writes a **Since then** where it changed something or a ``readings:`` date
+where it changed nothing. Either one separates an entry somebody has been back
+to from one nobody has opened, so the listing counts them apart and names the
+oldest of the second kind.
 
 ``revokedBy`` is what a revoked entry owes its reader: where to go instead. It
 names one decision, only a revoked entry may carry it, and the generated listing

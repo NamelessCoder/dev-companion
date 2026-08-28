@@ -219,7 +219,7 @@ final class Decisions
      * Every decision, keyed by id and newest first — which is the order the
      * file this replaces claimed to be in.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, readings: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
      */
     public static function all(): array
     {
@@ -283,7 +283,7 @@ final class Decisions
     /**
      * The decisions of one group, or every one of them where no group is named.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, readings: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
      */
     public static function group(string $group): array
     {
@@ -391,7 +391,7 @@ final class Decisions
             // rather than a section each, because what a reader needs from one
             // is that it happened and when — `D-DOC-066`.
             'readings' => Entry::names($matter, 'readings'),
-            'revisited' => self::revisited($contents),
+            'revisited' => self::revisited($contents, Entry::names($matter, 'readings')),
             'statement' => $head['statement'],
             'fields' => self::fields($contents),
         ];
@@ -402,18 +402,24 @@ final class Decisions
      *
      * `status` cannot answer it. `confirmed` and `revoked` are the two readings
      * that settle a **Wrong if**, and a reading that settles neither leaves the
-     * entry `open` — indistinguishable from one nobody has opened. What tells
-     * the two apart is a **Since then**, which the format already carries for
-     * what followed without a date of its own.
+     * entry `open` — indistinguishable from one nobody has opened.
      *
-     * One form, since the 51 labels still written as a bold paragraph were
-     * converted and `bin/cli decisions:check` began failing on that spelling.
-     * A **Since then** named inside a sentence is a reference to one and not
-     * one, which is why the heading is what this matches.
+     * Two things tell those apart, because such a reading writes one or the
+     * other: a **Since then** where it changed something, a date in `readings:`
+     * where it changed nothing — `D-DOC-066`. Reading only the section counted
+     * the second kind as unopened and sent the next session to the entry it
+     * had just been read out of.
+     *
+     * One spelling of the section, since the 51 labels still written as a bold
+     * paragraph were converted and `bin/cli decisions:check` began failing on
+     * that spelling. A **Since then** named inside a sentence is a reference to
+     * one and not one, which is why the heading is what this matches.
+     *
+     * @param list<string> $readings
      */
-    private static function revisited(string $contents): bool
+    private static function revisited(string $contents, array $readings): bool
     {
-        return preg_match('/^## Since then\b/m', $contents) === 1;
+        return $readings !== [] || preg_match('/^## Since then\b/m', $contents) === 1;
     }
 
     /**

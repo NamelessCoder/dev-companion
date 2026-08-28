@@ -84,36 +84,15 @@ nothing else, so every other corpus went stale unwatched.
 
 ## Since then
 
-The maintainer put three things the same day, and each one took something away.
+The maintainer settled three things the same day and each took something away. A
+tool that does not exist cannot be legitimate — what the corpus holds is a
+declined proposal, so the reason for leaving it unguarded was never true of
+anything in it. A declined proposal does not stay declined, and the name is what
+a later session searches for when the demand comes back, so writing the five as
+prose threw away the handle and was reverted. And the guard may not hold a list
+of former names, which carries the corpus's history in the code.
 
-Whether a tool that does not exist can be legitimate: it cannot, and that was
-the word this entry got wrong. What decisions/ holds is not a tool but a
-**proposal** that was declined, so the reason given above for leaving the corpus
-unguarded — that it legitimately names tools which never existed — was never
-true of anything in it.
-
-Whether a declined proposal stays declined: it does not. `typo3_ter_lookup`
-exists after release was turned down twice, and `D-KNW-004` says in as many
-words that a producer appearing reopens its question. The name is what a later
-session searches for when the demand comes back, so the first fix tried here —
-writing the five as prose, "a debrief guide tool" — threw away the handle and
-was reverted.
-
-Whether the guard may hold a list of what the names used to be: it may not, and
-that is the one that settled the shape. A list of superseded and declined names
-duplicates what the entries already say and carries the corpus's history in the
-code, which is the thing that goes stale.
-
-What replaces it is the distinction a reader wants anyway. **A tool name in
-backticks is one to call; a name being talked about is written plainly.** The
-eight are plain now, every one of them still searchable, and
-`ToolNamingTest::everyToolADecisionOffersInBackticksIsRegistered` holds the
-whole corpus with no exceptions at all. `D-SCO-011`'s statement is what the rule
-looks like when it works: typo3_project_scope and typo3_extension_scope are
-renamed `typo3_project_describe` and `typo3_extension_describe`, and the
-backticks say which two answer.
-
-The match is the tool shape, a subject and one of the six verbs, so the TER's
-own `typo3_versions` field and a `typo3_logo.png` in a Fluid example are not
-read as names. Both **Wrong if** struck above are closed by this, and the list
-of every rename ever made was never needed.
+What replaces it is the distinction a reader wants anyway: **a tool name in
+backticks is one to call, and a name being talked about is written plainly.**
+The match is the tool shape, so a `typo3_versions` field is not read as a name,
+and both **Wrong if** are closed by it.

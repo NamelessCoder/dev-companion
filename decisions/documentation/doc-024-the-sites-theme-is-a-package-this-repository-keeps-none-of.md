@@ -107,20 +107,11 @@ caught by once.
 
 ## Since then
 
-`build/guides/` is gone, manifest and lock with it. The renderer and the theme
-are required into a directory outside the checkout by whoever renders, and what
-a render takes is the theme as it stands —
-[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-this-repository-carries-none-of.md).
-This entry's statement is untouched and is more true than it was: the theme is a
-package, and this repository now keeps none of it at all. Its first **Wrong if**
-became impossible with the lock: nothing here can render an older theme for
-months, because nothing here records which one it rendered.
-
-The two cases this entry named on the render command are gone with it, and the
-second **Wrong if** is unguarded because of it: a page served unstyled is now
-something a reader sees rather than something the suite says.
-
-The dark drawings are gone as well. No page named one, so no rendered page ever
-referenced one, and eleven files were kept against a mechanism that does not
-exist. What this entry left open about them is unchanged and is now open without
-the files: a reader in dark reads a light drawing.
+`build/guides/` is gone, manifest and lock with it: the renderer and the theme
+are required outside the checkout by whoever renders (`D-DOC-028`), so the
+statement is more true than it was. The first **Wrong if** became impossible
+with the lock — nothing here records which theme it rendered — and the second is
+unguarded, because a page served unstyled is something a reader sees rather than
+something the suite says. The dark drawings are gone as well: no page named one,
+so eleven files were kept against a mechanism that does not exist, and a reader
+in dark still reads a light drawing.

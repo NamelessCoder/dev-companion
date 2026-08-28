@@ -57,24 +57,10 @@ does.
 
 ## Confirmed on 2026-08-23
 
-The parameter has grown from six tools to ten and neither **Wrong if** fired.
-Nine of the ten open on
-`The TYPO3 version <what it is for>, for example "13.4" or "14".` and then say
-their own fallback, and the four this entry names still read as they did.
-
-The tenth is the difference the Evidence above predicted rather than drift.
-`typo3_documentation_lookup` is the one tool where `targetVersion` is
-**required**, so it opens on "Covered TYPO3 version whose official manual must
-answer" and ends on "There is no fallback to another release" — a sentence about
-being left out would describe a call it refuses.
-
-What the second halves divide on is the source rather than the tool: the four
-that read the prose corpus fall back to every major the repository declares
-`typo3/cms-core` for, and the five that read a catalog fall back to the
-installation's own version. That is `D-VER-004`'s split, and it is what a caller
-comparing two of these sentences is being shown.
-
-No feedback reports the second one. Of the 78 in `feedback/` and its archive
-that name `targetVersion`, none reports a caller that narrowed one tool
-expecting another's fallback; the open one that names the parameter,
-`2026-08-19-090231`, reports a call that was never made at all.
+The parameter has grown from six tools to ten and neither **Wrong if** fired:
+nine open on the same sentence and then say their own fallback. The tenth is the
+difference the **Evidence** predicted rather than drift — the one tool where
+`targetVersion` is required opens on the manual that must answer, because a
+sentence about being left out would describe a call it refuses. What the second
+halves divide on is the source rather than the tool, which is `D-VER-004`'s
+split. No feedback reports the second **Wrong if**.

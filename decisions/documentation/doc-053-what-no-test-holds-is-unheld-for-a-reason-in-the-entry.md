@@ -74,24 +74,11 @@ because a report would be shorter.
 
 ## Since then
 
-The reading that wrote this entry read the **Decided** and stopped there, and
-eleven of the 23 were closed further down. `D-ANS-022` ends its **Since then**
-with the sentence "`HintsTest::aCompoundIsFoundWhicheverWayTheCallerJoinsIt` is
-what would catch this coming back" — a declaration written in prose, four months
-of readings after the entry said it was queued. `D-ANS-030`, `D-ANS-046`,
-`D-ANS-014`, `D-ANS-021`, `D-ANS-024`, `D-FBK-002`, `D-KNW-061`, `D-KNW-069`,
-`D-SKL-012` and `D-SKL-033` are the rest, and each named its test in the same
-place.
-
-So "nine record a gap nobody has closed" was wrong on the same day it was
-written, and what was wrong with it is the reading rather than the count: an
-entry is what it says now, not what its **Decided** said when it was queued. 12
-are left, six `open` and six `confirmed`, and the two kinds named above hold for
-them — the process entries nothing runs over, and the ones whose **Wrong if**
-only a session can settle.
-
-What the entry keeps is the criterion. `D-KNW-016` was declined here again: the
-gap it records is closed, and the test that reaches the hint carrying the
-statement would pass with the statement deleted, so it does not catch the gap
-reopening.
-
+The reading that wrote this entry read the **Decided** and stopped there: eleven
+of the 23 were closed further down, each naming its test in a **Since then**
+rather than in the section that queued it. So "nine record a gap nobody has
+closed" was wrong the day it was written, and what was wrong is the reading — an
+entry is what it says now, not what its **Decided** said when it was queued.
+Twelve are left, and the two kinds named above hold for them. The criterion is
+what the entry keeps: a test that would pass with the statement deleted does not
+catch the gap reopening.

@@ -106,29 +106,12 @@ gone wrong, twice, silently.
 
 ## Since then
 
-Reserving the numbers at `todo:claim` was asked for again on 2026-08-13, by a
-session that had just worked three rounds of eight claims: five of its 24
-branches collided on an id, and every one of them was the newest number in its
-group plus one. It stays rejected, and the first **Decided** can now be priced
-rather than estimated. That night wrote 21 decisions, one per commit, into five
-of the thirteen groups — eight in `knowledge/`, seven in `task-skills/`, two
-each in `answers/` and `feedback/`, one in `documentation/`. A claim still
-cannot know which group it will write into, so even the cheapest reservation —
-one number per group per claim, which is what the feedback asks for — spends 24
-in every group, 312 for the 21 that were written, and leaves `knowledge/` at 094
-rather than at 078. The number would then count claims rather than entries,
-which is `D-DOC-005`'s assumption rather than a check.
-
-It would also bind only the sessions that read it. `bin/cli todo:next` in the
-main checkout computes the newest number plus one as before, and a session
-writing a second entry in one group is past its reservation by the same
-arithmetic. What the collisions cost on that run is the other side: 10
-`decisions:renumber` calls and 30 `todo:home` invocations for 24 branches, each
-renumber followed by a hand edit of the mentions the command names and does not
-move — the split the reporting session says it would keep. The refusal is what
-made the repair cheap: `todo:home` merges nothing where the rebased branch is
-red and leaves the worktree standing, so every collision was repaired where it
-happened rather than reverted off `main`. `D-FBK-046` is where the same
-feedback's fallback waits, as that entry's first **Wrong if** — the renumber
-moves into `todo:home` if naming the id, both files and this command in the
-failure turns out not to be enough.
+Reserving the numbers at `todo:claim` was asked for again and stays rejected,
+priced rather than estimated: a night of 21 decisions across five groups shows a
+claim cannot know which group it will write into, so even one number per group
+per claim spends 24 in every group and makes the number count claims rather than
+entries. It would also bind only the sessions that read it. What the collisions
+cost is the other side — ten renumbers and thirty home invocations for 24
+branches — and the refusal is what made the repair cheap, since `todo:home`
+merges nothing red and leaves the worktree standing. `D-FBK-046` carries the
+fallback.

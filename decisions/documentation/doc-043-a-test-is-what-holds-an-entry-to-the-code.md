@@ -95,22 +95,13 @@ entries of 2026-08-22 were the newest instance and are corrected.
 ## Since then
 
 The proxy read the docblock alone, and this corpus writes half its reasons in
-the body. Of the 346 names it called silent on 2026-08-22, 38 carry the entry's
-id in a comment beside the assertion it explains — the naming a session standing
-in the test already gets, and the one a docblock repeating it would say twice.
-`Upkeep\Sources` read that from then on: the docblock and the member, ending at
-the first `}` in the column a method closes in.
-
-Reading it again found the same method twice more. It started at the last `/**`
-before the declaration, so a method carrying a prose docblock and a
-`/** @param */` line below it was read from the second of the two, and a method
-carrying no comment at all was read from the previous method's docblock and
-counted as naming whatever that one named. It reads from where the run of
-comments and attributes begins now, and the count went up rather than down: 293
-names to 313.
-
-What none of that licenses is reading the count down. Each correction was made
-to what the naming is for, and the names left are the work the todo carries.
+the body: of 346 names called silent, 38 carry the entry's id in a comment
+beside the assertion it explains, which is the naming a session standing in the
+test already gets. Reading it again found the same method twice more — it
+started at the last `/**` before the declaration, so a method with a `@param`
+line was read from the second docblock and one with no comment from the previous
+method's. It reads from where the run of comments begins now, and the count went
+up rather than down. What none of that licenses is reading the count down.
 
 ## Since then
 

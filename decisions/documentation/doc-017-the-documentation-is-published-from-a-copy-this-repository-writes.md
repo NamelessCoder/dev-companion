@@ -111,32 +111,11 @@ of what it points at is a directory the site does not carry.
 
 ## Since then
 
-The stylesheet is no longer inlined, and the theme no longer writes everything
-itself. What was weighed here at 4 KB reached 16 KB on every page, and
-[`D-DOC-019`](doc-019-the-sites-stylesheet-and-script-are-built-files.md)
-is what was decided on the measurement — including the cache buster this entry
-counted as a moving part, which Twig's `source()` makes two lines.
-
-Two of the bullets under **Decided** no longer describe the site. `readme.md` is
-published as well, as the page it opens on, and the map of `documentation/` is
-served below it — a visitor arriving is deciding whether this server is for
-them, and the map answers a different question.
-[`D-DOC-018`](doc-018-the-site-opens-on-the-readme.md)
-is what settled that, and what remains true here is everything about how the
-copy is written and rendered.
-
-The three commands this entry names are one. `documentation:build`,
-`documentation:assets` and `documentation:search` were a sequence a person had
-to keep in the right order and could not, and
-[`D-DOC-020`](doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md)
-folded them into one. That one has moved since:
-[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-this-repository-carries-none-of.md)
-took the renderer out of the checkout on 2026-08-12, and what is left here is
-`bin/cli documentation:prepare`, which writes the copy and nothing else. What is
-published, and that it is a copy, is unchanged through all three.
-
-The two cases this entry named over the search index went with the index. It is
-the theme's now, written from the rendered pages rather than from the copy —
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md)
-— so what a hit is named by is no longer this repository's to hold. The four
-cases over the copy itself are untouched, which is what this entry is about.
+Three parts of this no longer describe the site, each replaced by an entry of
+its own: the stylesheet is a built file rather than inlined, because what was
+weighed at 4 KB reached 16 on every page (`D-DOC-019`); the site opens on the
+readme with the map below it (`D-DOC-018`); and the three commands are one,
+which then lost the renderer entirely (`D-DOC-020`, `D-DOC-028`), leaving
+`documentation:prepare` to write the copy and nothing else. The search index
+went with the theme. What is unchanged is everything about how the copy is
+written and that it is a copy.

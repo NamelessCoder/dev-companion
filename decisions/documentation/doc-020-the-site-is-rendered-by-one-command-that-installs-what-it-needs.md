@@ -84,17 +84,10 @@ untouched: the order is not a choice, and one command is what keeps it.
 ## Revoked on 2026-08-12
 
 Its statement no longer describes this repository: there is no
-`documentation:render`, and nothing here installs a renderer. What replaced it
-is `documentation:prepare`, which writes the copy and stops —
-[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-this-repository-carries-none-of.md).
-
-What it was right about survives as `documentation:preview`: the order is not a
-choice, and a recipe that leaves out the install fails on a missing binary. So a
-local render is still one command that fetches what it needs. What it lost is
-the second copy — the workflow spells the same steps out, which is exactly what
-this entry deleted, and the cost of the split.
-
-What changed underneath it is that three of its six steps stopped being this
-repository's. The asset build went with the theme (`D-DOC-024`), the dark twins
-turned out to be referenced by nothing, and the renderer is a build tool
-required where the site is built rather than a directory kept here.
+`documentation:render`, and nothing here installs a renderer (`D-DOC-028`). What
+it was right about survives as `documentation:preview` — the order is not a
+choice, and a recipe leaving out the install fails on a missing binary. What it
+lost is the second copy in the workflow, which is what this entry deleted. Three
+of its six steps stopped being this repository's: the asset build went with the
+theme, the dark twins were referenced by nothing, and the renderer is required
+where the site is built.

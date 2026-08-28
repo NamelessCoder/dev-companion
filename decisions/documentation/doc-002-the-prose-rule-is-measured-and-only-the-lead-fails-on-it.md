@@ -59,18 +59,10 @@ downstream can tell apart from prose that was thought through.
 
 ## Since then
 
-The half that fails works and the half that reports did not move. Read on
-2026-08-22: every requirement and decision opens within the measure, so no lead
-has run past 30 words since the check was written, and the corpus stands at 5777
-sentences over of 27046 against the 805 of 3944 this entry recorded — 21.4%
-against 20.4%, three weeks and about seven times the prose later.
-
-What the numbers also show is that the concentration went. Six files carried a
-fifth of the long sentences on 2026-08-01; the ten worst carry 454 of 5777
-today, which is 8%. So the file nobody has reread since it was written is no
-longer where they are, and the count reads as a property of how this repository
+The half that fails works and the half that reports did not move: no lead has
+run past the measure since the check was written, and the corpus stands at 21.4%
+of sentences over it against 20.4% when this was recorded, three weeks and about
+seven times the prose later. What the numbers also show is that the
+concentration went — the ten worst files carry 8% of the long sentences where
+six carried a fifth — so the count reads as a property of how this repository
 writes rather than as a backlog.
-
-The first **Wrong if** is not due until 2026-09-01 and this is what it will be
-read against. What would answer it either way is a month with the number moving,
-and nothing here can make that happen while judging.

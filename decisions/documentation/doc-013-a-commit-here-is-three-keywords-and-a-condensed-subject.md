@@ -68,27 +68,13 @@ The two measures could not both be right. This repository's own
 
 ## Confirmed on 2026-08-23
 
-Measured over the 779 commits on `main` since 2026-08-04. The keyword half held
-without an exception: 668 `[TASK]`, 70 `[FEATURE]`, 41 `[BUGFIX]`, no `[DOCS]`,
-no `[SECURITY]`, no `[!!!]`, and not one subject without a keyword — against 139
-of 926 carrying none when this was written. The second **Wrong if** has not
-fired either; no change here has needed one of the core's two.
+Measured over 779 commits. The keyword half held without an exception, and no
+change here has needed one of the core's two. The first **Wrong if** has fired:
+397 subjects are 52 characters or longer at a median of 58, and nothing is
+converging — while exactly one is past 72, where most used to be past 52.
 
-The first one has. 397 of the 779 subjects are 52 characters or longer, at a
-median of 58 and a ninetieth percentile of 62, and the three weeks run 56%, 42%
-and 55%, so nothing is converging. What did move is the other number: exactly
-one subject is past 72, where 708 of 926 used to be past 52 at a median of 61.
-
-So the practice follows `Knowledge\CommitMessage`'s two severities rather than
-one demand — it warns above 52 with "Under 52 characters is preferred" and fails
-above 72 — while `AGENTS.md` stated both numbers as one rule. Put to the
-maintainer on 2026-08-23 with the measurement, and the answer was that the
-wording follows the tool: the widths stand as this entry decided them, and the
-line now says 52 is where a subject goes if it can and 72 is where it may not.
-
-The other two were declined. Raising 52 would move what
-`typo3_commit_message_guide` tells every other project, which is the second
-number this entry refused to invent; the `commit-msg` hook stays refused for
-what **Decided** already says, that a hook which only warns prints what the
-reread has to catch anyway. What holds the widths is still the reread, and the
-number to measure the next reading against is above.
+So the practice follows the tool's two severities rather than one demand, and
+`AGENTS.md` stated both numbers as one rule. Put to the maintainer on
+2026-08-23: the wording follows the tool. Raising 52 was declined, because it
+would move what the guide tells every other project, and the hook stays refused
+for what **Decided** says.

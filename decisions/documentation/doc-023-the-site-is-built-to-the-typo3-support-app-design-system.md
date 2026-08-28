@@ -138,53 +138,23 @@ forbidden:
 
 ## Since then
 
-The first **Wrong if** happened. `c2bef123` found `--text-muted` at `#8A8378`
-and `--status-warn` at `#A56A00` in the vendored copy, months after the system
-had raised both to reach WCAG AA — so the published documentation was below it
-in both modes for as long as the copy stood. The third **Assumed** is what it
-cost: nothing re-read the system, and a copy nobody re-pulls is wrong without
-saying so.
-
-`site.css` imports the tokens and the component layer from
-`@typo3/soul-design-system`, pinned to a commit, and `theme/assets/tokens/` is
-gone. **The statement's token clause therefore no longer describes this site**,
-and whether this entry is revoked with a successor written for what holds
-instead is a question for the maintainer rather than something to decide in
-passing: the icons under `icons/` are still copies with the same defect in
-smaller form, `c2bef123` says they come next, and an entry rewritten before that
-move would be rewritten twice.
-
-On 2026-08-11 the two assertions above were put back on the theme that exists.
-The one that held every token the theme names to what the system declares read
-the vendored directory and had been throwing since it went; that check runs in
-`build.mjs` over the bundled stylesheet now, where the imports are resolved —
-the tokens arrive with `npm ci`, which `composer ci` does not run, and no test
-here may skip itself (`StructureTest::noTestSkipsItselfInsteadOfHolding`). It
-reads wider than the assertion did, since the component layer is in scope, and
-it ignores a `var()` carrying a fallback: `--sds-pad` is declared nowhere and
-the padding beside it is the value. `theThemeWritesNoColourOfItsOwn` now strips
-comments before the scan, because `51e70499` explained this rule in the header
-of `site.css` by naming the two values it was broken with, and the scan read the
-explanation as the breach.
+The first **Wrong if** happened: two vendored tokens sat below WCAG AA for
+months after the system had raised them, so the published documentation was
+below it in both modes for as long as the copy stood. The third **Assumed** is
+what it cost — a copy nobody re-pulls is wrong without saying so. The stylesheet
+imports the tokens from the package now, pinned to a commit, so the statement's
+token clause no longer describes this site. The two assertions were put back on
+the theme that exists: the token check runs in the bundled stylesheet where the
+imports are resolved, and the colour scan strips comments, because an
+explanation naming the two broken values read as the breach.
 
 ## Revoked on 2026-08-12
 
-By its own third **Assumed**, and then by the move it made necessary. Nothing
-below `theme/` is left to vendor: the design system publishes itself as a
-renderer theme, and this site installs it —
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md).
-Neither `theme/assets/tokens/` nor `icons/` nor `site.css` exists, so no part of
-the statement describes this site.
-
-The two tests it named are gone with the files they read. What holds in their
-place is the package: a token cannot be redeclared here because there is no
-stylesheet here, and an icon cannot be a stale copy because the sprite ships
-with the theme.
-
-Three of its readings outlive it and are what
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md)
-carries forward as open: a drawing has to be read at the size it was drawn at,
-which is what the lightbox was for; a truncated identifier is not the
-identifier, and the rail truncates one again; and a drawing that cannot be told
-which mode the page is in reads in the wrong ink, which is what the dark twin
-was drawn for and what nothing swaps today.
+By its own third **Assumed**, and then by the move it made necessary: nothing
+below `theme/` is left to vendor, so no part of the statement describes this
+site (`D-DOC-024`). The two tests are gone with the files they read, and what
+holds in their place is the package — a token cannot be redeclared where there
+is no stylesheet. Three readings outlive it and are carried forward as open: a
+drawing has to be read at the size it was drawn at, a truncated identifier is
+not the identifier, and a drawing that cannot tell which mode the page is in
+reads in the wrong ink.

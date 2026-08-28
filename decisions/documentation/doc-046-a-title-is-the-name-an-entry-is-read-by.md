@@ -75,28 +75,14 @@ measure at all, so it grew into the sentence below it.
 
 ## Since then
 
-The pass went on the same day, once the file name became the title's and a long
-title started producing a name nobody reads at a glance. 123 more titles were
-shortened, and what the measure counts fell from 227 to 55: the 23 that join two
-claims and stay short, and about 19 that run a word or two long and say one
-thing.
+123 more titles were shortened once the file name became the title's, and what
+the measure counts fell from 227 to 55 — the 23 that join two claims and stay
+short, and about 19 a word or two long. That is where it stopped, and the shape
+is the reason: the affirmative "A is B, not C" is what the format asks for, and
+cutting the second half takes the half that tells an entry from its neighbours.
+The file names moved with them, which is the pressure `D-DOC-047` assumed.
 
-Those are where it stopped, and the shape is the reason. "A supported range is a
-property of the package, not of the checkout" is the affirmative "A is B, not C"
-that `writing-a-decision.rst` asks for, and cutting the second half takes the
-half that tells it from its neighbours. What a shorter title would buy there is
-a character count; what it costs is the reader guessing which entry is meant.
-
-The file names moved with them: mean 68 characters to 63, longest 118 to 98, and
-the 128 over eighty are 37. That is the pressure `D-DOC-047` assumed and it
-worked in the direction it was meant to.
-
-The family this entry left to the report was retitled on the other half of the
-rule. The 38 entries titled "… is a gap this server owns" named the deficiency
-rather than what was settled, and
-[`D-DOC-056`](doc-056-a-subject-this-server-owns-is-named-affirmatively.md) is
-what moved them to "… is a subject this server owns". The word count went the
-way this entry said a sweep would — 38 titles longer — and the trade was the one
-it did not price: the distinguishing half is the subject and it was kept
-verbatim, so what the six words buy is a listing that reads as one kind of
-entry.
+The family left to the report was retitled on the other half of the rule
+(`D-DOC-056`): 38 titles got longer, and the trade this entry did not price is
+that the distinguishing half was kept verbatim, so what the extra words buy is a
+listing that reads as one kind of entry.

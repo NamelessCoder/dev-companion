@@ -61,64 +61,28 @@ words with pipes in it, and which cell a value belongs to has to be counted out.
 
 ## Since then
 
-Both halves of the **Wrong if** fired, and the reading is a sweep of 2026-08-22
-over every markdown file this repository keeps. Of 19 tables, 18 carry a row
-whose pipes stand in a different column from the separator's — the alignment
-drifted wherever a cell was edited, which is every table anybody has been back
-to.
-
-The other half is in the same corpus. The widest rows are in `D-FBK-021`, at 312
-characters, and its cells are the mapping of one summary onto its siblings: a
-clause naming what a report said against a clause naming where it landed. Those
-are the cells that cannot be shortened, and by this entry's second **Decided**
-bullet the content is a list rather than a table. Nothing said so where it was
-taken.
-
-So the rule is right and nobody can follow it by hand, which is the first
-**Wrong if** in its own words. What it asks for is a check in `bin/cli` rather
-than a decision, and that is the todo this leaves. The entry stays `open` until
-the check is there: a rule with 18 breaches and no reader is not confirmed by
-being reread.
+Both halves of the **Wrong if** fired, read as a sweep on 2026-08-22: of 19
+tables, 18 carry a row whose pipes stand in a different column from the
+separator's — the alignment drifted wherever a cell was edited. The widest cells
+are the mapping tables of `D-FBK-021`, which by this entry's second **Decided**
+bullet are a list rather than a table, and nothing said so where it was taken.
+So the rule is right and nobody can follow it by hand, which asks for a check
+rather than a decision.
 
 ## Since then
 
-The alignment is the formatter's, which is what the first **Wrong if** asked
-for. `bin/cli prose:format` pads a markdown table to the width of each column's
-widest cell, the way it rewraps a paragraph, and `Wrap::padded()` is the reading
-both halves share. What is padded is a block whose second row is a separator —
-so a table inside a fence, a row with nothing under it and a drawn diagram come
-back as they stand, which `ProseTest::whatIsNotATableIsNotPadded` holds beside
-`ProseTest::aTableComesBackPaddedToItsWidestCell`.
-
-Padding the 19 tables in the corpus broke one reader, which is the finding this
-run did not expect: `Scenarios::vocabulary()` matched the head of a table by the
-text of its row, so `| Id |` stopped being found the moment the column was
-padded. It reads cells now — `Wrap::cells()`, the second caller the method
-earned — and what it compares is the cell rather than where the cell ends.
-
-The second half is a report, because no formatter can make the judgement.
-`bin/cli prose:check` counts the tables holding a cell no line of 80 columns
-fits: 9 of 19 on 2026-08-22, six of them the mapping tables of `D-FBK-021`,
-whose widest cell is 239 characters. What each of those becomes is one reading
-at a time and the exception has to say so where it is taken, which is what this
-entry has said since it was written.
+The alignment is the formatter's: `prose:format` pads a markdown table to its
+widest cell the way it rewraps a paragraph, and what is padded is a block whose
+second row is a separator — so a fenced table, a headerless row and a drawn
+diagram come back as they stand. Padding the corpus broke one reader, which the
+run did not expect: a vocabulary reader matched a table head by the text of its
+row, and reads cells now. The second half is a report, because no formatter can
+make the judgement: nine of the 19 tables held a cell no line fits.
 
 ## Confirmed on 2026-08-22
 
-The nine tables holding a cell no line fits were judged one at a time, and the
-count is zero.
-
-Seven were mappings and are lists: six in `D-FBK-021` and one in `D-ANS-031`,
-where the widest cell was 239 characters because it holds a markdown link with a
-path in it. Nothing was lost — both halves of every mapping are still there and
-now wrap like prose — and what the entries say about them moved with the shape.
-
-Two are read as data by `Scenarios::vocabulary()` and stayed tables, because the
-cells could be shortened. The `E-SITE` line lost the console command it named,
-which is a version question and now stands in the paragraph under the table; the
-two long cells of the forward review's marks lost a sentence each without losing
-a point.
-
-So the second **Decided** bullet decided all nine, and the exception it reserves
-— a table whose cells cannot be shortened and whose content is not a list — has
-not been taken yet. `bin/cli prose:check` is what would say when one arrives.
+The nine were judged one at a time and the count is zero. Seven were mappings
+and are lists now — nothing lost, both halves still there and wrapping like
+prose. Two are read as data and stayed tables, because their cells could be
+shortened. So the second **Decided** bullet decided all nine, and the exception
+it reserves has not been taken yet.

@@ -79,37 +79,18 @@ Nothing about that is wrong, which is why nothing had counted it.
 
 ## Since then
 
-The thirteen were judged on 2026-08-22, one commit each, and the corpus went
-from 5337 lines of later reading over 30 entries to 4377 over 31.
+The thirteen were judged one commit each, and the corpus went from 5337 lines of
+later reading to 4377. The second **Assumed** is what the sweep corrected: the
+split is visible per section only where the section says what it is, and per
+entry the share runs from all of it to none — two had nothing to collapse, one
+because every reading carries a mapping its own **Decided** says to write down,
+the other because every reading measures a different run.
 
-The second **Assumed** is what the sweep corrected. The split is visible per
-section only where the section says what it is: the four told apart by their
-opening words in `D-FBK-018` were eight when all nineteen were read, because a
-section that applies a rule established above it is counting too, however much
-it settles elsewhere. Per entry the share varies from all of it to none — two
-entries had nothing to collapse, `D-FBK-021` because every reading carries the
-mapping of one summary that its own **Decided** says is written down so nobody
-derives it twice, and `D-FBK-020` because every reading is a measurement of a
-different run.
-
-What the readings had overtaken was mostly a bullet nobody had struck. The
-convention went from 4 entries to 13, and twice a bullet had to be split first:
-`D-SKL-001` and `D-ANS-003` each held two falsifiers in one, which is why
-thirteen readings and eleven passed over them without striking anything. Twice a
-reading wrote a new **Wrong if** into its own prose, where a reader had to find
-it — `D-SKL-022` and `D-ANS-010` carry it in the list now.
-
-No collapsed reading needed an entry of its own. Each already pointed at the
-decision, the requirement or the test carrying what it settled, which is what
-made it collapsible.
-
-The thirty-first entry is `D-AUD-007`, and it is the measure being right about a
-file it had been reading wrongly. Five of its six readings had lost everything
-but their first paragraph to the foot when the bold labels were converted into
-sections, so 60 lines of history stood inside **Wrong if** and counted as
-decision. The same conversion left thirty sections opening on a comma, and both
-were repaired here; eighteen entries it split the same way are a todo of their
-own.
+What the readings had overtaken was mostly a bullet nobody had struck. Twice a
+bullet had to be split first, because it held two falsifiers in one, and twice a
+reading had written a new **Wrong if** into its own prose where a reader had to
+find it. No collapsed reading needed an entry of its own: each already pointed
+at what carried its finding, which is what made it collapsible.
 
 ## Revoked on 2026-08-28
 

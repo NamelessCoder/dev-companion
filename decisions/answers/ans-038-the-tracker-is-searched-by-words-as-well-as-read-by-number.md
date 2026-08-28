@@ -88,40 +88,14 @@ sessions took between the two: finding the issues nobody had linked.
 
 ## Since then
 
-`feedback/2026-08-02-145217` was judged against this entry on 2026-08-03, and
-its own card was retired into it. That feedback is the Forge half of the cluster
-— how the tracker has to be operated by hand — and everything it recorded is
-answered here except the search.
+A feedback was judged against this entry and its own card retired into it: the
+tracker half of the cluster, all of it answered here except the search. The
+re-run says so — one call answers what the feedback established in four,
+including the three notes it called decisive, and the route it found to the
+patch when one field was empty. The tool never requests that field, so the trap
+it warned about is not reachable.
 
-The re-run is what says so. `typo3_forge_lookup` with `issue: 105403` answers in
-one call what the feedback established in four: subject, tracker, status
-`Under Review`, target version, the reported TYPO3 version, both relations, and
-all six comments. The three the feedback called decisive are among them — the
-two maintainer verdicts, Georg Ringer's "closing as lack of feedback" and the
-Gerrit bot's patch-set notes, which is the route it found to the patch when
-`changesets` was empty. The tool asks for `include=journals,relations` and never
-requests `changesets`, so the trap it warned about is not reachable.
-`typo3_gerrit_lookup` with the same number answers `empty` with the private
-caveat.
-
-The rest of it needed no entry. The user-agent inversion and its HTTP 200
-challenge page are `Http\Fetch`'s policy and its plain-agent retry, with
-`D-ANS-034` behind them; the reopening of a closed issue before a change is
-pushed is the fourth bullet under **Decided** above; and the venue its
-suggestion asked for is `knowledge/server-scope.json`, which routes a session
-taking an issue on to both lookups in that order. What is left of `145217` is
-the word search, carried by `todo/progress/2026-08-03-125637` — the same card
-that carries `144511` — and that commit archives both.
-
-The third **Wrong if** named `typo3_gerrit_lookup` as where the split would show
-first, and on 2026-08-24 it is where the same shape was asked for.
-`feedback/2026-08-24-110833` reports a triage that could ask the review server
-neither which changes are open on a file nor whether anybody ever tried a fix,
-and answered both with `curl`. `D-ANS-100` takes it on under the rule this entry
-set: a further way into one tool, answering the question it already answers, in
-the shape it already answers in. So the **Wrong if** is engaged rather than
-fired, and what would fire it is that search growing filters and an answer of
-its own.
+The rest needed no entry, being the fetch policy's rather than this answer's.
 
 ## Since then
 

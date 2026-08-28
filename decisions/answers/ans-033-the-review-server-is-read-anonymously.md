@@ -78,40 +78,12 @@ is the shape of the answer and the boundary it stops at.
 
 ## Confirmed on 2026-08-03
 
-The boundary held, and what an anonymous read answers moved out by one field.
-`feedback/2026-08-03-144316` reports the gap from a core patch review: the
-session credited the Change-Id lookup with establishing that it held the patch
-set that exists on the server, and neither half of the answer said which patch
-set that is. A review of a superseded revision is wrong in every finding after
-it, and nothing in the answer let the session notice.
+The boundary held and what an anonymous read answers moved out by one field. A
+core patch review credited the lookup with establishing that it held the patch
+set that exists on the server, and neither half of the answer said which one
+that is — a review of a superseded revision is wrong in every finding after it,
+and nothing let the session notice.
 
-`o=CURRENT_REVISION` carries it, over the same anonymous path this entry
-settled. Verified against `review.typo3.org` on 2026-08-03: `change:Id53f1068d…`
-answers change 95070 at `current_revision` `03c13a44…`, `change:95040` answers
-patch set 3 at `e82b930e…`, and `message:110359` carries the same on the search
-direction. No credential was passed and none was asked for, which is the second
-**Wrong if** not firing. The cost is one option on the URL and a larger body —
-the option also returns the revision's `ref`, which is read for nothing here.
-
-Half of what was expected turned out otherwise, and it decides which field
-matters. `current_revision_number` is in the default answer already: change
-95070 asked without any option carries `current_revision_number: 1` and no
-`current_revision` at all. So the option buys the commit, not the number, and
-the commit is the half a checkout can be held against. A number on its own says
-only that patch sets exist.
-
-What the answer gained is `patchSet` and `commit` in `changes[]` beside `status`
-and `branch`, a `Patch set 3 · e82b930e…` line in the text, and the sentence the
-answer owes: hold the commit against `git rev-parse HEAD`, and where the two
-differ the checkout is not the revision under review. Nothing here reads a local
-`HEAD`, so the comparison stays the caller's and the sentence is what says there
-is one to make.
-[`R-ANS-021`](../../requirements/answers/ans-021-the-review-answer-says-which-patch-set-it-is-about.md)
-states it and `GerritTest` holds the two fields.
-
-What stays outside is what it was. Votes, CI results, the comments and the diff
-of a patch set, and everything a private change carries are still behind a
-credential this server does not have, and `server-scope.json` says so in the
-terms it already used. The `depth` line names the two new fields, because a
-boundary that is not restated where a caller reads it has only moved in the
-code.
+The option that carries it works over the same anonymous path this entry
+settled, verified on three handles with no credential passed, which is the
+second **Wrong if** not firing. The cost is one option and a larger body.

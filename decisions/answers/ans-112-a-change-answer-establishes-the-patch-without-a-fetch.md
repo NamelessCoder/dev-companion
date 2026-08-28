@@ -105,40 +105,13 @@ a shortlist fetched every change on it into the user's own working checkout.
 
 ## Since then
 
-Built on 2026-08-26. `files` and `message` are on a change read by name, which
-is the `change` handle and the `commit` handle alike, and `null` everywhere
-else. The key is present and null rather than absent, because that is what the
-fields beside it already do and a caller branching on whether a key is there
-cannot tell an answer that read nothing from a server that carries nothing.
+Built on 2026-08-26 for a change read by name, and null everywhere else — the
+key present and null rather than absent, because a caller branching on whether a
+key is there cannot tell an answer that read nothing from a server that carries
+nothing.
 
-Both **Assumed** above were measured against `review.typo3.org` that day.
-`o=CURRENT_FILES` serves the list over the same anonymous path as the options
-already asked for: change 95369 answers 19.8 KB without it and 23.8 KB with it,
-for the 25 files it touches. The weight was read off the population rather than
-off that one change — of 200 open core changes read the same day, the median
-touches 5 files, the ninetieth percentile 40 and the largest 233. So the list
-rides on every named change rather than behind a parameter, and what a lookup
-grows by is regularly under a kilobyte.
-
-What a file entry carries came out of the same reading. A path the patch only
-edits carries no `status` at all, so `modified` is the absence; `A`, `D`, `R`,
-`C` and `W` are the others, and the answer spells them out because a letter is
-unreadable where a path is not and `status` is already `NEW` and `MERGED` one
-level up. Gerrit omits a line count that is zero and both of them on a binary,
-which is why `binary` stands beside the two zeros: change 95385 adds two `.png`
-fixtures that would otherwise read as files nobody touched. `old_path` is what
-separates a rename from a delete and an add, and change 95211 moves 38 files out
-of one system extension with it.
-
-The two skills carry the other half, which is what made this more than a schema
-change. `typo3-core-patch-review` establishes the four things from the lookup
-rather than from "one reading of the diff", and the review server is the first
-tool it routes to; where the work needs the patch on disk it crosses into
-`typo3-core-patch-checkout` for that one change and names the ref in the report.
-That skill opens on the same premise from the other side: a shortlist is triaged
-before it is opened at all.
-
-`D-ANS-106`'s dated section asked for one more piece of routing and it is in the
-same skill: the forced deletion of a review branch names `typo3_gerrit_lookup`
-with `commit` before it runs, so what answers whether the commit is recoverable
-is the lookup rather than git's refusal.
+Both **Assumed** were measured. The option serves the list over the same
+anonymous path, and the weight was read off the population rather than off one
+change: the median change touches five files and the ninetieth percentile forty.
+So the list rides on every named change rather than behind a parameter, and what
+a lookup grows by is regularly under a kilobyte.

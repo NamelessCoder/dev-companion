@@ -115,38 +115,13 @@ for it.
 
 ## Since then
 
-**2026-08-24.** The carrier is `typo3_gerrit_lookup`, and the placement is the
-`releaseLines` field of its answer: the branches that take a patch today, newest
-first, each with its state and the day its regular support ends, beside the
-`branch` every change in that answer already carried. `typo3_project_describe`
-was the other candidate and was not taken. It is the call every session is told
-to start with, which is the wider reach, but its subject is the repository the
-server was started in, and the release calendar is a fact about TYPO3 rather
-than about that repository — it names a version where this decision's own title
-asks for a branch. Choosing it would also have handed the core's release
-branches to every site developer and extension author who calls it, which is the
-third **Wrong if** above, taken deliberately rather than observed.
-
-Nothing here settles any of the three. Whether the fact is now taken rather than
-rebuilt is a forward run's reading, not this one's.
+**2026-08-24.** The carrier is the review lookup and the placement is a field of
+its answer, beside the branch every change already carried. The orientation
+answer was the other candidate and was not taken: it is the call every session
+starts with, but its subject is the repository the server was started in, and
+the release calendar is a fact about TYPO3 — choosing it would also have handed
+the core's release branches to every site developer who calls it, which is the
+third **Wrong if**, taken deliberately.
 
 **2026-08-27.** The first session to run against the placement did not reach it,
 and it says why the carrier was passed over.
-[`feedback/2026-08-26-223348`](../../feedback/archive/2026-08-26-223348-no-answer-for-which-branches-a-bugfix-s.md)
-is a core bugfix whose `Releases:` trailer was built from `git branch -r` two
-days after the field shipped, and its sibling
-[`feedback/2026-08-26-223414`](../../feedback/archive/2026-08-26-223414-four-things-in-the-forge-tool-that-carried-the.md)
-files the reason as a strength: the inline `reviews` field of
-`typo3_forge_lookup` carried the change numbers and states, and "it is also why
-typo3_gerrit_lookup never had to be opened".
-
-So the carrier's reach is bounded by a sibling tool that subsumes it on purpose,
-which none of the three **Wrong if** describes. The first is untouched, because
-the session held no answer naming the lines. `R-ANS-035` is intact for the same
-reason a wider placement would not follow from it: `ForgeLookup`'s `reviews`
-rows carry a change number, a state and a URL, and no branch at all.
-
-What that leaves is the other carrier rather than a third.
-[`D-AUD-015`](../audience/aud-015-what-decides-whether-to-call-a-tool-stands-in-its-description.md)
-judges the same feedback at step 4 on `typo3_commit_message_guide`'s own
-description, which is the call this task shape was already routed to.

@@ -82,6 +82,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
+- [`D-ANS-126`][D-ANS-126] — The runnable form of a declared command is a field · 2026-08-28
 - [`D-ANS-114`][D-ANS-114] — A page read whole names the hints it declares · 2026-08-27
 - [`D-ANS-115`][D-ANS-115] — A phrasing a requirement rests on is carried by the hint's own vocabulary · 2026-08-27
 - [`D-ANS-116`][D-ANS-116] — A duplicate check reads the recent end of the backlog · 2026-08-27
@@ -203,6 +204,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Rarity, field length and corpus length decide a lookup's rank · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-126]: answers/ans-126-the-runnable-form-of-a-declared-command-is-a-field.md
 [D-ANS-114]: answers/ans-114-a-page-read-whole-names-the-hints-it-declares.md
 [D-ANS-115]: answers/ans-115-a-phrasing-a-requirement-rests-on-is-carried-by-the-hints-own-vocabulary.md
 [D-ANS-116]: answers/ans-116-a-duplicate-check-reads-the-recent-end-of-the-backlog.md

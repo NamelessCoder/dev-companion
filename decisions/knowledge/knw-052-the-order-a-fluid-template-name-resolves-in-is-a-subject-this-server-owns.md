@@ -145,43 +145,17 @@ resolver out of a vendor tree.
 
 ## Confirmed on 2026-08-03
 
-The resolver was read where it runs rather than where it was announced.
-`typo3fluid/fluid` is in no checkout, but every environment this repository
-creates has one installed, and `.environments/e-site-14.3` carries the 5.3.1 the
-14.3 lock file pins. `TemplatePaths::resolveFileInPaths()` there builds its
-candidate list `foreach (array_reverse($paths) as $path)` and appends all six
-candidates for that path before moving to the next, so the chain is walked per
-path and the second **Wrong if** does not hold. `.fluid.html` is one candidate
-of six rather than a requirement, so neither does the third. The first stays
-open: it is about an audit and only an audit can read it.
+The resolver was read where it runs rather than where it was announced, in an
+environment carrying the release the lock file pins. The candidates are appended
+per path, so the second **Wrong if** does not hold, and the extension is one
+candidate of six rather than a requirement, so neither does the third.
 
-Both assumptions are settled, and the second one was the reading the todo owed.
-The ordering an author sees is the ordering the resolver walks, but not for the
-reason either side of the question suggested: every root path list in TYPO3
-passes through `TYPO3\CMS\Fluid\View\TemplatePaths`, whose three setters sort
-through `ArrayUtility::sortArrayWithIntegerKeys()` on 12.4, 13.4 and 14.3 alike,
-and `RenderingContextFactory` is the only way a core view is built. So the
-`array_reverse()` walks a list that is already in ascending key order and the
-highest key wins. The event-listener case comes out the same way rather than
-differently — a path appended with no key of its own takes `max + 1` and sorts
-last — and what does come apart is the case nobody named: that sort is skipped
-for the whole list as soon as one key in it is a string, and then the array's
-own order decides. Read against the installed trees, `[20 => B, 10 => A]`
-resolves out of `B` through the core class and out of `A` through the plain
-Fluid one, and adding one string key to the list moves the answer back to `A`.
+Both assumptions are settled, and the second was the reading the todo owed: the
+ordering an author sees is the one the resolver walks, but not for either reason
+the question suggested — every root path list is sorted on its integer keys
+before it is reversed, so the highest key wins and an appended path sorts last.
+What comes apart is the case nobody named: that sort is skipped for the whole
+list as soon as one key is a string, and then the array's own order decides.
 
-The same reading settles what the changelog entry says and what it leaves out.
-The chain, the preference inside one directory, the per-path walk and the
-uppercase fallback are all in the code as the entry describes them, and the
-fallback is `ucfirst()` on the requested name — the spelling that was asked for
-is tried first, which is what makes a lowercase template file resolve. What the
-entry frames as a template that "needs to be adjusted" is narrower than it
-reads: a name carrying its own extension is tried bare as the third candidate,
-so `<f:render partial="Foo.html" />` from a `json` template finds a `Foo.html`
-file and only fails against a `Foo.fluid.html` one.
-
-The two majors below it were read at the same time and are the other half of the
-statement. Fluid 2.15.0 and 4.6.1 walk the paths with `array_pop()`, which is
-the same order, and try `Foo.html` and then a bare `Foo` and nothing else; the
-action name is capitalised before the lookup rather than inside it. So the order
-between root paths carries no version boundary and the chain inside one does.
+The two older majors try two candidates rather than six, so the order between
+root paths carries no boundary and the chain inside one does.

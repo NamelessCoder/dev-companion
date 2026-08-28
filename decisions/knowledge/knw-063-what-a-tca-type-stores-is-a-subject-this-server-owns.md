@@ -79,31 +79,16 @@ it.
 
 ## Since then
 
-On 2026-08-07, the reading was done against `.checkouts/` at 12.4, 13.4, 14.3
-and `main`, and `tca-datetime-storage` is what came of it. All four places the
-feedback named hold, and two things it did not know are now part of the
-statement.
+The reading was done against all four checkouts. All four places the feedback
+named hold, and two things it did not know are part of the statement.
 
-The first is a version boundary. `DateTimeFactory` and `DateTimeFieldType`
-arrived in 13 and are absent from 12.4 — but `DateTimeFieldType::isNullable()`
-arrived a major later still, in 14, with
-`[TASK] Make use of TcaSchema in DefaultTcaSchema`. So the default the feedback
-reported for a `dbType` column is `true` only from 14; on 13.4 the class
-inherits `isNullable()` and the default is `false` there as well. The session
-read it on 15.0.0-dev and reported it flat, which is exactly what a statement
-bound to one branch looks like.
+The first is a version boundary: the two classes arrived in one major and the
+nullability default a major later still, so what the session reported flat on
+the development line is `true` there and `false` on the LTS before it — which is
+exactly what a statement bound to one branch looks like. The second is that the
+write side is the same rule read backwards, so the round trip is null to zero to
+null and the row is not NULL at any point.
 
-The second is that the write side is the same rule read backwards.
-`QueryHelper::transformDateTimeToDatabaseValue()` writes `0` for an integer
-column and the empty literal for a native one, and
-`DateTimeFactory::fromDatabase()` maps that value back to `null` — so the round
-trip is null to zero to null, and the row is not NULL at any point.
-`Backend::insertObject()` omits a null property from the row on all three
-branches, so the column default decides instead.
-
-The second half of the card is settled too, and against the tool rather than
-from the reading: `typo3_documentation_lookup` at 13.4, asked twice more with
-different phrasings, reaches nothing about `QueryInterface` constraints against
-null. Best coverage 0.344, on the Doctrine `QueryBuilder` page and a TypoScript
-data processor. So `feedback/2026-08-07-065342` is a corpus gap and not a
-routing failure, which is what this entry's first **Wrong if** was watching for.
+The second half of the card is settled against the tool rather than from the
+reading: the manual reaches nothing about those constraints, so that feedback is
+a corpus gap and not a routing failure.

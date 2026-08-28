@@ -113,20 +113,13 @@ hint half of `feedback/2026-08-03-154508` was open behind that.
 
 ## Since then
 
-The fourth **Wrong if** fired, and the second report the first **Assumed** was
-waiting for arrived with it. `feedback/2026-08-17-212702` is a session on the
-create branch of the published skill, which names five hints and none of them
-this one, while the boot section it would otherwise have crossed into names no
-hint at all. It ruled the entry out by its title, hit exception 1396795884 on
-the rebuild that had turned its task into the boot case, and diagnosed that from
-24,000 characters of rendered HTML. So the patterns are not what failed here:
-the query was never made. `D-KNW-092` carries that judgement, and the hint it
-queues is reached from the symptom rather than from the task.
+The fourth **Wrong if** fired and the second report the first **Assumed** waited
+for arrived with it: a session on the create branch ruled the entry out by its
+title and then diagnosed the boot case from 24,000 characters of rendered HTML.
+So the patterns are not what failed — the query was never made, and `D-KNW-092`
+queues a hint reached from the symptom instead.
 
-The fourth **Wrong if** is repaired rather than standing. The boot section of
-`skills/typo3-development-installation/SKILL.md` names `id=installation-boot` as
-its first bullet, before the declared steps are run, and
-`SkillTest::anInstallationIsBuiltInDependencyOrder`
-holds it there. What that does not answer is the first **Assumed**: the routing
-sends a boot task to the hint whatever it was worded as, so the patterns are
-still one session's vocabulary and still unmeasured against a second report.
+The **Wrong if** is repaired rather than standing: the boot section names the
+hint before the declared steps are run. What that does not answer is the first
+**Assumed** — the routing sends a boot task there whatever it was worded as, so
+the patterns are still one session's vocabulary.

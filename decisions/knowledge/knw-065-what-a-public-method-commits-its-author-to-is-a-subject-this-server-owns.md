@@ -126,41 +126,19 @@ the diff, the tests and the changelog entry are written.
 
 ## Confirmed on 2026-08-09
 
-The reading the todo owed came out one way, and the placement came out the
-other. Read in `.checkouts/main` at `c71b2bdb2f`, with `Important-107342`
-verified on `.checkouts/13.4` and `.checkouts/14.3` as well.
-
-The core files a signature change on a public or protected member as breaking on
-the possibility of an override rather than on a demonstrated one, so this is a
-rule and not a consideration. `Breaking-101133` files a changed parameter of
-`IconFactory->getIcon()` against "custom extensions extending the method", and
-`Breaking-110218` declares `LogRecord` final while calling the affected
-installations "very unlikely" — and files it as breaking anyway. `Howto.rst`
-puts an "interface / API change" beside a removal as what the type is for. The
-first **Wrong if** does not hold: nothing in the changelog files an added
-optional parameter on a public member as a plain change. The one exception is a
-member taken out of the public API with `@internal`, and that is an `Important`
-rather than nothing — `Important-107342` added two optional arguments to
-`FormPersistenceManagerInterface::listForms()` and reached `13.4.x` on that
-ground, which is also the only way such a change reaches a release line at all.
+The reading came out one way and the placement the other. The core files a
+signature change on a public or protected member as breaking on the possibility
+of an override rather than on a demonstrated one, so this is a rule and not a
+consideration — one entry files it against "custom extensions extending the
+method", another calls the affected installations very unlikely and files it
+anyway. The first **Wrong if** does not hold, and the one exception is a member
+taken out of the public API, which is an `Important` rather than nothing and is
+the only way such a change reaches a release line.
 
 That the parameter is optional changes nothing is PHP's rule rather than the
-project's, verified on 8.3: a subclass declaring the old signature fatals with
-"must be compatible with" as it is autoloaded, while a subclass adding an
-optional parameter of its own loads. No matcher is owed either way, because the
-matchers are keyed on where a member is called — `MethodCallMatcher.php` opens
-on "Removed methods" and the engine compares an argument count — and an override
-is not a call.
+project's. No matcher is owed either way, the matchers being keyed on where a
+member is called.
 
-The second **Wrong if** held, and it decided the placement. Keyed on `Classes/`
-and `typo3/sysext/` the hint reached the reporting session's own query in second
-place, and it also took first place on `file storage driver` above `fal-basics`
-and displaced that hint out of the brief `D-GUI-007` pinned. A path claim of 21
-characters is generic, and the matcher reads a longer pattern as the more
-specific one. So the path patterns came off: `public-api-surface` is reached by
-the vocabulary of the move, and what reaches a session that never says
-"signature" is the development skill's blast radius step, which already stands
-before the change is written and now asks who may be extending the member. Which
-of the two shapes replaces the widening stays the reviewers' — the entry states
-only that declaring the class final first is no cheaper, because that is itself
-a breaking change.
+The second **Wrong if** held and decided the placement: keyed on paths the hint
+displaced a better one out of a brief, so the path patterns came off and the
+vocabulary of the move is what reaches it.

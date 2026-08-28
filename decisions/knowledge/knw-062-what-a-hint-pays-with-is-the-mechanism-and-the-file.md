@@ -78,18 +78,9 @@ four hints it names all paid the same way.
 
 ## Since then
 
-Read on 2026-08-23. All four hints still carry the sentence that paid:
-`environment-variables` names `getenv()`, `content-element-preview` names
-`GridColumnItem`, `language-files` names `XliffLoader::parseXliff1()`, and
-`project-configuration-files` still says who owns which file.
-
-The second **Wrong if** cannot fire yet, because its premise has not happened.
-No commit against `knowledge/hints/` since names condensing, and the corpus went
-the other way: `bin/cli hints:coverage` reports a mean body of 274 words against
-the matcher's 200-word reference and 26 left under the 300 ceiling, where what
-this entry watches is a corpus condensed to its advice.
-
-Nothing reports the first one either. No feedback after 2026-08-04 names a
-mechanism one of these hints states and a session missed; the ones that name
-`getenv`, `GridColumnItem` or `parseXliff1` at all are the session this entry
-was written from and its neighbours of the same days.
+All four hints still carry the sentence that paid. The second **Wrong if**
+cannot fire yet, because its premise has not happened: no commit against the
+hints since names condensing, and the corpus went the other way, with a mean
+body above the matcher's reference. Nothing reports the first either — the
+feedback naming any of those mechanisms is the session this entry was written
+from and its neighbours of the same days.

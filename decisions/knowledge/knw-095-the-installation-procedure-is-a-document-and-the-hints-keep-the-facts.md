@@ -118,26 +118,15 @@ hint ids.
 
 ## Since then
 
-Written on 2026-08-18 as `project/installation/booting-a-clone`, and it is one
-document rather than two.
+Written as one document rather than two, and what settled that is which branch
+the corpus carries as a run: one hint opened with the four steps in order and
+was the only entry that did, while the other branch's order exists in a skill
+and nowhere else — writing it out would have been the second **Wrong if**. The
+third shape that skill forks on is the other half: a repository declaring an
+environment and no procedure runs both, so a document per branch would leave it
+reading both.
 
-What settled that is which of the branches the corpus carries as a run.
-`installation-boot` opened with the four steps in order and is the only entry
-that did; the create branch's order exists in
-`skills/typo3-development-installation/SKILL.md` and nowhere else, so writing it
-out would have been the second **Wrong if** above, the skill's section rewritten
-under a document's name. The third shape that skill forks on is the other half
-of the answer: a repository declaring an environment and no procedure runs the
-boot steps and then the install, so a document per branch would leave the
-reported repository reading both.
-
-The steps left `installation-boot`, which keeps what a clone is missing and the
-two exceptions `typo3 setup` refuses with. The crossing is the document's own
-`hints:` front matter, so a caller who reached the facts is named the run, and
-the skill names it by `documentId` at the boot step.
-
-One thing moved that nothing asked for. A term's weight is computed over the
-sections in front of the query, so eight more of them carried two sections of
-`D-ANS-076`'s first recorded query over the coverage floor, one of them in a
-second page. That call is a cut now and the second one is the page handover.
-Both halves that entry bought are still bought, on the other call.
+One thing moved that nothing asked for: a term's weight is computed over the
+sections in front of the query, so eight more of them carried an earlier
+recorded query over the coverage floor. Both halves that entry bought are still
+bought, on the other call.

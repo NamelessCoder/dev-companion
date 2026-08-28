@@ -134,58 +134,29 @@ error page in a terminal does not cheaply have.
 
 ## Since then
 
-`installation-exception-output` is the hint, in `knowledge/hints/project.json`
-beside `installation-boot`, and the skill names it where the site is proved and
-`installation-boot` where a declared clone is booted.
+The hint is written and the third **Assumed** is settled: the ignored codes, the
+default writer configuration and the log path template are identical on all four
+checkouts, so no statement carries a binding.
 
-The third **Assumed** is settled and no statement carries a binding.
-`IGNORED_EXCEPTION_CODES` is the same ten codes in the same order on
-`.checkouts/12.4`, `13.4`, `14.3` and `main`, and so is the default
-`LOG.writerConfiguration` — one `FileWriter` at `warning` with no options — and
-`FileWriter`'s `/log/typo3_%s.log` template. `IGNORED_HMAC_EXCEPTION_CODES`
-gained two entries in 13.4 for the core `HashService`, which is why the
-statement names that list rather than counting it.
+The display half turned out to be the sharper statement and the entry did not
+have it. A caller off the development address gets the production handler and an
+empty message, and that handler makes exactly three exceptions — the first of
+them the code the logger refuses. So the trusted-hosts failure is shown whatever
+the configuration and written down nowhere, and every other uncaught exception
+is the other way round. The two halves invert, which is what the hint states.
 
-The display half turned out to be the sharper statement, and the entry did not
-have it. `SYS/displayErrors` is `-1` by default and the request's remote address
-against `SYS/devIPmask` then picks the handler, so a caller off the development
-address gets `ProductionExceptionHandler` and an empty message under "Oops, an
-error occurred!". That handler's `discloseExceptionInformation()` makes exactly
-three exceptions, and the first of them is 1396795884 — the code the logger
-refuses. So the trusted-hosts failure is shown whatever the configuration and
-written down nowhere, and every other uncaught exception is the other way round
-on a production page. The two halves invert, which is what the hint states.
-
-A PHP fatal is the boundary the reading added. `SYS/errorHandlerErrors` and
-`SYS/exceptionalErrors` both mask out `E_ERROR`, `E_PARSE`, `E_COMPILE_ERROR`
-and `E_CORE_ERROR`, so an exhausted memory limit reaches no exception handler
-and is in the web server's log rather than the installation's. A caller told to
-read `var/log` and finding nothing needs that case named, or the empty file
-reads as a broken instruction.
-
-`installation-boot` gets no pointer back, against what the last **Decided** left
-open. The reference that was missing runs from the symptom into the procedure,
-which is the direction the reporting session needed; a reader who has already
-reached `installation-boot` has its trusted-hosts statement in front of them.
-Its closing statement is one of the six `D-KNW-087` owns, and a fourth id
-appended to that formula is the change that entry is queued to make.
+A PHP fatal is the boundary the reading added: the error masks exclude it, so it
+reaches no handler and a caller told to read the log finds nothing.
 
 ## Since then
 
-The first **Assumed** is answered, and the first **Wrong if** did not fire.
-`feedback/archive/2026-08-24-140340` is a session that hit this failure — an
-HTTP 500 on every URL with an empty log, on a clone-like state — and it asked
-this server rather than going to curl for the diagnosis. What answered it was
-`project-configuration-files` fetched by id, and its account is *I knew what it
-was in one step instead of hunting*. So an agent at a failing site does ask, and
-the trusted-hosts case was reached from the corpus rather than from the page.
+The first **Assumed** is answered and the first **Wrong if** did not fire: a
+session that hit this failure asked this server rather than going to curl, and
+what answered was the neighbouring hint fetched by id. So an agent at a failing
+site does ask, and the case was reached from the corpus rather than from the
+page.
 
-That is a session's report rather than a recorded run, so nothing here is
-confirmed — `D-FBK-018`. It also does not say this entry's own hint was what
-reached the session, only that the corpus did, and by the neighbour rather than
-by the symptom. What the same debrief reports as still costing something is the
-step after the diagnosis: the session was left asking whether
-`SYS/trustedHostsPattern` was set and read `additional.php` for it.
-[`D-KNW-120`](knw-120-a-hint-that-states-a-merge-names-the-lookup-that-reads-the-result.md)
-is that half, placed on `project-configuration-files` for the reason above —
-this hint says what a failure writes down, not what a value resolves to.
+That is a session's report rather than a recorded run, and it does not say this
+entry's own hint was what reached it. What still cost something is the step
+after the diagnosis, which `D-KNW-120` carries: this hint says what a failure
+writes down, not what a value resolves to.

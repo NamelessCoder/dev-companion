@@ -126,45 +126,16 @@ two sites has to arrive at the opposite of.
 
 ## Since then
 
-`site-base-collision` is what came out of it, and the reading settled four of
-the six **Wrong if**. The sort is on the call path: `matchSiteByUri()` hands the
-whole collection to `BestUrlMatcher`, which keeps every route whose path matched
-and only then sorts, so the first **Wrong if** does not hold. What it sorts by
-is one comparison earlier than this entry had it — each site's own entry route
-carries `fallback` and goes last, so the language routes are what collide, and
-the host score is compared before the path match rather than after it. That is
-the part worth stating: a base on `/probe` loses to a base naming the host even
-though its own path is the more specific one.
+The hint is written and the reading settled four of the six **Wrong if**. The
+sort is on the call path, so the first does not hold, and what it sorts by is
+one comparison earlier than this entry had it: each site's own entry route goes
+last, so the language routes collide and the host is compared before the path
+matched. That is the part worth stating — a base naming the host beats a more
+specific path.
 
-The second **Assumed** was the wrong way round and the statement is unbound.
-`BestUrlMatcher`, `MatchedRoute` and the route construction in `SiteMatcher`
-read the same on `12.4`, `13.4`, `14.3` and `main`; the one difference between
-them is the `strpos` the tail tiebreak below the host comparison uses on `12.4`,
-which no statement rests on. A language base with no host of its own is prefixed
-with the site base in `Site::__construct()` on all four, so the site's host
-reaches every route it owns.
-
-The fifth **Wrong if** is half true and improves the hint. A deleted root page
-and a mistyped slug do produce the same sentence — `PageResolver` answers "The
-requested page does not exist" for both — and the site is untouched by the
-deletion, because a site exists as long as its `config.yaml` declares a
-`rootPageId` above 0 and the pages table is never consulted for it. A hidden
-root page is the case that differs: the slug still finds the page and the
-frontend's access check refuses it with the same sentence ending in an
-exclamation mark, on every covered major. So the message carries one
-discriminator and never says which site answered, which is what the hint states.
-
-The third **Wrong if** does not hold as measured: the boot query still answers
-`installation-boot` first and does not carry the new hint, while the feedback's
-own task and `"frontend returns 404 at the site root"` now answer with it first.
-`initial-content-references` was not the lever and was not rewritten, but it
-claims the phrase the symptom arrives on, so it took a pointer in the form
-`D-KNW-087` asks for. The routing half went the same way: the
-`installation-operations` checklist and the sentence in
-`typo3-development-installation` that enumerates what a wrong-site answer can
-mean both named three causes and were missing this one.
-
-The first and the last **Assumed** stand, and so does the sixth **Wrong if** —
-nothing here can reach the reporting session's request, and whether a caller
-needs to be told which site matched is a question only the next report answers.
-`feedback/2026-08-18-074545` keeps its own card, unjudged.
+The second **Assumed** was the wrong way round and the statement is unbound. The
+fifth **Wrong if** is half true and improves the hint: a deleted root page and a
+mistyped slug produce the same sentence, and a hidden one differs by an
+exclamation mark. So the message carries one discriminator and never says which
+site answered. The third does not hold as measured, and the routing half went
+the same way — two surfaces named three causes and were missing this one.

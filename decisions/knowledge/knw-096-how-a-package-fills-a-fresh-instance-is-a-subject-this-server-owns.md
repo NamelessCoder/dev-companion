@@ -113,25 +113,14 @@ step that asks with nothing to say.
 
 ## Since then
 
-The reading against `.checkouts/` found more ways than the three this entry
-named, so its first **Wrong if** holds in the narrow sense: the statement stands
-and the list was understated. `fresh-instance-seeding` is what came out of it.
-Core reads four files out of a package at `typo3 extension:setup` rather than
-one — the `Initialisation/` data file, `Initialisation/Site/`,
-`Initialisation/Files/` and `ext_tables_static+adt.sql` — and the last of those
-is keyed by its own hash in the registry on every covered major, so it is the
-one shipped file that arrives again after an edit. From 13 a package may also
-listen on the package initialization event and fill the instance with no file
-convention at all. The console command and the site set are the two the caller
-sees and core never acts on, and the site set turned out to fill nothing by
-itself: it reaches an installation only where a site's `config.yaml` names it
-under `dependencies`.
+The reading found more ways than the three this entry named, so its first
+**Wrong if** holds in the narrow sense: the statement stands and the list was
+understated. Core reads four files out of a package at setup rather than one,
+and the last of them is keyed by its own hash, so it is the one shipped file
+that arrives again after an edit. From the newer major a package may also listen
+on an event and fill the instance with no file convention at all. The site set
+turned out to fill nothing by itself.
 
-Two things the reading turned up were left alone, because neither is what the
-card asked for. `typo3_extension_describe` reports the two data files and not
-`ext_tables_static+adt.sql`, `Initialisation/Site/` or `Initialisation/Files/`,
-so three of the four mechanisms are checked against the package's own files
-rather than out of that answer. And `typo3_task_guide` still reaches no intent
-for the standalone question — the knowledge is delivered at step 4 of
-`typo3-development-installation` and in the `installation-operations` checklist,
-which is the caller who is already in the boot workflow.
+Two things were left alone because neither is what the card asked for: the
+extension answer reports two of the four files, and the brief still reaches no
+intent for the standalone question.

@@ -244,9 +244,8 @@ reached, so a package whose vendor sits under a dot directory is covered twice
 over. What does need a correction is a build directory that is neither hidden
 nor one of those names.
 
-A second feedback stopped reading the index, and its premise holds and its
-conclusion does not. The hint those six calls went around ranks seventh and was
-cut by the limit, and in the index it stands near the end, because the index
-re-reads the corpus by file. The other id it names is a different case: nothing
-in the query's words reaches it. What goes up is which of the two the index
-becomes.
+A second feedback's premise holds and its conclusion does not. The hint those
+six calls went around ranks seventh and was cut by the limit, and in the index
+it stands near the end, because the index re-reads the corpus by file. The other
+id it names is a different case: nothing in the query's words reaches it. What
+goes up is which of the two the index becomes.

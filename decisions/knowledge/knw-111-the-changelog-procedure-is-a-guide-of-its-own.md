@@ -112,8 +112,6 @@ Both reports were wrong about the two facts they had guessed at, which is why
 neither was copied. A third session spent a round on that same length, which is
 what the hint now tells a caller not to do.
 
-The content half is answered too: the session's own six calls now land in one,
-and its question about which type a fix that changes rendered output owes is
-stated in the matched section. The brief is unchanged either way: the changelog
-prose never won a slot there, and adding the page to the rule documents leaves
-that unchanged.
+The content half is answered too: the session's six calls now land in one. The
+brief is unchanged either way: the changelog prose never won a slot there, and
+adding the page to the rule documents leaves that unchanged.

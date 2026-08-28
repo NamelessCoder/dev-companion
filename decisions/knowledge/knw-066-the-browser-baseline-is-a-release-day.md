@@ -92,8 +92,7 @@ developer found it broken in Firefox.
 
 The hint was reported a second time from the other side: it stopped a Blink-only
 feature going into a core patch with a rationale attached, which is the first
-**Wrong if** with the sign reversed. **Decided** was read back by somebody who
-did not know it existed.
+**Wrong if** with the sign reversed.
 
 **A policy hint has to be reachable by the vocabulary of the thing it governs,
 and this one was reachable by its own.** Both sessions reached it by id, and the

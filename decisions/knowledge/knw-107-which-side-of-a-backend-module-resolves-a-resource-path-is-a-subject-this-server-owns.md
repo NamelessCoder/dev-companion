@@ -110,5 +110,4 @@ lines.
 So the feedback's own rule is corrected rather than copied: carrying a value the
 server gave it is what the core does, and working one out is what it removed.
 One bullet is left out because no checkout does it: a hint stating it would be
-this repository's preference wearing a TYPO3 fact's clothes. The **Assumed**
-about arrival cost the hint one pattern.
+this repository's preference wearing a TYPO3 fact's clothes.

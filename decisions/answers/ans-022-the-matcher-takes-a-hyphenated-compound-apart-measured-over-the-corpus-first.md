@@ -79,60 +79,13 @@ for.
 
 ## Since then
 
-The measurement was run, and it found a third gate this entry did not name. The
-domain keywords are spaced compounds too, and they are read before anything is
-scored: `dark-mode` detected no domain where `dark mode` detects `css`, so every
-Backend CSS hint was out of the candidates rather than out of the ranking. That
-is upstream of both halves above, and neither of them reaches it.
+The measurement was run and found a third gate this entry did not name: the
+domain keywords are spaced compounds too and are read before anything is scored,
+so a hyphenated query detected no domain at all and every candidate was out
+before the ranking. That is upstream of both halves above.
 
-What was measured, in the two corpora the repository has to hand. The 41
-scenario prompts and 66 hint titles, as they stand — eight of them carry an
-internal hyphen at all. And the 195 multi-word bare patterns of the hint
-`appliesTo`, each asked twice, once as written and once with its spaces
-hyphenated: that is what a caller hyphenating a compound the corpus spells apart
-looks like, over the whole curated vocabulary rather than over one feedback.
-Asked spaced, 176 of the 195 reach the hint the pattern belongs to; asked
-hyphenated, 110 did.
-
-Four rules were measured against that:
-
-- The term half alone — `TermSearch::terms()` splitting a hyphenated word into
-  its parts. 165 of 195, and three of the hyphenated queries lose every hit they
-  had, `content-area` among them.
-- The keyword half alone — a bare `appliesTo` phrase matching a hyphen where it
-  has a space. 166 of 195.
-- Both together, which is what this entry queued. 166 of 195 — the term half
-  reaches not one hint the keyword half does not, and carries its three losses
-  into the pair.
-- The rule in `Text::containsWord()` instead, where a needle of several words
-  matches them joined by a hyphen as well as by a space. 176 of 195 — the same
-  number the spaced spelling reaches — because that one method is what all three
-  gates read: the domain keywords, the `appliesTo` patterns through
-  `TermSearch::carries()`, and the frontend and layout markers.
-
-The last is what was changed. Nothing spaced moved under it: the 41 prompts, the
-66 titles and the 195 patterns asked as written return exactly what they
-returned before, `bin/cli hints:coverage` prints the same page byte for byte,
-and `tt_content`, `list_type` and `mod.web_layout` are untouched — only the
-space between two words is loosened, and a separator inside one word is left as
-`D-ANS-006` has it. The sentence this started from returns `content-elements` at
-`appliesTo(15)`, the same way in as the spaced spelling.
-
-So the **Wrong if** above did not happen, and the corpus side it points at is
-not the cheaper half after all: it would have meant the hyphenated spelling of
-195 patterns, kept in step with every one written afterwards, and it would not
-have reached the domain gate at all. The term half was rejected on the
-measurement rather than on the risk — it costs three answers and buys nothing
-the phrase rule does not already buy. What it would have fixed is the ranking
-below the first hit, where the hyphenated and the spaced spelling still differ
-in 140 of the 195: `content-element` stems to `conten` and `element` never
-enters the query. Nothing measured says that is worth three answers, and this is
-the entry to reopen if a query is found that it costs.
-
-The 19 patterns that reach nothing even spaced are not this entry's. They carry
-no domain signal — `focus order`, `stacking context`, `utility class` — and the
-gate that drops them is the one `everyHintIsReachedByItsOwnTitle` holds for
-titles and nothing holds for patterns.
-
-`HintsTest::aCompoundIsFoundWhicheverWayTheCallerJoinsIt` is what would catch
-this coming back, and it holds the identifier side as well.
+What was measured is the whole curated vocabulary rather than one feedback: 195
+multi-word patterns asked twice, spaced and hyphenated, where 176 reach their
+own hint spaced and 110 hyphenated. Of the four rules measured against that, the
+term half alone loses three queries every hit they had, and both together reach
+not one hint the keyword half does not.

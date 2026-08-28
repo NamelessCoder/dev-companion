@@ -134,60 +134,13 @@ the instruction is one the caller has to settle by reading the script.
 ## Since then
 
 Built on 2026-08-24. The fourth value is called `git`, because what the three
-suites have in common is the command they run and not one effect of it: two
-discard uncommitted edits before the `git add *` they all end in. Every suite in
-`knowledge/test-suite-hints.json` carries `runs`, read off its body in
-`.checkouts/` on the same day.
+suites have in common is the command they run and not one effect of it. Two
+suites stayed out of the list: nothing narrows to them, and a php-domain entry
+would offer them to every PHP patch, which is the third **Wrong if** — they are
+named in an invocation note instead.
 
-`checkIsoDatabase` and `checkCharsets` stayed out of the suite list. Nothing
-narrows to them — the hints are a curated set, and a php-domain entry would
-offer them to every PHP patch, which is this entry's third **Wrong if**. They
-are named in an invocation note instead, because `runTests.sh -h` does hand them
-over.
-
-The first **Wrong if** was read against a report on 2026-08-26 and is not
-satisfied. `feedback/2026-08-24-183711` lost four untracked test files under
-`typo3/sysext/core/Tests/Functional/Error/PageErrorHandler/` across a run of
-`-s functional`, `-s unit`, `-s cgl -n`, `-s phpstan`, `-s checkIntegrityPhp`
-and `-s listExceptionCodes`. None of those is marked as reporting only: `unit`
-and `functional` are `unknown`, and the rest are `check` and touched no file the
-loss was under. The mark said what it could and the loss is what `unknown`
-covers.
-
-Which suite did it is not established here and the report does not claim one.
-Read in `.checkouts/` on 2026-08-26 across 12.4, 13.4, 14.3 and main: every
-`rm -rf` in `Build/Scripts/runTests.sh` sits in `cleanBuildFiles`,
-`cleanCacheFiles`, `cleanTestFiles` or `cleanRenderedDocumentationFiles`,
-reached only from the `clean*` cases, or targets `typo3temp/var/tests/` in the
-acceptance and playwright setup. So the script did not remove them, and what
-runs inside the container is the core's own test code, which is the reason the
-mark is `unknown`. The report withdraws its two other claims itself and names a
-person amending the patch set in the same checkout, which is the explanation it
-applied to the staging and not to the loss.
-
-What the feedback asked for is a warning that untracked files may not survive a
-run. That claim rests on the one observation and would be written with a
-reading's authority, so it is not what was written. What was written is the act
-`unknown` leaves to the caller: secure untracked work before a test suite,
-because nothing here reads what the core's test code writes into the mounted
-checkout. `D-SKL-009` is why a mark that only states is turned into an act. The
-note names the five `clean*` suites beside it, so the next session asking
-whether a suite removed its file can answer that from the tool rather than from
-the script.
-
-The judgement stays in this entry rather than opening one of its own. `unknown`
-is a value of `runs`, and what a caller does about it is the same subject.
-
-The third **Wrong if** was read against `feedback/2026-08-24-205223` on
-2026-08-26 and is not satisfied: `checkGruntClean` came back on a change it does
-answer for, and the warning stopped a run that would have staged 23 branches of
-somebody's work. What that report found instead is that the warning is the last
-thing any answer says about the question, which is `D-ANS-113`.
-
-The third ask was settled by reading rather than left open. The node suites run
-npm inside `Build/`, whose `package.json` and `package-lock.json` are tracked,
-and install their own `node_modules`, so a bare worktree runs them and a PHP
-suite still needs `-s composerInstall` there first. `invocation.preconditions`
-says both halves and says which of the two was read rather than run.
-`checkGruntClean` is the exception the same reading found: from a worktree its
-git calls fail inside the container, the way `cglGit`'s already do.
+The first **Wrong if** was read against a report and is not satisfied: a session
+lost four untracked test files across a run of six suites, none of which is
+marked as reporting only. The mark said what it could and the loss is what
+`unknown` covers. Which suite did it is not established here and the report does
+not claim one.

@@ -104,54 +104,14 @@ told the user a fix had reached two branches where the trailer said three.
 
 ## Since then
 
-Built the same day the card was taken up. `commit` is the fourth way in,
-`releases` is a field on every change whose commit message came back, and the
-routing that says the handle is there is in the tool description, in the scope's
-`routing` and in the triage intent's tools. The `commit:` query and the trailer
-were read against `review.typo3.org` again while the tests were written, and the
-fixtures in `GerritTest` are that reading: change 89740 at
-`cf227b18e205a3720599f07ac98a8747c7008398`, its backports 90012 on `13.4` at
-`aaec618cf33` and 90014 on `12.4`, and the `Releases: main, 13.4, 12.4` all
-three of them carry.
+Built the same day the card was taken up: the commit hash is the fourth way in,
+the trailer is a field on every change whose message came back, and the routing
+that says the handle is there is in three places. The query and the trailer were
+read against the review server again while the tests were written, and the
+fixtures are that reading — one change, its two backports, and the trailer all
+three carry.
 
-The issue direction carries the field too, which the decision above neither
-asked for nor ruled out: that search already fetches the commit message to hold
-what the server matched against what it says, so one rule covers every path —
-the trailer is read wherever the message came back, and `null` is a message that
-was not. What stays outside is the search by words and by path, which asks for
-no message at all.
-
-### 2026-08-26 — the handle answers whether a local branch is safe to delete
-
-`feedback/2026-08-24-195307` describes a cleanup this entry was not written for
-and answers whole. Asked to delete the branches that were his, the session could
-not execute the instruction: three branches carried a `Change-Id` that resolved
-to nothing on the server and five more sat on commits that were no patch set of
-their change, so a delete would have been unrecoverable. It established that per
-branch, with a `Change-Id` query for `o=ALL_REVISIONS` and a membership test of
-the local tip against the revisions map.
-
-That is `commit` with the branch tip, and it is one call. Measured against
-`review.typo3.org` on 2026-08-26 on change 95369, whose six patch sets
-`git ls-remote` lists: the current revision `205541b5632`, the superseded
-`7e9e4726904` of patch set 5 and `dc97d767f82` of patch set 1 each answer the
-change, so the handle reaches a patch set nobody is looking at any more — which
-is the case a stale local branch is. A commit nothing pushed answers `empty`,
-and `indistinguishable` says there that a private or work-in-progress change
-looks the same from here. The feedback's own test states that outcome as
-"deletion is unrecoverable" flatly, so what the tool answers is the more careful
-of the two.
-
-The card the feedback carries is
-[`D-ANS-112`](ans-112-a-change-answer-establishes-the-patch-without-a-fetch.md),
-and this half of it is routing rather than a schema: nothing points a session at
-the handle before a destructive delete. `typo3-core-patch-checkout` says of its
-forced branch deletion that git's refusal "is the last moment anything asks
-whether it is really disposable", which this handle makes untrue.
-
-That routing landed with the card, on the same day: the step now asks the lookup
-with the branch tip before it forces anything, and it asks the same question of
-any other ref the workflow is told to remove.
-
-The second **Assumed** above holds unchanged. Eleven characters answered again
-on 2026-08-26, and where the floor is is still unmeasured.
+The issue direction carries the field too, which the decision neither asked for
+nor ruled out: that search already fetches the message, so one rule covers every
+path — the trailer is read wherever the message came back. What stays outside is
+the search that asks for no message at all.

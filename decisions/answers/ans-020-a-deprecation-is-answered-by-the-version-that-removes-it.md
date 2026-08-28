@@ -119,56 +119,14 @@ the rule that would cover the rest has an exception inside the same corpus.
 
 ## Since then
 
-Step 2 is done and the open question was the shape. It is the clause parsed out
-of the entry **and** the rule stated once, with the entry overriding — the third
-of the three candidates, and the rule is stated rather than applied. Every
-`Deprecation` carries a `removal` field, empty where the entry states none, and
-an answer carrying a deprecation carries a `removalRule` sentence beside the
-entries saying what covers that silence. Both halves are in the data as well as
-in the text, because a client that renders `structuredContent` and drops the
-text block is what `R-ANS-002` is written against. The query the feedback
-arrived through — `query: "yaml"`, `version: "14.2"` — now answers `#109412`
-with `removed in v15.0` in the line and `"removal": "15.0"` in the entry.
+Step 2 is done and the open question was the shape: the clause parsed out of the
+entry **and** the rule stated once, with the entry overriding. Every entry
+carries the field, empty where it states none, and an answer carrying a
+deprecation carries the rule beside it — both in the data as well as in the
+text, because a client that renders the payload and drops the text is what
+`R-ANS-002` is written against.
 
-The rule is not materialised into a per-entry number, and that is the whole of
-the difference between the third candidate and a fourth nobody proposed. A
-number derived from "the next major" would be `14` on `#105297`, which states
-v15 and skips v14, and which the core kept — the second **Wrong if** happening
-in the field a caller acts on. Stated once, the rule is what a reader applies
-where nothing else speaks; applied per entry it would be an assertion the corpus
-already contradicts.
-
-The `@deprecated` annotation is not reachable from an entry, which is what the
-todo asked to establish before choosing. Of the 198 `@deprecated` annotations in
-`.checkouts/14.3`, none names an issue number or a `.rst` file, so there is no
-link from the entry to the trigger site. The extension scanner matchers link the
-other way and reach 37 of the 75 deprecations of 14; getting from a
-`class::method` to a docblock then needs the installed core's class map, for a
-value that repeats the prose wherever the two overlap. On `#105297` — the one
-case where both were read — they agree rather than differ: the annotation says
-"will be removed in v15 (or later as it does not hurt to keep them)" and the
-entry says "will be removed with TYPO3 v15 (or later)". More machinery, less
-coverage, and no more exact where it was supposed to be.
-
-Two things the corpus showed that this entry did not have. A removal clause is
-only the entry's own where the entry is a `Deprecation`: ten entries of the
-other three types of 14 carry the same clause about something else, and the
-first run of the change put "removed in v15.0" on `14.2` Feature-109412, which
-announces what replaces the deprecated mechanism and states that mechanism's
-removal. And a number in a removal clause is not always a removal — a 13.3
-deprecation says its subject "will be removed with v5", which is Fluid
-standalone, and an entry can recount what an earlier release removed before
-naming its own. What tells those apart is that a removal is later than the
-version the entry was released in.
-
-The parse reproduces the counts above rather than resting on them: 44 of 75 for
-14, 27 of 63 for 13, and the outlier it drops is the Fluid `v5`. The clause
-wraps across lines in the file, so the whole text is matched and not a line —
-which is where a line-wise parse would have quietly lost entries.
-
-What is now in two places is the rule itself: the `deprecated-apis` hint states
-it for a reader asking about deprecation, and `ChangelogLookup::REMOVAL_RULE`
-states it for a caller holding an empty `removal`. Nothing holds them to each
-other, the same way nothing holds the two spellings `D-ANS-009` left behind.
-What would show it is a reader finding the two disagreeing about how long a
-deprecated API keeps working.
+The rule is not materialised into a per-entry number, and that is the whole
+difference from a fourth candidate nobody proposed: a number derived from "the
+next major" would contradict an entry the core kept, which is the second **Wrong
+if** happening in the field a caller acts on.

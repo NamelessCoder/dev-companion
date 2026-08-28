@@ -135,60 +135,15 @@ third **Assumed** above, and this settles nothing about it.
 
 ## Since then
 
-The branch that paragraph reserved is where a session lost its question.
-`feedback/2026-08-24-183536` asked `typo3_changelog_lookup` whether widening a
-method from protected to public owes an entry, read `matchCount: 0`, and swept
-1405 commits by hand. Judged on 2026-08-25.
+The branch that paragraph reserved is where a session lost its question: it read
+a miss, and swept 1405 commits by hand. Re-run, the answer carries the miss, the
+per-word counts and what the installation ships, and names no tool anywhere.
 
-Re-run the same day from this checkout against `.checkouts/main`, which ships
-15.0, through `bin/typo3-dev-companion` over JSON-RPC: `visibility public` at
-`limit: 25` returns three lines — the miss, the two per-word counts ending "ask
-again with the one that narrows best", and what the installation ships. The data
-carries `termCounts` and no `termSubsets`. No tool is named anywhere in either
-half.
-
-The branch is larger than the paragraph reserving it reads. `Subsets` skips a
-carried set of one because the per-term counts already say it, and one of the
-full size because a query that hits is not answered with itself — so a query of
-exactly two words can produce no subset at all, whatever the corpus holds. The
-shortest queries are the ones that end with no route out, and they are not an
-edge of this branch but the whole of it.
-
-`R-ANS-018` is what that leaves unheld. It demands that an answer saying
-something is not here names the tool that has it, and it is `held` by
-`PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskNext` — a case
-over the offering branch alone. The requirement is guarded exactly where the
-caller still has something to ask, and unguarded where it has nothing.
-
-The objection this entry raised against naming a corpus first does not reach
-here. It was written against routing a session away from a re-query that
-answers, and a miss offering none has no such answer to be routed away from.
-
-What the branch should name is not settled. `D-ANS-010` routes "does this still
-hold" to `typo3_documentation_lookup`, and the question reported here is a
-different shape — whether a kind of change owes an entry, which is a rule and is
-`typo3_rule_lookup`. One sentence carrying both is a paragraph on every miss, so
-which of the two the branch names, or whether it names both, is the card's first
-step rather than this reading's.
-
-Queued at `normal` rather than closed on the spot: the answer is
-`src/Tool/ChangelogLookup.php`. The grounds are the ones this entry already set
-for the same surface — the same ending, an empty lookup and then grep, from a
-sixth session — and one report is what keeps it off `high`.
-
-The feedback's other half is answered and trimmed off. It asked that
-`typo3_rule_lookup(query "breaking change")` state where a widened visibility
-falls; `D-KNW-123` decided that on 2026-08-25 and `5578ee26` landed it, and the
-re-run above returns the bullet 4496 characters into a 10520-character answer,
-so the section carrying it is not truncated away. Naming the precedent commit
-was refused there, which is an answer rather than a remainder.
-
-The session also reported reading the review skill's "list the kind before you
-search for words" and querying with words anyway. That is the same lever from
-the other side, and `D-ANS-010` established it before this: a sentence read
-before the task does not fire at the moment the silence arrives, and the miss is
-where the caller is standing then. It stays on the feedback rather than becoming
-a second card.
+The branch is larger than the paragraph reserving it reads. The subsets skip a
+carried set of one and one of the full size, so a query of exactly two words can
+produce no subset at all whatever the corpus holds — the shortest queries are
+the ones that end with no route out, and they are not an edge of this branch but
+the whole of it.
 
 ## Since then
 

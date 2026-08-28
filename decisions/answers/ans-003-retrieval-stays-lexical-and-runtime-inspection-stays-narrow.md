@@ -105,51 +105,14 @@ procedure that names the reading and reads no core source here.
 
 ## Confirmed on 2026-08-22
 
-Eight readings held the decision above and changed nothing in it, so each is a
-line here rather than a section of its own. Six are the runtime half read and
-answered the other way: the diagnosis completed from the caller's own checkout,
-and what was missing was a sentence rather than a source.
+Eight readings held the decision and changed nothing in it. Six are the runtime
+half read and answered the other way: the diagnosis completed from the caller's
+own checkout, and what was missing was a sentence rather than a source. A
+detector was declined because it would key on the wrong signal — nothing
+deprecated the API, and what makes an entry dead is that the path it names is
+gone. What over-claimed was narrowed instead, and `R-ANS-012` holds the files
+that register by running.
 
-- `2026-07-31-174526` on 2026-08-02, which asks for a detector saying whether a
-  registration is still consumed. The session settled it by reading two classes
-  in its own vendor tree, and the key it asks about has not moved since 12.4. A
-  detector would key on the wrong signal, because nothing deprecated the API and
-  what makes the entry dead is that the path it names is gone.
-- The same reading's second half, settled on 2026-08-02: `notReadStatically`
-  keeps its five files, and what over-claimed was narrowed instead.
-  `ext_localconf.php` is read by nothing here and booting answers only the
-  tables, content elements and icons — `R-ANS-012`, held by
-  `ProjectTest::theFilesThatRegisterByRunningAreSaidToBeUnread`.
-- `2026-08-01-002928` on 2026-08-02, the retrieval half on the prose corpus.
-  *Record objects* ranked 28th, 13th and 11th of 1230 pages against a `limit` of
-  6, so the page was reachable and the ranking was right. What decided each
-  query was a word with nothing to do with the subject, and the caller was told
-  nothing about it — `D-ANS-021`.
-- `feedback/2026-08-03-144457` on 2026-08-03, which asks for an idiom-precedent
-  lookup over the installed core. Both readings reproduce at one grep each in a
-  tree the reviewer already has open, which is where `D-FBK-027` draws the line.
-  What that session lacked is the sentence saying the question has no home here,
-  and it is `D-SKL-004`'s.
-- `feedback/2026-08-03-164749` on 2026-08-03, which asks for the core file an
-  extension template shadows or was forked from. The mapping is the Fluid roots
-  `typo3_extension_describe` already reports plus the fallback chain, and the
-  diff is one command. The missing sentence is that the chain is walked once per
-  root path — `D-KNW-052`, whose **Wrong if** names what would bring this half
-  back.
-- `feedback/2026-08-21-074351-cache-configuration-is-answerable-but-the` on
-  2026-08-21, which asks for the CacheManager beside the configuration array.
-  The two identifier sets differ by `di` on every covered line, and the
-  registered set is lazy, so the gap it calls a diagnostic is where every entry
-  stands until somebody asks for it. Two statements went onto the `caching`
-  hint, held by
-  `HintsTest::theCacheRegistryIsTheConfiguredArrayAndTheDefaultsThatFillIt`.
-- `feedback/2026-08-21-074351-the-viewhelpers-an-installation-has-are-not` on
-  2026-08-21, which asks for the ViewHelpers of the running installation. The
-  core half answers in the shape asked for out of the indexed reference at one
-  call, and a Fluid identifier resolves to a class by convention in a tree the
-  caller has open. Its own **Query** names the case the second **Decided**
-  bullet refuses: a comparison with another server, and no failing call.
-- The placement that reading left, written on 2026-08-21 as two statements on
-  `fluid-templates` and bound to no version:
-  `HintsTest::whereAViewHelpersArgumentsComeFromIsStatedOnTheTemplateHint` holds
-  the identifier-to-class mapping and where the argument list comes from.
+The retrieval half was measured on the prose corpus and the ranking was right:
+the page was reachable, and what decided each query was a word with nothing to
+do with the subject.

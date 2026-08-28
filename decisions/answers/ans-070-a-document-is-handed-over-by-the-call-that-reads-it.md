@@ -98,58 +98,12 @@ on one session's own phrasing of a line two sessions had already been handed.
 
 ## Since then
 
-The answer half is built, and what it says is both: the share and the headings
-the search did not return, one line per page under the offer to read it. The
-feedback's own call now closes with *core/contribution/commit-messages — TYPO3
-Core Commit Message Rules: 7 of its 9 headings are not above — Who Reads It,
-Summary Line, Work in Progress, Body, Relationships, Breaking Changes,
-Deprecations*. The headings are what the todo asked for first, because a session
-picks its next query out of them; the number costs the four words around them
-and is what separates a page that was covered from one that was sampled.
+The answer half is built and says both: the share and the headings the search
+did not return, one line per page under the offer to read it. The headings are
+what the todo asked for first, because a session picks its next query out of
+them, and the number costs the four words around them.
 
-The count is of **headings** rather than of `##` lines, which is what
-[`D-ANS-008`](ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md)
-asks of it. Two sections under one heading are one subject bound to two ranges,
-and `knowledge/documents/project/testing/playwright.md` has ten `##` lines under
-nine headings: a reader checking *9* against the page counts headings and
-agrees, and the same reader checking a *10* the search can never return two of
-would not. The list beside the number is the second way to check it — the
-headings not above, named, plus the excerpts above.
-
-`Documents::headings()` is the reader that came out of it, and `topics()` was
-the same three lines inline.
-
-The first **Wrong if** is satisfied.
-[`feedback/2026-08-10-182523`](../../feedback/archive/2026-08-10-182523-two-searches-landed-in-the-same-document-and.md)
-is a core patch session that searched `core/contribution/commit-messages` twice
-within minutes, matched one section each time, and read the page neither time.
-
-Both halves were in that session. Its client launches the main checkout's
-`bin/typo3-dev-companion`. The answer line landed there on 2026-08-09 in
-`63fb7f57` and the skill sentence the same night in `2c83383e`, and both are
-ancestors of the commit that carries the feedback. The session quotes the skill
-sentence back in its own report.
-
-Re-run on 2026-08-11 with that feedback's own arguments. The first call answers
-`Changelog Files` and closes with *9 of its 10 headings are not above — …
-Release Targets …*, which names the section the second search then went looking
-for.
-
-What the feedback adds is where the line failed rather than that it failed. Its
-suggestion is the line it had already received, written up as something missing:
-*"This is 1 of 6 sections in core/contribution/commit-messages: …" would have
-made the second search obviously redundant before I made it*. A session that
-read the line and found it useless would not ask for it.
-
-So it is the assumption that fell rather than the statement. This server does
-both things the entry decided, and a session told what an answer left of a page
-still did not read the page. What follows — a third attempt at the answer, a
-search that hands over the document where its matches concentrate in one, or a
-cost to accept — is with whoever maintains this repository, on the todo serving
-that feedback.
-
-What this entry decided is untouched where it still applies, which is the two
-thirds of queries that reach more than one page: those are cut, and the cut says
-what it left. What the successor removes is the case this entry could only ever
-describe better — a search that has already established which page answers, and
-charges a second call for the rest of it.
+The count is of headings rather than of section lines, which is what `D-ANS-008`
+asks of it: a reader checking the number against the page counts headings and
+agrees, where a count the search can never return two of would not. The list
+beside the number is the second way to check it.

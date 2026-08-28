@@ -6,7 +6,9 @@ heldBy:
   - ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite
   - ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas
   - ScopeTest::aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks
+  - ScopeTest::aPathNothingPlacesIsStillAnsweredFromTheCore
   - ScopeTest::aRuleSectionOutsideTheCoreSaysWhereAConventionIsBound
+  - ScopeTest::aTestFileNothingPlacesIsInTheRepositoryTheCallIsIn
   - ScopeTest::anExtensionChangelogTaskIsRoutedAwayFromTheCoresOwnProcedure
   - ScopeTest::anExtensionDeprecationIsCommittedUnderItsOwnRepositorysConvention
   - ScopeTest::anExtensionTestBriefRoutesTheHarnessTheExtensionHas

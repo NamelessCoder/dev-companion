@@ -94,7 +94,13 @@ final class TestRunGuide extends ReadOnlyTool
         // about this path.
         $scopes = Scope::ofEach($paths, (string) $query);
         $outside = Scope::pathsOf($scopes, Scope::Project, Scope::Extension);
-        $runnable = Scope::pathsOf($scopes, Scope::Core, Scope::Uncertain);
+        // A path nothing placed is answered from the core, which is where a
+        // call that says nothing is answered from at all — unless the call has
+        // been placed outside it already, and then the unplaced path is in that
+        // repository too rather than in the one with the script (`D-SCO-016`).
+        $runnable = Scope::everyPlacedPathIsOutsideTheCore(Scope::groups($paths, $scopes, (string) $query))
+            ? []
+            : Scope::pathsOf($scopes, Scope::Core, Scope::Uncertain);
         $domains = Domains::fromPaths($runnable);
 
         // A suite is selected by the domains of the paths, so a path that

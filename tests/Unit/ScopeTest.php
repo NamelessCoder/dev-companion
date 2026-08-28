@@ -1522,6 +1522,55 @@ final class ScopeTest extends TestCase
         self::assertSame(1, substr_count($result->text, 'runTests.sh'));
     }
 
+    #[Decision('D-SCO-016')]
+    #[Requirement('R-SCO-002')]
+    #[Test]
+    public function aTestFileNothingPlacesIsInTheRepositoryTheCallIsIn(): void
+    {
+        // `Tests/Functional/` is no layout marker, so the file a session writes
+        // is placed nowhere while the class it covers is placed in an
+        // extension. The pair is one piece of work in one repository.
+        Instance::discoverFrom(null);
+
+        $paths = ['Classes/Parser/AbstractParser.php', 'Tests/Functional/Parser/ScssParserTest.php'];
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Add functional regression tests for the parser',
+            'paths' => $paths,
+            'changeType' => 'test',
+        ]);
+
+        self::assertSame(Scope::Extension, Scope::from($result->data['scope']));
+        self::assertSame([], $result->data['checks']);
+        self::assertSame([], $result->data['testSuites']);
+
+        // What the answer used to hand over is four suites of a script the
+        // caller's repository does not have.
+        $suites = Registry::call('typo3_test_run_guide', ['query' => 'the parser tests', 'paths' => $paths]);
+        self::assertSame([], $suites->data['suites']);
+        self::assertStringContainsString('project-extension-tests', $suites->text);
+    }
+
+    #[Decision('D-SCO-016')]
+    #[Requirement('R-SCO-002')]
+    #[Test]
+    public function aPathNothingPlacesIsStillAnsweredFromTheCore(): void
+    {
+        // The fallback the rule above narrows and may not take: where the call
+        // places nothing at all, the core's answer is the only one there is,
+        // and the notice says which question went unanswered — `D-SCO-008`.
+        Instance::discoverFrom(null);
+
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Add functional regression tests for the parser',
+            'paths' => ['Tests/Functional/Parser/ScssParserTest.php'],
+            'changeType' => 'test',
+        ]);
+
+        self::assertSame(Scope::Uncertain, Scope::from($result->data['scope']));
+        self::assertNotSame([], $result->data['testSuites']);
+        self::assertStringContainsString(Scope::UNCERTAIN_NOTICE, $result->text);
+    }
+
     #[Decision('D-SCO-015')]
     #[Requirement('R-SCO-002')]
     #[Test]

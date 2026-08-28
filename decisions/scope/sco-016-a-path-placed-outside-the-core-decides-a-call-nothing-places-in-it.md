@@ -3,6 +3,9 @@ id: D-SCO-016
 title: A path placed outside the core decides a call nothing places in it
 date: 2026-08-28
 status: open
+coveredBy:
+  - ScopeTest::aPathNothingPlacesIsStillAnsweredFromTheCore
+  - ScopeTest::aTestFileNothingPlacesIsInTheRepositoryTheCallIsIn
 ---
 
 # D-SCO-016 — A path placed outside the core decides a call nothing places in it
@@ -20,26 +23,24 @@ one signal that placed anything is the one the answer drops.
 - **Measured through `typo3_task_guide` in this checkout on 2026-08-28**, with
   the same task and `changeType: "test"` throughout:
 
-  ==================  ==========  ======  ======  ================
-  paths               call scope  checks  suites  `runTests.sh` in
-                                                  the text
-  ==================  ==========  ======  ======  ================
-  extension           extension        0       0                 2
-  unplaced            uncertain        4       4                14
-  extension+unplaced  uncertain        4       4                15
-  core+extension      uncertain        4       4                14
-  ==================  ==========  ======  ======  ================
+  | paths              | call scope | checks | suites | `runTests.sh` |
+  | ------------------ | ---------- | ------ | ------ | ------------- |
+  | extension          | extension  | 0      | 0      | 2             |
+  | unplaced           | uncertain  | 4      | 4      | 14            |
+  | extension+unplaced | uncertain  | 4      | 4      | 15            |
+  | core+extension     | uncertain  | 4      | 4      | 14            |
 
 - **Only the third row is wrong.** The second is `D-SCO-008`: nothing placed the
   work, so the answer is the core's and the notice says so. The fourth is
   `D-SCO-009`: something really is in the core, and the notice names the paths
   the core's steps are not for.
-- **The notice claims something untrue in that row.** `Scope::outsideCoreAmong()`
-  says the checks "are steps for the paths that are in it and for none of the
-  others" — and no path is in it. The caller is told the core suites belong to
-  their own test file.
-- **`typo3_test_run_guide` splits the same way.** `Classes/Parser/AbstractParser.php`
-  alone returns no suite, which is `R-SCO-002` held by
+- **The notice claims something untrue in that row.**
+  `Scope::outsideCoreAmong()` says the checks "are steps for the paths that are
+  in it and for none of the others" — and no path is in it. The caller is told
+  the core suites belong to their own test file.
+- **`typo3_test_run_guide` splits the same way.**
+  `Classes/Parser/AbstractParser.php` alone returns no suite, which is
+  `R-SCO-002` held by
   `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`; that
   path with `Tests/Functional/Parser/ScssParserTest.php` beside it returns four
   suites and names the script 21 times.
@@ -78,3 +79,20 @@ one signal that placed anything is the one the answer drops.
 - A caller reports the uncertain notice gone from a call that still cannot say
   where the work is. The fallback exists so an unplaced call is answered rather
   than refused, and widening it must not take that.
+
+## Since then
+
+The second shape is what landed, on 2026-08-28.
+`Scope::everyPlacedPathIsOutsideTheCore()` states the rule once and both tools
+read it: `TaskGuide` for the call's verdict and for `$outsideCore`, and
+`TestRunGuide` for which paths a suite could run over. `Scope::placed()` is the
+half both of those are expressed in — a group that placed nothing neither
+decides the call nor vetoes what the rest of it placed.
+
+The third row of the table above now answers `scope: "extension"` with no check,
+no suite and `runTests.sh` named three times, all three of them boundary
+statements: the outside-core notice, and twice a hint saying that
+`typo3/testing-framework` ships its XML files for an extension to copy. The
+other three rows are unchanged, and the `core`-with-an-unplaced-path call is the
+one shape that moved without being reported — it answers `core` where it
+answered `uncertain`, which is the same rule read from the other side.

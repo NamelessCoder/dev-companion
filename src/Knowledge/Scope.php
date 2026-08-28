@@ -365,6 +365,43 @@ enum Scope: string
     }
 
     /**
+     * Whether every path this call placed is outside the core, at least one
+     * having been placed at all.
+     *
+     * A group that placed nothing takes the placement the rest of the call has:
+     * unknown falls back to the core where nothing else was placed
+     * (`D-SCO-008`), and to the repository the call is already in where
+     * something was (`D-SCO-016`). `Tests/Functional/` is no layout marker, so
+     * a test file beside the `Classes/` file it covers used to hold the whole
+     * answer in the core and hand over four suites that cannot run.
+     *
+     * @param array<int, array{scope: self, paths: array<int, string>}> $groups
+     */
+    public static function everyPlacedPathIsOutsideTheCore(array $groups): bool
+    {
+        $placed = self::placed($groups);
+
+        return $placed !== [] && array_filter(
+            $placed,
+            static fn(array $group): bool => !$group['scope']->isOutsideTheCore(),
+        ) === [];
+    }
+
+    /**
+     * The groups of a call that placed their paths somewhere.
+     *
+     * @param array<int, array{scope: self, paths: array<int, string>}> $groups
+     * @return array<int, array{scope: self, paths: array<int, string>}>
+     */
+    public static function placed(array $groups): array
+    {
+        return array_values(array_filter(
+            $groups,
+            static fn(array $group): bool => $group['scope'] !== self::Uncertain,
+        ));
+    }
+
+    /**
      * The paths of a call that share one scope.
      *
      * @param array<int, array{path: string, scope: self}> $scopes

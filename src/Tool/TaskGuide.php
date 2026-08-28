@@ -396,12 +396,12 @@ final class TaskGuide extends ReadOnlyTool
         $outside = Scope::pathsOf($scopes, Scope::Project, Scope::Extension);
         // One group is the ordinary call, and its scope is the call's. Where
         // the paths disagree there is no one answer, so the whole-call verdict
-        // falls back to what the task text says on its own.
-        $scope = count($groups) === 1 ? $groups[0]['scope'] : Scope::of('', $task);
-        $outsideCore = array_filter(
-            $groups,
-            static fn(array $group): bool => !$group['scope']->isOutsideTheCore(),
-        ) === [];
+        // falls back to what the task text says on its own. A group that placed
+        // nothing is not that disagreement and does not veto the placement
+        // either: it takes the one the rest of the call has (`D-SCO-016`).
+        $placed = Scope::placed($groups);
+        $scope = count($placed) === 1 ? $placed[0]['scope'] : Scope::of('', $task);
+        $outsideCore = Scope::everyPlacedPathIsOutsideTheCore($groups);
 
         $coreWork = Scope::isCoreWork($paths, $task);
         $intents = TaskIntents::scoped(

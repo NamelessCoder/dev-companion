@@ -219,9 +219,9 @@ it stood then.
     came out of a review, the deprecation sweep of
     [references/base.md](references/base.md) was exempt while nothing was being
     written and is owed now, before the first item: one call per declared major,
-    over the paths the items name. It is the one step of that order an
-    audit skips, so re-entering here with the document already read is what
-    leaves it unrun.
+    over the paths the items name. It is the one step of that order an audit
+    skips, so re-entering here with the document already read is what leaves it
+    unrun.
 10. **Invoke the skill that owns them** and carry across only the scope and the
     verified behaviour it needs: the finding, the evidence under it, the paths.
     Stop before editing files another owner has — the crossing is the transition

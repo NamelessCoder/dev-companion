@@ -142,25 +142,11 @@ the routing terminates nowhere and the step after it is the class.
 ## Since then
 
 Two readings built what the reading above queued and established nothing beyond
-it, so each is a line here rather than a section of its own. Judged on
-2026-08-22.
+it. Step 4 went into the base rather than the conformance skill: what it says at
+the point of the call is which corpus a question has — a documented surface to
+the manual, an identifier to the changelog under its own name and then to the
+class. The skill defers to the base for why the changelog cannot answer, so a
+bound written there would leave the sentence it bounds unqualified in every
+published copy.
 
-- Step 4 on 2026-08-03, in `skills/base.md` and not in the conformance skill:
-  what the base now says at the point of the call is which corpus a question
-  has. A documented surface goes to the manual, an identifier to the changelog
-  under its own name and then to the class, and the miss-is-a-result sentence
-  stands for the surface it was written about. The conformance skill defers to
-  the base for why the changelog cannot answer, so a bound written there would
-  leave the sentence it bounds unqualified in every published copy. It cost 79
-  words, and `D-SKL-001` keeps that arithmetic.
-- Step 1a on 2026-08-03: what makes a reading of `@deprecated` alone conclusive
-  is the kind of member. A class constant and an enum case are read without
-  anything in the declaring class running, and PHP's `#[\Deprecated]` attribute
-  occurs nowhere in `typo3/sysext` on any covered line; for a method, a property
-  or a class the same absence says nothing, and 58 of the 98 files carrying
-  `@deprecated` in `.checkouts/14.3` hold no `trigger_error`. So the entry that
-  announces a deprecation can be wrong about what it raises, which
-  `Deprecation-107648` is. `deprecated-apis` states both halves and
-  `HintsTest::whatADeprecationCarryingTheDocblockAloneRaisesIsStated` holds
-  them; its opening sentence went with the change, because "this server does not
-  know your branch" is true of the bundled corpus and not of the server.
+Step 1a settled what makes a reading of the annotation what it is.

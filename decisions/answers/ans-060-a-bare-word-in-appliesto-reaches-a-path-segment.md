@@ -99,28 +99,14 @@ restrictions, the other the model and its mapping.
 
 ## Since then
 
-On 2026-08-07, the matcher half landed and it is not what that paragraph
-proposed. Subsystem detection was never built, because measuring first showed
-the failure has a simpler shape and a worse offender than either reported hint.
+The matcher half landed and it is not what that paragraph proposed. Subsystem
+detection was never built, because measuring first showed the failure has a
+simpler shape and a worse offender than either reported hint: one hint claims a
+path fragment every core path carries, matched on all five calls measured and
+scored zero on all five, standing above the two hints that answer the question.
 
-`system-extension-boundaries` claims `typo3/sysext/` and `sysext`, which every
-core path carries. It matched 19 characters' worth on all five calls measured
-and scored **0** on all five, and it stood second on a FAL question — above
-`fal-basics`, which answers it, and above `fal-storages-drivers`, which scored
-209. Neither of the two hints this entry was written about is the worst case;
-the worst case is a hint that matches every core path there is.
-
-So what was wrong is the tier order rather than the patterns, and that is the
-question this entry left open rather than a new one. Sorting a hint that scores
-above one that scores nothing, and keeping the old order inside each half, fixes
-all five measured calls and leaves `D-ANS-050` untouched: `thumbnail` still
-reaches `fal-processing` through `ThumbnailViewHelper.php`, at the same rank.
-`bin/cli hints:coverage` is byte-identical before and after, so no hint became
-unreachable.
-
-The corpus pruning of `c722c95` stays and is not made redundant by this. Ranking
-a false positive last is not the same as not making it, and both patterns still
-claim paths belonging to somebody else.
+So what was wrong is the tier order rather than the patterns, which is the
+question this entry left open.
 
 ## Since then
 

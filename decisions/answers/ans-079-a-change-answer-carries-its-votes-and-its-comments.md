@@ -151,25 +151,12 @@ apart, one the review server's and one its own count of the flag.
 
 ## Since then
 
-The card was worked on 2026-08-26 and the derivation above is Gerrit's own rule
-rather than this side's reading. Its REST documentation states both halves:
-`unresolved_comment_count` is the "Number of unresolved inline comment threads
-across all patch sets", and `CommentInfo.unresolved` says "The state of
-resolution of a comment thread is stored in the last comment in that thread
-chronologically". Reading the threads that way reproduces the review server's
-count on the forty open core changes carrying one, measured the same day.
+The card was worked and the derivation is the review server's own rule rather
+than this side's reading: its documentation states both halves — the count is of
+unresolved threads across all patch sets, and a thread's state is the state of
+its last comment. Reading the threads that way reproduces the server's count on
+the forty open core changes carrying one.
 
 What came of it is `D-ANS-111`: every comment says which thread it is in and
-what that thread stands at, the listing is a thread at a time, and the count in
-its heading is the threads rather than the flags. The refusal this entry decided
-is what that one carries forward — the state is handed over and the reading
-stays the caller's.
-
-On 2026-08-27 the bullet "the message log is asked for" stopped describing the
-fetch. `Gerrit::named()` now sends `o=MESSAGES` on every call and `messages`
-decides only what the caller is handed. What made that worth doing is a fact the
-log carries about the change rather than about its review: a patch set carrying
-git conflict markers is reported there and in no other payload, and a backport
-that landed with the markers committed read as a healthy new change in every
-other field. `D-ANS-121` is that reading. The 50 KB this entry weighed is the
-caller's context, and it is still opt-in.
+what that thread stands at, and the count in the heading is threads rather than
+flags.

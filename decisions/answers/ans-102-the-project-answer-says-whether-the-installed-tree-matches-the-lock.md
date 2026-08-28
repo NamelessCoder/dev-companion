@@ -98,26 +98,12 @@ the caller's own change never touched.
 
 ## Since then
 
-Built the same day, as `installedAgainstLock` beside `installed`: a `state` of
-`matches`, `differs`, `not-installed` or `no-lock`, and the packages the two
-files disagree about. A package the lock names and nothing installed is one of
-those entries with `installed: null`, so the absent package and the wrong
-version are one field and one sentence. A locked dev package counts only where
-`installed.json` says the install took them, because `composer install --no-dev`
-leaves every one of them locked and absent.
+Built the same day as a field beside the installed flag: a state of four values
+and the packages the two files disagree about. A package the lock names and
+nothing installed is one of those entries with a null, so the absent package and
+the wrong version are one field and one sentence. A locked dev package counts
+only where the install took them.
 
-The autoload drift stayed out, as the decision had it. A PSR-4 mapping added to
-`composer.json` leaves both package lists identical, and the pair of files that
-would carry it is the manifest against `vendor/composer/autoload_psr4.php` —
-generated PHP this server would have to execute to read. Its command is
-`dumpautoload` rather than an install, so one sentence could not have named
-both.
-
-The sentence names `composer install`, `ddev composer install` where the project
-configures DDEV and this server is not inside it, and
-`CI=true ./Build/Scripts/runTests.sh -s composerInstall` in a core checkout,
-which `kind` tells apart. One state the decision did not name arrived with it: a
-core checkout keeps its system extensions in git, so `installed` is true in a
-clone that never ran an install and the lock has nothing below the vendor
-directory to be held against. That is `not-installed`, and it is what the
-recorded call on the tool's own page now shows.
+The autoload drift stayed out, as the decision had it: the pair of files that
+would carry it is the manifest against generated PHP this server would have to
+execute to read.

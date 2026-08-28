@@ -94,28 +94,11 @@ obliged by.
 
 ## Since then
 
-**Built on 2026-08-24, and the payload moved.** The core call now carries
-`public-assets`, `backend-typescript`, `backend-ui` and `javascript-unit-tests`,
-with `extension-asset-build` and `project-build-and-scripts` named in
-`omittedHints`; the extension call carries `project-extension-tests` and leaves
-`core-tests` there. So the third **Wrong if** is settled and the two above it
-are not: both turn on a later caller's report.
+**Built on 2026-08-24, and the payload moved.** The core call carries four hints
+and names two in the omitted list; the extension call carries the harness hint
+and leaves the core one there. So the third **Wrong if** is settled and the two
+above it are not, both turning on a later caller's report.
 
-The tier is `TaskGuide::bindingFirst()`, and what it demotes is what
-`MatchedHints::scopeNotice()` has something to say about — so the order and the
-notice above a block answer one question, and `D-KNW-007`'s rule that `project`
-and `extension` are not told apart from each other holds for both. The brief
-matches once at `HintLookup::MAX_HINTS` and cuts to `HINTS_PER_GROUP` itself,
-where it used to match twice: applied to a slice already taken, the tier would
-reorder the four rather than choose them. `bin/cli hints:coverage` is
-byte-identical.
-
-**Half the cost this entry priced is not payable, and the half that is holds.**
-The judgement of `feedback/2026-08-24-140340` is in `D-FBK-018`, and it re-ran
-the calls on 2026-08-25. `availableHints` is not one call away by id: a call
-that names an id has had the index withheld since `1a22d214`, so what such a
-call carries is the count and the parameter that asks for the list. The
-`omittedHints` half reproduces — an operations brief for that report's task
-shape names `project-configuration-files` among the five it left — and it is
-where the session's ids can have come from. So the demotion may cost the brief's
-own pointer, and the Decided above overstates the routes by one.
+What the tier demotes is what the notice above a block has something to say
+about, so the order and the notice answer one question, and the rule that the
+two outside-core scopes are not told apart holds for both.

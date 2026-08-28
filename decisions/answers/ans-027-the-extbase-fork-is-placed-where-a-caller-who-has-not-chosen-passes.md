@@ -116,25 +116,9 @@ before it was filed.
 
 ## Revoked on 2026-08-03
 
-By the delivery this entry queued. The statement under the title — the fork is
-written on the two hints it forks between and reaches only a caller who already
-named the branch they did not take — was the finding, and it stopped describing
-this server the moment the `content-element` intent started carrying the fork.
-Everything above it stays: the probe contrast, the fifteen hints that name no
+By the delivery this entry queued. The statement was the finding, and it stopped
+describing this server the moment the intent started carrying the fork.
+Everything above it stays — the probe contrast, the hints that name no
 controller, and the reason the placement was left open are why the successor
-looks the way it does.
-
-What holds from here is
-[`D-ANS-039`](ans-039-the-extbase-fork-is-delivered-by-the-content-element-intent.md),
-and what must keep holding is
-[`R-ANS-016`](../../requirements/answers/ans-016-a-content-element-task-is-offered-the-extbase-fork.md).
-The successor's **Wrong if** is a different list, because what can go wrong now
-is a fork delivered and read by category, where before it was a fork nobody
-reached. This entry's third **Wrong if** is the one that carried over, and it is
-there rather than here.
-
-The reading also settled the question this entry said had to be settled before
-the wording was placed. A plugin is a `CType` like any other on the newest
-covered majors — `registerPlugin()` writes the same column `addRecordType()`
-does — so the fork was worded on what renders inside the element rather than on
-which of two categories it is.
+looks the way it does. `D-ANS-039` holds from here, with a **Wrong if** that is
+a different list.

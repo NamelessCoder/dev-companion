@@ -121,32 +121,16 @@ rather than a domain nobody has built.
 
 ## Since then
 
-Built on 2026-08-25. Four things this entry left open were settled in building
-it, each measured against `review.typo3.org` the same day.
+Built on 2026-08-25, and four things this entry left open were settled in
+building it, each measured against the review server the same day.
 
-The argument is `backlog` and it takes the sibling tool's `"oldest" | "stale"`
-spelling, so a caller who knows one enumeration knows the other. `open` keeps
-its boolean meaning beside it.
-
-`-is:wip` is in every enumeration and is not an argument a caller sets. It is
-411 of the 855 open core changes, so an enumeration that keeps them answers
-mostly unfinished work nobody offered for review — and the query the answer
-states is where a caller reads that it was applied.
-
-The date filter is `before:` rather than the `age:` this entry measured. Both
-read the last update, which is the only date the review server indexes, and an
-absolute one means the same thing when the query is rerun a month later.
-
-`label:Verified>=1` was measured and not built. It narrowed the almost-ready set
-of 74 to 74, because `negativeVotes: false` already drops what a failed pipeline
-leaves, so the argument would have been a second name for a filter that is
-already there.
-
-The exclusion the second report's whole session rested on — `-owner:` and
-`-reviewedby:`, "not mine and I have not voted on it" — was left out here,
-because this entry decided three person filters and every one of them selects.
-It is `reviewableBy` since the same day, and `D-ANS-109` is where the fourth
-filter and its name were settled.
+The argument takes the sibling tool's spelling, so a caller who knows one
+enumeration knows the other. The work-in-progress filter is in every enumeration
+rather than an argument a caller sets: it is nearly half the open changes, so an
+enumeration that keeps them answers mostly unfinished work nobody offered for
+review, and the query the answer states is where a caller reads that it was
+applied. The date filter is absolute rather than relative, both reading the only
+date the server indexes.
 
 ## Confirmed on 2026-08-27
 

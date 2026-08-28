@@ -111,28 +111,15 @@ Every largest subset is named rather than the best of them.
 
 ## Since then
 
-The same wording is owed for the filters, and `feedback/2026-08-01-115112` is
-what shows it. Re-run on 2026-08-02 from `/home/benji/projects/typo3-cms`,
-`query: "GifBuilder placeholder preview thumbnail"` with `version: "15"` returns
-nothing and says that "preview" reaches 1 entry. Every number in that sentence
-is counted inside `15.0`, and nothing marks it as such. Drop the version and all
-four words reach — 4, 10, 28 and 9 — and `image generation` returns the `13.0`
-entry the session was after, alone, in one call.
+The same wording is owed for the filters. Re-run, a narrowed query returns
+nothing and says one of its words reaches one entry — every number counted
+inside the filter and nothing marking it as such. Drop the version and all four
+words reach, and one of them returns the entry the session was after, alone, in
+one call.
 
 So a caller is handed a reach line that reads as a fact about the changelog and
-is a fact about the filter. This entry decided that a miss owes a query rather
-than counts; a miss narrowed by `version` or `type` owes the same thing about
-the axis it was narrowed on. That the filter is what emptied the answer is the
-first sentence, and it is the one the report never got: the session read "only
-preview reached one entry", concluded the tool could not reach the entry at all,
-and went to `grep`.
-
-What the entry did build is unaffected — `largestReachingSubsets()` runs over
-the narrowed set, which is correct, because a subset counted outside the filter
-would promise entries the same call does not return. It is the sentence around
-the numbers that is missing the filter, not the computation. The other half of
-that re-run is `D-ANS-030`, which is about the field the matcher reads rather
-than about what the miss says, and both are queued.
+is a fact about the filter: a miss narrowed by an axis owes the same thing about
+that axis.
 
 ## Since then
 

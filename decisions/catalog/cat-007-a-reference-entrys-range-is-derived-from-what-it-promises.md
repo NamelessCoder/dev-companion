@@ -4,6 +4,8 @@ title: "A reference entry's range is derived from what it promises"
 date: 2026-08-23
 status: open
 coveredBy: []
+readings:
+  - 2026-08-28
 ---
 
 # D-CAT-007 — A reference entry's range is derived from what it promises

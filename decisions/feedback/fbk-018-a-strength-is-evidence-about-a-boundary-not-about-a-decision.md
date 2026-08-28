@@ -1542,7 +1542,7 @@ states it outright — the answer knows the environment, knows the bound, and
 hands over an invocation that cannot run — and the session ran `composer cgl:ci`
 into Composer's platform check with `environment.via: ddev` and
 `installedPhpBound` in the answer it had already read.
-[`2026-08-28-001428`](../../feedback/2026-08-28-001428-two-routes-this-server-offered-and-the-session.md)
+[`2026-08-28-001428`](../../feedback/archive/2026-08-28-001428-two-routes-this-server-offered-and-the-session.md)
 is the same shape one field over: `coreConstraint` named the gap between what
 the package declares and what is installed, which is what made the review's
 version claims honest, and closing that gap needed a source no answer here

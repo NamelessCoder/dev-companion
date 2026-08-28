@@ -7,6 +7,7 @@ order it works.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-SKL-083`][D-SKL-083] — A test file is on the sweep's side of the exemption · 2026-08-28
 - [`D-SKL-079`][D-SKL-079] — A widened request re-establishes what the patch is and what it owes · 2026-08-27
 - [`D-SKL-080`][D-SKL-080] — A path only the core has routes to the core's own workflow · 2026-08-27
 - [`D-SKL-081`][D-SKL-081] — A brief spanning triage and the patch it leads to carries both · 2026-08-27
@@ -86,6 +87,7 @@ one is added.
 - [`D-SKL-004`][D-SKL-004] — A question no lookup settles is read from the installed source · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
+[D-SKL-083]: skl-083-a-test-file-is-on-the-sweeps-side-of-the-exemption.md
 [D-SKL-079]: skl-079-a-widened-request-re-establishes-what-the-patch-is-and-what-it-owes.md
 [D-SKL-080]: skl-080-a-path-only-the-core-has-routes-to-the-cores-own-workflow.md
 [D-SKL-081]: skl-081-a-brief-spanning-triage-and-the-patch-it-leads-to-carries-both.md

@@ -130,7 +130,10 @@ skip the ones that matter too.
    declared major, carrying that major's deprecations whole. Which side a change
    falls on is read off the files it touches and never off the task it started
    as — one PHP file edited along the way puts it back among the ordinary ones,
-   and a skip there costs the deprecation no finding would have walked into.
+   and a skip there costs the deprecation no finding would have walked into. A
+   test file is one of those wherever it sits: it calls the API it exercises and
+   the framework around it, both of which deprecate. A fixture is exempt where
+   it is data the suite reads and not where it is a class.
 
 **Then** read the checkout. Not before: listing the files first makes everything
 after the listing look optional, and the conventions arrive as a footnote to a

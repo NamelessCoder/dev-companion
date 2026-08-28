@@ -238,6 +238,7 @@ final class SkillTest extends TestCase
     ];
 
     #[Decision('D-SKL-001')]
+    #[Decision('D-SKL-083')]
     #[Requirement('R-SKL-005')]
     #[Test]
     public function theBaseFixesTheOrderEveryTaskStartsIn(): void
@@ -301,6 +302,14 @@ final class SkillTest extends TestCase
         // — ten were offered in the first checkout, five in the second — and
         // said nothing about it, so findings read out of a CI file stood beside
         // findings with a verified path and line at the same confidence.
+        // Which side of the sweep's exemption a test file falls on. The session
+        // that wrote one calling FunctionalTestCase and GeneralUtility::writeFile
+        // read itself as exempt and skipped in silence, which the rule already
+        // decided against and no illustration said (`D-SKL-083`).
+        self::assertStringContainsString(
+            'A test file is one of those wherever it sits',
+            self::flat($base),
+        );
         self::assertStringContainsString('What a finding rests on is part of the finding', $base);
         self::assertStringContainsString(
             'a file that was read, at its path and its line; a command that was run, with what it printed; a mechanism traced into an installed package',

@@ -19,7 +19,7 @@ question elsewhere.
 
 - **The session.** `/home/benji/projects/bootstrap_package` on 2026-08-28,
   `claude-opus-5[1m]`,
-  [`feedback/2026-08-28-001428`](../../feedback/2026-08-28-001428-two-routes-this-server-offered-and-the-session.md).
+  [`feedback/2026-08-28-001428`](../../feedback/archive/2026-08-28-001428-two-routes-this-server-offered-and-the-session.md).
   The package declares `^13.4 || ^14.3` and only 14.3.6 is installed. The
   question was whether `GeneralUtility::getFileAbsFileName()` resolves a
   relative path the same way on 13.4.

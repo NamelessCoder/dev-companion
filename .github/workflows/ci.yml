@@ -15,7 +15,7 @@ jobs:
         # The versions composer.json supports (php >= 8.2).
         php: ['8.2', '8.3', '8.4']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: shivammathur/setup-php@v2
         with:

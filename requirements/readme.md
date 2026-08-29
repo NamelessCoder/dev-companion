@@ -125,6 +125,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-ANS-034`][R-ANS-034] — A suite an answer offers says what running it does to the checkout · held
 - [`R-ANS-035`][R-ANS-035] — An answer that names a target branch names the lines that take a patch · held
 - [`R-ANS-036`][R-ANS-036] — A suite list names the paths no suite covers · held
+- [`R-ANS-037`][R-ANS-037] — An answer says how to read the current version rather than naming one · **open**
 
 [R-ANS-001]: answers/ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -163,6 +164,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-ANS-034]: answers/ans-034-a-suite-an-answer-offers-says-what-running-it-does-to-the-checkout.md
 [R-ANS-035]: answers/ans-035-an-answer-that-names-a-target-branch-names-the-lines-that-take-a-patch.md
 [R-ANS-036]: answers/ans-036-a-suite-list-names-the-paths-no-suite-covers.md
+[R-ANS-037]: answers/ans-037-an-answer-says-how-to-read-the-current-version-rather-than-naming-one.md
 
 ### documentation
 
@@ -204,6 +206,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SKL-026`][R-SKL-026] — A runtime lookup a step names says what it adds after the extension answer · held
 - [`R-SKL-027`][R-SKL-027] — A core patch covers every point its issue lists · held
 - [`R-SKL-028`][R-SKL-028] — A widened request re-establishes what the patch is and what it owes · held
+- [`R-SKL-029`][R-SKL-029] — A skill reading a project checks its pinned versions against the day's release · **open**
 
 [R-SKL-001]: task-skills/skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: task-skills/skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -233,6 +236,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-SKL-026]: task-skills/skl-026-a-runtime-lookup-a-step-names-says-what-it-adds-after-the-extension-answer.md
 [R-SKL-027]: task-skills/skl-027-a-core-patch-covers-every-point-its-issue-lists.md
 [R-SKL-028]: task-skills/skl-028-a-widened-request-re-establishes-what-the-patch-is-and-what-it-owes.md
+[R-SKL-029]: task-skills/skl-029-a-skill-reading-a-project-checks-its-pinned-versions-against-the-days-release.md
 
 ### project
 
@@ -515,7 +519,9 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-COD-001`][R-COD-001] — Every entrypoint is driven by a test that goes through it · held
 - [`R-COD-002`][R-COD-002] — What the server ships is held to the prose rule · held
 - [`R-COD-003`][R-COD-003] — A unit test holds a small part and stubs what is outside it · not guarded
+- [`R-COD-004`][R-COD-004] — The versions this repository pins are checked against the day's release · not guarded
 
 [R-COD-001]: code/cod-001-every-entrypoint-is-driven-by-a-test-that-goes-through-it.md
 [R-COD-002]: code/cod-002-what-the-server-ships-is-held-to-the-prose-rule.md
 [R-COD-003]: code/cod-003-a-unit-test-holds-a-small-part-and-stubs-what-is-outside-it.md
+[R-COD-004]: code/cod-004-the-versions-this-repository-pins-are-checked-against-the-days-release.md

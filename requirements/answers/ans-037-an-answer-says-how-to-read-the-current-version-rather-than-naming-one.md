@@ -1,0 +1,34 @@
+---
+id: R-ANS-037
+title: An answer says how to read the current version rather than naming one
+status: open
+---
+
+# R-ANS-037 — An answer says how to read the current version rather than naming one
+
+**An answer touching a version outside TYPO3 — node, a GitHub Action, DDEV, a
+library — says where the current release is read rather than naming one.**
+
+A version in a hint is right on the day it is written and silently wrong
+afterwards, which is why a count of something that grows is not written down
+here either. What the answer carries instead is the place the caller reads it
+from: the runtime's own release schedule, the action's repository, the registry
+the library is published to.
+
+What a TYPO3 line requires is a different statement and stays. That is a floor
+the core declares, it is carried as data on the statement rather than in the
+sentence, and a caller told what is required has been told something that does
+not move under them.
+
+`R-COD-004` is the same demand on this repository, and `R-SKL-029` on a
+published skill.
+
+## From
+
+The maintainer's instruction of 2026-08-29. The corpus has not been read for
+version numbers of this kind, so what it costs today is unmeasured.
+
+## Held by
+
+- Nothing. No check counts a named version in `knowledge/`, and the sweep that
+  would say how many there are has not been run.

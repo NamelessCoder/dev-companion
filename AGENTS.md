@@ -407,6 +407,15 @@ bin/cli knowledge:format <path>   # only that part of it
   writes by. A rule is added there when the code already follows it and the
   fixer is what keeps it followed — not to introduce a style nobody has written
   in yet, which is a reformatting of the whole tree wearing a rule's clothes.
+- **A version this repository pins is checked against the day's release** when
+  the file carrying it is touched: node and the actions in `.github/workflows/`,
+  the libraries in `composer.json`, a `.ddev/config.yaml` where a checkout has
+  one. One that is behind is raised, or the reason it stays is written beside
+  it, and a raise nobody has established as safe is asked for rather than taken.
+  No file here names the version that must be used, because that number moves
+  and nothing fails when it does — `R-COD-004`, with `R-ANS-037` for what an
+  answer may name and `R-SKL-029` for what a skill does with the project it
+  reads.
 - One file, one class. A second class in a file is not autoloadable under PSR-4,
   so it works until somebody uses it from anywhere else and then fails as a
   missing class — held by `StructureTest::everyFileDeclaresOneClass`.

@@ -450,7 +450,7 @@ final class Documentation
             if (in_array($node->tagName, ['p', 'li'], true) && self::elements($xpath, 'ancestor::li', $node) !== []) {
                 continue;
             }
-            if ($node->tagName === 'dd' && ($paired->contains($node) || !self::isLeaf($xpath, $node))) {
+            if ($node->tagName === 'dd' && (isset($paired[$node]) || !self::isLeaf($xpath, $node))) {
                 // Either the term above already carries it, or it is a wrapper
                 // whose own children this loop reaches on their own — printing
                 // its `textContent` would be every one of them a second time.
@@ -515,7 +515,7 @@ final class Documentation
         if ($value === '') {
             return $term;
         }
-        $paired->attach($next);
+        $paired[$next] = null;
 
         return $term . ': ' . $value;
     }

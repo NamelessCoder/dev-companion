@@ -28,12 +28,14 @@
         "sort-packages": true,
         "allow-plugins": {
             "php-http/discovery": true
+        },
+        "platform": {
         }
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^11.5",
+        "phpunit/phpunit": "^11.5 || ^12.5 || ^13.0",
         "symfony/console": "^7.4"
     },
     "autoload-dev": {

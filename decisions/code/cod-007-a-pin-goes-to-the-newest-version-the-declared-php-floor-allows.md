@@ -77,3 +77,11 @@ that rule asks for rather than a number anybody may keep.
 - A pin is left where it was after the floor moved. The exception is about what
   the floor allows, so a raised floor makes the old pin wrong on the day it is
   raised rather than at the next reading.
+
+## Since then
+
+- Read on 2026-08-29, the day it was written. The floor was the right measure
+  and the pin was not: a constraint carries more than one major, so the newest
+  the floor allows is a resolution per PHP version rather than one number for
+  all of them. `phpunit/phpunit` is `^11.5 || ^12.5 || ^13.0` since, and
+  `D-COD-008` carries what was measured and what the matrix does with it.

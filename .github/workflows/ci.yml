@@ -12,8 +12,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # The versions composer.json supports (php >= 8.2).
-        php: ['8.2', '8.3', '8.4']
+        # The versions composer.json supports (php >= 8.2), up to the newest
+        # PHP there is — the declaration has no upper end, so a line nobody
+        # runs here is one this package claims and never tried.
+        php: ['8.2', '8.3', '8.4', '8.5']
     steps:
       - uses: actions/checkout@v7
 
@@ -22,8 +24,13 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
 
-      - name: Install dependencies
-        run: composer install --no-interaction --no-progress
+      # update rather than install: the lock holds one resolution, and what
+      # this matrix is for is what each PHP version can take. PHPUnit is the
+      # case that made it matter — 11 on 8.2, 12 from 8.3, 13 from 8.4.1 — and
+      # with the lock installed every leg would have run the same one.
+      # documentation.yml is where the lock itself is still installed.
+      - name: Resolve dependencies for this version
+        run: composer update --no-interaction --no-progress
 
       - name: Lint, analyse, test
         run: composer run-script ci

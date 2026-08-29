@@ -6,7 +6,7 @@ status: open
 coveredBy:
   - InstallerRecordTest::aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted
   - ScopeTest::theInstructionsFitWhatAClientKeeps
-  - StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall
+  - StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedHasThemPutBack
 ---
 
 # D-DIS-013 — The record holds a digest of what was published

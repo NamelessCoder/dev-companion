@@ -50,6 +50,43 @@ records every client it set up in ``.typo3-dev-companion/state.json``, and
 without an agent ``update`` refreshes all of them. A project is usually worked
 on by more than one, and which ones is knowledge only the project has.
 
+One entry for every project
+---------------------------
+
+Everything above is per project, and a machine with a dozen of them can carry
+one entry instead. Nothing here writes it: the client documents its own command
+and what ``install`` writes stays inside the project it was pointed at —
+``D-DIS-018``. Two steps on the machine, written down rather than scripted for
+the same reason.
+
+Put the entrypoint where the shell finds it, so no entry has to spell the
+checkout out:
+
+.. code-block:: bash
+
+    ln -s /absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion ~/.local/bin/
+
+
+The symlink resolves to the checkout, so the autoloader is found and ``install``
+still records the real path. Then register it once, for every project, with the
+client's own command — Claude Code's user scope, which its documentation
+describes as being for the development tools somebody uses across projects:
+
+.. code-block:: bash
+
+    claude mcp add --scope user typo3-dev-companion -- typo3-dev-companion
+
+
+Two things follow, and both are the client's rule rather than this package's. A
+project that has its own entry keeps using it: the scopes rank local, project,
+user, and the whole entry from the first of those wins rather than being merged.
+And the task skills do not come with it — an MCP entry registers a server, while
+a skill is a file in a project, so ``install`` stays the way they get there.
+
+What this does buy for the skills is the refresh below: the server now starts in
+every project, so a publication that has drifted is put back wherever one has,
+instead of only where somebody remembered to look.
+
 When they go stale
 ------------------
 
@@ -60,11 +97,33 @@ the load. The record therefore carries a digest of what was published, and a
 server started in that project compares it before the first call —
 ``R-DIS-025``.
 
-Where they no longer match, the server says so twice. The long line goes to
-stderr, naming what differs and the command that fixes it, for whoever is at a
-terminal. One short sentence goes into the instructions a client is handed at
-initialize, for the agent that is about to load a skill; it is short because
-that statement is budgeted and the exclusion prefix competes for the same room.
+Where they no longer match, the server puts them back and then says so twice. It
+republishes what the record names — the clients it names, the drafts it names —
+and writes no client configuration: this is the publication an explicit
+``install`` asked for, brought up to date, and never a new one. A project with
+no record is untouched.
+
+The long line goes to stderr, naming what differed and what was republished, for
+whoever is at a terminal. One short sentence goes into the instructions a client
+is handed at initialize, for the agent that is about to load a skill; it is
+short because that statement is budgeted and the exclusion prefix competes for
+the same room. What it says is that the copies were stale and have just been
+refreshed — the client read that directory when the session opened, so a skill
+already loaded is the copy that was there before.
+
+Why the server does it rather than leaving it to a command: every mechanism that
+answered the notice needed somebody to remember. On the machine that prompted
+``D-DIS-021``, twelve projects had drifted and each had been told at every
+session start for weeks. A server starting is the one thing that happens in a
+project without anybody deciding to.
+
+Set ``TYPO3_DEV_COMPANION_SKILL_REFRESH=off`` to keep the notice and nothing
+else. That is for a reader who wants the copies in their project to move when
+they say so — reviewing what a release changed, or a project where the skills
+are read as part of a diff.
+
+A refresh that fails leaves the notice as it was and the server starts anyway.
+Writing into somebody's project may not be the thing that stops one.
 
 Three things make it speak: a skills directory that no longer holds what was
 published there, a digest that no longer matches, and a record written before
@@ -72,9 +131,9 @@ the digest existed. The first is the one to expect — every published directory
 ignores itself, which is also what ``git clean -xdf`` takes with it. A project
 this package never installed into is silent.
 
-Where the record carries drafts, the line says ``update --drafts``: a run that
-does not ask for them removes them, and somebody acting on the line wants the
-project they have.
+Where the record carries drafts, the refresh keeps them: the record says which
+were published here and it is the record this reads. Taking them back out is
+still ``update`` without ``--drafts``, which is a run somebody asked for.
 
 Refreshing on update
 --------------------

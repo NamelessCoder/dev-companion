@@ -37,7 +37,7 @@ src/               # grouped by what a class is: only Paths and the bootstrap si
 src/Server/        # starting this server and setting a project up for it
 src/Server/Entrypoint.php  # what `bin/typo3-dev-companion` runs: the commands, the usage, the transport
 src/Server/Factory.php     # builds the mcp/sdk server from the tool definitions
-src/Server/Installer.php   # writes the client setup, publishes the skills, says when a publication has gone stale
+src/Server/Installer.php   # writes the client setup, publishes the skills, puts back a publication that has gone stale
 src/Server/ExcludedTools.php  # what TYPO3_DEV_COMPANION_EXCLUDE_TOOLS takes away
 src/Tool/          # one class per tool: its description, its schemas, its answer
 src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations

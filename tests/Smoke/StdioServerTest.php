@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Server\Entrypoint;
 use TYPO3\DevCompanion\Server\Installer;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
@@ -122,20 +123,22 @@ final class StdioServerTest extends TestCase
     }
 
     /**
-     * A project whose task skills nobody has updated is told so before its
-     * first call, on both channels a starting server has.
+     * A project whose task skills nobody has updated has them put back before
+     * its first call, and is told so on both channels a starting server has.
      *
-     * This is the case the check exists for and the only one that goes over the
-     * wire: a published skill is a copy, so it reads as current whatever
-     * version wrote it, and the agent loading it has nothing that says
-     * otherwise. The instructions are what that agent reads; stderr is what the
-     * person who can run the command reads, and it carries what differs, since
-     * only one of the two is budgeted — `R-DIS-025` — `D-DIS-013`.
+     * Saying it was all this did, and saying it needs somebody to be listening:
+     * on the machine `D-DIS-021` was written on, twelve projects had drifted
+     * and none of them had a reader. So the server puts the copies back, and
+     * both channels still speak — stderr with what differed, for whoever is at
+     * the terminal, and the instructions with the one sentence the budget has
+     * room for, because the client read that directory when the session opened
+     * rather than now — `R-DIS-025`, `D-DIS-013`.
      */
     #[Requirement('R-DIS-025')]
     #[Decision('D-DIS-013')]
+    #[Decision('D-DIS-021')]
     #[Test]
-    public function aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall(): void
+    public function aProjectWhoseSkillsNobodyHasUpdatedHasThemPutBack(): void
     {
         $this->temporaryRoot = sys_get_temp_dir() . '/typo3-dev-companion-stale-' . bin2hex(random_bytes(8));
         self::assertTrue(mkdir($this->temporaryRoot));
@@ -154,19 +157,43 @@ final class StdioServerTest extends TestCase
         // an earlier one, and what nothing said until now.
         Directory::remove($this->temporaryRoot . '/.agents/skills');
 
+        // Asked not to, the server says it and changes nothing — the reading is
+        // the same either way, and only what follows it moves.
+        $reported = $this->call([$this->request(1, 'initialize', [
+            'protocolVersion' => self::PROTOCOL_VERSION,
+            'capabilities' => new \stdClass(),
+            'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
+        ])], $this->temporaryRoot, $stderr, [Entrypoint::REFRESH => 'off'])[1];
+        self::assertStringStartsWith(Installer::NOTICE, $reported['result']['instructions']);
+        self::assertDirectoryDoesNotExist($this->temporaryRoot . '/.agents/skills');
+
         $result = $this->call([$this->request(1, 'initialize', [
             'protocolVersion' => self::PROTOCOL_VERSION,
             'capabilities' => new \stdClass(),
             'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
         ])], $this->temporaryRoot, $stderr)[1];
 
-        self::assertStringStartsWith(Installer::NOTICE, $result['result']['instructions']);
+        self::assertStringStartsWith(Installer::REFRESHED, $result['result']['instructions']);
         self::assertStringContainsString('checkout', $result['result']['instructions'], 'the routing is still there');
         self::assertLessThanOrEqual(
             Coverage::INSTRUCTIONS_BUDGET,
             mb_strlen($result['result']['instructions']),
         );
         self::assertStringContainsString('nothing is published at .agents/skills', (string) $stderr);
+        self::assertFileEquals(
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
+            $this->temporaryRoot . '/.agents/skills/typo3-extension-health/SKILL.md',
+        );
+
+        // The next start has nothing to say, which is what says the record was
+        // written too and not only the files.
+        $settled = $this->call([$this->request(1, 'initialize', [
+            'protocolVersion' => self::PROTOCOL_VERSION,
+            'capabilities' => new \stdClass(),
+            'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
+        ])], $this->temporaryRoot, $stderr)[1];
+        self::assertStringNotContainsString('stale', $settled['result']['instructions']);
+        self::assertStringNotContainsString('refreshed', $settled['result']['instructions']);
     }
 
     private function install(string $directory): int
@@ -700,11 +727,16 @@ final class StdioServerTest extends TestCase
     /**
      * @param array<int, string> $lines
      * @param string|null $stderr what the server said beside the protocol
+     * @param array<string, string> $environment
      * @param-out string $stderr
      * @return array<int, array<string, mixed>>
      */
-    private function call(array $lines, ?string $cwd = null, ?string &$stderr = null): array
-    {
+    private function call(
+        array $lines,
+        ?string $cwd = null,
+        ?string &$stderr = null,
+        array $environment = [],
+    ): array {
         // The working directory is the whole of what a client tells this server
         // about where it is, so a test about discovery is a test about this
         // argument.
@@ -713,7 +745,7 @@ final class StdioServerTest extends TestCase
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $cwd,
-            getenv() + [Paths::FEEDBACK_VARIABLE => $this->ownFeedbackDirectory()],
+            $environment + getenv() + [Paths::FEEDBACK_VARIABLE => $this->ownFeedbackDirectory()],
         );
         self::assertIsResource($process);
 

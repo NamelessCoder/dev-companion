@@ -22,6 +22,9 @@ use TYPO3\DevCompanion\Installation\Instance;
  */
 final class Entrypoint
 {
+    /** Set this to `off` and a stale publication is reported rather than put back. */
+    public const REFRESH = 'TYPO3_DEV_COMPANION_SKILL_REFRESH';
+
     /** @param array<int, string> $arguments what the shell passed, without the binary */
     public static function run(array $arguments, string $binary = 'typo3-dev-companion'): int
     {
@@ -34,7 +37,7 @@ final class Entrypoint
         if ($command === null) {
             Instance::discoverFrom(getcwd() ?: null);
             self::reportExclusionsThatTookNothingAway();
-            Factory::create(self::reportSkillsNobodyHasUpdated())->run(new StdioTransport());
+            Factory::create(self::refreshSkillsNobodyHasUpdated($binary))->run(new StdioTransport());
 
             return 0;
         }
@@ -89,29 +92,68 @@ final class Entrypoint
 
     /**
      * The task skills in this project that are no longer the ones this server
-     * publishes, said on both channels a starting server has.
+     * publishes, put back — and said on both channels a starting server has.
      *
-     * A published skill is a copy and goes stale silently: the client loads
-     * what it finds, and the workflow reads as current whatever version wrote
-     * it. So it is said on stderr for whoever can run the command, and returned
-     * for the instructions, which is the one channel the agent itself reads
-     * before its first call. The long form goes to the terminal, because the
-     * instructions are budgeted and stderr is not.
+     * Saying it was the whole of this and it was not enough: every mechanism
+     * that answered the notice needed somebody to act on it, and on the machine
+     * that prompted `D-DIS-021` twelve projects had drifted with nobody
+     * noticing. A server starting is the one thing that happens in a project
+     * without anybody deciding to, so it is what carries the refresh.
+     *
+     * Both channels still speak, because both readers still have something to
+     * do. stderr gets the long form for whoever is at the terminal; the
+     * instructions get the one sentence the budget has room for, because a
+     * skill the client loaded when the session opened is the copy that was
+     * there before this ran.
+     *
+     * A refresh that fails leaves the notice exactly as it was. It writes into
+     * somebody else's project, so it may not be the thing that stops a server
+     * from starting.
      *
      * The directory is the one this process was started in, which is where
      * `install` writes and therefore where the record is. Walking up for one
      * would find a parent project's, and the entry a client starts this from
      * names the project it belongs to.
      */
-    private static function reportSkillsNobodyHasUpdated(): string
+    private static function refreshSkillsNobodyHasUpdated(string $binary): string
     {
-        $outdated = Installer::outdated(getcwd() ?: '');
+        $project = getcwd() ?: '';
+        $outdated = Installer::outdated($project);
         if ($outdated === null) {
             return '';
         }
         fwrite(STDERR, 'typo3-dev-companion: ' . $outdated . "\n");
 
-        return Installer::NOTICE;
+        if (!self::refreshIsWanted()) {
+            return Installer::NOTICE;
+        }
+
+        try {
+            $refreshed = (new Installer($project, $binary))->refresh();
+        } catch (\RuntimeException $exception) {
+            fwrite(STDERR, 'typo3-dev-companion: the refresh failed, so they are still stale: '
+                . $exception->getMessage() . ".\n");
+
+            return Installer::NOTICE;
+        }
+
+        fwrite(STDERR, "typo3-dev-companion: refreshed them.\n" . $refreshed . "\n");
+
+        return Installer::REFRESHED;
+    }
+
+    /**
+     * Whether a stale publication is put back or only reported.
+     *
+     * Off is for whoever wants the copies in their project to move when they
+     * say so and not before — a review of what a release changed, or a project
+     * where the skills are read as part of a diff. The notice is what they keep.
+     */
+    private static function refreshIsWanted(): bool
+    {
+        $wanted = getenv(self::REFRESH) ?: '';
+
+        return !in_array(strtolower(trim($wanted)), ['off', '0', 'false', 'no'], true);
     }
 
     /**

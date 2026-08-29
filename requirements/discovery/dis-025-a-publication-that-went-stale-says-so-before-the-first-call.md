@@ -6,7 +6,7 @@ restsOn: [D-DIS-013]
 heldBy:
   - InstallerRecordTest::aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted
   - ScopeTest::theInstructionsFitWhatAClientKeeps
-  - StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall
+  - StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedHasThemPutBack
 ---
 
 # R-DIS-025 — A publication that went stale says so before the first call

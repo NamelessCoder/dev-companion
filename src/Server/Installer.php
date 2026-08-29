@@ -41,6 +41,14 @@ final class Installer
      */
     public const NOTICE = 'The task skills installed in this project are stale; run typo3-dev-companion update. ';
     /**
+     * The same fact once the server has acted on it, in the same budget.
+     *
+     * What is left for the agent to do is not a command but a doubt: a skill it
+     * loaded before this ran is the copy that was there, and the client read
+     * that directory when the session opened rather than now.
+     */
+    public const REFRESHED = 'The task skills here were stale and have just been refreshed; reload any you loaded. ';
+    /**
      * What a directory this package owns says to git about itself: everything
      * below it, this file included, so the directory is invisible and no line
      * about it is owed to anybody else's file.
@@ -534,7 +542,7 @@ final class Installer
 
     public function install(?string $agent, bool $drafts = false): string
     {
-        return $this->setUp([$agent ?? self::GENERIC], $drafts);
+        return $this->setUp([$agent ?? self::GENERIC], $drafts, true);
     }
 
     /**
@@ -558,7 +566,31 @@ final class Installer
                 . 'install --agent=<client> for a client of its own.';
         }
 
-        return $this->setUp($update, $drafts);
+        return $this->setUp($update, $drafts, true);
+    }
+
+    /**
+     * Republish what the record says was published here, and touch nothing
+     * else.
+     *
+     * The copies go stale on every release and the answer was always a command
+     * somebody had to run — `D-DIS-014` chose the Composer hook, and its second
+     * **Wrong if** is this machine: a standalone checkout moves without any
+     * `composer update`, so the hook never fires and the notice is read by
+     * whoever happens to be at the terminal. What runs unattended in every
+     * project is a server starting, and this is what it does there —
+     * `D-DIS-021`.
+     *
+     * It adds nothing. The clients are the recorded ones, the drafts are the
+     * recorded choice, and no client entry is written: this only puts back what
+     * an explicit `install` already asked for. A project with no record is
+     * untouched, as it was.
+     */
+    public function refresh(): string
+    {
+        $state = self::readState($this->project);
+
+        return $this->setUp($state['agents'], $state['drafts'] !== [], false);
     }
 
     /**
@@ -574,9 +606,14 @@ final class Installer
      * project with a message and no command that would fix it, because
      * `install` refuses an entry it did not just write.
      *
+     * `$entries` is false for the one caller that is not a command somebody
+     * typed: `refresh()` republishes copies that have drifted and leaves the
+     * client configuration alone, because an entry is written where somebody
+     * asked for a client and never where a server merely started.
+     *
      * @param list<string> $names
      */
-    private function setUp(array $names, bool $drafts): string
+    private function setUp(array $names, bool $drafts, bool $entries): string
     {
         $state = self::readState($this->project);
 
@@ -584,7 +621,7 @@ final class Installer
         $published = [];
         foreach ($names as $name) {
             $definition = self::definition($name);
-            if (isset($definition['mcp'])) {
+            if ($entries && isset($definition['mcp'])) {
                 $messages[] = $this->installAgentConfiguration($name, $definition['mcp']);
             }
             // Clients that share a skills directory — .agents/skills is four of

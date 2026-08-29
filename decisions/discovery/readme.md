@@ -7,6 +7,7 @@ because it looks exactly like an installation that has nothing to say.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-DIS-021`][D-DIS-021] — A stale publication is put back where the server starts · 2026-08-29
 - [`D-DIS-019`][D-DIS-019] — A project root is found from what its manifest declares · 2026-08-18
 - [`D-DIS-017`][D-DIS-017] — The skills reach a project through the installer · 2026-08-12
 - [`D-DIS-018`][D-DIS-018] — What `install` writes stays inside the project · 2026-08-12
@@ -23,6 +24,7 @@ one is added.
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
+[D-DIS-021]: dis-021-a-stale-publication-is-put-back-where-the-server-starts.md
 [D-DIS-019]: dis-019-a-project-root-is-found-from-what-its-manifest-declares.md
 [D-DIS-017]: dis-017-the-skills-reach-a-project-through-the-installer.md
 [D-DIS-018]: dis-018-what-install-writes-stays-inside-the-project.md

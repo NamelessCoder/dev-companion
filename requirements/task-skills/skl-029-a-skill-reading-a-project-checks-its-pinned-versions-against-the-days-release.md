@@ -16,10 +16,13 @@ corrected by the next release of this server, and a project that follows it is
 pinned to whatever was current when the file was published.
 
 What comes of it is a finding with the raise offered, not a raise carried out.
-What the session was asked to do decides that, and what the installed TYPO3 and
-the project's own supported lines require is a reason that can speak against
-raising at all. Where the raise leaves what was asked for, the session asks
-instead of widening its own task.
+The target is measured against the lower bound the project declares — the PHP
+range the installed TYPO3 supports, the majors the extension says it runs on,
+the node the build needs. Where that bound rules the newest release out, the
+finding names the newest version the bound does allow, rather than the newest
+that exists and rather than dropping the pin from the report. A raise that would
+move the bound itself is a different change and is asked for, as is one that
+leaves what the session was asked to do.
 
 `R-COD-004` is the same demand on this repository, and `R-ANS-037` on what an
 answer may name.

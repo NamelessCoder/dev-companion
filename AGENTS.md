@@ -412,10 +412,12 @@ bin/cli knowledge:format <path>   # only that part of it
   the libraries in `composer.json`, a `.ddev/config.yaml` where a checkout has
   one. One that is behind is raised, or the reason it stays is written beside
   it, and a raise nobody has established as safe is asked for rather than taken.
-  No file here names the version that must be used, because that number moves
-  and nothing fails when it does — `R-COD-004`, with `R-ANS-037` for what an
-  answer may name and `R-SKL-029` for what a skill does with the project it
-  reads.
+  Where a runtime this package declares rules the newest release out, the pin
+  takes the newest version that declaration allows — `D-COD-007`, where PHPUnit
+  is that case. No file here names the version that must be used, because that
+  number moves and nothing fails when it does — `R-COD-004`, with `R-ANS-037`
+  for what an answer may name and `R-SKL-029` for what a skill does with the
+  project it reads.
 - One file, one class. A second class in a file is not autoloadable under PSR-4,
   so it works until somebody uses it from anywhere else and then fails as a
   missing class — held by `StructureTest::everyFileDeclaresOneClass`.

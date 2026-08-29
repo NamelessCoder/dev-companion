@@ -17,9 +17,12 @@ afterwards with nothing failing on it. What decides is what the session reads on
 the day.
 
 A pin behind the current release is raised, or the reason it stays is written
-beside it: a runtime this repository still supports, a library whose next line
-needs a change, a version the render or the suite is known to break on. Where
-that reason is not established, the raise is asked for rather than taken,
+beside it. Where a runtime this package declares rules the newest release out,
+the pin takes the newest version that declaration does allow — which is the
+reason and the target at once, never a licence to leave it where it was. The
+other reasons are a runtime this repository still supports, a library whose next
+line needs a change, a version the render or the suite is known to break on.
+Where that reason is not established, the raise is asked for rather than taken,
 because a toolchain bump is a change the maintainer runs the risk of.
 
 The same demand on what this server tells a caller is `R-ANS-037`, and on what a

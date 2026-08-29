@@ -1,15 +1,15 @@
 ---
 id: D-COD-007
-title: 'The pins go to the current major except where PHP 8.2 falls'
+title: 'A pin goes to the newest version the declared PHP floor allows'
 date: 2026-08-29
 status: open
 coveredBy: []
 ---
 
-# D-COD-007 — The pins go to the current major except where PHP 8.2 falls
+# D-COD-007 — A pin goes to the newest version the declared PHP floor allows
 
-**Every version pinned here is raised to the current major, except
-`phpunit/phpunit`: 12 requires PHP 8.3 and this package declares 8.2.**
+**Every version pinned here goes to the newest release this package's declared
+PHP floor allows, which is the current major wherever the floor permits one.**
 
 This is `R-COD-004` carried out the day it was written, and it is the reading
 that rule asks for rather than a number anybody may keep.
@@ -41,9 +41,15 @@ that rule asks for rather than a number anybody may keep.
 
 - The four action pins go to the current major, in `ci.yml` and
   `documentation.yml`.
-- `phpunit/phpunit` stays at `^11.5`. Raising it drops PHP 8.2, which is a
-  decision about who can install this server rather than one about the test
-  runner, and nothing here has asked for it.
+- Where the floor rules the current major out, the pin takes the newest version
+  that floor does allow rather than staying where it was. The floor is what
+  `composer.json` declares, not what the machine happens to run.
+- `phpunit/phpunit` is that case today and stays at `^11.5`: 12 takes
+  `php >=8.3` and 13 takes `>=8.4.1`, against a declared `php >=8.2`. Raising it
+  drops 8.2, which is a decision about who can install this server rather than
+  one about the test runner, and nothing here has asked for it. The 8.2 is
+  today's floor and not the rule: when the floor moves, the pin moves with it to
+  whatever is newest under the new one.
 - The patch levels are taken by `composer update` against the constraints as
   they stand, so the lock file carries them and no constraint moves.
 - `coveredBy: []`. What holds the raise is the two workflows themselves on the
@@ -68,3 +74,6 @@ that rule asks for rather than a number anybody may keep.
   what makes this a question about v5 rather than about the block.
 - Somebody raises PHPUnit anyway and the 8.2 leg of the matrix goes with it,
   quietly narrowing who can install this package.
+- A pin is left where it was after the floor moved. The exception is about what
+  the floor allows, so a raised floor makes the old pin wrong on the day it is
+  raised rather than at the next reading.

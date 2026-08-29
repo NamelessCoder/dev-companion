@@ -6,7 +6,7 @@ allowed to live.
 
 See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
-- [`D-COD-007`][D-COD-007] — The pins go to the current major except where PHP 8.2 falls · 2026-08-29
+- [`D-COD-007`][D-COD-007] — A pin goes to the newest version the declared PHP floor allows · 2026-08-29
 - [`D-COD-006`][D-COD-006] — A test writes below a temporary path that names its own process · 2026-08-24
 - [`D-COD-005`][D-COD-005] — The static analysis runs at level 7 · 2026-08-23
 - [`D-COD-004`][D-COD-004] — What leaves this process goes through one seam · 2026-08-03
@@ -14,7 +14,7 @@ earns one.
 - [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01 · confirmed
 - [`D-COD-002`][D-COD-002] — The upkeep CLI is a Symfony Console application · 2026-08-01
 
-[D-COD-007]: cod-007-the-pins-go-to-the-current-major-except-where-php-8-2-falls.md
+[D-COD-007]: cod-007-a-pin-goes-to-the-newest-version-the-declared-php-floor-allows.md
 [D-COD-006]: cod-006-a-test-writes-below-a-temporary-path-that-names-its-own-process.md
 [D-COD-005]: cod-005-the-static-analysis-runs-at-level-7.md
 [D-COD-004]: cod-004-what-leaves-this-process-goes-through-one-seam.md
